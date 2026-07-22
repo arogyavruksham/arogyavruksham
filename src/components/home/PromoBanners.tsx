@@ -8,7 +8,7 @@ export function PromoBanners() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
-  const slideUp = {
+  const slideUp: any = {
     hidden: { opacity: 0, y: 30 },
     visible: (i: number) => ({
       opacity: 1, y: 0,
