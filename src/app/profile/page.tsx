@@ -231,9 +231,9 @@ function ProfileContent() {
                   </div>
                 ) : (
                   addresses.map((address) => (
-                    <div key={address.id} className={`border ${address.is_default ? 'border-blue-200 bg-blue-50/30' : 'border-gray-200 bg-white'} rounded-xl p-6 relative`}>
+                    <div key={address.id} className={`border ${address.is_default ? 'border-[#cce8b5] bg-[#f4f9f1]/30' : 'border-gray-200 bg-white'} rounded-xl p-6 relative`}>
                       {address.is_default && (
-                        <span className="absolute top-4 right-4 bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded">DEFAULT</span>
+                        <span className="absolute top-4 right-4 bg-blue-100 text-primary text-xs font-bold px-2 py-1 rounded">DEFAULT</span>
                       )}
                       <h3 className="font-bold text-gray-900 mb-2">{address.name || user?.name}</h3>
                       <p className="text-sm text-gray-600 leading-relaxed">
@@ -244,7 +244,7 @@ function ProfileContent() {
                       <div className="flex gap-4 mt-6">
                         <button 
                           onClick={() => setIsAddressModalOpen(true)} 
-                          className="text-sm text-[#1A73E8] font-medium hover:underline flex items-center gap-1"
+                          className="text-sm text-[#689f38] font-medium hover:underline flex items-center gap-1"
                         >
                           <Edit2 className="w-4 h-4"/> Edit
                         </button>
@@ -267,14 +267,14 @@ function ProfileContent() {
             
             {loadingOrders ? (
               <div className="flex justify-center py-20">
-                <Loader2 className="w-10 h-10 animate-spin text-[#1A73E8]" />
+                <Loader2 className="w-10 h-10 animate-spin text-[#689f38]" />
               </div>
             ) : orders.length === 0 ? (
               <div className="flex flex-col items-center justify-center text-center py-20 bg-gray-50 rounded-2xl border border-gray-100 border-dashed">
                 <Package className="w-16 h-16 text-gray-300 mb-4" />
                 <h3 className="text-lg font-bold text-gray-900 mb-2">No orders yet</h3>
                 <p className="text-gray-500 max-w-sm mb-6">Looks like you haven't placed any orders. Start exploring our premium collection.</p>
-                <button onClick={() => router.push('/shop')} className="bg-[#1A73E8] text-white px-6 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-colors">Start Shopping</button>
+                <button onClick={() => router.push('/shop')} className="bg-[#689f38] text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#5b8a30] transition-colors">Start Shopping</button>
               </div>
             ) : (
               <div className="space-y-6">
@@ -305,7 +305,7 @@ function ProfileContent() {
                         <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide border ${
                           isDelivered ? 'bg-green-50 text-green-700 border-green-200' : 
                           order.status === 'out_for_delivery' ? 'bg-purple-50 text-purple-700 border-purple-200' :
-                          order.status === 'shipped' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                          order.status === 'shipped' ? 'bg-[#f4f9f1] text-primary border-[#cce8b5]' :
                           order.status === 'packed' ? 'bg-indigo-50 text-indigo-700 border-indigo-200' :
                           order.status === 'paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
                           order.status === 'cancelled' ? 'bg-red-50 text-red-700 border-red-200' :
@@ -338,7 +338,7 @@ function ProfileContent() {
                                 </div>
                               </div>
                               <div className="hidden sm:block text-right shrink-0">
-                                <button className="text-[#1A73E8] text-sm font-semibold hover:underline">Buy again</button>
+                                <button className="text-[#689f38] text-sm font-semibold hover:underline">Buy again</button>
                               </div>
                             </div>
                           ))}
@@ -347,9 +347,9 @@ function ProfileContent() {
                         {/* Delivery Info & Price Details Sidebars */}
                         <div className="md:w-72 shrink-0 space-y-4 self-start">
                           {order.shipping_address && (
-                            <div className="bg-blue-50/30 border border-blue-100/50 rounded-xl p-4">
+                            <div className="bg-[#f4f9f1]/30 border border-blue-100/50 rounded-xl p-4">
                               <h5 className="text-xs font-bold text-gray-900 uppercase tracking-wide mb-3 flex items-center gap-2">
-                                <MapPin className="w-3.5 h-3.5 text-[#1A73E8]" /> Delivery Info
+                                <MapPin className="w-3.5 h-3.5 text-[#689f38]" /> Delivery Info
                               </h5>
                               <p className="font-semibold text-gray-900 text-sm mb-1">{order.shipping_address.name}</p>
                               <p className="text-xs text-gray-600 leading-relaxed mb-2">
@@ -391,7 +391,7 @@ function ProfileContent() {
                                   </div>
                                   <div className="border-t border-gray-200 pt-2.5 flex justify-between text-sm font-black text-gray-900">
                                     <span>Total Amount</span>
-                                    <span className="text-[#1A73E8]">₹{order.total_amount?.toLocaleString('en-IN')}</span>
+                                    <span className="text-[#689f38]">₹{order.total_amount?.toLocaleString('en-IN')}</span>
                                   </div>
                                 </div>
                               );
@@ -423,7 +423,7 @@ function ProfileContent() {
 
                             return (
                               <div key={status.id} className="relative z-10 flex sm:flex-col items-center gap-4 sm:gap-2 w-full sm:w-auto">
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border-2 bg-white transition-colors duration-500 ${isCompleted ? 'border-[#1A73E8] text-[#1A73E8]' : 'border-gray-200 text-gray-300'}`}>
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border-2 bg-white transition-colors duration-500 ${isCompleted ? 'border-[#689f38] text-[#689f38]' : 'border-gray-200 text-gray-300'}`}>
                                   {isCompleted ? status.icon : <div className="w-2 h-2 bg-gray-200 rounded-full"></div>}
                                 </div>
                                 <div className="sm:text-center">
@@ -440,7 +440,7 @@ function ProfileContent() {
                         <button className="text-sm font-bold text-gray-600 hover:text-gray-900 flex items-center gap-1 transition-colors">
                           View Invoice <ChevronRight className="w-4 h-4" />
                         </button>
-                        <button className="text-sm font-bold text-[#1A73E8] hover:text-blue-800 transition-colors">
+                        <button className="text-sm font-bold text-[#689f38] hover:text-[#4d7528] transition-colors">
                           Track Package
                         </button>
                       </div>
@@ -459,13 +459,13 @@ function ProfileContent() {
           <>
             <div className="flex gap-4 mb-8">
               <button 
-                className={`px-6 py-2 rounded-full text-sm font-medium ${reviewTab === 'to_review' ? 'bg-[#1A73E8] text-white shadow-md' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'} transition-colors`} 
+                className={`px-6 py-2 rounded-full text-sm font-medium ${reviewTab === 'to_review' ? 'bg-[#689f38] text-white shadow-md' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'} transition-colors`} 
                 onClick={() => setReviewTab('to_review')}
               >
                 To Review
               </button>
               <button 
-                className={`px-6 py-2 rounded-full text-sm font-medium ${reviewTab === 'history' ? 'bg-[#1A73E8] text-white shadow-md' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'} transition-colors`} 
+                className={`px-6 py-2 rounded-full text-sm font-medium ${reviewTab === 'history' ? 'bg-[#689f38] text-white shadow-md' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'} transition-colors`} 
                 onClick={() => setReviewTab('history')}
               >
                 Review History
@@ -497,7 +497,7 @@ function ProfileContent() {
                         </div>
                         <div className="text-right">
                           <p className="text-xs text-gray-400 mb-2">Purchased on<br/>{new Date(item.order_created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
-                          <button onClick={() => router.push(`/shop/${item.product_id}`)} className="px-4 py-2 bg-[#1A73E8] text-white text-sm rounded-md hover:bg-blue-600 transition-colors shadow-sm">Write Review</button>
+                          <button onClick={() => router.push(`/shop/${item.product_id}`)} className="px-4 py-2 bg-[#689f38] text-white text-sm rounded-md hover:bg-[#5b8a30] transition-colors shadow-sm">Write Review</button>
                         </div>
                       </div>
                     </div>
@@ -505,7 +505,7 @@ function ProfileContent() {
                 )
               ) : (
                 loadingReviews ? (
-                  <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 animate-spin text-[#1A73E8]" /></div>
+                  <div className="flex justify-center py-12"><Loader2 className="w-8 h-8 animate-spin text-[#689f38]" /></div>
                 ) : reviews.length === 0 ? (
                   <div className="text-center py-12 bg-gray-50 rounded-2xl border border-gray-100 border-dashed">
                     <p className="text-gray-500 font-medium">You haven't submitted any reviews yet.</p>
@@ -534,7 +534,7 @@ function ProfileContent() {
                         </div>
                         <div className="text-right">
                           <p className="text-xs text-gray-400 mb-2">Reviewed on<br/>{new Date(review.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
-                          <button onClick={() => router.push(`/shop/${review.product_id}`)} className="text-sm text-[#1A73E8] hover:underline font-medium">View Product</button>
+                          <button onClick={() => router.push(`/shop/${review.product_id}`)} className="text-sm text-[#689f38] hover:underline font-medium">View Product</button>
                         </div>
                       </div>
                       {review.review_text && (
@@ -564,7 +564,7 @@ function ProfileContent() {
         {mobileView === 'dashboard' && (
           <>
             {/* Dashboard Blue Header Card */}
-            <div className="bg-[#1A56DB] text-white rounded-b-[2rem] pt-12 pb-8 px-6 shadow-md relative overflow-hidden">
+            <div className="bg-[#689f38] text-white rounded-b-[2rem] pt-12 pb-8 px-6 shadow-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
               
               <div className="flex items-center gap-4 mb-8 relative z-10">
@@ -576,7 +576,7 @@ function ProfileContent() {
                       {initials}
                     </div>
                   )}
-                  <label className="absolute bottom-0 right-0 bg-white text-[#1A56DB] p-1 rounded-full shadow-sm cursor-pointer border border-gray-100 flex items-center justify-center w-5 h-5">
+                  <label className="absolute bottom-0 right-0 bg-white text-[#689f38] p-1 rounded-full shadow-sm cursor-pointer border border-gray-100 flex items-center justify-center w-5 h-5">
                     <Edit2 className="w-3 h-3" />
                     <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
                   </label>
@@ -614,14 +614,14 @@ function ProfileContent() {
               <div>
                 <div className="flex justify-between items-center mb-3 px-1">
                   <h3 className="font-bold text-gray-900 text-sm">My Orders</h3>
-                  <button onClick={() => setMobileView('orders')} className="text-[#1A56DB] text-xs font-bold flex items-center gap-1">View All <ChevronRight className="w-3 h-3" /></button>
+                  <button onClick={() => setMobileView('orders')} className="text-[#689f38] text-xs font-bold flex items-center gap-1">View All <ChevronRight className="w-3 h-3" /></button>
                 </div>
                 <div 
                   onClick={() => setMobileView('orders')}
                   className="bg-white rounded-2xl p-4 flex items-center justify-between shadow-sm border border-gray-100/50 cursor-pointer active:scale-[0.98] transition-transform"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-[#F5F8FF] text-[#1A56DB] flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-[#F5F8FF] text-[#689f38] flex items-center justify-center">
                       <ShoppingBag className="w-5 h-5" />
                     </div>
                     <div>
@@ -674,7 +674,7 @@ function ProfileContent() {
                   {(user?.role === 'admin' || user?.role === 'manager' || user?.role === 'editor') && (
                     <div onClick={() => router.push('/admin')} className="flex items-center justify-between p-4 border-b border-gray-50 cursor-pointer active:bg-gray-50 transition-colors">
                       <div className="flex items-center gap-3">
-                        <LayoutDashboard className="w-5 h-5 text-[#1A56DB] shrink-0" />
+                        <LayoutDashboard className="w-5 h-5 text-[#689f38] shrink-0" />
                         <div>
                           <h4 className="font-bold text-gray-900 text-sm">Admin Panel</h4>
                           <p className="text-[11px] text-gray-500 mt-0.5">Manage store data</p>
@@ -686,9 +686,9 @@ function ProfileContent() {
 
                   <div onClick={handleLogout} className="flex items-center justify-between p-4 cursor-pointer active:bg-gray-50 transition-colors">
                     <div className="flex items-center gap-3">
-                      <LogOut className="w-5 h-5 text-[#1A56DB] shrink-0" />
+                      <LogOut className="w-5 h-5 text-[#689f38] shrink-0" />
                       <div>
-                        <h4 className="font-bold text-[#1A56DB] text-sm">Logout</h4>
+                        <h4 className="font-bold text-[#689f38] text-sm">Logout</h4>
                         <p className="text-[11px] text-gray-500 mt-0.5">Sign out from your account</p>
                       </div>
                     </div>
@@ -708,7 +708,7 @@ function ProfileContent() {
               <h1 className="font-serif text-lg font-bold text-gray-900">My Account</h1>
               <div className="relative">
                 <Bell className="w-5 h-5 text-gray-700" />
-                <span className="absolute top-0 right-0 w-2 h-2 bg-[#1A56DB] rounded-full border border-white"></span>
+                <span className="absolute top-0 right-0 w-2 h-2 bg-[#689f38] rounded-full border border-white"></span>
               </div>
             </div>
 
@@ -718,7 +718,7 @@ function ProfileContent() {
                 <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100/50 space-y-4">
                   <div>
                     <label className="block text-xs font-bold text-gray-700 mb-1.5">Full Name</label>
-                    <div className="flex items-center border border-gray-200 rounded-lg px-3 py-2.5 focus-within:border-[#1A56DB]">
+                    <div className="flex items-center border border-gray-200 rounded-lg px-3 py-2.5 focus-within:border-[#689f38]">
                       <UserCircle className="w-4 h-4 text-gray-400 mr-3 shrink-0" />
                       <input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} className="w-full text-sm outline-none font-medium text-gray-900" />
                     </div>
@@ -733,19 +733,19 @@ function ProfileContent() {
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-gray-700 mb-1.5">Phone Number</label>
-                    <div className="flex items-center border border-gray-200 rounded-lg px-3 py-2.5 focus-within:border-[#1A56DB]">
+                    <div className="flex items-center border border-gray-200 rounded-lg px-3 py-2.5 focus-within:border-[#689f38]">
                       <svg className="w-4 h-4 text-gray-400 mr-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                       <input type="tel" placeholder="+91" className="w-full text-sm outline-none font-medium text-gray-900" />
                     </div>
                   </div>
-                  <button onClick={handleSaveName} className="w-full bg-[#1A56DB] hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl text-sm shadow-md shadow-blue-500/20 active:scale-[0.98] transition-transform mt-2">Save Changes</button>
+                  <button onClick={handleSaveName} className="w-full bg-[#689f38] hover:bg-[#5b8a30] text-white font-bold py-3.5 rounded-xl text-sm shadow-md shadow-green-700/20 active:scale-[0.98] transition-transform mt-2">Save Changes</button>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div className="flex justify-between items-center px-1">
                   <h3 className="font-bold text-gray-900 text-sm">Saved Addresses</h3>
-                  <button onClick={() => setIsAddressModalOpen(true)} className="text-[#1A56DB] font-bold text-xs">+ Add New</button>
+                  <button onClick={() => setIsAddressModalOpen(true)} className="text-[#689f38] font-bold text-xs">+ Add New</button>
                 </div>
                 {addresses.length === 0 ? (
                    <p className="text-sm text-gray-500 text-center py-4 bg-white rounded-2xl border border-gray-100/50">No addresses found.</p>
@@ -753,7 +753,7 @@ function ProfileContent() {
                   addresses.map(addr => (
                     <div key={addr.id} className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100/50 relative">
                       <div className="flex items-start gap-4 mb-4">
-                        <div className="w-10 h-10 rounded-full bg-[#F5F8FF] text-[#1A56DB] flex items-center justify-center shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-[#F5F8FF] text-[#689f38] flex items-center justify-center shrink-0">
                           <MapPin className="w-5 h-5" />
                         </div>
                         <div className="flex-1 pr-16">
@@ -762,19 +762,19 @@ function ProfileContent() {
                           <p className="text-[12px] text-gray-600 font-medium">{addr.phone}</p>
                         </div>
                         {addr.is_default && (
-                          <span className="absolute top-5 right-5 bg-[#F5F8FF] text-[#1A56DB] text-[10px] font-bold px-2 py-1 rounded">DEFAULT</span>
+                          <span className="absolute top-5 right-5 bg-[#F5F8FF] text-[#689f38] text-[10px] font-bold px-2 py-1 rounded">DEFAULT</span>
                         )}
                       </div>
                       <div className="flex items-center pt-3 border-t border-gray-50">
-                        <button onClick={() => setIsAddressModalOpen(true)} className="flex-1 flex justify-center items-center gap-1.5 text-xs font-bold text-[#1A56DB]"><Edit2 className="w-3.5 h-3.5" /> Edit</button>
-                        <button className="flex-1 flex justify-center items-center gap-1.5 text-xs font-bold text-[#1A56DB] border-l border-gray-50"><Trash2 className="w-3.5 h-3.5" /> Delete</button>
+                        <button onClick={() => setIsAddressModalOpen(true)} className="flex-1 flex justify-center items-center gap-1.5 text-xs font-bold text-[#689f38]"><Edit2 className="w-3.5 h-3.5" /> Edit</button>
+                        <button className="flex-1 flex justify-center items-center gap-1.5 text-xs font-bold text-[#689f38] border-l border-gray-50"><Trash2 className="w-3.5 h-3.5" /> Delete</button>
                       </div>
                     </div>
                   ))
                 )}
               </div>
 
-              <button onClick={handleLogout} className="w-full flex justify-center items-center gap-2 border-2 border-gray-100 text-[#1A56DB] bg-white font-bold py-3.5 rounded-xl text-sm shadow-sm active:bg-gray-50 transition-colors">
+              <button onClick={handleLogout} className="w-full flex justify-center items-center gap-2 border-2 border-gray-100 text-[#689f38] bg-white font-bold py-3.5 rounded-xl text-sm shadow-sm active:bg-gray-50 transition-colors">
                 <LogOut className="w-4 h-4" /> Logout
               </button>
             </div>
@@ -807,7 +807,7 @@ function ProfileContent() {
                 <button 
                   key={filter}
                   onClick={() => setMobileOrdersFilter(filter as any)}
-                  className={`px-4 py-3 text-xs font-bold whitespace-nowrap capitalize border-b-2 transition-colors ${mobileOrdersFilter === filter ? 'text-[#1A56DB] border-[#1A56DB]' : 'text-gray-500 border-transparent'}`}
+                  className={`px-4 py-3 text-xs font-bold whitespace-nowrap capitalize border-b-2 transition-colors ${mobileOrdersFilter === filter ? 'text-[#689f38] border-[#689f38]' : 'text-gray-500 border-transparent'}`}
                 >
                   {filter === 'all' ? 'All Orders' : filter}
                 </button>
@@ -855,7 +855,7 @@ function ProfileContent() {
                         <span className={`px-2.5 py-1 text-[10px] font-bold rounded-md ${
                           order.status === 'delivered' ? 'bg-green-100 text-green-700' :
                           order.status === 'shipped' ? 'bg-yellow-100 text-yellow-700' :
-                          'bg-blue-100 text-blue-700'
+                          'bg-blue-100 text-primary'
                         }`}>
                           {order.status ? order.status.replace(/_/g, ' ') : 'Processing'}
                         </span>
@@ -877,7 +877,7 @@ function ProfileContent() {
 
                     <button 
                       onClick={() => { setMobileActiveOrder(order); setMobileView('order_details'); }}
-                      className="w-full flex items-center justify-between pt-3 border-t border-gray-50 text-[#1A56DB] font-bold text-xs active:bg-gray-50 transition-colors rounded-b-xl"
+                      className="w-full flex items-center justify-between pt-3 border-t border-gray-50 text-[#689f38] font-bold text-xs active:bg-gray-50 transition-colors rounded-b-xl"
                     >
                       <span className="flex items-center gap-2"><svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> View Order Details</span>
                       <ChevronRight className="w-4 h-4" />
@@ -905,7 +905,7 @@ function ProfileContent() {
                 <span className={`absolute top-5 right-5 px-3 py-1 text-[11px] font-bold rounded-md ${
                   mobileActiveOrder.status === 'delivered' ? 'bg-green-100 text-green-700' :
                   mobileActiveOrder.status === 'shipped' ? 'bg-yellow-100 text-yellow-700' :
-                  'bg-blue-100 text-blue-700'
+                  'bg-blue-100 text-primary'
                 }`}>
                   {mobileActiveOrder.status ? mobileActiveOrder.status.replace(/_/g, ' ') : 'Processing'}
                 </span>
@@ -967,8 +967,8 @@ function ProfileContent() {
                     );
                   })()}
                   <div className="border-t border-gray-50 pt-4 flex justify-between items-center bg-[#F9F9FB] -mx-5 -mb-5 p-5 rounded-b-2xl">
-                    <span className="font-bold text-[#1A56DB] text-sm">Total Amount</span>
-                    <span className="font-bold text-[#1A56DB] text-lg">₹{mobileActiveOrder.total_amount?.toLocaleString('en-IN')}</span>
+                    <span className="font-bold text-[#689f38] text-sm">Total Amount</span>
+                    <span className="font-bold text-[#689f38] text-lg">₹{mobileActiveOrder.total_amount?.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
               </div>
@@ -1000,15 +1000,15 @@ function ProfileContent() {
         -------------------------------------------
       */}
       <div className="hidden md:block">
-        {/* Blue Header Banner */}
-        <div className="bg-[#1A73E8] text-white pt-10 pb-20 px-8 relative overflow-hidden">
-          <div className="absolute inset-0 opacity-20">
+        {/* Premium Green Header Banner */}
+        <div className="bg-gradient-to-r from-[#5b8a30] to-[#689f38] text-white pt-16 pb-28 px-8 relative overflow-hidden shadow-inner">
+          <div className="absolute inset-0 opacity-10">
             <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full border-[40px] border-white/20"></div>
             <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full border-[30px] border-white/20"></div>
           </div>
-          <div className="container mx-auto max-w-6xl relative z-10 text-center">
-            <h1 className="text-3xl font-semibold mb-2">My Account</h1>
-            <p className="text-sm opacity-80 flex items-center justify-center gap-2">
+          <div className="container mx-auto max-w-6xl relative z-10 text-left">
+            <h1 className="text-4xl font-serif font-bold mb-3 tracking-wide">My Account</h1>
+            <p className="text-sm opacity-90 flex items-center gap-2 font-medium">
               <LayoutDashboard className="w-4 h-4" /> Dashboard Overview
             </p>
           </div>
@@ -1023,7 +1023,7 @@ function ProfileContent() {
                   {profilePhoto ? (
                     <img src={profilePhoto} alt="Profile" className="w-20 h-20 rounded-full border-2 border-white object-cover shadow-md" />
                   ) : (
-                    <div className="w-20 h-20 rounded-full border-2 border-white bg-[#1A73E8] text-white flex items-center justify-center text-3xl font-bold shadow-md">
+                    <div className="w-20 h-20 rounded-full border-2 border-white bg-[#689f38] text-white flex items-center justify-center text-3xl font-bold shadow-md">
                       {initials}
                     </div>
                   )}
@@ -1035,27 +1035,26 @@ function ProfileContent() {
                 
                 <span className="text-xs text-gray-500 mb-1">Hello</span>
                 <h2 className="font-bold text-lg text-gray-900 break-all text-center px-2">{user?.name}</h2>
-                <button onClick={() => setActiveTab('account')} className="text-xs text-[#1A73E8] mt-1 hover:underline">Edit Profile</button>
+                <button onClick={() => setActiveTab('account')} className="text-xs text-[#689f38] mt-1 hover:underline">Edit Profile</button>
               </div>
               
               <nav className="mt-6 flex flex-col space-y-2">
                 <button 
                   onClick={() => setActiveTab('dashboard')} 
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium ${activeTab === 'dashboard' ? 'bg-white text-[#1A73E8] shadow-sm border border-gray-100' : 'text-gray-600 hover:bg-white hover:text-[#1A73E8]'}`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium ${activeTab === 'dashboard' ? 'bg-[#689f38] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50 hover:text-[#689f38]'}`}
                 >
                   <LayoutDashboard className="w-5 h-5" /> Dashboard
                 </button>
                 <button 
                   onClick={() => setActiveTab('history')} 
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium ${activeTab === 'history' ? 'bg-white text-[#1A73E8] shadow-sm border border-gray-100' : 'text-gray-600 hover:bg-white hover:text-[#1A73E8]'}`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium ${activeTab === 'history' ? 'bg-[#689f38] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50 hover:text-[#689f38]'}`}
                 >
                   <History className="w-5 h-5" /> Order History
                 </button>
 
-
                 <button 
                   onClick={() => setActiveTab('review')} 
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium ${activeTab === 'review' ? 'bg-white text-[#1A73E8] shadow-sm border border-gray-100' : 'text-gray-600 hover:bg-white hover:text-[#1A73E8]'}`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium ${activeTab === 'review' ? 'bg-[#689f38] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50 hover:text-[#689f38]'}`}
                 >
                   <Star className="w-5 h-5" /> To Review
                 </button>
@@ -1063,7 +1062,7 @@ function ProfileContent() {
               
               <div className="mt-8 pt-6 border-t border-gray-200">
                 {(user?.role === 'admin' || user?.role === 'manager' || user?.role === 'editor') && (
-                  <button onClick={() => router.push('/admin')} className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-white bg-[#1A73E8] hover:bg-blue-600 transition-colors font-medium mb-2 shadow-md">
+                  <button onClick={() => router.push('/admin')} className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-white bg-[#689f38] hover:bg-[#5b8a30] transition-colors font-medium mb-2 shadow-md">
                     <LayoutDashboard className="w-5 h-5" /> Admin Panel
                   </button>
                 )}

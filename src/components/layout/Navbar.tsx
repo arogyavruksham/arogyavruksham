@@ -142,7 +142,7 @@ export function Navbar() {
             </nav>
 
             {/* ── CENTER: Breakout Logo ── */}
-            <div className="relative flex justify-center items-center shrink-0 w-[190px] z-20">
+            <div className="relative flex justify-center items-center shrink-0 w-[240px] z-20">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center mt-1">
                 <Link href="/" className="block">
                   <motion.img
@@ -150,7 +150,7 @@ export function Navbar() {
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     src="/logo.png"
                     alt="Arogyavruksham"
-                    className="w-[180px] h-[180px] drop-shadow-md object-contain"
+                    className="w-[240px] h-[240px] drop-shadow-md object-contain"
                   />
                 </Link>
               </div>
@@ -181,9 +181,9 @@ export function Navbar() {
               {mounted && isAuthenticated ? (
                 <div className="relative profile-dropdown-container">
                   <button onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                    className="flex items-center gap-2 text-[12px] font-bold text-gray-700 hover:text-primary tracking-wide uppercase">
-                    <User className="w-4 h-4 text-gray-600" />
-                    {user?.name?.split(' ')[0]}
+                    className="flex items-center gap-2 text-[14px] font-bold text-[#4B5563] hover:text-primary tracking-wide uppercase">
+                    <User className="w-[18px] h-[18px] text-[#4B5563]" strokeWidth={2.5} />
+                    {user?.name || 'USER'}
                   </button>
                   <AnimatePresence>
                     {isProfileDropdownOpen && (
@@ -199,8 +199,8 @@ export function Navbar() {
                 </div>
               ) : (
                 <button onClick={() => useAuthStore.getState().setAuthModalOpen(true)}
-                  className="flex items-center gap-2 text-[12px] font-bold text-gray-700 hover:text-primary tracking-wide uppercase">
-                  <User className="w-4 h-4 text-gray-600" />
+                  className="flex items-center gap-2 text-[14px] font-bold text-[#4B5563] hover:text-primary tracking-wide uppercase">
+                  <User className="w-[18px] h-[18px] text-[#4B5563]" strokeWidth={2.5} />
                   LOG IN / JOIN
                 </button>
               )}
