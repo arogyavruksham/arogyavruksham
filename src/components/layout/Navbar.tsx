@@ -109,7 +109,7 @@ export function Navbar() {
         <div className={`hidden xl:flex w-full items-center border-b border-gray-100 overflow-visible transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-white'}`}
           style={{ height: '70px' }}>
           
-          <div className="w-full max-w-[1500px] mx-auto px-8 flex items-center overflow-visible h-full">
+          <div className="w-full max-w-full mx-auto px-6 lg:px-12 flex items-center overflow-visible h-full">
 
             {/* ── Far Left: Currency + Phone ── */}
             <div className="flex items-center gap-6 shrink-0 w-[300px]">
@@ -135,7 +135,7 @@ export function Navbar() {
             </nav>
 
             {/* ── CENTER: Breakout Logo ── */}
-            <div className="relative flex justify-center items-center shrink-0 w-[160px] z-20">
+            <div className="relative flex justify-center items-center shrink-0 w-[180px] z-20">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
                 <Link href="/" className="block">
                   <motion.img
@@ -143,7 +143,7 @@ export function Navbar() {
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     src="/logo.svg"
                     alt="Arogyavruksham"
-                    className="w-[140px] h-[140px] drop-shadow-md object-contain"
+                    className="w-[180px] h-[180px] drop-shadow-md object-contain"
                   />
                 </Link>
               </div>
