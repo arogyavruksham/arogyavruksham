@@ -88,7 +88,19 @@ export function Navbar() {
 
   useEffect(() => {
     setMounted(true)
-  }, [])
+    
+    // Auto-reload user state (role changes, etc.) without manual page refresh
+    let pollInterval: NodeJS.Timeout
+    if (isAuthenticated && user?.email) {
+      pollInterval = setInterval(async () => {
+        const { data } = await supabase.from('users').select('*').eq('email', user.email).single()
+        if (data && useAuthStore.getState().updateUser) {
+          useAuthStore.getState().updateUser({ role: data.role, name: data.full_name || data.name })
+        }
+      }, 5000)
+    }
+    return () => clearInterval(pollInterval)
+  }, [isAuthenticated, user?.email])
 
   if (pathname?.startsWith('/admin')) return null
 

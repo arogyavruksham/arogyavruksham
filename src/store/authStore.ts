@@ -19,6 +19,7 @@ interface AuthState {
   logout: () => void
   setAuthModalOpen: (isOpen: boolean) => void
   setAdminUnlocked: (isUnlocked: boolean, password?: string) => void
+  updateUser: (data: Partial<User>) => void
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -37,6 +38,7 @@ export const useAuthStore = create<AuthState>()(
       },
       setAuthModalOpen: (isOpen) => set({ isAuthModalOpen: isOpen }),
       setAdminUnlocked: (isUnlocked, password) => set({ isAdminUnlocked: isUnlocked, adminPassword: password }),
+      updateUser: (data) => set((state) => ({ user: state.user ? { ...state.user, ...data } : null })),
     }),
     {
       name: 'kashvi-auth-storage',

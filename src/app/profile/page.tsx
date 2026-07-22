@@ -134,17 +134,27 @@ function ProfileContent() {
       setLoadingReviews(false)
     }
     
+    let pollInterval: NodeJS.Timeout;
     if (isAuthenticated) {
       fetchOrders()
       fetchAddresses()
       fetchReviews()
+      
+      // Auto-reload polling for orders to pop up reviews immediately when delivered
+      pollInterval = setInterval(() => {
+        fetchOrders()
+        fetchReviews()
+      }, 5000)
     }
     
     const handleAddressUpdate = () => {
       fetchAddresses()
     }
     window.addEventListener('addressUpdated', handleAddressUpdate)
-    return () => window.removeEventListener('addressUpdated', handleAddressUpdate)
+    return () => {
+      window.removeEventListener('addressUpdated', handleAddressUpdate)
+      if (pollInterval) clearInterval(pollInterval)
+    }
   }, [isAuthenticated])
 
   if (!mounted || !isAuthenticated) return null
