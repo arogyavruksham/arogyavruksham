@@ -8,7 +8,7 @@ export function FooterFeatures() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
 
-  const featureVariants = {
+  const featureVariants: any = {
     hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
       opacity: 1, y: 0,
