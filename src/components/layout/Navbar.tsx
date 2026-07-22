@@ -110,8 +110,6 @@ export function Navbar() {
 
   return (
     <>
-      {/* Spacer so content below doesn't hide under navbar */}
-      <div className="h-[60px] xl:h-[100px]" />
 
       <motion.header
         animate={{ y: hidden ? '-100%' : '0%' }}
