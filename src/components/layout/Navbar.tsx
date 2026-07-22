@@ -31,7 +31,6 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false)
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false)
-  const [profilePhoto, setProfilePhoto] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<any[]>([])
   const [isSearching, setIsSearching] = useState(false)
@@ -89,8 +88,6 @@ export function Navbar() {
 
   useEffect(() => {
     setMounted(true)
-    const savedPhoto = localStorage.getItem('profilePhoto')
-    if (savedPhoto) setProfilePhoto(savedPhoto)
   }, [])
 
   if (pathname?.startsWith('/admin')) return null
@@ -101,7 +98,7 @@ export function Navbar() {
   return (
     <>
       {/* Spacer so content below doesn't hide under navbar */}
-      <div className="h-[60px] md:h-[60px]" />
+      <div className="h-[70px] md:h-[70px]" />
 
       <motion.header
         animate={{ y: hidden ? '-100%' : '0%' }}
@@ -109,75 +106,69 @@ export function Navbar() {
         className={`fixed top-0 left-0 right-0 z-50 ${pathname === '/checkout' ? 'hidden md:block' : 'block'}`}
       >
         {/* ─── DESKTOP ─── */}
-        <div className={`hidden xl:flex w-full items-center border-b border-gray-200 overflow-visible transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white'}`}
-          style={{ height: '60px' }}>
+        <div className={`hidden xl:flex w-full items-center border-b border-gray-100 overflow-visible transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-white'}`}
+          style={{ height: '70px' }}>
           
-          <div className="w-full max-w-[1400px] mx-auto px-6 flex items-center overflow-visible" style={{ height: '60px' }}>
+          <div className="w-full max-w-[1500px] mx-auto px-8 flex items-center overflow-visible h-full">
 
             {/* ── Far Left: Currency + Phone ── */}
-            <div className="flex items-center gap-5 shrink-0">
-              <span className="text-[11px] font-semibold text-gray-600 tracking-wide cursor-pointer hover:text-primary transition-colors">
+            <div className="flex items-center gap-6 shrink-0 w-[300px]">
+              <span className="text-[12px] font-bold text-gray-700 tracking-wide cursor-pointer hover:text-primary transition-colors uppercase">
                 USD | EN
               </span>
-              <span className="text-gray-300">|</span>
-              <span className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-600">
-                <Phone className="w-3 h-3 text-primary" />
+              <div className="w-px h-5 bg-gray-200" />
+              <span className="flex items-center gap-2 text-[12px] font-bold text-gray-700">
+                <Phone className="w-3.5 h-3.5 text-gray-700" />
                 034 2333 3444
               </span>
             </div>
 
             {/* ── Left Nav Links ── */}
-            <nav className="flex items-center gap-6 ml-10 shrink-0">
+            <nav className="flex items-center justify-end gap-10 flex-1 pr-14 shrink-0">
               {navLinks.map(({ label, href }) => (
                 <Link key={href} href={href}
-                  className={`flex items-center gap-0.5 text-[12px] font-bold tracking-wider transition-colors ${pathname === href ? 'text-primary' : 'text-gray-700 hover:text-primary'}`}>
+                  className={`flex items-center gap-1 text-[13px] font-bold tracking-wide transition-colors ${pathname === href ? 'text-primary' : 'text-gray-800 hover:text-primary'}`}>
                   {label}
-                  <ChevronDown className="w-3 h-3 text-primary" />
+                  <ChevronDown className="w-3.5 h-3.5 text-primary" />
                 </Link>
               ))}
             </nav>
 
-            {/* ── Spacer grows ── */}
-            <div className="flex-1" />
-
             {/* ── CENTER: Breakout Logo ── */}
-            <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center z-20 overflow-visible"
-              style={{ top: '50%', transform: 'translateX(-50%) translateY(-50%)' }}>
-              <Link href="/" className="block">
-                <motion.img
-                  whileHover={{ scale: 1.05, rotate: 3 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  src="/logo.svg"
-                  alt="Arogyavruksham"
-                  style={{ width: '110px', height: '110px', marginTop: '-25px' }}
-                  className="drop-shadow-lg"
-                />
-              </Link>
+            <div className="relative flex justify-center items-center shrink-0 w-[160px] z-20">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+                <Link href="/" className="block">
+                  <motion.img
+                    whileHover={{ scale: 1.03 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    src="/logo.svg"
+                    alt="Arogyavruksham"
+                    className="w-[140px] h-[140px] drop-shadow-md object-contain"
+                  />
+                </Link>
+              </div>
             </div>
 
-            {/* ── Spacer grows ── */}
-            <div className="flex-1" />
-
             {/* ── Right Nav Links ── */}
-            <nav className="flex items-center gap-6 mr-10 shrink-0">
+            <nav className="flex items-center justify-start gap-10 flex-1 pl-14 shrink-0">
               {navLinksRight.map(({ label, href }) => (
                 <Link key={href} href={href}
-                  className="flex items-center gap-0.5 text-[12px] font-bold tracking-wider text-gray-700 hover:text-primary transition-colors">
+                  className={`flex items-center gap-1 text-[13px] font-bold tracking-wide transition-colors ${pathname === href ? 'text-primary' : 'text-gray-800 hover:text-primary'}`}>
                   {label}
-                  <ChevronDown className="w-3 h-3 text-primary" />
+                  <ChevronDown className="w-3.5 h-3.5 text-primary" />
                 </Link>
               ))}
             </nav>
 
             {/* ── Far Right: Auth + Cart + Search ── */}
-            <div className="flex items-center gap-4 shrink-0">
+            <div className="flex items-center justify-end gap-6 shrink-0 w-[300px]">
 
               {/* Login */}
               {mounted && isAuthenticated ? (
                 <div className="relative profile-dropdown-container">
                   <button onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                    className="flex items-center gap-1.5 text-[11px] font-bold text-gray-700 hover:text-primary tracking-wide">
-                    <User className="w-3.5 h-3.5" />
+                    className="flex items-center gap-2 text-[12px] font-bold text-gray-700 hover:text-primary tracking-wide uppercase">
+                    <User className="w-4 h-4 text-gray-600" />
                     {user?.name?.split(' ')[0]}
                   </button>
                   <AnimatePresence>
@@ -194,8 +185,8 @@ export function Navbar() {
                 </div>
               ) : (
                 <button onClick={() => useAuthStore.getState().setAuthModalOpen(true)}
-                  className="flex items-center gap-1.5 text-[11px] font-bold text-gray-700 hover:text-primary tracking-wide">
-                  <User className="w-3.5 h-3.5" />
+                  className="flex items-center gap-2 text-[12px] font-bold text-gray-700 hover:text-primary tracking-wide uppercase">
+                  <User className="w-4 h-4 text-gray-600" />
                   LOG IN / JOIN
                 </button>
               )}
@@ -203,26 +194,25 @@ export function Navbar() {
               {/* Cart */}
               <button onClick={toggleCart} className="flex items-center gap-2 group">
                 <div className="relative flex items-center">
-                  {/* Green cart icon badge like reference */}
-                  <div className="relative w-8 h-8 bg-primary rounded-full flex items-center justify-center shadow-sm group-hover:bg-primary-light transition-colors">
-                    <ShoppingBag className="w-4 h-4 text-white" />
+                  <div className="relative w-[38px] h-[38px] bg-primary rounded-full flex items-center justify-center shadow-sm group-hover:bg-[#5b8a30] transition-colors">
+                    <ShoppingBag className="w-[18px] h-[18px] text-white" />
                     {mounted && (
-                      <span className="absolute -top-1 -right-1 flex h-[16px] w-[16px] items-center justify-center rounded-full bg-white border-2 border-primary text-[9px] font-black text-primary">
+                      <span className="absolute -top-1 -right-1 flex h-[20px] w-[20px] items-center justify-center rounded-full bg-primary border-2 border-white text-[10px] font-black text-white shadow-sm">
                         {itemCount}
                       </span>
                     )}
                   </div>
                 </div>
-                <span className="text-[11px] font-bold text-gray-700 group-hover:text-primary transition-colors">
+                <span className="text-[13px] font-bold text-gray-600 group-hover:text-primary transition-colors">
                   ₹{mounted ? cartTotal.toLocaleString('en-IN') : '0'}
                 </span>
               </button>
 
               {/* Search */}
-              <div className="relative search-container">
+              <div className="relative search-container pl-2">
                 <button onClick={() => setShowSearchDropdown(!showSearchDropdown)}
                   className="text-gray-600 hover:text-primary transition-colors">
-                  <Search className="w-4 h-4" />
+                  <Search className="w-5 h-5" />
                 </button>
                 <AnimatePresence>
                   {showSearchDropdown && (
@@ -263,19 +253,19 @@ export function Navbar() {
 
         {/* ─── MOBILE ─── */}
         <div className={`flex xl:hidden w-full items-center justify-between px-4 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white'} border-b border-gray-100`}
-          style={{ height: '56px' }}>
+          style={{ height: '60px' }}>
           <Link href="/">
             <img src="/logo.svg" alt="Arogyavruksham" className="h-10 w-auto" />
           </Link>
           <div className="flex items-center gap-3">
-            <button onClick={toggleCart} className="relative w-8 h-8 bg-primary rounded-full flex items-center justify-center shadow-sm">
+            <button onClick={toggleCart} className="relative w-9 h-9 bg-primary rounded-full flex items-center justify-center shadow-sm">
               <ShoppingBag className="w-4 h-4 text-white" />
               {mounted && itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-[15px] w-[15px] items-center justify-center rounded-full bg-white border-2 border-primary text-[8px] font-black text-primary">{itemCount}</span>
+                <span className="absolute -top-1 -right-1 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-primary border-2 border-white text-[9px] font-black text-white">{itemCount}</span>
               )}
             </button>
             <button onClick={() => setIsMobileMenuOpen(true)} className="p-1.5 text-gray-700">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
