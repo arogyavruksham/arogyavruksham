@@ -1,4 +1,4 @@
-export const DB_ALLOWED_CATEGORIES = ['Silk', 'Banarasi', 'Cotton', 'Georgette']
+export const DB_ALLOWED_CATEGORIES = ['Indoor Plants', 'Outdoor Plants', 'Succulents', 'Pots & Planters']
 
 export function normalizeProduct(product: any) {
   if (!product) return product

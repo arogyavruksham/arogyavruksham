@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 120" width="100%" height="100%">
+  <defs>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#40916C" />
+      <stop offset="100%" stop-color="#2D6A4F" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Stylized Leaf/Tree Icon -->
+  <g transform="translate(10, 10)">
+    <path d="M 50,90 C 20,90 10,60 10,40 C 10,10 50,10 50,10 C 50,10 90,10 90,40 C 90,60 80,90 50,90 Z" fill="none" stroke="url(#leafGrad)" stroke-width="4" />
+    <path d="M 50,90 L 50,10" stroke="url(#leafGrad)" stroke-width="4" stroke-linecap="round" />
+    <path d="M 50,70 Q 70,50 85,55" fill="none" stroke="url(#leafGrad)" stroke-width="3" stroke-linecap="round" />
+    <path d="M 50,50 Q 30,30 15,35" fill="none" stroke="url(#leafGrad)" stroke-width="3" stroke-linecap="round" />
+    <path d="M 50,30 Q 65,15 75,20" fill="none" stroke="url(#leafGrad)" stroke-width="3" stroke-linecap="round" />
+  </g>
+  
+  <!-- Text -->
+  <text x="120" y="70" font-family="'Playfair Display', Georgia, serif" font-size="44" font-weight="bold" fill="#1B4332" letter-spacing="1">
+    Arogyavruksham
+  </text>
+  <text x="123" y="95" font-family="'Inter', sans-serif" font-size="14" font-weight="600" fill="#40916C" letter-spacing="4" text-transform="uppercase">
+    Premium Plants &amp; Pots
+  </text>
+</svg>

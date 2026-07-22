@@ -14,8 +14,8 @@ const slides = [
     buttonText: "Shop Indoor",
     buttonLink: "/shop?collection=indoor",
     image: "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&q=80",
-    bgColor: "#1c110f",
-    buttonColor: "bg-[#4CAF50] hover:bg-[#45a049] text-white"
+    bgColor: "#1B4332",
+    buttonColor: "bg-secondary hover:bg-secondary-light text-white"
   },
   {
     id: 2,
@@ -25,8 +25,8 @@ const slides = [
     buttonText: "Explore Succulents",
     buttonLink: "/shop?collection=succulents",
     image: "https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&q=80",
-    bgColor: "#1A1A1A",
-    buttonColor: "bg-[#E5E7EB] hover:bg-white text-gray-900"
+    bgColor: "#2D6A4F",
+    buttonColor: "bg-white hover:bg-gray-100 text-primary"
   },
   {
     id: 3,
@@ -36,8 +36,8 @@ const slides = [
     buttonText: "View Arrivals",
     buttonLink: "/shop?sort=new",
     image: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80",
-    bgColor: "#141C24",
-    buttonColor: "bg-[#4CAF50] hover:bg-[#45a049] text-white"
+    bgColor: "#E07A5F",
+    buttonColor: "bg-white hover:bg-gray-100 text-secondary"
   }
 ]
 
@@ -101,7 +101,7 @@ export function DualHeroBanners() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="text-[#C29B62] font-semibold text-[10px] md:text-xs tracking-[0.2em] mb-3 md:mb-5 uppercase max-md:hidden"
+                  className="text-secondary-light font-semibold text-[10px] md:text-xs tracking-[0.2em] mb-3 md:mb-5 uppercase max-md:hidden"
                 >
                   {slides[currentSlide].subtitle}
                 </motion.p>

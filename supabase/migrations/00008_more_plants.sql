@@ -2,66 +2,66 @@
 insert into public.products (title, description, price, category, image_url, stock_count)
 values
   (
-    'Golden Zari Silk Masterpiece',
-    'A breathtaking silk plant featuring intricate golden zari work across the border and pallu. A timeless classic.',
-    14500.00,
-    'Silk',
-    '/images/products/silk_plant_1781324994817.png',
+    'Fiddle Leaf Fig',
+    'A popular indoor tree featuring very large, heavily veined, violin-shaped leaves that grow upright. Requires bright, filtered light.',
+    2400.00,
+    'Indoor Plants',
+    'https://images.unsplash.com/photo-1606240217032-4e2e28a9b2c3?auto=format&fit=crop&q=80',
     12
   ),
   (
-    'Crimson Bridal Banarasi Plant',
-    'Rich crimson Banarasi silk with heavy brocade work. Specially crafted for the modern bride looking for traditional roots.',
-    22000.00,
-    'Banarasi',
-    '/images/products/banarasi_plant_1781325047747.png',
-    5
+    'Aloe Vera Plant',
+    'A beautiful succulent known for its medicinal properties and low-maintenance care requirements. Thrives in bright light.',
+    350.00,
+    'Succulents',
+    'https://images.unsplash.com/photo-1596547609652-9fc5d8d42e4b?auto=format&fit=crop&q=80',
+    45
   ),
   (
-    'Summer Breeze Mint Cotton',
-    'Stay cool and elegant in this mint green pure cotton plant. Perfect for daily wear and office settings.',
-    2800.00,
-    'Cotton',
-    '/images/products/cotton_plant_1781325025886.png',
+    'Echeveria Rosette',
+    'A stunning, rose-shaped succulent with plump, fleshy leaves in pastel hues. Extremely drought-tolerant and cute.',
+    250.00,
+    'Succulents',
+    'https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&q=80',
     40
   ),
   (
-    'Midnight Blue Partywear Georgette',
-    'Dazzle at any evening party with this midnight blue georgette plant featuring subtle sequence work.',
-    6500.00,
-    'Georgette',
-    '/images/products/georgette_plant_1781325076562.png',
+    'Terracotta Pot (Large)',
+    'A classic, breathable terracotta pot that is excellent for plants that prefer drier soil. Comes with a matching drainage saucer.',
+    450.00,
+    'Pots & Planters',
+    'https://images.unsplash.com/photo-1598512752271-33f913a8bed1?auto=format&fit=crop&q=80',
     18
   ),
   (
-    'Peacock Green Heritage Silk',
-    'Inspired by peacock feathers, this rich green and blue dual-tone silk plant is a masterpiece of weaving.',
-    16800.00,
-    'Silk',
-    '/images/products/silk_plant_1781324994817.png',
+    'Bougainvillea',
+    'A vibrant, sun-loving outdoor plant that bursts with bright pink or purple papery flowers. Perfect for balconies and gardens.',
+    1200.00,
+    'Outdoor Plants',
+    'https://images.unsplash.com/photo-1627914838612-9c3f303f8a49?auto=format&fit=crop&q=80',
     8
   ),
   (
-    'Rose Gold Tissue Banarasi',
-    'A trendy rose gold tissue Banarasi plant. Lightweight yet gives a heavy regal look.',
-    19500.00,
-    'Banarasi',
-    '/images/products/banarasi_plant_1781325047747.png',
-    6
-  ),
-  (
-    'Mustard Yellow Festive Cotton',
-    'Bright mustard yellow cotton plant with contrasting red borders, perfect for haldi ceremonies and pujas.',
-    3200.00,
-    'Cotton',
-    '/images/products/cotton_plant_1781325025886.png',
+    'ZZ Plant (Zamioculcas)',
+    'One of the toughest indoor plants around. Features shiny, waxy green leaves and can survive in very low light with infrequent watering.',
+    899.00,
+    'Indoor Plants',
+    'https://images.unsplash.com/photo-1632207691143-643e2a9a9361?auto=format&fit=crop&q=80',
     22
   ),
   (
-    'Lavender Floral Print Georgette',
-    'Soft lavender georgette with delicate digital floral prints. Flows beautifully and is extremely easy to drape.',
-    4200.00,
-    'Georgette',
-    '/images/products/georgette_plant_1781325076562.png',
+    'Hanging Macrame Planter',
+    'A beautiful handmade cotton macrame hanger for displaying your favorite trailing plants elegantly.',
+    600.00,
+    'Pots & Planters',
+    'https://images.unsplash.com/photo-1597055181308-f2b7f32d8fb6?auto=format&fit=crop&q=80',
     35
+  ),
+  (
+    'String of Pearls',
+    'A unique trailing succulent that features small, bead-like leaves. Looks stunning when hung near a sunny window.',
+    750.00,
+    'Succulents',
+    'https://images.unsplash.com/photo-1620127161875-104dcb037e4b?auto=format&fit=crop&q=80',
+    15
   );

@@ -39,7 +39,7 @@ create table public.products (
   title text not null,
   description text,
   price numeric not null,
-  category text not null check (category in ('Silk', 'Banarasi', 'Cotton', 'Georgette')),
+  category text not null check (category in ('Indoor Plants', 'Outdoor Plants', 'Succulents', 'Pots & Planters')),
   image_url text,
   stock_count integer default 0,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null

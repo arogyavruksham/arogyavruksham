@@ -4,19 +4,19 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
 
-  --color-primary: #7A1B28;
-  --color-primary-light: #9B2233;
-  --color-secondary: #D4AF37;
-  --color-secondary-light: #E5C158;
-  --color-accent: #046307;
-  --color-background: #FBFBF9;
-  --color-foreground: #1A1A1A;
+  --color-primary: #2D6A4F;
+  --color-primary-light: #40916C;
+  --color-secondary: #E07A5F;
+  --color-secondary-light: #F2CC8F;
+  --color-accent: #52B788;
+  --color-background: #F8F9FA;
+  --color-foreground: #1B4332;
   
   --color-card: #FFFFFF;
-  --color-card-foreground: #1A1A1A;
-  --color-muted: #F3F4F6;
-  --color-muted-foreground: #6B7280;
-  --color-border: #E5E7EB;
+  --color-card-foreground: #1B4332;
+  --color-muted: #E9ECEF;
+  --color-muted-foreground: #6C757D;
+  --color-border: #DEE2E6;
 }
 
 :root {

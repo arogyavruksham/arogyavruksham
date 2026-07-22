@@ -5,7 +5,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 async function test() {
-  const { data, error } = await supabase.from('admin_secrets').select('*')
+  const { data, error } = await supabase.from('products').select('*')
   console.log('Data:', data)
   console.log('Error:', error)
 }

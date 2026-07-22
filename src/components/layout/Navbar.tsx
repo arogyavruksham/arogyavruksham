@@ -149,7 +149,7 @@ export function Navbar() {
               {/* Left: Brand Name */}
               <div className="flex items-center">
                 <Link href="/" className="flex items-center">
-                  <img src="/logo.png" alt="Arogyavruksham Silks" className="max-h-20 max-w-[200px] sm:max-w-[260px] scale-110 sm:scale-125 origin-left object-contain" />
+                  <img src="/logo.svg" alt="Arogyavruksham" className="max-h-20 max-w-[200px] sm:max-w-[260px] scale-110 sm:scale-125 origin-left object-contain" />
                 </Link>
               </div>
 
@@ -198,7 +198,7 @@ export function Navbar() {
               {/* Logo */}
               <div className="flex items-center shrink-0 lg:static absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 z-10">
                 <Link href="/" className="flex items-center gap-2">
-                  <img src="/logo.png" alt="Arogyavruksham Silks" className="max-h-12 lg:max-h-28 max-w-[180px] lg:max-w-[340px] scale-100 lg:scale-[1.3] origin-center lg:origin-left object-contain py-1" />
+                  <img src="/logo.svg" alt="Arogyavruksham" className="max-h-12 lg:max-h-28 max-w-[180px] lg:max-w-[340px] scale-100 lg:scale-[1.3] origin-center lg:origin-left object-contain py-1" />
                 </Link>
               </div>
               
@@ -244,7 +244,7 @@ export function Navbar() {
                           <button 
                             type="button"
                             onClick={() => handleSearch()}
-                            className="w-full py-3 text-sm font-semibold text-[#1A73E8] hover:bg-gray-50 transition-colors"
+                            className="w-full py-3 text-sm font-semibold text-primary hover:bg-gray-50 transition-colors"
                           >
                             View all results for "{searchQuery}"
                           </button>
@@ -289,7 +289,7 @@ export function Navbar() {
                   <div className="relative">
                     <ShoppingBag className="w-6 h-6" />
                     {mounted && itemCount > 0 && (
-                      <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#1A73E8] text-[10px] font-bold text-white shadow-sm">
+                      <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-white shadow-sm">
                         {itemCount}
                       </span>
                     )}
@@ -305,7 +305,7 @@ export function Navbar() {
                       className="flex items-center gap-2 text-foreground hover:text-primary transition-colors focus:outline-none" 
                       aria-label="Account"
                     >
-                      <div className="w-8 h-8 bg-[#1A73E8] text-white rounded-full flex items-center justify-center overflow-hidden border border-blue-200 shrink-0 font-bold text-sm shadow-sm">
+                      <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center overflow-hidden border border-primary-light shrink-0 font-bold text-sm shadow-sm">
                         {profilePhoto ? (
                           <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
                         ) : (
@@ -394,7 +394,7 @@ export function Navbar() {
             ))}
             
             <div className="ml-auto flex items-center gap-4 shrink-0 pl-4">
-              <Link href="/shop?sale=true" className="flex items-center gap-1 text-[#FF6B35] font-bold hover:text-[#e55a2b] transition-colors">
+              <Link href="/shop?sale=true" className="flex items-center gap-1 text-secondary font-bold hover:text-secondary-light transition-colors">
                  Best Deals
               </Link>
             </div>
@@ -421,7 +421,7 @@ export function Navbar() {
                 <ChevronLeft className="w-6 h-6" />
               </button>
               <form onSubmit={handleSearch} className="relative w-full">
-                <div className="relative flex items-center w-full bg-white border border-[#FF6B35] rounded-full px-4 py-2">
+                <div className="relative flex items-center w-full bg-white border border-primary rounded-full px-4 py-2">
                   <Search className="w-5 h-5 text-gray-400 mr-2 shrink-0" />
                   <input 
                     type="text" 
@@ -497,7 +497,7 @@ export function Navbar() {
                   <div>
                     <h3 className="font-sans font-bold text-[#1A1F36] mb-3">Top Searches</h3>
                     <div className="flex flex-wrap gap-2">
-                      {['Pure Silk', 'Banarasi', 'Cotton Plants', 'Bridal Collection', 'Red Plant', 'Party Wear'].map((term, i) => (
+                      {['Monstera', 'Snake Plant', 'Terracotta Pots', 'Indoor Succulents', 'Low Maintenance'].map((term, i) => (
                         <button 
                           key={i}
                           onClick={() => {
@@ -516,17 +516,17 @@ export function Navbar() {
                   <div>
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="font-sans font-bold text-[#1A1F36]">Best Selling</h3>
-                      <Link href="/shop" onClick={() => setIsMobileMenuOpen(false)} className="text-xs text-[#FF6B35] font-medium">See All</Link>
+                      <Link href="/shop" onClick={() => setIsMobileMenuOpen(false)} className="text-xs text-primary font-medium">See All</Link>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       {/* Fake data for best selling UI to match mockup */}
                       <div className="bg-white rounded-xl p-3 shadow-sm flex flex-col items-center relative">
                         <Heart className="w-4 h-4 text-gray-400 absolute top-2 right-2" />
-                        <img src="https://images.unsplash.com/photo-1583391733958-693b3f29b809?w=200" alt="Plant" className="w-full aspect-square object-cover rounded-lg mb-2 mix-blend-multiply" />
+                        <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=200" alt="Plant" className="w-full aspect-square object-cover rounded-lg mb-2 mix-blend-multiply" />
                       </div>
                       <div className="bg-white rounded-xl p-3 shadow-sm flex flex-col items-center relative">
                         <Heart className="w-4 h-4 text-gray-400 absolute top-2 right-2" />
-                        <img src="https://images.unsplash.com/photo-1610189013233-6e273ffcb638?w=200" alt="Plant" className="w-full aspect-square object-cover rounded-lg mb-2 mix-blend-multiply" />
+                        <img src="https://images.unsplash.com/photo-1593480749021-96894c502b4d?w=200" alt="Plant" className="w-full aspect-square object-cover rounded-lg mb-2 mix-blend-multiply" />
                       </div>
                     </div>
                   </div>

@@ -2,10 +2,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 const categories = [
-  { name: 'Silk', href: '/shop?category=Silk', image: 'https://images.unsplash.com/photo-1610189013233-6e273ffcb638?auto=format&fit=crop&q=80' },
-  { name: 'Banarasi', href: '/shop?category=Banarasi', image: 'https://images.unsplash.com/photo-1583391733958-693b3f29b809?auto=format&fit=crop&q=80' },
-  { name: 'Cotton', href: '/shop?category=Cotton', image: 'https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?auto=format&fit=crop&q=80' },
-  { name: 'Georgette', href: '/shop?category=Georgette', image: 'https://images.unsplash.com/photo-1596455607563-ad6193f76b17?auto=format&fit=crop&q=80' },
+  { name: 'Indoor Plants', href: '/shop?category=Indoor%20Plants', image: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&q=80' },
+  { name: 'Outdoor Plants', href: '/shop?category=Outdoor%20Plants', image: 'https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&q=80' },
+  { name: 'Succulents', href: '/shop?category=Succulents', image: 'https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&q=80' },
+  { name: 'Pots & Planters', href: '/shop?category=Pots%20%26%20Planters', image: 'https://images.unsplash.com/photo-1487798452839-c748a707a6b2?auto=format&fit=crop&q=80' },
 ]
 
 export function CategorySection() {
