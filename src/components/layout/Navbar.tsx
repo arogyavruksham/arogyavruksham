@@ -148,7 +148,7 @@ export function Navbar() {
                   <motion.img
                     whileHover={{ scale: 1.03 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    src="/logo.svg"
+                    src="/logo.png"
                     alt="Arogyavruksham"
                     className="w-[125px] h-[125px] drop-shadow-md object-contain"
                   />
@@ -269,7 +269,7 @@ export function Navbar() {
         <div className={`flex xl:hidden w-full items-center justify-between px-4 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white'} border-b border-gray-100`}
           style={{ height: '60px' }}>
           <Link href="/">
-            <img src="/logo.svg" alt="Arogyavruksham" className="h-10 w-auto" />
+            <img src="/logo.png" alt="Arogyavruksham" className="h-10 w-auto" />
           </Link>
           <div className="flex items-center gap-3">
             <button onClick={toggleCart} className="relative w-9 h-9 bg-primary rounded-full flex items-center justify-center shadow-sm">
@@ -297,7 +297,7 @@ export function Navbar() {
                 className="relative w-[300px] h-full bg-white flex flex-col shadow-2xl overflow-y-auto">
                 {/* Drawer Header */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-100">
-                  <img src="/logo.svg" alt="Logo" className="h-12 w-auto" />
+                  <img src="/logo.png" alt="Logo" className="h-12 w-auto" />
                   <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 rounded-full hover:bg-gray-100">
                     <X className="w-5 h-5 text-gray-600" />
                   </button>
