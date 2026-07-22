@@ -1,42 +1,71 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
-  <!-- Outer ring -->
-  <circle cx="250" cy="250" r="180" fill="white" stroke="#689f38" stroke-width="24" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #fff; }
+      .primary { fill: #689f38; }
+      .text-white { fill: #ffffff; }
+      .text-primary { fill: #689f38; }
+    </style>
+  </defs>
+
+  <!-- Main Circle Background (Green) -->
+  <circle cx="120" cy="120" r="70" class="primary" />
+
+  <!-- Inner White Ring -->
+  <circle cx="120" cy="120" r="62" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="4,4" />
+
+  <!-- Inner Solid White Ring -->
+  <circle cx="120" cy="120" r="56" fill="#ffffff" />
+
+  <!-- Top Text ("HELLO" or "AROGYA") -->
+  <path id="top-curve" d="M 80,110 A 45,45 0 0,1 160,110" fill="transparent" />
+  <text font-family="Arial, sans-serif" font-weight="bold" font-size="14" class="text-primary" letter-spacing="2">
+    <textPath href="#top-curve" startOffset="50%" text-anchor="middle">
+      AROGYA
+    </textPath>
+  </text>
   
-  <!-- Top leaves -->
-  <g fill="#689f38">
-    <path d="M 250 200 C 250 150, 200 130, 210 130 C 230 130, 250 160, 250 200 Z" />
-    <path d="M 250 200 C 250 150, 300 130, 290 130 C 270 130, 250 160, 250 200 Z" />
-    <path d="M 250 130 L 250 200" stroke="#689f38" stroke-width="4" />
-    
-    <!-- Small side leaves top -->
-    <path d="M 210 160 C 210 140, 190 140, 190 150 C 190 160, 210 170, 210 160 Z" />
-    <path d="M 210 160 C 210 180, 190 180, 190 170 C 190 160, 210 150, 210 160 Z" />
-    <path d="M 290 160 C 290 140, 310 140, 310 150 C 310 160, 290 170, 290 160 Z" />
-    <path d="M 290 160 C 290 180, 310 180, 310 170 C 310 160, 290 150, 290 160 Z" />
+  <!-- Small decorative x's next to top text -->
+  <text x="82" y="94" font-family="Arial, sans-serif" font-size="10" class="text-primary">x</text>
+  <text x="152" y="94" font-family="Arial, sans-serif" font-size="10" class="text-primary">x</text>
+
+  <!-- Bottom decorative element -->
+  <path d="M 105,155 L 135,155" stroke="#689f38" stroke-width="2" />
+  <path d="M 120,150 L 125,160 L 115,160 Z" class="primary" />
+  <text x="95" y="158" font-family="Arial, sans-serif" font-size="10" class="text-primary">x</text>
+  <text x="140" y="158" font-family="Arial, sans-serif" font-size="10" class="text-primary">x</text>
+
+  <!-- Side Leaves (Left) -->
+  <g transform="translate(15, 105)">
+    <path d="M 15,10 Q 5,0 0,10 Q 5,20 15,10 Z" class="primary" />
+    <path d="M 20,5 Q 15,-5 10,0 Q 10,10 20,5 Z" class="primary" />
+    <path d="M 20,15 Q 15,25 10,20 Q 10,10 20,15 Z" class="primary" />
   </g>
 
-  <!-- Bottom leaves -->
-  <g fill="#689f38">
-    <path d="M 250 330 C 220 330, 200 310, 200 320 C 200 330, 230 350, 250 330 Z" />
-    <path d="M 250 330 C 280 330, 300 310, 300 320 C 300 330, 270 350, 250 330 Z" />
-    <path d="M 250 330 C 240 360, 260 360, 250 330 Z" />
+  <!-- Side Leaves (Right) -->
+  <g transform="translate(195, 105) scale(-1, 1)">
+    <path d="M 15,10 Q 5,0 0,10 Q 5,20 15,10 Z" class="primary" />
+    <path d="M 20,5 Q 15,-5 10,0 Q 10,10 20,5 Z" class="primary" />
+    <path d="M 20,15 Q 15,25 10,20 Q 10,10 20,15 Z" class="primary" />
   </g>
 
-  <!-- Banner background -->
-  <rect x="50" y="200" width="400" height="100" fill="#689f38" />
+  <!-- Center Banner Background -->
+  <rect x="35" y="105" width="170" height="30" class="primary" />
   
-  <!-- Banner side leaves -->
-  <g fill="#689f38">
-    <path d="M 50 250 C 20 230, 20 230, 50 210 Z" />
-    <path d="M 50 250 C 20 270, 20 270, 50 290 Z" />
-    <path d="M 30 250 C 0 250, 0 250, 30 250 Z" stroke="#689f38" stroke-width="15" />
-    
-    <path d="M 450 250 C 480 230, 480 230, 450 210 Z" />
-    <path d="M 450 250 C 480 270, 480 270, 450 290 Z" />
-    <path d="M 470 250 C 500 250, 500 250, 470 250 Z" stroke="#689f38" stroke-width="15" />
-  </g>
+  <!-- Banner Ends (Ribbon effect) -->
+  <polygon points="35,105 25,105 35,120" class="primary" />
+  <polygon points="35,135 25,135 35,120" class="primary" />
+  <polygon points="205,105 215,105 205,120" class="primary" />
+  <polygon points="205,135 215,135 205,120" class="primary" />
 
-  <!-- Center Text -->
-  <text x="250" y="265" font-family="'Playfair Display', serif" font-size="52" font-weight="bold" fill="white" text-anchor="middle" letter-spacing="1">Arogyavruksham</text>
+  <!-- Banner Text -->
+  <!-- Using a condensed font style for "VRUKSHAM" to fit well like "SPRING" -->
+  <text x="120" y="127" font-family="Arial, sans-serif" font-weight="900" font-size="18" class="text-white" text-anchor="middle" letter-spacing="3">
+    VRUKSHAM
+  </text>
+  
+  <!-- Little diamonds in banner -->
+  <polygon points="45,120 48,117 51,120 48,123" class="bg" />
+  <polygon points="195,120 192,117 189,120 192,123" class="bg" />
 
 </svg>

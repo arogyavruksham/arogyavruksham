@@ -124,40 +124,54 @@ export function Navbar() {
             </div>
 
             {/* ── Left Nav Links ── */}
-            <nav className="flex items-center justify-end gap-10 flex-1 pr-14 shrink-0">
-              {navLinks.map(({ label, href }) => (
-                <Link key={href} href={href}
-                  className={`flex items-center gap-1 text-[13px] font-bold tracking-wide transition-colors ${pathname === href ? 'text-primary' : 'text-gray-800 hover:text-primary'}`}>
-                  {label}
-                  <ChevronDown className="w-3.5 h-3.5 text-primary" />
-                </Link>
-              ))}
+            <nav className="flex items-center justify-end gap-10 flex-1 pr-12 shrink-0 h-full">
+              {navLinks.map(({ label, href }) => {
+                const isActive = pathname === href || (href !== '/' && pathname?.startsWith(href))
+                return (
+                  <Link key={href} href={href}
+                    className={`relative flex items-center gap-1.5 h-full text-[13px] font-bold tracking-wide transition-colors ${isActive ? 'text-primary' : 'text-gray-800 hover:text-primary'}`}>
+                    {label}
+                    <ChevronDown className={`w-3.5 h-3.5 ${isActive ? 'text-primary' : 'text-gray-600'}`} />
+                    {/* Active Bottom Border */}
+                    {isActive && (
+                      <motion.div layoutId="activeNavIndicatorLeft" className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary" />
+                    )}
+                  </Link>
+                )
+              })}
             </nav>
 
             {/* ── CENTER: Breakout Logo ── */}
-            <div className="relative flex justify-center items-center shrink-0 w-[180px] z-20">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+            <div className="relative flex justify-center items-center shrink-0 w-[140px] z-20">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center mt-1">
                 <Link href="/" className="block">
                   <motion.img
                     whileHover={{ scale: 1.03 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     src="/logo.svg"
                     alt="Arogyavruksham"
-                    className="w-[180px] h-[180px] drop-shadow-md object-contain"
+                    className="w-[125px] h-[125px] drop-shadow-md object-contain"
                   />
                 </Link>
               </div>
             </div>
 
             {/* ── Right Nav Links ── */}
-            <nav className="flex items-center justify-start gap-10 flex-1 pl-14 shrink-0">
-              {navLinksRight.map(({ label, href }) => (
-                <Link key={href} href={href}
-                  className={`flex items-center gap-1 text-[13px] font-bold tracking-wide transition-colors ${pathname === href ? 'text-primary' : 'text-gray-800 hover:text-primary'}`}>
-                  {label}
-                  <ChevronDown className="w-3.5 h-3.5 text-primary" />
-                </Link>
-              ))}
+            <nav className="flex items-center justify-start gap-10 flex-1 pl-12 shrink-0 h-full">
+              {navLinksRight.map(({ label, href }) => {
+                const isActive = pathname === href || (href !== '/' && pathname?.startsWith(href))
+                return (
+                  <Link key={href} href={href}
+                    className={`relative flex items-center gap-1.5 h-full text-[13px] font-bold tracking-wide transition-colors ${isActive ? 'text-primary' : 'text-gray-800 hover:text-primary'}`}>
+                    {label}
+                    <ChevronDown className={`w-3.5 h-3.5 ${isActive ? 'text-primary' : 'text-gray-600'}`} />
+                    {/* Active Bottom Border */}
+                    {isActive && (
+                      <motion.div layoutId="activeNavIndicatorRight" className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary" />
+                    )}
+                  </Link>
+                )
+              })}
             </nav>
 
             {/* ── Far Right: Auth + Cart + Search ── */}
