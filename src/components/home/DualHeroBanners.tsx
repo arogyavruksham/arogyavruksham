@@ -75,7 +75,7 @@ export function DualHeroBanners() {
   const slide = slides[current]
 
   return (
-    <section className="relative w-full h-[calc(100vh-60px)] xl:h-[calc(100vh-100px)] overflow-hidden bg-gray-100">
+    <section className="relative w-full h-[100vh] overflow-hidden bg-gray-100">
       {/* Background Image */}
       <AnimatePresence mode="sync">
         <motion.div key={slide.id} variants={imageVariants} initial="enter" animate="center" exit="exit"
