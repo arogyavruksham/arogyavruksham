@@ -3,71 +3,54 @@
 import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
-import { ArrowRight, Loader2, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowRight, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { normalizeProducts } from '@/lib/categories'
 import { useCartStore } from '@/store/cartStore'
 import { useAuthStore } from '@/store/authStore'
 
-const TABS = ['All', 'Indoor Plants', 'Outdoor Plants', 'Succulents', 'Pots & Planters']
+const TABS = ['All', 'Office Plant', 'Indoor Plant']
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.07, duration: 0.45, ease: 'easeOut' as const }
+    transition: { delay: i * 0.05, duration: 0.5, ease: 'easeOut' as const }
   })
 }
 
 function ProductMiniCard({ product, index }: { product: any; index: number }) {
   const [hovered, setHovered] = useState(false)
-  const { addItem } = useCartStore()
-  const { isAuthenticated } = useAuthStore()
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault()
-    if (!isAuthenticated) { useAuthStore.getState().setAuthModalOpen(true); return }
-    addItem({ id: product.id, title: product.title, price: product.price, imageUrl: product.image_url, quantity: 1, stock_count: product.stock_count })
-  }
 
   return (
     <motion.div custom={index} variants={cardVariants} initial="hidden" animate="visible"
-      onHoverStart={() => setHovered(true)} onHoverEnd={() => setHovered(false)}>
-      <Link href={`/shop/${product.id}`} className="group block relative bg-[#f7f7f5] overflow-hidden">
-        {/* Badge */}
-        {product.original_price && (
-          <span className="absolute top-2 left-2 z-10 bg-secondary text-white text-[10px] font-black px-2 py-0.5 rounded-full">SALE</span>
-        )}
-        {index === 1 && !product.original_price && (
-          <span className="absolute top-2 left-2 z-10 bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full">HOT</span>
-        )}
+      onHoverStart={() => setHovered(true)} onHoverEnd={() => setHovered(false)} className="h-full">
+      <Link href={`/shop/${product.id}`} className="group flex flex-col h-full">
+        {/* Image Box */}
+        <div className="relative bg-[#f9f9fb] aspect-[4/5] flex items-center justify-center p-6 mb-4 overflow-hidden transition-all duration-300">
+          {/* Badge */}
+          {product.original_price && (
+            <span className="absolute top-4 left-4 z-10 bg-[#ffb156] text-white text-[9px] font-bold px-2 py-1 rounded-full uppercase tracking-wider shadow-sm">SALE</span>
+          )}
+          {index === 1 && !product.original_price && (
+            <span className="absolute top-4 left-4 z-10 bg-[#ff6b6b] text-white text-[9px] font-bold px-2 py-1 rounded-full uppercase tracking-wider shadow-sm">HOT</span>
+          )}
 
-        {/* Image */}
-        <div className="relative overflow-hidden aspect-square">
-          <motion.img src={product.image_url} alt={product.title}
-            className="w-full h-full object-cover"
-            animate={{ scale: hovered ? 1.06 : 1 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+          <motion.img 
+            src={product.image_url} 
+            alt={product.title}
+            className="w-[85%] h-[85%] object-contain mix-blend-multiply origin-bottom"
+            animate={{ scale: hovered ? 1.08 : 1 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
           />
-          {/* Quick Add */}
-          <motion.div
-            initial={{ opacity: 0, y: 8 }} animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 8 }}
-            transition={{ duration: 0.25 }}
-            className="absolute bottom-2 left-2 right-2">
-            <button onClick={handleAddToCart}
-              className="w-full bg-primary text-white text-xs font-bold py-2 rounded-sm hover:bg-primary-light transition-colors">
-              + Add to Cart
-            </button>
-          </motion.div>
         </div>
 
         {/* Info */}
-        <div className="p-3">
-          <p className="text-xs text-gray-500 mb-0.5">{product.category}</p>
-          <h4 className="text-sm font-semibold text-gray-900 truncate group-hover:text-primary transition-colors">{product.title}</h4>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-sm font-bold text-primary">₹{product.price.toLocaleString('en-IN')}</span>
-            {product.original_price && <span className="text-xs text-gray-400 line-through">₹{product.original_price.toLocaleString('en-IN')}</span>}
+        <div className="text-center px-2 flex-1 flex flex-col justify-end">
+          <h4 className="text-[14px] font-bold text-[#222] mb-1 leading-tight group-hover:text-[#689f38] transition-colors">{product.title}</h4>
+          <div className="flex items-center justify-center gap-2">
+            {product.original_price && <span className="text-[13px] text-[#999] line-through">${product.original_price.toLocaleString('en-IN')}</span>}
+            <span className="text-[13px] font-bold text-[#689f38]">${product.price.toLocaleString('en-IN')}</span>
           </div>
         </div>
       </Link>
@@ -97,7 +80,11 @@ export function NewArrivalsAndDeals() {
     fetchProducts()
   }, [])
 
-  const filtered = activeTab === 'All' ? allProducts : allProducts.filter(p => p.category === activeTab)
+  const filtered = activeTab === 'All' ? allProducts : 
+                   activeTab === 'Indoor Plant' ? allProducts.filter(p => p.category?.toLowerCase().includes('indoor')) :
+                   activeTab === 'Office Plant' ? allProducts.filter(p => p.category?.toLowerCase().includes('indoor') || p.category?.toLowerCase().includes('succulent')) :
+                   allProducts
+                   
   const displayProducts = filtered.slice(0, 6)
 
   const prevDeal = () => {
@@ -112,39 +99,35 @@ export function NewArrivalsAndDeals() {
   }
 
   return (
-    <section ref={ref} className="py-12 bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-8 lg:gap-12">
+    <section ref={ref} className="py-16 bg-white overflow-hidden">
+      <div className="container mx-auto px-4 lg:px-8 max-w-[1400px]">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
 
           {/* Left: New Arrivals */}
-          <div>
+          <div className="flex-1">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}
-              className="flex items-center justify-between mb-6">
-              <h2 className="font-serif text-2xl md:text-3xl font-bold text-gray-900">New Arrivals</h2>
-              <Link href="/shop" className="text-xs text-primary font-bold hover:underline flex items-center gap-1">
-                See All <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </motion.div>
-
-            {/* Tabs */}
-            <motion.div initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, delay: 0.1 }}
-              className="flex gap-4 overflow-x-auto scrollbar-hide mb-6 border-b border-gray-100">
-              {TABS.map((tab) => (
-                <button key={tab} onClick={() => setActiveTab(tab)}
-                  className={`pb-2.5 text-sm font-semibold whitespace-nowrap shrink-0 border-b-2 transition-all duration-200 ${activeTab === tab ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-800'}`}>
-                  {tab}
-                </button>
-              ))}
+              className="mb-8 border-b border-[#f0f0f0] flex flex-col md:flex-row md:items-end md:justify-between pb-3 gap-4">
+              <h2 className="font-serif text-[28px] md:text-[32px] text-[#333] font-normal leading-none">New Arrivals</h2>
+              
+              {/* Tabs inline next to header on desktop */}
+              <div className="flex gap-8 overflow-x-auto scrollbar-hide">
+                {TABS.map((tab) => (
+                  <button key={tab} onClick={() => setActiveTab(tab)}
+                    className={`pb-3 text-[14px] font-medium whitespace-nowrap shrink-0 border-b-[2px] transition-all duration-300 relative top-[4px] ${activeTab === tab ? 'border-[#689f38] text-[#333]' : 'border-transparent text-[#999] hover:text-[#666]'}`}>
+                    {tab}
+                  </button>
+                ))}
+              </div>
             </motion.div>
 
             {loading ? (
-              <div className="flex justify-center py-16"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>
+              <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-[#689f38]" /></div>
             ) : displayProducts.length === 0 ? (
-              <div className="text-center py-12 text-gray-400 text-sm">No plants in this category yet.</div>
+              <div className="text-center py-20 text-[#999] text-sm">No plants in this category yet.</div>
             ) : (
               <AnimatePresence mode="wait">
                 <motion.div key={activeTab} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}
-                  className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  className="grid grid-cols-2 md:grid-cols-3 gap-6 gap-y-12">
                   {displayProducts.map((product, i) => (
                     <ProductMiniCard key={product.id} product={product} index={i} />
                   ))}
@@ -154,46 +137,40 @@ export function NewArrivalsAndDeals() {
           </div>
 
           {/* Right: Deal of the Day */}
-          <div>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, delay: 0.15 }}
-              className="flex items-center justify-between mb-6">
-              <h2 className="font-serif text-2xl md:text-3xl font-bold text-gray-900">Deals Of The Day</h2>
-              <div className="flex gap-2">
-                <button onClick={prevDeal} className="w-8 h-8 border border-gray-300 flex items-center justify-center hover:border-primary hover:text-primary transition-colors">
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button onClick={nextDeal} className="w-8 h-8 border border-gray-300 flex items-center justify-center hover:border-primary hover:text-primary transition-colors">
-                  <ChevronRight className="w-4 h-4" />
-                </button>
+          <div className="w-full lg:w-[450px] shrink-0">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, delay: 0.1 }}
+              className="flex items-center justify-between mb-8 border-b border-[#f0f0f0] pb-3">
+              <h2 className="font-serif text-[28px] md:text-[32px] text-[#333] font-normal leading-none">Deals Of The Day</h2>
+              <div className="flex gap-3">
+                <button onClick={prevDeal} className="text-[#999] hover:text-[#333] transition-colors"><ChevronLeft className="w-5 h-5" /></button>
+                <button onClick={nextDeal} className="text-[#999] hover:text-[#333] transition-colors"><ChevronRight className="w-5 h-5" /></button>
               </div>
             </motion.div>
 
             <AnimatePresence mode="wait">
               {dealProduct && (
-                <motion.div key={dealProduct.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="bg-[#f7f7f5] relative overflow-hidden">
-                  <div className="aspect-[4/5] overflow-hidden">
-                    <motion.img src={dealProduct.image_url} alt={dealProduct.title}
-                      className="w-full h-full object-cover"
-                      initial={{ scale: 1.05 }} animate={{ scale: 1 }} transition={{ duration: 0.7 }}
-                    />
+                <motion.div key={dealProduct.id} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.4 }}
+                  className="bg-[#f9f9fb] w-full aspect-[4/5] flex flex-col justify-center items-center p-8 group relative overflow-hidden">
+                  
+                  <div className="flex-1 w-full flex items-center justify-center p-4">
+                    <img src={dealProduct.image_url} alt={dealProduct.title} className="w-[85%] h-auto max-h-[400px] object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-700 origin-bottom" />
                   </div>
-                  <div className="p-6">
-                    <p className="text-xs text-gray-500 mb-1">{dealProduct.category}</p>
-                    <h3 className="font-serif text-xl font-bold text-gray-900 mb-2">{dealProduct.title}</h3>
-                    <div className="flex items-center gap-3 mb-5">
-                      <span className="text-2xl font-bold text-primary">₹{dealProduct.price.toLocaleString('en-IN')}</span>
-                      {dealProduct.original_price && <span className="text-sm text-gray-400 line-through">₹{dealProduct.original_price.toLocaleString('en-IN')}</span>}
+                  
+                  <div className="text-center mt-6 w-full">
+                    <h3 className="font-bold text-[18px] text-[#333] mb-2">{dealProduct.title}</h3>
+                    <div className="flex items-center justify-center gap-2 mb-6">
+                      <span className="text-[16px] font-bold text-[#689f38]">${dealProduct.price.toLocaleString('en-IN')}</span>
+                      {dealProduct.original_price && <span className="text-[15px] text-[#999] line-through">${dealProduct.original_price.toLocaleString('en-IN')}</span>}
                     </div>
-                    <Link href={`/shop/${dealProduct.id}`}
-                      className="inline-flex items-center gap-2 bg-primary text-white font-bold text-sm px-6 py-3 hover:bg-primary-light transition-all duration-300 hover:gap-3">
-                      SHOP NOW <ArrowRight className="w-4 h-4" />
+                    <Link href={`/shop/${dealProduct.id}`} className="bg-[#78b144] text-white text-[12px] font-bold px-10 py-3.5 rounded-sm hover:bg-[#689f38] transition-colors inline-flex items-center justify-center tracking-wide w-[80%] mx-auto">
+                      SHOP NOW <ArrowRight className="w-3.5 h-3.5 ml-2" />
                     </Link>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
+
         </div>
       </div>
     </section>

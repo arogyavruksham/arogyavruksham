@@ -1,9 +1,10 @@
 import { DualHeroBanners } from "@/components/home/DualHeroBanners";
-import { CircularCategories } from "@/components/home/CircularCategories";
-import { BestDealsGrid } from "@/components/home/BestDealsGrid";
-import { NewArrivalsSlider } from "@/components/home/NewArrivalsSlider";
 import { PromoBanners } from "@/components/home/PromoBanners";
 import { NewArrivalsAndDeals } from "@/components/home/NewArrivalsAndDeals";
+import { TrendingBanner } from "@/components/home/TrendingBanner";
+import { NewArrivalsSlider } from "@/components/home/NewArrivalsSlider";
+import { LatestFromBlog } from "@/components/home/LatestFromBlog";
+import { FooterFeatures } from "@/components/home/FooterFeatures";
 
 export const dynamic = 'force-dynamic';
 
@@ -11,25 +12,26 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
 
-      {/* 1. Full-Screen Hero Slider */}
+      {/* Hero Slider */}
       <DualHeroBanners />
 
-      {/* 2. Scrolling Marquee + Just Launched */}
-      <BestDealsGrid />
-
-      {/* 3. Promotional Banners (3-col) */}
+      {/* 1. Promotional Banners (SALE, House Plants, Potted) */}
       <PromoBanners />
 
-      {/* 4. New Arrivals + Deal of the Day */}
+      {/* 2. New Arrivals (Tabs) + Deal of the Day */}
       <NewArrivalsAndDeals />
 
-      {/* 5. Shop by Category (animated grid) */}
-      <CircularCategories />
+      {/* 3. Trending Cactus Banner (Full width split) */}
+      <TrendingBanner />
 
-      {/* 6. Featured Products Horizontal Slider */}
-      <div className="border-t border-gray-100">
-        <NewArrivalsSlider />
-      </div>
+      {/* 4. Featured Products (Slider/Grid) */}
+      <NewArrivalsSlider />
+
+      {/* 5. Latest From Blog */}
+      <LatestFromBlog />
+
+      {/* 6. Footer Features (Free Shipping, Support, Money Back) */}
+      <FooterFeatures />
 
     </div>
   );

@@ -3,10 +3,56 @@
 import { motion, useInView } from 'framer-motion'
 import Link from 'next/link'
 import { useRef, useEffect, useState } from 'react'
-import { ArrowRight, ArrowLeft, Loader2 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
-import { ProductCard } from '@/components/shop/ProductCard'
 import { normalizeProducts } from '@/lib/categories'
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { delay: i * 0.05, duration: 0.5, ease: 'easeOut' as const }
+  })
+}
+
+function FeaturedProductCard({ product, index }: { product: any; index: number }) {
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <motion.div custom={index} variants={cardVariants} initial="hidden" animate="visible"
+      onHoverStart={() => setHovered(true)} onHoverEnd={() => setHovered(false)} className="w-[260px] md:w-[300px] shrink-0 snap-start h-full">
+      <Link href={`/shop/${product.id}`} className="group flex flex-col h-full">
+        {/* Image Box */}
+        <div className="relative bg-[#f8f9fb] aspect-[4/5] flex items-center justify-center p-6 mb-4 overflow-hidden transition-all duration-300">
+          {/* Badge */}
+          {product.original_price && (
+            <span className="absolute top-4 left-4 z-10 bg-[#ffb156] text-white text-[9px] font-bold px-2 py-1 rounded-full uppercase tracking-wider shadow-sm">SALE</span>
+          )}
+          {index === 2 && !product.original_price && (
+            <span className="absolute top-4 left-4 z-10 bg-[#ff6b6b] text-white text-[9px] font-bold px-2 py-1 rounded-full uppercase tracking-wider shadow-sm">HOT</span>
+          )}
+
+          <motion.img 
+            src={product.image_url} 
+            alt={product.title}
+            className="w-[85%] h-[85%] object-contain mix-blend-multiply origin-bottom"
+            animate={{ scale: hovered ? 1.08 : 1 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+          />
+        </div>
+
+        {/* Info */}
+        <div className="text-center px-2 flex-1 flex flex-col justify-start">
+          <h4 className="text-[14px] font-bold text-[#222] mb-1 leading-tight group-hover:text-[#689f38] transition-colors">{product.title}</h4>
+          <div className="flex items-center justify-center gap-2">
+            {product.original_price && <span className="text-[13px] text-[#999] line-through">${product.original_price.toLocaleString('en-IN')}</span>}
+            <span className="text-[13px] font-bold text-[#689f38]">${product.price.toLocaleString('en-IN')}</span>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  )
+}
 
 export function NewArrivalsSlider() {
   const carousel = useRef<HTMLDivElement>(null)
@@ -15,8 +61,8 @@ export function NewArrivalsSlider() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
 
-  const scrollLeft = () => { if (carousel.current) carousel.current.scrollBy({ left: -340, behavior: 'smooth' }) }
-  const scrollRight = () => { if (carousel.current) carousel.current.scrollBy({ left: 340, behavior: 'smooth' }) }
+  const scrollLeft = () => { if (carousel.current) carousel.current.scrollBy({ left: -320, behavior: 'smooth' }) }
+  const scrollRight = () => { if (carousel.current) carousel.current.scrollBy({ left: 320, behavior: 'smooth' }) }
 
   useEffect(() => {
     async function fetchNewArrivals() {
@@ -27,52 +73,31 @@ export function NewArrivalsSlider() {
     fetchNewArrivals()
   }, [])
 
-  const containerVariants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.1 } }
-  }
-  const cardVariants = {
-    hidden: { opacity: 0, x: 30 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: 'easeOut' as const } }
-  }
-
   return (
-    <section className="py-12 bg-white" ref={ref}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center mb-8">
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}>
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-gray-900">Featured Products</h2>
-            <p className="text-sm text-gray-500 mt-1">Handpicked from our bestsellers</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, delay: 0.1 }}
-            className="flex items-center gap-3">
-            <button onClick={scrollLeft} className="w-9 h-9 border border-gray-300 flex items-center justify-center hover:border-primary hover:text-primary transition-colors rounded-sm">
-              <ArrowLeft className="w-4 h-4" />
-            </button>
-            <button onClick={scrollRight} className="w-9 h-9 border border-gray-300 flex items-center justify-center hover:border-primary hover:text-primary transition-colors rounded-sm">
-              <ArrowRight className="w-4 h-4" />
-            </button>
-            <Link href="/shop" className="text-xs text-primary font-bold hover:underline ml-2">See All</Link>
-          </motion.div>
-        </div>
+    <section className="py-20 bg-white" ref={ref}>
+      <div className="container mx-auto px-4 lg:px-8 max-w-[1400px]">
+        
+        {/* Header */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}
+          className="mb-10 border-b border-[#f0f0f0] flex items-end justify-between pb-3">
+          <h2 className="font-serif text-[28px] md:text-[32px] text-[#333] font-normal leading-none">Featured Products</h2>
+          <div className="flex gap-3">
+            <button onClick={scrollLeft} className="text-[#999] hover:text-[#333] transition-colors"><ChevronLeft className="w-5 h-5" /></button>
+            <button onClick={scrollRight} className="text-[#999] hover:text-[#333] transition-colors"><ChevronRight className="w-5 h-5" /></button>
+          </div>
+        </motion.div>
 
-        <div ref={carousel} className="overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory flex gap-4"
+        {/* Carousel */}
+        <div ref={carousel} className="overflow-x-auto pb-8 scrollbar-hide snap-x snap-mandatory flex gap-6 md:gap-8"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {loading ? (
-            <div className="flex justify-center py-12 w-full"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>
+            <div className="flex justify-center py-20 w-full"><Loader2 className="w-8 h-8 animate-spin text-[#689f38]" /></div>
           ) : (
-            <motion.div variants={containerVariants} initial="hidden" animate={inView ? 'visible' : 'hidden'}
-              className="flex gap-4 w-max">
-              {newProducts.map((product) => (
-                <motion.div key={product.id} variants={cardVariants} className="w-[240px] md:w-[280px] shrink-0 snap-start">
-                  <ProductCard
-                    id={product.id} title={product.title} price={product.price}
-                    original_price={product.original_price} category={product.category}
-                    imageUrl={product.image_url} stock_count={product.stock_count}
-                  />
-                </motion.div>
+            <>
+              {newProducts.map((product, i) => (
+                <FeaturedProductCard key={product.id} product={product} index={i} />
               ))}
-            </motion.div>
+            </>
           )}
         </div>
       </div>
