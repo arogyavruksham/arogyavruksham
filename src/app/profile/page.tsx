@@ -563,7 +563,7 @@ function ProfileContent() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-[#F8F9FA] md:bg-[#EAF3FA]">
+    <div className="min-h-[calc(100vh-64px)] bg-[#F8F9FA] md:bg-[#f4f9f1]">
       {/* 
         -------------------------------------------
         MOBILE VIEW
@@ -1010,80 +1010,79 @@ function ProfileContent() {
         -------------------------------------------
       */}
       <div className="hidden md:block">
-        {/* Premium Green Header Banner */}
-        <div className="bg-gradient-to-r from-[#5b8a30] to-[#689f38] text-white pt-16 pb-28 px-8 relative overflow-hidden shadow-inner">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full border-[40px] border-white/20"></div>
-            <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full border-[30px] border-white/20"></div>
+        {/* Premium Deep Green Header Banner */}
+        <div className="bg-[#1c3f25] text-white pt-20 pb-32 px-12 relative overflow-hidden shadow-inner border-b border-black/10">
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full border-[2px] border-white/20 border-dashed"></div>
+            <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full border-[1px] border-white/30"></div>
           </div>
-          <div className="container mx-auto max-w-6xl relative z-10 text-left">
-            <h1 className="text-4xl font-serif font-bold mb-3 tracking-wide">My Account</h1>
-            <p className="text-sm opacity-90 flex items-center gap-2 font-medium">
-              <LayoutDashboard className="w-4 h-4" /> Dashboard Overview
+          <div className="container mx-auto max-w-[1200px] relative z-10 text-left pl-4">
+            <h1 className="text-4xl md:text-5xl font-serif font-medium mb-3 tracking-wide">My Account</h1>
+            <p className="text-sm opacity-80 flex items-center gap-2 font-sans font-medium text-white/80">
+              <LayoutDashboard className="w-4 h-4" /> Welcome back to your personal dashboard.
             </p>
           </div>
         </div>
 
-        <div className="container mx-auto max-w-6xl px-4 -mt-12 pb-20">
-          <div className="flex gap-8 relative z-20">
+        <div className="container mx-auto max-w-[1200px] px-4 -mt-20 pb-20 relative z-20">
+          <div className="flex gap-8">
             {/* Sidebar */}
-            <div className="w-72 bg-[#F8FAFC] rounded-2xl shadow-sm p-6 flex flex-col h-fit shrink-0 border border-gray-100">
-              <div className="flex flex-col items-center pb-6 border-b border-gray-200">
-                <div className="relative group w-20 h-20 mb-3 mx-auto">
+            <div className="w-80 bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 flex flex-col h-fit shrink-0 border border-gray-100">
+              <div className="flex flex-col items-center pb-8 pt-4 border-b border-gray-100">
+                <div className="relative group w-24 h-24 mb-4 mx-auto">
                   {profilePhoto ? (
-                    <img src={profilePhoto} alt="Profile" className="w-20 h-20 rounded-full border-2 border-white object-cover shadow-md" />
+                    <img src={profilePhoto} alt="Profile" className="w-24 h-24 rounded-full border-[4px] border-[#f4f9f1] object-cover shadow-sm" />
                   ) : (
-                    <div className="w-20 h-20 rounded-full border-2 border-white bg-[#689f38] text-white flex items-center justify-center text-3xl font-bold shadow-md">
+                    <div className="w-24 h-24 rounded-full border-[4px] border-[#f4f9f1] bg-[#e7f0df] text-[#1c3f25] flex items-center justify-center text-3xl font-bold shadow-sm">
                       {initials}
                     </div>
                   )}
-                  <label className="absolute inset-0 flex items-center justify-center bg-black/40 text-white rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
-                    <Camera className="w-6 h-6 drop-shadow-md" />
+                  <label className="absolute inset-0 flex items-center justify-center bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-all backdrop-blur-sm">
+                    <Camera className="w-6 h-6" />
                     <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
                   </label>
                 </div>
                 
-                <span className="text-xs text-gray-500 mb-1">Hello</span>
-                <h2 className="font-bold text-lg text-gray-900 break-all text-center px-2">{user?.name}</h2>
-                <button onClick={() => setActiveTab('account')} className="text-xs text-[#689f38] mt-1 hover:underline">Edit Profile</button>
+                <h2 className="font-serif font-bold text-2xl text-gray-900 break-all text-center px-2">{user?.name}</h2>
+                <span className="text-xs font-medium text-gray-500 mt-1 uppercase tracking-widest">{user?.email?.split('@')[0]}</span>
               </div>
               
-              <nav className="mt-6 flex flex-col space-y-2">
+              <nav className="mt-6 flex flex-col space-y-1">
                 <button 
                   onClick={() => setActiveTab('dashboard')} 
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium ${activeTab === 'dashboard' ? 'bg-[#689f38] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50 hover:text-[#689f38]'}`}
+                  className={`flex items-center gap-4 px-5 py-4 rounded-xl transition-all font-semibold text-sm ${activeTab === 'dashboard' ? 'bg-[#e7f0df] text-[#1c3f25] shadow-sm' : 'text-gray-500 hover:bg-gray-50 hover:text-[#1c3f25]'}`}
                 >
                   <LayoutDashboard className="w-5 h-5" /> Dashboard
                 </button>
                 <button 
                   onClick={() => setActiveTab('history')} 
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium ${activeTab === 'history' ? 'bg-[#689f38] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50 hover:text-[#689f38]'}`}
+                  className={`flex items-center gap-4 px-5 py-4 rounded-xl transition-all font-semibold text-sm ${activeTab === 'history' ? 'bg-[#e7f0df] text-[#1c3f25] shadow-sm' : 'text-gray-500 hover:bg-gray-50 hover:text-[#1c3f25]'}`}
                 >
                   <History className="w-5 h-5" /> Order History
                 </button>
 
                 <button 
                   onClick={() => setActiveTab('review')} 
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium ${activeTab === 'review' ? 'bg-[#689f38] text-white shadow-md' : 'text-gray-600 hover:bg-gray-50 hover:text-[#689f38]'}`}
+                  className={`flex items-center gap-4 px-5 py-4 rounded-xl transition-all font-semibold text-sm ${activeTab === 'review' ? 'bg-[#e7f0df] text-[#1c3f25] shadow-sm' : 'text-gray-500 hover:bg-gray-50 hover:text-[#1c3f25]'}`}
                 >
                   <Star className="w-5 h-5" /> To Review
                 </button>
               </nav>
               
-              <div className="mt-8 pt-6 border-t border-gray-200">
+              <div className="mt-8 pt-6 border-t border-gray-100">
                 {(user?.role === 'admin' || user?.role === 'manager' || user?.role === 'editor') && (
-                  <button onClick={() => router.push('/admin')} className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-white bg-[#689f38] hover:bg-[#5b8a30] transition-colors font-medium mb-2 shadow-md">
+                  <button onClick={() => router.push('/admin')} className="flex items-center gap-4 px-5 py-4 w-full rounded-xl text-white bg-[#1c3f25] hover:bg-[#132a19] transition-colors font-semibold text-sm mb-3 shadow-lg shadow-[#1c3f25]/20">
                     <LayoutDashboard className="w-5 h-5" /> Admin Panel
                   </button>
                 )}
-                <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors font-medium">
+                <button onClick={handleLogout} className="flex items-center gap-4 px-5 py-4 w-full rounded-xl text-red-500 hover:bg-red-50 transition-colors font-semibold text-sm">
                   <LogOut className="w-5 h-5" /> Logout
                 </button>
               </div>
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 bg-white rounded-2xl shadow-sm p-8 min-h-[500px] border border-gray-100">
+            <div className="flex-1 bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-10 min-h-[600px] border border-gray-100">
               {renderTabContent()}
             </div>
           </div>
