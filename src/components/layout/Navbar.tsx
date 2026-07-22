@@ -8,6 +8,7 @@ import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
 import { AddressModal } from './AddressModal'
+import { AnnouncementBar } from './AnnouncementBar'
 import { usePathname, useRouter } from 'next/navigation'
 
 const navLinks = [
@@ -117,6 +118,8 @@ export function Navbar() {
         transition={{ duration: 0.35, ease: 'easeInOut' }}
         className={`fixed top-0 left-0 right-0 z-50 ${pathname === '/checkout' ? 'hidden md:block' : 'block'}`}
       >
+        <AnnouncementBar />
+
         {/* ─── DESKTOP ─── */}
         <div className={`hidden xl:flex w-full items-center border-b border-gray-100 overflow-visible transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-white'}`}
           style={{ height: '100px' }}>
