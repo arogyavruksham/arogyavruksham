@@ -94,12 +94,14 @@ export function ReviewPromptModal() {
   };
 
   const handleSubmitReview = async () => {
-    if (rating === 0 || !unreviewedItem) return;
+    if (rating === 0 || !unreviewedItem || isSubmitting) return;
+    setIsSubmitting(true);
     
     const { data: { user: authUser } } = await supabase.auth.getUser();
-    if (!authUser) return;
-
-    setIsSubmitting(true);
+    if (!authUser) {
+      setIsSubmitting(false);
+      return;
+    }
     try {
       const { error } = await supabase.from('product_reviews').insert({
         user_id: authUser.id,
@@ -145,7 +147,7 @@ export function ReviewPromptModal() {
           className="relative bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden"
         >
           {/* Header */}
-          <div className="bg-[#1A73E8] p-6 text-white text-center relative">
+          <div className="bg-[#689f38] p-6 text-white text-center relative">
             <button 
               onClick={handleDismiss}
               className="absolute top-4 right-4 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-1.5 rounded-full transition-colors"
@@ -156,7 +158,7 @@ export function ReviewPromptModal() {
               <Package className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-xl font-bold font-serif mb-1">Your Order Was Delivered!</h2>
-            <p className="text-blue-100 text-sm">How do you like your new product?</p>
+            <p className="text-white/90 text-sm">How do you like your new product?</p>
           </div>
 
           {/* Body */}
@@ -211,7 +213,7 @@ export function ReviewPromptModal() {
                     value={reviewText}
                     onChange={(e) => setReviewText(e.target.value)}
                     placeholder="Tell us more about your experience (optional)..."
-                    className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#1A73E8] focus:ring-1 focus:ring-[#1A73E8] resize-none h-24"
+                    className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#689f38] focus:ring-1 focus:ring-[#689f38] resize-none h-24"
                   />
                 </motion.div>
               )}
@@ -228,7 +230,7 @@ export function ReviewPromptModal() {
               <button 
                 disabled={rating === 0 || isSubmitting}
                 onClick={handleSubmitReview}
-                className="flex-1 py-3 text-sm font-bold text-white bg-[#1A73E8] hover:bg-blue-600 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30"
+                className="flex-1 py-3 text-sm font-bold text-white bg-[#689f38] hover:bg-[#5b8a30] rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-[#689f38]/30"
               >
                 {isSubmitting ? (
                   <><Loader2 className="w-4 h-4 animate-spin" /> Submitting</>
