@@ -142,7 +142,7 @@ export function Navbar() {
             </nav>
 
             {/* ── CENTER: Breakout Logo ── */}
-            <div className="relative flex justify-center items-center shrink-0 w-[140px] z-20">
+            <div className="relative flex justify-center items-center shrink-0 w-[190px] z-20">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center mt-1">
                 <Link href="/" className="block">
                   <motion.img
@@ -150,7 +150,7 @@ export function Navbar() {
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     src="/logo.png"
                     alt="Arogyavruksham"
-                    className="w-[125px] h-[125px] drop-shadow-md object-contain"
+                    className="w-[180px] h-[180px] drop-shadow-md object-contain"
                   />
                 </Link>
               </div>
