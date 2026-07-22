@@ -46,9 +46,9 @@ export function BestDealsGrid() {
           `}
         </style>
         <div className="animate-marquee flex whitespace-nowrap min-w-max">
-          {[...Array(10)].map((_, i) => (
-            <span key={i} className="text-xs sm:text-sm font-bold text-gray-800 tracking-widest px-4 flex items-center gap-4">
-              100% AUTHENTICATION GUARANTEED <span className="text-[8px]">◼</span>
+              {[...Array(8)].map((_, i) => (
+            <span key={i} className="text-xs sm:text-sm font-bold text-gray-700 tracking-widest px-6 flex items-center gap-6">
+              🌿 FREE DELIVERY ON ORDERS ABOVE ₹999 <span className="text-primary text-[8px]">◼</span> 100% AUTHENTIC PLANTS <span className="text-primary text-[8px]">◼</span> EXPERT PLANT CARE TIPS INCLUDED <span className="text-primary text-[8px]">◼</span> FRESH FROM NURSERY
             </span>
           ))}
         </div>
