@@ -47,7 +47,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans bg-background text-foreground pb-16 md:pb-0">
         <AuthProvider>
           <Navbar />
-          <main className="flex-1 pt-14 md:pt-[144px]">{children}</main>
+          <main className="flex-1">{children}</main>
           <Footer />
           <CartDrawer />
           <AuthModal />
