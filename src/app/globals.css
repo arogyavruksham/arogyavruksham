@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
+
+  --color-primary: #7A1B28;
+  --color-primary-light: #9B2233;
+  --color-secondary: #D4AF37;
+  --color-secondary-light: #E5C158;
+  --color-accent: #046307;
+  --color-background: #FBFBF9;
+  --color-foreground: #1A1A1A;
+  
+  --color-card: #FFFFFF;
+  --color-card-foreground: #1A1A1A;
+  --color-muted: #F3F4F6;
+  --color-muted-foreground: #6B7280;
+  --color-border: #E5E7EB;
+}
+
+:root {
+  --background: var(--color-background);
+  --foreground: var(--color-foreground);
+}
+
+
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+}
+
+/* Global Button Hover Animation */
+button {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+  will-change: transform;
+}
+
+button:hover:not(:disabled) {
+  transform: scale(1.04);
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.96);
+}
