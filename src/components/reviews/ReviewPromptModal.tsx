@@ -114,7 +114,7 @@ export function ReviewPromptModal() {
         // Optionally trigger a toast or success message here
       } else {
         console.error("Failed to submit review:", error);
-        alert("Failed to submit review. Please try again.");
+        alert(`Failed to submit review: ${error.message || JSON.stringify(error)}`);
       }
     } catch (err) {
       console.error(err);
