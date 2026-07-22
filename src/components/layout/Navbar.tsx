@@ -98,7 +98,7 @@ export function Navbar() {
   return (
     <>
       {/* Spacer so content below doesn't hide under navbar */}
-      <div className="h-[70px] md:h-[70px]" />
+      <div className="h-[60px] xl:h-[100px]" />
 
       <motion.header
         animate={{ y: hidden ? '-100%' : '0%' }}
@@ -107,7 +107,7 @@ export function Navbar() {
       >
         {/* ─── DESKTOP ─── */}
         <div className={`hidden xl:flex w-full items-center border-b border-gray-100 overflow-visible transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-white'}`}
-          style={{ height: '70px' }}>
+          style={{ height: '100px' }}>
           
           <div className="w-full max-w-full mx-auto px-6 lg:px-12 flex items-center overflow-visible h-full">
 
