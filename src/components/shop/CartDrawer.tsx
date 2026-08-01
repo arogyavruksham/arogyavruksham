@@ -176,108 +176,112 @@ export function CartDrawer() {
               </h2>
             </div>
 
-            {/* Mobile Cart Items */}
-            <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6 bg-gray-50/50">
+            {/* Mobile Cart Content (Fully Scrollable with BottomNav clearance) */}
+            <div className="flex-1 overflow-y-auto px-4 py-4 pb-[135px] sm:pb-[145px] bg-gray-50/70 flex flex-col justify-between">
               {items.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-center space-y-4 text-gray-400">
-                  <p className="font-sans">Your cart is currently empty.</p>
+                <div className="flex flex-col items-center justify-center h-full my-auto py-20 text-center space-y-4 text-gray-400">
+                  <p className="font-sans font-medium text-base">Your plant collection cart is currently empty.</p>
                   <button 
                     onClick={() => setCartOpen(false)}
-                    className="text-[#1A1F36] font-bold"
+                    className="px-6 py-3 bg-[#235839] text-white rounded-xl text-sm font-extrabold shadow-md hover:bg-[#194029] transition-all active:scale-95"
                   >
-                    Continue Shopping
+                    Explore Greenhouse
                   </button>
                 </div>
               ) : (
-                items.map((item) => (
-                  <div key={item.id} className="flex gap-4">
-                    <div className="w-28 h-28 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 p-2 shadow-sm border border-gray-50">
-                      <img 
-                        src={item.imageUrl || 'https://images.unsplash.com/photo-1583391733958-693b3f29b809?auto=format&fit=crop&q=80'} 
-                        alt={item.title}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                    <div className="flex-1 flex flex-col py-1">
-                      <h3 className="font-sans text-sm font-bold text-[#1A1F36] leading-snug mb-1">
-                        {item.title}
-                      </h3>
-                      <div className="text-xs text-gray-500 mb-2 space-y-0.5">
-                        <p>Category: <span className="font-medium text-gray-700">{item.category || 'Plant'}</span></p>
-                      </div>
-                      
-                      <p className="font-sans font-bold text-sm text-[#1A1F36] mb-auto">
-                        ₹{item.price.toLocaleString('en-IN')}
-                      </p>
-                      
-                      <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center gap-3">
-                          <button 
-                            onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
-                            className="w-6 h-6 flex items-center justify-center rounded border border-gray-300 text-gray-600 hover:bg-gray-100"
-                          >
-                            <Minus className="w-3 h-3" />
-                          </button>
-                          <span className="font-sans text-sm font-bold text-[#1A1F36]">
-                            {item.quantity}
-                          </span>
-                          <button 
-                            onClick={() => {
-                              if (item.quantity < (item.stock_count || 100)) {
-                                updateQuantity(item.id, item.quantity + 1)
-                              } else {
-                                alert(`Only ${item.stock_count} items available in stock.`)
-                              }
-                            }} 
-                            className="w-6 h-6 flex items-center justify-center rounded border border-gray-300 text-gray-600 hover:bg-gray-100"
-                          >
-                            <Plus className="w-3 h-3" />
-                          </button>
+                <>
+                  <div className="space-y-3.5">
+                    {items.map((item) => (
+                      <div key={item.id} className="flex gap-3 bg-white p-3 rounded-2xl border border-gray-100 shadow-2xs">
+                        <div className="w-22 h-22 sm:w-24 sm:h-24 bg-[#F7F6F2] rounded-xl flex items-center justify-center flex-shrink-0 p-2 border border-gray-200/50">
+                          <img 
+                            src={item.imageUrl || 'https://images.unsplash.com/photo-1583391733958-693b3f29b809?auto=format&fit=crop&q=80'} 
+                            alt={item.title}
+                            className="w-full h-full object-contain mix-blend-multiply"
+                          />
                         </div>
+                        <div className="flex-1 flex flex-col justify-between py-0.5 min-w-0">
+                          <div>
+                            <h3 className="font-sans text-sm font-bold text-[#1E4631] leading-snug truncate">
+                              {item.title}
+                            </h3>
+                            <p className="text-xs text-gray-400 mt-0.5">Category: <span className="font-medium text-[#235839]">{item.category || 'Indoor Plants'}</span></p>
+                          </div>
+                          
+                          <div className="flex items-center justify-between mt-3 pt-1">
+                            <span className="font-sans font-extrabold text-base text-[#1A1F36]">
+                              ₹{item.price.toLocaleString('en-IN')}
+                            </span>
 
-                        <button 
-                          onClick={() => removeItem(item.id)}
-                          className="text-gray-400 hover:text-red-500 transition-colors"
-                          aria-label="Remove item"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                            <div className="flex items-center gap-1.5">
+                              <div className="flex items-center rounded-xl bg-gray-50 border border-gray-200/80 p-0.5">
+                                <button 
+                                  onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                                  className="w-6 h-6 flex items-center justify-center rounded-lg bg-white shadow-2xs text-gray-700 hover:text-[#235839] active:scale-90 transition-all"
+                                >
+                                  <Minus className="w-3 h-3 stroke-[2.5]" />
+                                </button>
+                                <span className="w-6 text-center font-sans text-xs font-extrabold text-gray-900">
+                                  {item.quantity}
+                                </span>
+                                <button 
+                                  onClick={() => {
+                                    if (item.quantity < (item.stock_count || 100)) {
+                                      updateQuantity(item.id, item.quantity + 1)
+                                    } else {
+                                      alert(`Only ${item.stock_count} items available in stock.`)
+                                    }
+                                  }} 
+                                  className="w-6 h-6 flex items-center justify-center rounded-lg bg-white shadow-2xs text-gray-700 hover:text-[#235839] active:scale-90 transition-all"
+                                >
+                                  <Plus className="w-3 h-3 stroke-[2.5]" />
+                                </button>
+                              </div>
+
+                              <button 
+                                onClick={() => removeItem(item.id)}
+                                className="p-1.5 rounded-xl text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all ml-1"
+                                aria-label="Remove item"
+                              >
+                                <Trash2 className="w-4 h-4 stroke-[2]" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Mobile Footer & Price Breakdown */}
+                  <div className="mt-6 bg-white p-5 rounded-3xl border border-gray-200/80 shadow-sm space-y-5">
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-gray-500 font-medium">Sub Total</span>
+                        <span className="font-extrabold text-gray-800">₹{subtotal.toLocaleString('en-IN')}</span>
+                      </div>
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-gray-500 font-medium">Shipping</span>
+                        <span className="font-extrabold text-gray-800">₹500</span>
+                      </div>
+                      <div className="flex justify-between items-center text-base pt-3 border-t border-gray-100">
+                        <span className="font-black text-gray-900 text-lg">Total</span>
+                        <span className="font-black text-xl text-[#235839]">₹{(subtotal + 500).toLocaleString('en-IN')}</span>
                       </div>
                     </div>
+
+                    <button
+                      onClick={() => {
+                        setCartOpen(false)
+                        window.location.href = '/checkout'
+                      }}
+                      className="w-full py-4 bg-[#235839] hover:bg-[#1A432A] text-white text-center font-sans font-black text-base rounded-2xl shadow-xl shadow-[#235839]/25 transition-transform duration-200 active:scale-95 block"
+                    >
+                      PROCEED TO CHECKOUT &rarr;
+                    </button>
                   </div>
-                ))
+                </>
               )}
             </div>
-
-            {/* Mobile Footer */}
-            {items.length > 0 && (
-              <div className="p-6 bg-gray-50/50 flex flex-col mt-auto pb-safe">
-                <div className="space-y-3 mb-6">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500">Sub Total</span>
-                    <span className="font-bold text-[#1A1F36]">₹{subtotal.toLocaleString('en-IN')}</span>
-                  </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500">Shipping</span>
-                    <span className="font-bold text-[#1A1F36]">₹500</span>
-                  </div>
-                  <div className="flex justify-between items-center text-base pt-2 border-t border-gray-200">
-                    <span className="font-bold text-[#1A1F36]">Total</span>
-                    <span className="font-bold text-[#1A1F36]">₹{(subtotal + 500).toLocaleString('en-IN')}</span>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => {
-                    setCartOpen(false)
-                    window.location.href = '/checkout'
-                  }}
-                  className="w-full py-4 bg-[#0A102C] text-white text-center font-sans font-bold text-base rounded-xl hover:bg-[#1A204C] transition-colors"
-                >
-                  CHECKOUT
-                </button>
-              </div>
-            )}
           </motion.div>
         </>
       )}

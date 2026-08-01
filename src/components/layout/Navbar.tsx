@@ -103,7 +103,7 @@ export function Navbar() {
     return () => clearInterval(pollInterval)
   }, [isAuthenticated, user?.email])
 
-  if (pathname?.startsWith('/admin')) return null
+  if (pathname !== '/') return null
 
   // Cart total (approximate display)
   const cartTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
@@ -114,7 +114,7 @@ export function Navbar() {
       <motion.header
         animate={{ y: hidden ? '-100%' : '0%' }}
         transition={{ duration: 0.35, ease: 'easeInOut' }}
-        className={`fixed top-0 left-0 right-0 z-50 ${pathname === '/checkout' ? 'hidden md:block' : 'block'}`}
+        className="fixed top-0 left-0 right-0 z-50 block"
       >
 
         {/* ─── DESKTOP ─── */}
