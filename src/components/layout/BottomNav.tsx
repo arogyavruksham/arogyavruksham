@@ -1,6 +1,7 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { Home, BookOpen, ShoppingCart, User } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
 import { useAuthStore } from '@/store/authStore'
@@ -75,13 +76,8 @@ export function BottomNav() {
         {navItems.map((item) => {
           const Icon = item.icon
           const isActive = activeTab === item.id
-          
-          return (
-            <button
-              key={item.id}
-              onClick={() => handleTabClick(item)}
-              className="relative flex flex-col items-center justify-center flex-1 py-1.5 px-2 transition-colors focus:outline-none"
-            >
+          const content = (
+            <>
               {/* Sliding green background animation */}
               {isActive && (
                 <motion.div
@@ -114,6 +110,30 @@ export function BottomNav() {
                   {item.label}
                 </span>
               </div>
+            </>
+          )
+          
+          if (item.href && !item.onClick) {
+            return (
+              <Link
+                key={item.id}
+                href={item.href}
+                prefetch={true}
+                onClick={() => setActiveTab(item.id)}
+                className="relative flex flex-col items-center justify-center flex-1 py-1.5 px-2 transition-colors focus:outline-none"
+              >
+                {content}
+              </Link>
+            )
+          }
+
+          return (
+            <button
+              key={item.id}
+              onClick={() => handleTabClick(item)}
+              className="relative flex flex-col items-center justify-center flex-1 py-1.5 px-2 transition-colors focus:outline-none"
+            >
+              {content}
             </button>
           )
         })}
@@ -121,3 +141,4 @@ export function BottomNav() {
     </nav>
   )
 }
+
