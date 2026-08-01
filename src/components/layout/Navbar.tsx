@@ -43,7 +43,7 @@ export function Navbar() {
 
   useMotionValueEvent(scrollY, 'change', (y) => {
     const diff = y - lastScrollY.current
-    if (y > 80) {
+    if (y > 80 && typeof window !== 'undefined' && window.innerWidth >= 1280) {
       if (diff > 5) setHidden(true)
       else if (diff < -5) setHidden(false)
     } else {
@@ -279,14 +279,14 @@ export function Navbar() {
 
         {/* ─── MOBILE NAVBAR ─── */}
         <div className={`flex xl:hidden w-full items-center justify-between px-3 sm:px-4 gap-2.5 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-[#FCFBF8]'} border-b border-gray-200/60`}
-          style={{ height: '64px' }}>
+          style={{ height: '72px' }}>
           
-          {/* Top Left Logo Corner Box */}
-          <Link href="/" className="flex items-center justify-center shrink-0 w-11 h-11 rounded-xl bg-white border border-gray-100 shadow-2xs p-1 hover:border-primary/30 transition-all overflow-hidden">
+          {/* Top Left Logo Corner Box (Larger & Prominent) */}
+          <Link href="/" className="flex items-center justify-center shrink-0 w-[52px] h-[52px] sm:w-[56px] sm:h-[56px] rounded-2xl bg-white border border-gray-100 shadow-sm p-0.5 hover:border-primary/40 transition-all overflow-hidden">
             <img 
               src="/logo.png" 
               alt="Arogyavruksham Logo" 
-              className="w-full h-full object-contain mix-blend-multiply transition-transform duration-200 active:scale-95" 
+              className="w-full h-full object-contain scale-125 mix-blend-multiply transition-transform duration-200 active:scale-110" 
             />
           </Link>
 

@@ -21,7 +21,7 @@ const PottedPlantIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
 export function BottomNav() {
   const pathname = usePathname()
   const router = useRouter()
-  const { toggleCart, items } = useCartStore()
+  const { toggleCart, items, isOpen: isCartOpen, setCartOpen } = useCartStore()
   const { isAuthenticated, setAuthModalOpen } = useAuthStore()
   const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState<string>('home')
@@ -30,9 +30,11 @@ export function BottomNav() {
     setMounted(true)
   }, [])
   
-  // Sync active tab with route when pathname changes
+  // Sync active tab with route when pathname changes or cart state toggles
   useEffect(() => {
-    if (pathname === '/') {
+    if (isCartOpen) {
+      setActiveTab('cart')
+    } else if (pathname === '/') {
       setActiveTab('home')
     } else if (pathname?.startsWith('/shop')) {
       setActiveTab('shop')
@@ -41,13 +43,9 @@ export function BottomNav() {
     } else if (pathname?.startsWith('/profile')) {
       setActiveTab('profile')
     }
-  }, [pathname])
+  }, [pathname, isCartOpen])
 
   const itemCount = items.reduce((total, item) => total + item.quantity, 0)
-
-  if (pathname?.startsWith('/admin') || pathname?.includes('/shop/')) {
-    return null
-  }
 
   const navItems = [
     { id: 'home', label: 'Home', icon: Home, href: '/' },
@@ -63,6 +61,9 @@ export function BottomNav() {
 
   const handleTabClick = (item: typeof navItems[0]) => {
     setActiveTab(item.id)
+    if (item.id !== 'cart' && isCartOpen) {
+      setCartOpen(false)
+    }
     if (item.onClick) {
       item.onClick()
     } else if (item.href) {
@@ -70,7 +71,7 @@ export function BottomNav() {
     }
   }
 
-  if (pathname === '/checkout' || pathname?.startsWith('/admin')) return null
+  if (pathname === '/checkout') return null
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50">
