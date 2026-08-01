@@ -8,6 +8,7 @@ import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
 import { AddressModal } from './AddressModal'
+import { AnnouncementBar } from './AnnouncementBar'
 import { usePathname, useRouter } from 'next/navigation'
 
 const navLinks = [
@@ -74,15 +75,16 @@ export function Navbar() {
 
   useEffect(() => {
     const fetchSearchResults = async () => {
-      if (!searchQuery.trim()) { setSearchResults([]); setShowSearchDropdown(false); return }
+      const query = searchQuery.trim()
+      if (!query) { setSearchResults([]); return }
       setIsSearching(true); setShowSearchDropdown(true)
       const { data } = await supabase.from('products').select('*')
-        .or(`title.ilike.%${searchQuery.trim()}%,category.ilike.%${searchQuery.trim()}%`)
-        .limit(5)
+        .or(`title.ilike.%${query}%,category.ilike.%${query}%,description.ilike.%${query}%`)
+        .limit(10)
       setSearchResults(data || [])
       setIsSearching(false)
     }
-    const id = setTimeout(fetchSearchResults, 300)
+    const id = setTimeout(fetchSearchResults, 200)
     return () => clearTimeout(id)
   }, [searchQuery])
 
@@ -115,6 +117,7 @@ export function Navbar() {
         transition={{ duration: 0.35, ease: 'easeInOut' }}
         className={`fixed top-0 left-0 right-0 z-50 ${pathname === '/checkout' ? 'hidden md:block' : 'block'}`}
       >
+        <AnnouncementBar />
 
         {/* ─── DESKTOP ─── */}
         <div className={`hidden xl:flex w-full items-center border-b border-gray-100 overflow-visible transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-white'}`}
@@ -279,10 +282,12 @@ export function Navbar() {
         {/* ─── MOBILE ─── */}
         <div className={`flex xl:hidden w-full items-center justify-between px-4 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-[#FCFBF8]'} border-b border-gray-100/80`}
           style={{ height: '64px' }}>
-          <Link href="/" className="block">
-            <span className="font-serif text-[22px] font-bold text-[#1E4631] tracking-tight">
-              Arogyavruksham
-            </span>
+          <Link href="/" className="flex items-center">
+            <img 
+              src="/logo.png" 
+              alt="Arogyavruksham" 
+              className="h-[50px] w-auto object-contain drop-shadow-xs transition-transform duration-200 active:scale-95" 
+            />
           </Link>
           <div className="flex items-center gap-3.5">
             <button onClick={() => setShowSearchDropdown(!showSearchDropdown)} className="text-gray-700 hover:text-primary transition-colors p-1">
@@ -299,17 +304,46 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Search Dropdown Bar */}
+        {/* Mobile Search Dropdown Bar & Live Results */}
         <AnimatePresence>
           {showSearchDropdown && (
             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
-              className="xl:hidden w-full bg-white border-b border-gray-100 px-4 py-3 shadow-md overflow-hidden">
-              <form onSubmit={handleSearch} className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2">
+              className="xl:hidden w-full bg-white border-b border-gray-100 px-4 py-3 shadow-xl overflow-hidden max-h-[75vh] overflow-y-auto z-50">
+              <form onSubmit={handleSearch} className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 mb-1">
                 <Search className="w-4 h-4 text-gray-400 shrink-0" />
                 <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search plants, pots, succulents..." className="flex-1 text-xs bg-transparent focus:outline-none text-gray-800" autoFocus />
-                {searchQuery && <button type="button" onClick={() => setSearchQuery('')}><X className="w-4 h-4 text-gray-400" /></button>}
+                  placeholder="Search plants (e.g. Snake, Lily, Pots)..." className="flex-1 text-xs bg-transparent focus:outline-none text-gray-800 font-medium" autoFocus />
+                {searchQuery && <button type="button" onClick={() => { setSearchQuery(''); setSearchResults([]) }}><X className="w-4 h-4 text-gray-400" /></button>}
               </form>
+
+              {/* Live Mobile Search Results */}
+              {isSearching && <div className="p-4 text-center text-xs text-gray-500 font-medium">Searching our greenhouse...</div>}
+              {!isSearching && searchResults.length > 0 && (
+                <div className="divide-y divide-gray-100 mt-2 border-t border-gray-100">
+                  {searchResults.map((product: any) => (
+                    <div key={product.id}
+                      onClick={() => { router.push(`/shop/${product.id}`); setShowSearchDropdown(false); setSearchQuery('') }}
+                      className="flex items-center gap-3.5 py-2.5 hover:bg-gray-50 active:bg-gray-100 transition-colors cursor-pointer">
+                      <div className="w-11 h-11 rounded-xl bg-[#F7F6F2] border border-gray-200/50 p-1 flex items-center justify-center shrink-0">
+                        <img src={product.image_url} alt="" className="w-full h-full object-contain mix-blend-multiply" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[13px] font-bold text-gray-900 truncate">{product.title}</p>
+                        <p className="text-[11px] text-[#235839] font-extrabold mt-0.5">₹{product.price?.toLocaleString('en-IN')} <span className="text-gray-400 font-normal text-[10px] ml-1.5 capitalize">{product.category || 'Indoor'}</span></p>
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    onClick={handleSearch}
+                    className="w-full py-2.5 mt-2 text-center bg-[#EBE7DE] hover:bg-[#DDD5C6] text-[#1E4631] font-bold text-xs rounded-xl transition-colors block"
+                  >
+                    View all results for "{searchQuery}" &rarr;
+                  </button>
+                </div>
+              )}
+              {!isSearching && searchQuery && searchResults.length === 0 && (
+                <div className="p-6 text-center text-xs text-gray-500 font-medium">No botanical matches for "{searchQuery}"</div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
