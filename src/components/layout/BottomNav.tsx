@@ -1,60 +1,122 @@
 'use client'
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { Home, Package, ShoppingCart } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { Home, BookOpen, ShoppingCart, User } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
+import { useAuthStore } from '@/store/authStore'
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+
+const PottedPlantIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M7 11v5a5 5 0 0 0 10 0v-5" />
+    <path d="M5 7h14l-1 4H6Z" />
+    <path d="M12 7V3" />
+    <path d="M8 5c1 0 2-1 2-2" />
+    <path d="M16 5c-1 0-2-1-2-2" />
+  </svg>
+)
 
 export function BottomNav() {
   const pathname = usePathname()
+  const router = useRouter()
   const { toggleCart, items } = useCartStore()
+  const { isAuthenticated, setAuthModalOpen } = useAuthStore()
   const [mounted, setMounted] = useState(false)
+  const [activeTab, setActiveTab] = useState<string>('home')
   
   useEffect(() => {
     setMounted(true)
   }, [])
   
+  // Sync active tab with route when pathname changes
+  useEffect(() => {
+    if (pathname === '/') {
+      setActiveTab('home')
+    } else if (pathname?.startsWith('/shop')) {
+      setActiveTab('shop')
+    } else if (pathname?.startsWith('/blogs') || pathname?.startsWith('/journal')) {
+      setActiveTab('journal')
+    } else if (pathname?.startsWith('/profile')) {
+      setActiveTab('profile')
+    }
+  }, [pathname])
+
   const itemCount = items.reduce((total, item) => total + item.quantity, 0)
 
   if (pathname?.startsWith('/admin') || pathname?.includes('/shop/')) {
-    return null // Hide on admin and product details pages (which have fixed Add to Cart)
+    return null
+  }
+
+  const navItems = [
+    { id: 'home', label: 'Home', icon: Home, href: '/' },
+    { id: 'shop', label: 'Shop', icon: PottedPlantIcon, href: '/shop' },
+    { id: 'journal', label: 'Journal', icon: BookOpen, href: '/blogs' },
+    { id: 'cart', label: 'Cart', icon: ShoppingCart, onClick: () => toggleCart(), badge: itemCount },
+    { id: 'profile', label: 'Profile', icon: User, onClick: () => {
+        if (!isAuthenticated) setAuthModalOpen(true)
+        else router.push('/profile')
+      } 
+    },
+  ]
+
+  const handleTabClick = (item: typeof navItems[0]) => {
+    setActiveTab(item.id)
+    if (item.onClick) {
+      item.onClick()
+    } else if (item.href) {
+      router.push(item.href)
+    }
   }
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-40 pb-safe shadow-[0_-4px_10px_rgba(0,0,0,0.02)]">
-      <div className="flex items-center justify-around h-16 px-2">
-        <Link 
-          href="/" 
-          className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${pathname === '/' ? 'text-primary' : 'text-gray-500'}`}
-        >
-          <Home className={`w-6 h-6 ${pathname === '/' ? 'fill-current' : ''}`} />
-          <span className="text-[10px] font-medium">Home</span>
-        </Link>
-        
-        <Link 
-          href="/profile?tab=history" 
-          className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${pathname === '/profile' ? 'text-primary' : 'text-gray-500'}`}
-        >
-          <Package className={`w-6 h-6 ${pathname === '/profile' ? 'fill-current' : ''}`} />
-          <span className="text-[10px] font-medium">Orders</span>
-        </Link>
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/98 backdrop-blur-md border-t border-gray-100 z-50 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+      <div className="flex items-center justify-around h-16 px-2 max-w-md mx-auto">
+        {navItems.map((item) => {
+          const Icon = item.icon
+          const isActive = activeTab === item.id
+          
+          return (
+            <button
+              key={item.id}
+              onClick={() => handleTabClick(item)}
+              className="relative flex flex-col items-center justify-center flex-1 py-1.5 px-2 transition-colors focus:outline-none"
+            >
+              {/* Sliding green background animation */}
+              {isActive && (
+                <motion.div
+                  layoutId="bottomNavHighlight"
+                  className="absolute inset-x-1 inset-y-1 bg-[#235839] rounded-2xl z-0"
+                  transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                />
+              )}
 
-        <button 
-          id="mobile-cart-icon"
-          onClick={toggleCart}
-          className="flex flex-col items-center justify-center w-full h-full space-y-1 text-gray-500 relative"
-        >
-          <div className="relative">
-            <ShoppingCart className="w-6 h-6" />
-            {mounted && itemCount > 0 && (
-              <span className="absolute -top-1.5 -right-2 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[16px] text-center">
-                {itemCount}
-              </span>
-            )}
-          </div>
-          <span className="text-[10px] font-medium">Cart</span>
-        </button>
+              <div className="relative z-10 flex flex-col items-center space-y-1">
+                <div className="relative">
+                  <Icon 
+                    className={`w-5 h-5 transition-colors duration-200 ${
+                      isActive ? 'text-[#A4E4BA]' : 'text-[#4A5E51]'
+                    }`} 
+                  />
+                  
+                  {/* Badge for cart items */}
+                  {mounted && item.badge && item.badge > 0 ? (
+                    <span className="absolute -top-1.5 -right-2 bg-red-500 text-white text-[9px] font-extrabold px-1.5 py-0.2 rounded-full min-w-[15px] border border-white shadow-xs">
+                      {item.badge}
+                    </span>
+                  ) : null}
+                </div>
+                <span 
+                  className={`text-[11px] font-bold tracking-tight transition-colors duration-200 ${
+                    isActive ? 'text-[#A4E4BA]' : 'text-gray-600'
+                  }`}
+                >
+                  {item.label}
+                </span>
+              </div>
+            </button>
+          )
+        })}
       </div>
     </nav>
   )

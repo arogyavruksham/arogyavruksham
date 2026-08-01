@@ -75,71 +75,104 @@ export function DualHeroBanners() {
   const slide = slides[current]
 
   return (
-    <section className="relative w-full h-[100vh] overflow-hidden bg-gray-100">
-      {/* Background Image */}
-      <AnimatePresence mode="sync">
-        <motion.div key={slide.id} variants={imageVariants} initial="enter" animate="center" exit="exit"
-          className="absolute inset-0 z-0">
-          <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Content */}
-      <div className="relative z-10 h-full flex items-center">
-        <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24">
-          <div className="max-w-xl">
-            <AnimatePresence mode="wait">
-              <motion.div key={slide.id} className="space-y-4 md:space-y-5">
-                {/* Tag */}
-                <motion.p custom={0} variants={textVariants} initial="hidden" animate="visible" exit="exit"
-                  className={`text-xs md:text-sm font-bold tracking-[0.25em] uppercase ${slide.tagColor}`}>
-                  {slide.tag}
-                </motion.p>
-                {/* Headline */}
-                <motion.h1 custom={1} variants={textVariants} initial="hidden" animate="visible" exit="exit"
-                  className="text-4xl md:text-5xl lg:text-[54px] xl:text-[58px] font-serif font-bold text-white leading-[1.1]">
-                  {slide.title}<br />
-                  <span className="text-accent italic">{slide.titleAccent}</span>
-                </motion.h1>
-                {/* Description */}
-                <motion.p custom={2} variants={textVariants} initial="hidden" animate="visible" exit="exit"
-                  className="text-white/80 text-sm md:text-base leading-relaxed max-w-sm md:max-w-md">
-                  {slide.description}
-                </motion.p>
-                {/* CTA */}
-                <motion.div custom={3} variants={textVariants} initial="hidden" animate="visible" exit="exit" className="pt-1">
-                  <Link href={slide.buttonLink}
-                    className="inline-block bg-primary text-white font-bold text-xs md:text-sm px-7 py-3 rounded-sm hover:bg-primary-light transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/30">
-                    {slide.buttonText}
-                  </Link>
-                </motion.div>
-              </motion.div>
-            </AnimatePresence>
+    <>
+      {/* ─── MOBILE VIEW ONLY ─── */}
+      <div className="block md:hidden bg-[#FCFBF8] p-4 pt-3 pb-2">
+        <div className="relative w-full h-[480px] rounded-[28px] overflow-hidden shadow-md flex flex-col justify-end p-6 text-white border border-gray-100">
+          {/* Background Succulent Image */}
+          <img 
+            src="https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&q=80&w=800" 
+            alt="Desert Beauties" 
+            className="absolute inset-0 w-full h-full object-cover z-0" 
+          />
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 z-10" />
+          
+          {/* Content */}
+          <div className="relative z-20 flex flex-col items-start w-full">
+            <h1 className="text-[32px] font-serif font-bold text-white leading-[1.1] mb-2.5 tracking-tight">
+              Desert Beauties,<br />Zero Effort
+            </h1>
+            <p className="text-[13px] font-medium text-white/90 leading-relaxed mb-6 max-w-[280px]">
+              Discover our curated collection of low-maintenance succulents perfect for any modern space.
+            </p>
+            <Link 
+              href="/shop?category=Succulents"
+              className="w-full bg-[#235839] hover:bg-[#1C462D] text-[#A4E4BA] font-extrabold text-[12px] tracking-wider uppercase py-4 rounded-[20px] text-center shadow-lg transition-transform active:scale-98"
+            >
+              EXPLORE SUCCULENTS
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Slide Dots */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-        {slides.map((_, i) => (
-          <button key={i} onClick={() => go(i)} className={`transition-all duration-400 rounded-full ${i === current ? 'bg-white w-8 h-2' : 'bg-white/40 w-2 h-2'}`} />
-        ))}
-      </div>
+      {/* ─── DESKTOP VIEW ─── */}
+      <section className="hidden md:block relative w-full h-[100vh] overflow-hidden bg-gray-100">
+        {/* Background Image */}
+        <AnimatePresence mode="sync">
+          <motion.div key={slide.id} variants={imageVariants} initial="enter" animate="center" exit="exit"
+            className="absolute inset-0 z-0">
+            <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+          </motion.div>
+        </AnimatePresence>
 
-      {/* Arrows */}
-      <button onClick={prev} className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/25 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white transition-all">
-        <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
-      </button>
-      <button onClick={next} className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/25 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white transition-all">
-        <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-      </button>
+        {/* Content */}
+        <div className="relative z-10 h-full flex items-center">
+          <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24">
+            <div className="max-w-xl">
+              <AnimatePresence mode="wait">
+                <motion.div key={slide.id} className="space-y-4 md:space-y-5">
+                  {/* Tag */}
+                  <motion.p custom={0} variants={textVariants} initial="hidden" animate="visible" exit="exit"
+                    className={`text-xs md:text-sm font-bold tracking-[0.25em] uppercase ${slide.tagColor}`}>
+                    {slide.tag}
+                  </motion.p>
+                  {/* Headline */}
+                  <motion.h1 custom={1} variants={textVariants} initial="hidden" animate="visible" exit="exit"
+                    className="text-4xl md:text-5xl lg:text-[54px] xl:text-[58px] font-serif font-bold text-white leading-[1.1]">
+                    {slide.title}<br />
+                    <span className="text-accent italic">{slide.titleAccent}</span>
+                  </motion.h1>
+                  {/* Description */}
+                  <motion.p custom={2} variants={textVariants} initial="hidden" animate="visible" exit="exit"
+                    className="text-white/80 text-sm md:text-base leading-relaxed max-w-sm md:max-w-md">
+                    {slide.description}
+                  </motion.p>
+                  {/* CTA */}
+                  <motion.div custom={3} variants={textVariants} initial="hidden" animate="visible" exit="exit" className="pt-1">
+                    <Link href={slide.buttonLink}
+                      className="inline-block bg-primary text-white font-bold text-xs md:text-sm px-7 py-3 rounded-sm hover:bg-primary-light transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/30">
+                      {slide.buttonText}
+                    </Link>
+                  </motion.div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
 
-      {/* Slide counter */}
-      <div className="absolute bottom-8 right-8 z-20 text-white/60 text-sm font-mono">
-        {String(current + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
-      </div>
-    </section>
+        {/* Slide Dots */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          {slides.map((_, i) => (
+            <button key={i} onClick={() => go(i)} className={`transition-all duration-400 rounded-full ${i === current ? 'bg-white w-8 h-2' : 'bg-white/40 w-2 h-2'}`} />
+          ))}
+        </div>
+
+        {/* Arrows */}
+        <button onClick={prev} className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/25 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white transition-all">
+          <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+        </button>
+        <button onClick={next} className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/25 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white transition-all">
+          <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+        </button>
+
+        {/* Slide counter */}
+        <div className="absolute bottom-8 right-8 z-20 text-white/60 text-sm font-mono">
+          {String(current + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
+        </div>
+      </section>
+    </>
   )
 }

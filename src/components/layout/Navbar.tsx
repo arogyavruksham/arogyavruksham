@@ -279,25 +279,42 @@ export function Navbar() {
         </div>
 
         {/* ─── MOBILE ─── */}
-        <div className={`flex xl:hidden w-full items-center justify-between px-4 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white'} border-b border-gray-100`}
-          style={{ height: '60px' }}>
-          <Link href="/">
-            <img src="/logo.png" alt="Arogyavruksham" className="h-10 w-auto" />
+        <div className={`flex xl:hidden w-full items-center justify-between px-4 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-[#FCFBF8]'} border-b border-gray-100/80`}
+          style={{ height: '64px' }}>
+          <Link href="/" className="block">
+            <span className="font-serif text-[22px] font-bold text-[#1E4631] tracking-tight">
+              Arogyavruksham
+            </span>
           </Link>
-          <div className="flex items-center gap-3">
-            <button onClick={toggleCart} className="relative w-9 h-9 bg-primary rounded-full flex items-center justify-center shadow-sm">
-              <ShoppingBag className="w-4 h-4 text-white" />
-              {mounted && itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-primary border-2 border-white text-[9px] font-black text-white">{itemCount}</span>
-              )}
+          <div className="flex items-center gap-3.5">
+            <button onClick={() => setShowSearchDropdown(!showSearchDropdown)} className="text-gray-700 hover:text-primary transition-colors p-1">
+              <Search className="w-5 h-5 stroke-[2.2]" />
             </button>
-            <button onClick={() => setIsMobileMenuOpen(true)} className="p-1.5 text-gray-700">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+            <button onClick={toggleCart} className="relative p-2 rounded-xl border border-gray-200/80 bg-white shadow-2xs text-gray-700 flex items-center justify-center hover:border-primary/40 transition-all">
+              <ShoppingBag className="w-5 h-5 stroke-[2]" />
+              {mounted && itemCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 border border-white text-[9px] font-bold text-white shadow-xs">
+                  {itemCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
+
+        {/* Mobile Search Dropdown Bar */}
+        <AnimatePresence>
+          {showSearchDropdown && (
+            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+              className="xl:hidden w-full bg-white border-b border-gray-100 px-4 py-3 shadow-md overflow-hidden">
+              <form onSubmit={handleSearch} className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2">
+                <Search className="w-4 h-4 text-gray-400 shrink-0" />
+                <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search plants, pots, succulents..." className="flex-1 text-xs bg-transparent focus:outline-none text-gray-800" autoFocus />
+                {searchQuery && <button type="button" onClick={() => setSearchQuery('')}><X className="w-4 h-4 text-gray-400" /></button>}
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* ─── MOBILE MENU DRAWER ─── */}
         <AnimatePresence>
