@@ -8,7 +8,6 @@ import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
 import { AddressModal } from './AddressModal'
-import { AnnouncementBar } from './AnnouncementBar'
 import { usePathname, useRouter } from 'next/navigation'
 
 const navLinks = [
@@ -117,7 +116,6 @@ export function Navbar() {
         transition={{ duration: 0.35, ease: 'easeInOut' }}
         className={`fixed top-0 left-0 right-0 z-50 ${pathname === '/checkout' ? 'hidden md:block' : 'block'}`}
       >
-        <AnnouncementBar />
 
         {/* ─── DESKTOP ─── */}
         <div className={`hidden xl:flex w-full items-center border-b border-gray-100 overflow-visible transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-white'}`}
@@ -279,47 +277,69 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* ─── MOBILE ─── */}
-        <div className={`flex xl:hidden w-full items-center justify-between px-4 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-[#FCFBF8]'} border-b border-gray-100/80`}
+        {/* ─── MOBILE NAVBAR ─── */}
+        <div className={`flex xl:hidden w-full items-center justify-between px-3 sm:px-4 gap-2.5 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-[#FCFBF8]'} border-b border-gray-200/60`}
           style={{ height: '64px' }}>
-          <Link href="/" className="flex items-center">
+          
+          {/* Top Left Logo Corner Box */}
+          <Link href="/" className="flex items-center justify-center shrink-0 w-11 h-11 rounded-xl bg-white border border-gray-100 shadow-2xs p-1 hover:border-primary/30 transition-all overflow-hidden">
             <img 
               src="/logo.png" 
-              alt="Arogyavruksham" 
-              className="h-[50px] w-auto object-contain drop-shadow-xs transition-transform duration-200 active:scale-95" 
+              alt="Arogyavruksham Logo" 
+              className="w-full h-full object-contain mix-blend-multiply transition-transform duration-200 active:scale-95" 
             />
           </Link>
-          <div className="flex items-center gap-3.5">
-            <button onClick={() => setShowSearchDropdown(!showSearchDropdown)} className="text-gray-700 hover:text-primary transition-colors p-1">
-              <Search className="w-5 h-5 stroke-[2.2]" />
-            </button>
-            <button onClick={toggleCart} className="relative p-2 rounded-xl border border-gray-200/80 bg-white shadow-2xs text-gray-700 flex items-center justify-center hover:border-primary/40 transition-all">
-              <ShoppingBag className="w-5 h-5 stroke-[2]" />
-              {mounted && itemCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 border border-white text-[9px] font-bold text-white shadow-xs">
-                  {itemCount}
-                </span>
+
+          {/* Extended Inline Search Bar */}
+          <div className="flex-1 min-w-0 relative">
+            <form onSubmit={handleSearch} className="flex items-center gap-2 w-full bg-white border border-gray-200/90 rounded-2xl px-3 py-2 shadow-inner focus-within:border-[#235839] focus-within:ring-2 focus-within:ring-[#235839]/10 transition-all">
+              <Search className="w-4 h-4 text-[#235839]/70 shrink-0 stroke-[2.4]" />
+              <input 
+                type="text" 
+                value={searchQuery} 
+                onChange={(e) => {
+                  setSearchQuery(e.target.value)
+                  if (e.target.value.trim()) setShowSearchDropdown(true)
+                }}
+                onFocus={() => {
+                  if (searchQuery.trim() || searchResults.length > 0) setShowSearchDropdown(true)
+                }}
+                placeholder="Search plants, succulents..." 
+                className="w-full text-xs font-semibold text-gray-800 bg-transparent focus:outline-none placeholder:text-gray-400 truncate" 
+              />
+              {searchQuery && (
+                <button 
+                  type="button" 
+                  onClick={() => { setSearchQuery(''); setSearchResults([]); setShowSearchDropdown(false) }}
+                  className="p-0.5 rounded-full hover:bg-gray-100 text-gray-400 shrink-0"
+                  aria-label="Clear"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
               )}
-            </button>
+            </form>
           </div>
+
+          {/* Cart Icon Button */}
+          <button onClick={toggleCart} className="relative w-11 h-11 rounded-xl border border-gray-200/80 bg-white shadow-2xs text-gray-700 flex items-center justify-center shrink-0 hover:border-primary/40 transition-all">
+            <ShoppingBag className="w-5 h-5 stroke-[2]" />
+            {mounted && itemCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 border border-white text-[9px] font-bold text-white shadow-xs">
+                {itemCount}
+              </span>
+            )}
+          </button>
         </div>
 
-        {/* Mobile Search Dropdown Bar & Live Results */}
+        {/* Live Mobile Search Results Dropdown */}
         <AnimatePresence>
-          {showSearchDropdown && (
+          {showSearchDropdown && (searchQuery.trim().length > 0 || isSearching) && (
             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
               className="xl:hidden w-full bg-white border-b border-gray-100 px-4 py-3 shadow-xl overflow-hidden max-h-[75vh] overflow-y-auto z-50">
-              <form onSubmit={handleSearch} className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 mb-1">
-                <Search className="w-4 h-4 text-gray-400 shrink-0" />
-                <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search plants (e.g. Snake, Lily, Pots)..." className="flex-1 text-xs bg-transparent focus:outline-none text-gray-800 font-medium" autoFocus />
-                {searchQuery && <button type="button" onClick={() => { setSearchQuery(''); setSearchResults([]) }}><X className="w-4 h-4 text-gray-400" /></button>}
-              </form>
-
               {/* Live Mobile Search Results */}
               {isSearching && <div className="p-4 text-center text-xs text-gray-500 font-medium">Searching our greenhouse...</div>}
               {!isSearching && searchResults.length > 0 && (
-                <div className="divide-y divide-gray-100 mt-2 border-t border-gray-100">
+                <div className="divide-y divide-gray-100">
                   {searchResults.map((product: any) => (
                     <div key={product.id}
                       onClick={() => { router.push(`/shop/${product.id}`); setShowSearchDropdown(false); setSearchQuery('') }}

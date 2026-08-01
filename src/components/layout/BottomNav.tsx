@@ -71,9 +71,19 @@ export function BottomNav() {
   }
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/98 backdrop-blur-md border-t border-gray-100 z-50 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
-      <div className="flex items-center justify-around h-16 px-2 max-w-md mx-auto">
-        {navItems.map((item) => {
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50">
+      {/* Announcement Banner positioned above Bottom Nav */}
+      <div className="bg-[#689f38] text-white py-1.5 px-3 text-[11px] font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 shadow-[0_-2px_8px_rgba(0,0,0,0.1)] border-b border-[#55842c]/50">
+        <span className="truncate">Free Shipping Every Day Over ₹999</span>
+        <span className="opacity-50">|</span>
+        <Link href="/shop" className="underline font-black hover:text-white/80 transition-colors shrink-0">
+          Shop Now
+        </Link>
+      </div>
+
+      <div className="bg-white/98 backdrop-blur-md border-t border-gray-100 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+        <div className="flex items-center justify-around h-16 px-2 max-w-md mx-auto">
+          {navItems.map((item) => {
           const Icon = item.icon
           const isActive = activeTab === item.id
           const content = (
@@ -138,6 +148,7 @@ export function BottomNav() {
           )
         })}
       </div>
+    </div>
     </nav>
   )
 }
