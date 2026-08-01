@@ -132,7 +132,10 @@ export function BottomNav() {
                 key={item.id}
                 href={item.href}
                 prefetch={true}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => {
+                  setActiveTab(item.id)
+                  if (isCartOpen) setCartOpen(false)
+                }}
                 className="relative flex flex-col items-center justify-center flex-1 py-1.5 px-2 transition-colors focus:outline-none"
               >
                 {content}
