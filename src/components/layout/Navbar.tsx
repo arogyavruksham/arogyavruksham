@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ShoppingBag, User, Search, ChevronDown, X, Phone, Heart } from 'lucide-react'
+import { ShoppingBag, User, Search, ChevronDown, X, Phone } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
 import { useAuthStore } from '@/store/authStore'
 import { useEffect, useState, useRef } from 'react'
@@ -277,51 +277,23 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* ─── MOBILE NAVBAR (Reference Styled Two-Tiered Layout) ─── */}
-        <div className={`flex xl:hidden flex-col w-full px-4 pt-3 pb-3.5 gap-3 transition-all duration-300 ${
-          isScrolled ? 'bg-[#FAF8F5]/98 backdrop-blur-md shadow-md' : 'bg-[#FAF8F5]'
-        } border-b border-gray-200/50`}>
+        {/* ─── MOBILE NAVBAR ─── */}
+        <div className={`flex xl:hidden w-full items-center justify-between px-3 sm:px-4 gap-2.5 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-[#FCFBF8]'} border-b border-gray-200/60`}
+          style={{ height: '72px' }}>
           
-          {/* Top Tier: Clean Round Medallion Logo & Unboxed Icons */}
-          <div className="flex items-center justify-between w-full">
-            {/* Round Brand Medallion Logo (No square box border!) */}
-            <Link href="/" className="flex items-center justify-center shrink-0 w-12 h-12 rounded-full bg-white shadow-sm border border-gray-200/40 hover:scale-105 transition-all overflow-hidden p-0.5">
-              <img 
-                src="/logo.png" 
-                alt="Arogyavruksham Logo" 
-                className="w-full h-full object-contain scale-110 mix-blend-multiply transition-transform duration-200 active:scale-95" 
-              />
-            </Link>
+          {/* Top Left Logo Corner Box (Larger & Prominent) */}
+          <Link href="/" className="flex items-center justify-center shrink-0 w-[52px] h-[52px] sm:w-[56px] sm:h-[56px] rounded-2xl bg-white border border-gray-100 shadow-sm p-0.5 hover:border-primary/40 transition-all overflow-hidden">
+            <img 
+              src="/logo.png" 
+              alt="Arogyavruksham Logo" 
+              className="w-full h-full object-contain scale-125 mix-blend-multiply transition-transform duration-200 active:scale-110" 
+            />
+          </Link>
 
-            {/* Right Side Icons (Unboxed, elegant spacing) */}
-            <div className="flex items-center gap-2.5 text-[#1C2C24]">
-              <button 
-                onClick={() => router.push('/shop')} 
-                className="p-2 text-gray-800 hover:text-[#235839] transition-colors active:scale-90"
-                aria-label="Wishlist"
-              >
-                <Heart className="w-6 h-6 stroke-[1.75]" />
-              </button>
-
-              <button 
-                onClick={toggleCart} 
-                className="relative p-2 text-gray-800 hover:text-[#235839] transition-colors active:scale-90 flex items-center justify-center"
-                aria-label="Shopping Cart"
-              >
-                <ShoppingBag className="w-6 h-6 stroke-[1.75]" />
-                {mounted && itemCount > 0 && (
-                  <span className="absolute top-1 right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 border border-white text-[9px] font-extrabold text-white shadow-xs">
-                    {itemCount}
-                  </span>
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Bottom Tier: Full-Width Pill-Shaped Search Bar */}
-          <div className="w-full relative">
-            <form onSubmit={handleSearch} className="flex items-center gap-2.5 w-full bg-white border border-gray-200/80 rounded-full px-4 py-2.5 shadow-[0_2px_12px_rgba(0,0,0,0.04)] focus-within:border-[#235839] focus-within:ring-2 focus-within:ring-[#235839]/15 transition-all">
-              <Search className="w-4 h-4 text-gray-400 shrink-0 stroke-[2]" />
+          {/* Extended Inline Search Bar */}
+          <div className="flex-1 min-w-0 relative">
+            <form onSubmit={handleSearch} className="flex items-center gap-2 w-full bg-white border border-gray-200/90 rounded-2xl px-3 py-2 shadow-inner focus-within:border-[#235839] focus-within:ring-2 focus-within:ring-[#235839]/10 transition-all">
+              <Search className="w-4 h-4 text-[#235839]/70 shrink-0 stroke-[2.4]" />
               <input 
                 type="text" 
                 value={searchQuery} 
@@ -332,14 +304,14 @@ export function Navbar() {
                 onFocus={() => {
                   if (searchQuery.trim() || searchResults.length > 0) setShowSearchDropdown(true)
                 }}
-                placeholder="Search plants, succulents, seeds..." 
-                className="w-full text-sm font-normal text-gray-800 bg-transparent focus:outline-none placeholder:text-gray-400 truncate" 
+                placeholder="Search plants, succulents..." 
+                className="w-full text-xs font-semibold text-gray-800 bg-transparent focus:outline-none placeholder:text-gray-400 truncate" 
               />
               {searchQuery && (
                 <button 
                   type="button" 
                   onClick={() => { setSearchQuery(''); setSearchResults([]); setShowSearchDropdown(false) }}
-                  className="p-1 rounded-full hover:bg-gray-100 text-gray-400 shrink-0"
+                  className="p-0.5 rounded-full hover:bg-gray-100 text-gray-400 shrink-0"
                   aria-label="Clear"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -347,6 +319,16 @@ export function Navbar() {
               )}
             </form>
           </div>
+
+          {/* Cart Icon Button */}
+          <button onClick={toggleCart} className="relative w-11 h-11 rounded-xl border border-gray-200/80 bg-white shadow-2xs text-gray-700 flex items-center justify-center shrink-0 hover:border-primary/40 transition-all">
+            <ShoppingBag className="w-5 h-5 stroke-[2]" />
+            {mounted && itemCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 border border-white text-[9px] font-bold text-white shadow-xs">
+                {itemCount}
+              </span>
+            )}
+          </button>
         </div>
 
         {/* Live Mobile Search Results Dropdown */}
@@ -437,9 +419,6 @@ export function Navbar() {
           )}
         </AnimatePresence>
       </motion.header>
-
-      {/* Spacer Element to ensure underlying page content is never hidden under the fixed sticky header */}
-      <div className="w-full h-[126px] xl:h-[82px] shrink-0 pointer-events-none" />
 
       {mounted && <AddressModal isOpen={isAddressModalOpen} onClose={() => setIsAddressModalOpen(false)} />}
     </>
