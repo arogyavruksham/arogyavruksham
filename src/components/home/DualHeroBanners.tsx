@@ -88,10 +88,10 @@ export function DualHeroBanners() {
 
       {/* Content */}
       <div className="relative z-10 h-full flex items-center">
-        <div className="container mx-auto px-6 md:px-12 lg:px-20">
+        <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24">
           <div className="max-w-xl">
             <AnimatePresence mode="wait">
-              <motion.div key={slide.id} className="space-y-4 md:space-y-6">
+              <motion.div key={slide.id} className="space-y-4 md:space-y-5">
                 {/* Tag */}
                 <motion.p custom={0} variants={textVariants} initial="hidden" animate="visible" exit="exit"
                   className={`text-xs md:text-sm font-bold tracking-[0.25em] uppercase ${slide.tagColor}`}>
@@ -99,19 +99,19 @@ export function DualHeroBanners() {
                 </motion.p>
                 {/* Headline */}
                 <motion.h1 custom={1} variants={textVariants} initial="hidden" animate="visible" exit="exit"
-                  className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white leading-[1.05]">
+                  className="text-4xl md:text-5xl lg:text-[54px] xl:text-[58px] font-serif font-bold text-white leading-[1.1]">
                   {slide.title}<br />
                   <span className="text-accent italic">{slide.titleAccent}</span>
                 </motion.h1>
                 {/* Description */}
                 <motion.p custom={2} variants={textVariants} initial="hidden" animate="visible" exit="exit"
-                  className="text-white/75 text-sm md:text-base leading-relaxed max-w-sm">
+                  className="text-white/80 text-sm md:text-base leading-relaxed max-w-sm md:max-w-md">
                   {slide.description}
                 </motion.p>
                 {/* CTA */}
-                <motion.div custom={3} variants={textVariants} initial="hidden" animate="visible" exit="exit">
+                <motion.div custom={3} variants={textVariants} initial="hidden" animate="visible" exit="exit" className="pt-1">
                   <Link href={slide.buttonLink}
-                    className="inline-block bg-primary text-white font-bold text-sm md:text-base px-8 py-3.5 rounded-sm hover:bg-primary-light transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/30">
+                    className="inline-block bg-primary text-white font-bold text-xs md:text-sm px-7 py-3 rounded-sm hover:bg-primary-light transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/30">
                     {slide.buttonText}
                   </Link>
                 </motion.div>

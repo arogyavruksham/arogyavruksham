@@ -120,31 +120,31 @@ export function Navbar() {
 
         {/* ─── DESKTOP ─── */}
         <div className={`hidden xl:flex w-full items-center border-b border-gray-100 overflow-visible transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-white'}`}
-          style={{ height: '100px' }}>
+          style={{ height: '82px' }}>
           
-          <div className="w-full max-w-full mx-auto px-6 lg:px-12 flex items-center overflow-visible h-full">
+          <div className="w-full max-w-full mx-auto px-4 xl:px-8 2xl:px-12 flex items-center overflow-visible h-full">
 
             {/* ── Far Left: Currency + Phone ── */}
-            <div className="flex items-center gap-6 shrink-0 w-[300px]">
-              <span className="text-[12px] font-bold text-gray-700 tracking-wide cursor-pointer hover:text-primary transition-colors uppercase">
+            <div className="flex items-center gap-4 2xl:gap-6 shrink-0 w-[210px] 2xl:w-[250px]">
+              <span className="text-[11px] 2xl:text-[12px] font-bold text-gray-700 tracking-wide cursor-pointer hover:text-primary transition-colors uppercase">
                 USD | EN
               </span>
-              <div className="w-px h-5 bg-gray-200" />
-              <span className="flex items-center gap-2 text-[12px] font-bold text-gray-700">
-                <Phone className="w-3.5 h-3.5 text-gray-700" />
+              <div className="w-px h-4 bg-gray-200" />
+              <span className="flex items-center gap-1.5 text-[11px] 2xl:text-[12px] font-bold text-gray-700 whitespace-nowrap">
+                <Phone className="w-3.5 h-3.5 text-gray-700 shrink-0" />
                 034 2333 3444
               </span>
             </div>
 
             {/* ── Left Nav Links ── */}
-            <nav className="flex items-center justify-end gap-10 flex-1 pr-12 shrink-0 h-full">
+            <nav className="flex items-center justify-end gap-6 2xl:gap-9 flex-1 pr-6 2xl:pr-10 h-full">
               {navLinks.map(({ label, href }) => {
                 const isActive = pathname === href || (href !== '/' && pathname?.startsWith(href))
                 return (
                   <Link key={href} href={href}
-                    className={`relative flex items-center gap-1.5 h-full text-[13px] font-bold tracking-wide transition-colors ${isActive ? 'text-primary' : 'text-gray-800 hover:text-primary'}`}>
+                    className={`relative flex items-center gap-1.5 h-full text-[12px] 2xl:text-[13px] font-bold tracking-wide transition-colors ${isActive ? 'text-primary' : 'text-gray-800 hover:text-primary'}`}>
                     {label}
-                    <ChevronDown className={`w-3.5 h-3.5 ${isActive ? 'text-primary' : 'text-gray-600'}`} />
+                    <ChevronDown className={`w-3 h-3 2xl:w-3.5 2xl:h-3.5 ${isActive ? 'text-primary' : 'text-gray-600'}`} />
                     {/* Active Bottom Border */}
                     {isActive && (
                       <motion.div layoutId="activeNavIndicatorLeft" className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary" />
@@ -155,7 +155,7 @@ export function Navbar() {
             </nav>
 
             {/* ── CENTER: Breakout Logo ── */}
-            <div className="relative flex justify-center items-center shrink-0 w-[240px] z-20">
+            <div className="relative flex justify-center items-center shrink-0 w-[150px] xl:w-[165px] z-20">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center mt-1">
                 <Link href="/" className="block">
                   <motion.img
@@ -163,21 +163,21 @@ export function Navbar() {
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     src="/logo.png"
                     alt="Arogyavruksham"
-                    className="w-[240px] h-[240px] drop-shadow-md object-contain"
+                    className="w-[150px] h-[150px] xl:w-[165px] xl:h-[165px] drop-shadow-md object-contain"
                   />
                 </Link>
               </div>
             </div>
 
             {/* ── Right Nav Links ── */}
-            <nav className="flex items-center justify-start gap-10 flex-1 pl-12 shrink-0 h-full">
+            <nav className="flex items-center justify-start gap-6 2xl:gap-9 flex-1 pl-6 2xl:pl-10 h-full">
               {navLinksRight.map(({ label, href }) => {
                 const isActive = pathname === href || (href !== '/' && pathname?.startsWith(href))
                 return (
                   <Link key={href} href={href}
-                    className={`relative flex items-center gap-1.5 h-full text-[13px] font-bold tracking-wide transition-colors ${isActive ? 'text-primary' : 'text-gray-800 hover:text-primary'}`}>
+                    className={`relative flex items-center gap-1.5 h-full text-[12px] 2xl:text-[13px] font-bold tracking-wide transition-colors ${isActive ? 'text-primary' : 'text-gray-800 hover:text-primary'}`}>
                     {label}
-                    <ChevronDown className={`w-3.5 h-3.5 ${isActive ? 'text-primary' : 'text-gray-600'}`} />
+                    <ChevronDown className={`w-3 h-3 2xl:w-3.5 2xl:h-3.5 ${isActive ? 'text-primary' : 'text-gray-600'}`} />
                     {/* Active Bottom Border */}
                     {isActive && (
                       <motion.div layoutId="activeNavIndicatorRight" className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary" />
@@ -188,14 +188,14 @@ export function Navbar() {
             </nav>
 
             {/* ── Far Right: Auth + Cart + Search ── */}
-            <div className="flex items-center justify-end gap-6 shrink-0 w-[300px]">
+            <div className="flex items-center justify-end gap-4 2xl:gap-6 shrink-0 w-[210px] 2xl:w-[250px]">
 
               {/* Login */}
               {mounted && isAuthenticated ? (
                 <div className="relative profile-dropdown-container">
                   <button onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                    className="flex items-center gap-2 text-[14px] font-bold text-[#4B5563] hover:text-primary tracking-wide uppercase">
-                    <User className="w-[18px] h-[18px] text-[#4B5563]" strokeWidth={2.5} />
+                    className="flex items-center gap-1.5 text-[12px] 2xl:text-[13px] font-bold text-[#4B5563] hover:text-primary tracking-wide uppercase whitespace-nowrap">
+                    <User className="w-4 h-4 text-[#4B5563] shrink-0" strokeWidth={2.5} />
                     {user?.name || 'USER'}
                   </button>
                   <AnimatePresence>
@@ -212,34 +212,34 @@ export function Navbar() {
                 </div>
               ) : (
                 <button onClick={() => useAuthStore.getState().setAuthModalOpen(true)}
-                  className="flex items-center gap-2 text-[14px] font-bold text-[#4B5563] hover:text-primary tracking-wide uppercase">
-                  <User className="w-[18px] h-[18px] text-[#4B5563]" strokeWidth={2.5} />
+                  className="flex items-center gap-1.5 text-[12px] 2xl:text-[13px] font-bold text-[#4B5563] hover:text-primary tracking-wide uppercase whitespace-nowrap">
+                  <User className="w-4 h-4 text-[#4B5563] shrink-0" strokeWidth={2.5} />
                   LOG IN / JOIN
                 </button>
               )}
 
               {/* Cart */}
-              <button onClick={toggleCart} className="flex items-center gap-2 group">
+              <button onClick={toggleCart} className="flex items-center gap-2 group shrink-0">
                 <div className="relative flex items-center">
-                  <div className="relative w-[38px] h-[38px] bg-primary rounded-full flex items-center justify-center shadow-sm group-hover:bg-[#5b8a30] transition-colors">
-                    <ShoppingBag className="w-[18px] h-[18px] text-white" />
+                  <div className="relative w-[34px] h-[34px] 2xl:w-[36px] 2xl:h-[36px] bg-primary rounded-full flex items-center justify-center shadow-sm group-hover:bg-[#5b8a30] transition-colors">
+                    <ShoppingBag className="w-4 h-4 text-white" />
                     {mounted && (
-                      <span className="absolute -top-1 -right-1 flex h-[20px] w-[20px] items-center justify-center rounded-full bg-primary border-2 border-white text-[10px] font-black text-white shadow-sm">
+                      <span className="absolute -top-1 -right-1 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-primary border-2 border-white text-[9px] font-black text-white shadow-sm">
                         {itemCount}
                       </span>
                     )}
                   </div>
                 </div>
-                <span className="text-[13px] font-bold text-gray-600 group-hover:text-primary transition-colors">
+                <span className="text-[12px] 2xl:text-[13px] font-bold text-gray-600 group-hover:text-primary transition-colors whitespace-nowrap">
                   ₹{mounted ? cartTotal.toLocaleString('en-IN') : '0'}
                 </span>
               </button>
 
               {/* Search */}
-              <div className="relative search-container pl-2">
+              <div className="relative search-container pl-1 shrink-0">
                 <button onClick={() => setShowSearchDropdown(!showSearchDropdown)}
-                  className="text-gray-600 hover:text-primary transition-colors">
-                  <Search className="w-5 h-5" />
+                  className="text-gray-600 hover:text-primary transition-colors flex items-center justify-center">
+                  <Search className="w-4.5 h-4.5 2xl:w-5 2xl:h-5" />
                 </button>
                 <AnimatePresence>
                   {showSearchDropdown && (

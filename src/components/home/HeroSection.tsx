@@ -40,10 +40,10 @@ export function HeroSection() {
       {/* Text Content - Top */}
       <div className="container mx-auto px-4 relative z-20 text-center flex flex-col items-center mt-8">
         <span className="text-secondary font-sans font-bold tracking-widest uppercase text-sm mb-4">Authentic Nature</span>
-        <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-primary mb-4 leading-tight">
+        <h1 className="font-serif text-4xl md:text-6xl lg:text-[60px] xl:text-[64px] font-bold text-primary mb-4 leading-tight">
           Green Elegance
         </h1>
-        <p className="font-sans text-xl md:text-2xl text-foreground/80 font-medium max-w-2xl">
+        <p className="font-sans text-lg md:text-xl text-foreground/80 font-medium max-w-2xl">
           Bring nature indoors, breath of fresh air, timeless green.
         </p>
       </div>

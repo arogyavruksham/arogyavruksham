@@ -9,7 +9,7 @@ export function AnnouncementBar() {
       initial={{ height: 0, opacity: 0 }} 
       animate={{ height: 'auto', opacity: 1 }} 
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="bg-[#689f38] text-white text-center py-2 px-4 text-[12px] font-bold tracking-widest uppercase overflow-hidden block"
+      className="bg-[#689f38] text-white text-center py-1.5 px-4 text-[11px] md:text-[12px] font-bold tracking-wider uppercase overflow-hidden block"
     >
       <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2">
         <span>Free Shipping Every Day, Every Order Over ₹999</span>
