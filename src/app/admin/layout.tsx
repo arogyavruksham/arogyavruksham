@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Package, Settings, LogOut, ShoppingCart, Users, ShieldCheck, Menu, X, BarChart2, Tag, Archive, TrendingUp, Mail, Calendar, Bell, Search, ChevronRight, Loader2, ShoppingBag, Megaphone } from 'lucide-react'
+import { LayoutDashboard, Package, Settings, LogOut, ShoppingCart, Users, ShieldCheck, Menu, X, BarChart2, Tag, Archive, TrendingUp, Mail, Calendar, Bell, Search, ChevronRight, Loader2, ShoppingBag, Megaphone, Lock } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { AdminLockScreen } from '@/components/admin/AdminLockScreen'
 import { useEffect, useState, useRef } from 'react'
@@ -175,23 +175,41 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             { name: 'Dashboard', path: '/admin', icon: DashboardGridIcon, active: pathname === '/admin' },
             { name: 'Orders', path: '/admin/orders', icon: ShoppingCart, active: pathname?.startsWith('/admin/orders') },
             { name: 'Inventory', path: '/admin/inventory', icon: PottedPlantIcon, active: pathname?.startsWith('/admin/inventory') },
-            { name: 'Metrics', path: '/admin/analytics', icon: MetricsIcon, active: pathname?.startsWith('/admin/analytics') },
+            { name: 'Lock Panel', onClick: handleAdminLogout, icon: Lock, active: false },
           ].map((tab) => {
             const Icon = tab.icon;
+            const content = (
+              <>
+                <Icon className={`w-5 h-5 mb-0.5 ${tab.active ? 'text-[#3C5321]' : 'text-gray-500'}`} />
+                <span className={`text-[11px] tracking-tight ${tab.active ? 'font-black text-[#384E1D]' : 'font-semibold text-gray-500'}`}>
+                  {tab.name}
+                </span>
+              </>
+            );
+
+            if (tab.onClick) {
+              return (
+                <button
+                  key={tab.name}
+                  onClick={tab.onClick}
+                  className="flex flex-col items-center justify-center transition-all text-gray-500 hover:text-red-600 py-1.5 px-3 font-medium min-w-[72px] cursor-pointer"
+                >
+                  {content}
+                </button>
+              );
+            }
+
             return (
               <Link 
                 key={tab.name}
-                href={tab.path}
+                href={tab.path!}
                 className={`flex flex-col items-center justify-center transition-all ${
                   tab.active 
                     ? 'bg-[#E1EDB0] text-[#3B5220] py-1.5 px-3 sm:px-4 rounded-full font-bold shadow-2xs min-w-[76px]' 
                     : 'text-gray-500 hover:text-gray-800 py-1.5 px-3 font-medium min-w-[72px]'
                 }`}
               >
-                <Icon className={`w-5 h-5 mb-0.5 ${tab.active ? 'text-[#3C5321]' : 'text-gray-500'}`} />
-                <span className={`text-[11px] tracking-tight ${tab.active ? 'font-black text-[#384E1D]' : 'font-semibold text-gray-500'}`}>
-                  {tab.name}
-                </span>
+                {content}
               </Link>
             );
           })}
