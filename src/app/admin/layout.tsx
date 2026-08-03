@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Package, Settings, LogOut, ShoppingCart, Users, ShieldCheck, Menu, X, BarChart2, Tag, Archive, TrendingUp, Mail, Calendar, Bell, Search, ChevronRight, Loader2, ShoppingBag } from 'lucide-react'
+import { LayoutDashboard, Package, Settings, LogOut, ShoppingCart, Users, ShieldCheck, Menu, X, BarChart2, Tag, Archive, TrendingUp, Mail, Calendar, Bell, Search, ChevronRight, Loader2, ShoppingBag, Megaphone } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { AdminLockScreen } from '@/components/admin/AdminLockScreen'
 import { useEffect, useState, useRef } from 'react'
@@ -192,6 +192,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             { name: 'Inventory', path: '/admin/inventory', icon: Archive },
             { name: 'Orders', path: '/admin/orders', icon: ShoppingCart },
             { name: 'Categories', path: '/admin/categories', icon: ShoppingBag },
+            { name: 'Announcement', path: '/admin/announcement', icon: Megaphone },
             { name: 'Customer', path: '/admin/customers', icon: Users },
             { name: 'Newsletter', path: '/admin/newsletter', icon: Mail },
             { name: 'Settings', path: '/admin/settings', icon: Settings },
@@ -477,6 +478,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 { name: 'Inventory', path: '/admin/inventory', icon: Archive },
                 { name: 'Orders', path: '/admin/orders', icon: ShoppingCart },
                 { name: 'Categories', path: '/admin/categories', icon: ShoppingBag },
+                { name: 'Announcement', path: '/admin/announcement', icon: Megaphone },
                 { name: 'Customer', path: '/admin/customers', icon: Users },
                 { name: 'Newsletter', path: '/admin/newsletter', icon: Mail },
                 { name: 'Settings', path: '/admin/settings', icon: Settings },

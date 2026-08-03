@@ -7,6 +7,7 @@ import { useCartStore } from '@/store/cartStore'
 import { useAuthStore } from '@/store/authStore'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { useAnnouncement } from '@/lib/announcement'
 
 const PottedPlantIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -21,6 +22,7 @@ const PottedPlantIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
 export function BottomNav() {
   const pathname = usePathname()
   const router = useRouter()
+  const announcement = useAnnouncement()
   const { toggleCart, items, isOpen: isCartOpen, setCartOpen } = useCartStore()
   const { isAuthenticated, setAuthModalOpen } = useAuthStore()
   const [mounted, setMounted] = useState(false)
@@ -76,13 +78,22 @@ export function BottomNav() {
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50">
       {/* Announcement Banner positioned above Bottom Nav */}
-      <div className="bg-[#689f38] text-white py-1.5 px-3 text-[11px] font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 shadow-[0_-2px_8px_rgba(0,0,0,0.1)] border-b border-[#55842c]/50">
-        <span className="truncate">Free Shipping Every Day Over ₹999</span>
-        <span className="opacity-50">|</span>
-        <Link href="/shop" className="underline font-black hover:text-white/80 transition-colors shrink-0">
-          Shop Now
-        </Link>
-      </div>
+      {announcement.is_active && (
+        <div 
+          style={{ backgroundColor: announcement.bg_color, color: announcement.text_color }}
+          className="py-1.5 px-3 text-[11px] font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 shadow-[0_-2px_8px_rgba(0,0,0,0.1)] border-b border-black/10 transition-colors duration-300"
+        >
+          <span className="truncate">{announcement.mobile_text || announcement.text}</span>
+          {announcement.link_text && announcement.link_url && (
+            <>
+              <span className="opacity-50">|</span>
+              <Link href={announcement.link_url} className="underline font-black hover:opacity-80 transition-opacity shrink-0">
+                {announcement.link_text}
+              </Link>
+            </>
+          )}
+        </div>
+      )}
 
       <div className="bg-white/98 backdrop-blur-md border-t border-gray-100 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
         <div className="flex items-center justify-around h-16 px-2 max-w-md mx-auto">
