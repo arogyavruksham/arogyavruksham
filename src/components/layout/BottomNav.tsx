@@ -24,7 +24,7 @@ export function BottomNav() {
   const router = useRouter()
   const announcement = useAnnouncement()
   const { toggleCart, items, isOpen: isCartOpen, setCartOpen } = useCartStore()
-  const { isAuthenticated, setAuthModalOpen } = useAuthStore()
+  const { isAuthenticated, setAuthModalOpen, isAuthModalOpen } = useAuthStore()
   const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState<string>('home')
   
@@ -73,7 +73,7 @@ export function BottomNav() {
     }
   }
 
-  if (pathname === '/checkout') return null
+  if (pathname === '/checkout' || isAuthModalOpen) return null
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50">
