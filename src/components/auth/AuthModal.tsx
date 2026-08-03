@@ -216,26 +216,27 @@ export function AuthModal() {
         setView('success')
         setTimeout(() => setAuthModalOpen(false), 2000)
       } else if (view === 'email_otp') {
-        const { error: otpError } = await supabase.auth.signInWithOtp({ 
-          email, 
-          options: { shouldCreateUser: true, emailRedirectTo: `${window.location.origin}/auth/callback` } 
+        const res = await fetch('/api/auth/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
         })
-        if (otpError) console.warn('Supabase OTP warning:', otpError.message)
-        setSuccessMsg('OTP sent to your email! (Demo code: 123456)')
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || 'Failed to send verification code')
+
+        setSuccessMsg('Code sent via Node Email Sender! (Demo code: 123456)')
         setView('email_otp_verify')
         setTimer(60)
       } else if (view === 'email_otp_verify') {
-        if (otpCode !== '123456' && otpCode !== '000000') {
-          const { error: verifyError } = await supabase.auth.verifyOtp({ email, token: otpCode, type: 'email' })
-          if (verifyError) throw verifyError
-        }
-        const { data: userData } = await supabase.from('users').select('role, full_name, phone').eq('email', email).maybeSingle()
-        login({ 
-          name: userData?.full_name || email.split('@')[0] || 'Member', 
-          email: email,
-          phone: userData?.phone || '',
-          role: userData?.role || 'user'
+        const res = await fetch('/api/auth/verify-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, code: otpCode })
         })
+        const data = await res.json()
+        if (!res.ok) throw new Error(data.error || 'Invalid verification code')
+
+        login(data.user)
         setView('success')
         setTimeout(() => setAuthModalOpen(false), 2000)
       }

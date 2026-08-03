@@ -134,3 +134,50 @@ export async function sendShippingUpdateEmail(
     return false
   }
 }
+
+export async function sendVerificationOtpEmail(toEmail: string, otpCode: string): Promise<{ success: boolean; message: string }> {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_APP_PASSWORD) {
+    console.warn('EMAIL_USER or EMAIL_APP_PASSWORD not configured in environment variables. Simulated email sent with OTP:', otpCode)
+    return { success: true, message: 'Simulated email sent (EMAIL_USER not configured)' }
+  }
+
+  const transporter = getTransporter()
+
+  const htmlContent = `
+    <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-w: 580px; margin: 0 auto; background-color: #FAFAF7; border: 1px solid #EAEAE3; border-radius: 16px; overflow: hidden;">
+      <div style="background-color: #235839; padding: 28px 24px; text-align: center;">
+        <h1 style="color: #FFFFFF; font-size: 24px; margin: 0; font-weight: 700; letter-spacing: 0.5px;">Arogyavruksham</h1>
+        <p style="color: #A3D4B5; font-size: 13px; margin: 6px 0 0 0; font-style: italic;">Your Authentic Botanical & Green Living Sanctuary</p>
+      </div>
+      <div style="padding: 36px 32px; background-color: #FFFFFF; color: #333333;">
+        <h2 style="font-size: 20px; color: #1E4631; margin-top: 0;">Verification Code</h2>
+        <p style="font-size: 15px; color: #555555; line-height: 1.6;">Hello,</p>
+        <p style="font-size: 15px; color: #555555; line-height: 1.6;">You requested a login code to access your Arogyavruksham account. Please enter the following 6-digit verification code:</p>
+        
+        <div style="background-color: #F0F7F2; border: 2px dashed #689F38; border-radius: 12px; padding: 24px; text-align: center; margin: 28px 0;">
+          <span style="font-family: monospace; font-size: 36px; font-weight: 700; letter-spacing: 8px; color: #1E4631;">${otpCode}</span>
+        </div>
+        
+        <p style="font-size: 13px; color: #777777; margin-top: 24px;">This security code will expire in 10 minutes. If you did not request this verification, simply ignore this email.</p>
+        <p style="font-size: 15px; color: #333333; margin: 30px 0 0 0;">Warm regards,<br/><strong style="color: #235839;">Team Arogyavruksham</strong></p>
+      </div>
+      <div style="background-color: #FAFAF7; padding: 18px 24px; text-align: center; font-size: 11px; color: #888888; border-top: 1px solid #EAEAE3;">
+        &copy; ${new Date().getFullYear()} Arogyavruksham. All rights reserved.
+      </div>
+    </div>
+  `
+
+  try {
+    await transporter.sendMail({
+      from: `"${process.env.NEXT_PUBLIC_STORE_NAME || 'Arogyavruksham'}" <${process.env.EMAIL_FROM || process.env.EMAIL_USER}>`,
+      to: toEmail,
+      subject: `Your Arogyavruksham Login Code: ${otpCode}`,
+      html: htmlContent,
+    })
+    return { success: true, message: 'OTP sent successfully via Nodemailer' }
+  } catch (error: any) {
+    console.error('Error sending verification OTP email via Nodemailer:', error)
+    return { success: false, message: error.message || 'Failed to send OTP email via Nodemailer' }
+  }
+}
+

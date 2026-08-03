@@ -165,25 +165,20 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      // Attempt sending Supabase Email OTP
-      const { error: otpError } = await supabase.auth.signInWithOtp({
-        email,
-        options: { 
-          shouldCreateUser: true,
-          emailRedirectTo: `${window.location.origin}/auth/callback`
-        }
+      const res = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
       })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to send verification code')
 
-      if (otpError) {
-        console.warn('Supabase Email OTP warning/error (SMTP may not be configured):', otpError.message)
-      }
-
-      setSuccess('Verification code sent! (Use test code 123456 if SMTP is unconfigured)')
+      setSuccess('Login code sent via Node Email Sender! (Check inbox or use demo code: 123456)')
       setOtpCode('')
       setAuthMode('email_otp_verify')
     } catch (err: unknown) {
       console.error(err)
-      setError('Failed to initiate login code sequence.')
+      setError(err instanceof Error ? err.message : 'Failed to initiate login code sequence.')
     } finally {
       setLoading(false)
     }
@@ -195,30 +190,21 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      // Allow seamless authentication with real OTP or reliable fallback demo code
-      if (otpCode !== '123456' && otpCode !== '000000') {
-        const { error: verifyError } = await supabase.auth.verifyOtp({ 
-          email, 
-          token: otpCode, 
-          type: 'email' 
-        })
-        if (verifyError) throw verifyError
-      }
-
-      const { data: userData } = await supabase.from('users').select('role, full_name, phone').eq('email', email).maybeSingle()
-      
-      login({ 
-        name: userData?.full_name || email.split('@')[0] || 'Member', 
-        email: email,
-        phone: userData?.phone || '',
-        role: userData?.role || 'user'
+      const res = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, code: otpCode })
       })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Invalid verification code')
+
+      login(data.user)
 
       setSuccess('Verification successful! Logging you in...')
       setTimeout(() => router.push('/'), 800)
     } catch (err: unknown) {
       console.error(err)
-      setError('Invalid code. Please recheck your inbox or use code 123456.')
+      setError(err instanceof Error ? err.message : 'Invalid code. Please recheck your inbox or use code 123456.')
     } finally {
       setLoading(false)
     }
