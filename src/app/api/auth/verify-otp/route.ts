@@ -44,16 +44,18 @@ export async function POST(req: Request) {
     let userPhone = ''
 
     try {
-      const { data: userData } = await supabaseAdmin
+      const { data } = await supabaseAdmin
         .from('users')
         .select('role, full_name, phone')
         .eq('email', normalizedEmail)
         .maybeSingle()
 
+      const userData = data as any
+
       if (userData) {
-        userRole = userData.role || 'user'
-        fullName = userData.full_name || fullName
-        userPhone = userData.phone || ''
+        userRole = userData?.role || 'user'
+        fullName = userData?.full_name || fullName
+        userPhone = userData?.phone || ''
       } else {
         // Automatically register new user in users table if they verified their email
         await supabaseAdmin.from('users').insert([
