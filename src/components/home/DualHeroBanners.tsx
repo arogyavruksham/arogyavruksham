@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { MobileHomeHeader } from './MobileHomeHeader'
 
 const slides = [
   {
@@ -77,7 +78,8 @@ export function DualHeroBanners() {
   return (
     <>
       {/* ─── MOBILE VIEW ONLY ─── */}
-      <div className="block md:hidden bg-[#FCFBF8] p-4 pt-3 pb-2">
+      <div className="block md:hidden bg-[#FCFBF8] p-4 pt-4 pb-3">
+        <MobileHomeHeader />
         <div className="relative w-full h-[480px] rounded-[28px] overflow-hidden shadow-md flex flex-col justify-end p-6 text-white border border-gray-100">
           {/* Background Succulent Image */}
           <img 

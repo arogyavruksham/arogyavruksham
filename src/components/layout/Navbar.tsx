@@ -115,7 +115,7 @@ export function Navbar() {
       <motion.header
         animate={{ y: hidden ? '-100%' : '0%' }}
         transition={{ duration: 0.35, ease: 'easeInOut' }}
-        className="fixed top-0 left-0 right-0 z-50 block"
+        className="fixed top-0 left-0 right-0 z-50 hidden md:block"
       >
         {/* PC VIEW ONLY ANNOUNCEMENT BAR */}
         <div className="hidden xl:block">
@@ -282,8 +282,8 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* ─── MOBILE NAVBAR ─── */}
-        <div className={`flex xl:hidden w-full items-center justify-between px-3 sm:px-4 gap-2.5 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-[#FCFBF8]'} border-b border-gray-200/60`}
+        {/* ─── MOBILE/TABLET NAVBAR ─── */}
+        <div className={`hidden md:flex xl:hidden w-full items-center justify-between px-3 sm:px-4 gap-2.5 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-[#FCFBF8]'} border-b border-gray-200/60`}
           style={{ height: '72px' }}>
           
           {/* Top Left Logo Corner Box (Larger & Prominent) */}
