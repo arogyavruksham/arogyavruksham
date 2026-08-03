@@ -104,10 +104,14 @@ export function Navbar() {
     return () => clearInterval(pollInterval)
   }, [isAuthenticated, user?.email])
 
-  if (pathname !== '/') return null
+  const isProfile = pathname?.startsWith('/profile')
+  if (pathname !== '/' && !isProfile) return null
 
   // Cart total (approximate display)
   const cartTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+
+  // On profile page, show ONLY on PC view (xl). On homepage, hide only on mobile phones (< md).
+  const visibilityClass = isProfile ? 'hidden xl:block' : 'hidden md:block'
 
   return (
     <>
@@ -115,7 +119,7 @@ export function Navbar() {
       <motion.header
         animate={{ y: hidden ? '-100%' : '0%' }}
         transition={{ duration: 0.35, ease: 'easeInOut' }}
-        className="fixed top-0 left-0 right-0 z-50 hidden md:block"
+        className={`fixed top-0 left-0 right-0 z-50 ${visibilityClass}`}
       >
         {/* PC VIEW ONLY ANNOUNCEMENT BAR */}
         <div className="hidden xl:block">

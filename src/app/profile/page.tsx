@@ -1011,7 +1011,7 @@ function ProfileContent() {
       */}
       <div className="hidden md:block">
         {/* Premium Deep Green Header Banner */}
-        <div className="bg-[#1c3f25] text-white pt-20 pb-32 px-12 relative overflow-hidden shadow-inner border-b border-black/10">
+        <div className="bg-[#1c3f25] text-white pt-20 xl:pt-40 pb-32 px-12 relative overflow-hidden shadow-inner border-b border-black/10">
           <div className="absolute inset-0 opacity-20">
             <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full border-[2px] border-white/20 border-dashed"></div>
             <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full border-[1px] border-white/30"></div>
