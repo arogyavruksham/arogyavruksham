@@ -177,9 +177,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Desktop Sidebar */}
       <aside className="w-64 bg-[#F0F5F5] text-gray-700 hidden md:flex flex-col shrink-0 border-r border-gray-200">
-        <div className="p-6 pb-4 flex justify-center text-center">
-          <Link href="/" className="block">
-            <img src="/text_logo.png" alt="Arogyavruksham Silks" className="h-8 md:h-10 lg:h-14 w-auto max-w-full object-contain drop-shadow-sm" />
+        <div className="p-6 pb-6 flex items-center justify-center border-b border-gray-200/80 mb-2">
+          <Link href="/admin" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
+            <div className="w-9 h-9 rounded-xl bg-[#235839] text-white flex items-center justify-center font-bold text-base shadow-md shrink-0">
+              ⚡
+            </div>
+            <div className="text-left">
+              <h1 className="text-lg font-serif font-extrabold text-[#1E4631] tracking-tight leading-none">
+                Admin Panel
+              </h1>
+              <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mt-1">
+                Arogyavruksham
+              </p>
+            </div>
           </Link>
         </div>
         
