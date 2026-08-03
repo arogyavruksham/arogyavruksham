@@ -8,6 +8,31 @@ import { AdminLockScreen } from '@/components/admin/AdminLockScreen'
 import { useEffect, useState, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 
+const PottedPlantIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M7 11v5a5 5 0 0 0 10 0v-5" />
+    <path d="M5 7h14l-1 4H6Z" />
+    <path d="M12 7V3" />
+    <path d="M8 5c1 0 2-1 2-2" />
+    <path d="M16 5c-1 0-2-1-2-2" />
+  </svg>
+)
+
+const MetricsIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+    <path d="M8 17v-3" />
+    <path d="M12 17v-6" />
+    <path d="M16 17v-4" />
+  </svg>
+)
+
+const DashboardGridIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M3 3h8v10H3V3zm10 0h8v6h-8V3zM3 15h8v6H3v-6zm10-4h8v10h-8V11z" />
+  </svg>
+)
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
@@ -143,35 +168,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="flex min-h-screen bg-[#F8FAFC]">
       
-      {/* Admin Mobile Bottom Nav */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#111827] text-gray-400 border-t border-gray-800 pb-safe">
-        <div className="flex items-center justify-around h-16 px-2">
-          {user?.role !== 'editor' && (
-            <Link href="/admin" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${pathname === '/admin' ? 'text-white' : 'hover:text-gray-200'}`}>
-              <LayoutDashboard className="w-5 h-5" />
-              <span className="text-[10px] font-medium">Dash</span>
-            </Link>
-          )}
-          {user?.role !== 'editor' && (
-            <Link href="/admin/orders" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${pathname === '/admin/orders' ? 'text-white' : 'hover:text-gray-200'}`}>
-              <ShoppingCart className="w-5 h-5" />
-              <span className="text-[10px] font-medium">Orders</span>
-            </Link>
-          )}
-          <Link href="/admin/products" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${pathname === '/admin/products' ? 'text-white' : 'hover:text-gray-200'}`}>
-            <Package className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Products</span>
-          </Link>
-          {user?.role === 'editor' && (
-            <Link href="/admin/inventory" className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${pathname === '/admin/inventory' ? 'text-white' : 'hover:text-gray-200'}`}>
-              <Archive className="w-5 h-5" />
-              <span className="text-[10px] font-medium">Inventory</span>
-            </Link>
-          )}
-          <button onClick={handleAdminLogout} className="flex flex-col items-center justify-center w-full h-full space-y-1 text-red-400 hover:text-red-300">
-            <LogOut className="w-5 h-5" />
-            <span className="text-[10px] font-medium">Lock</span>
-          </button>
+      {/* Admin Mobile Bottom Nav matching Image 1 */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-md border-t border-gray-100 pb-safe shadow-[0_-4px_25px_rgba(0,0,0,0.08)]">
+        <div className="flex items-center justify-around h-[70px] px-2 max-w-md mx-auto">
+          {[
+            { name: 'Dashboard', path: '/admin', icon: DashboardGridIcon, active: pathname === '/admin' },
+            { name: 'Orders', path: '/admin/orders', icon: ShoppingCart, active: pathname?.startsWith('/admin/orders') },
+            { name: 'Inventory', path: '/admin/inventory', icon: PottedPlantIcon, active: pathname?.startsWith('/admin/inventory') },
+            { name: 'Metrics', path: '/admin/analytics', icon: MetricsIcon, active: pathname?.startsWith('/admin/analytics') },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            return (
+              <Link 
+                key={tab.name}
+                href={tab.path}
+                className={`flex flex-col items-center justify-center transition-all ${
+                  tab.active 
+                    ? 'bg-[#E1EDB0] text-[#3B5220] py-1.5 px-3 sm:px-4 rounded-full font-bold shadow-2xs min-w-[76px]' 
+                    : 'text-gray-500 hover:text-gray-800 py-1.5 px-3 font-medium min-w-[72px]'
+                }`}
+              >
+                <Icon className={`w-5 h-5 mb-0.5 ${tab.active ? 'text-[#3C5321]' : 'text-gray-500'}`} />
+                <span className={`text-[11px] tracking-tight ${tab.active ? 'font-black text-[#384E1D]' : 'font-semibold text-gray-500'}`}>
+                  {tab.name}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
 

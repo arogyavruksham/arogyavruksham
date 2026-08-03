@@ -137,7 +137,7 @@ export default function AdminOrdersPage() {
 
       // Tab
       if (activeTab === 'COD Orders' && order.payment_method !== 'Cash on Delivery') return false
-      if (activeTab === 'Pending' && order.status !== 'pending' && order.status !== 'paid' && order.status !== 'packed' && order.status !== 'out_for_delivery') return false
+      if ((activeTab === 'Pending' || activeTab === 'Processing') && order.status !== 'pending' && order.status !== 'paid' && order.status !== 'packed' && order.status !== 'out_for_delivery') return false
       if (activeTab === 'Shipped' && order.status !== 'shipped') return false
       if (activeTab === 'Delivered' && order.status !== 'delivered') return false
       if (activeTab === 'Cancelled' && order.status !== 'cancelled') return false
@@ -155,9 +155,184 @@ export default function AdminOrdersPage() {
   const paginatedOrders = filteredOrders.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
 
   return (
-    <div className="space-y-6 pb-24 md:pb-8">
+    <div className="space-y-6 pb-28 md:pb-8">
       
-      {/* 1. Statistics Cards */}
+      {/* MOBILE VIEW (Matching Image 2) */}
+      <div className="md:hidden space-y-4 -mt-2">
+        {/* Search Bar */}
+        <div className="bg-[#F4F5F5] rounded-2xl p-3 flex items-center gap-2.5 border border-gray-200/60 shadow-2xs">
+          <Search className="w-4 h-4 text-gray-400 shrink-0" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
+            placeholder="Search Order ID or Name..."
+            className="w-full bg-transparent border-none outline-none text-sm text-gray-800 placeholder:text-gray-400 font-medium"
+          />
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')} className="text-gray-400 hover:text-gray-600">
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        {/* Filter Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden py-1">
+          {['All Orders', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'COD Orders'].map((tab) => {
+            const isTabActive = activeTab === tab || (activeTab === 'Pending' && tab === 'Processing') || (activeTab === 'All Orders' && tab === 'All Orders');
+            return (
+              <button
+                key={tab}
+                onClick={() => { setActiveTab(tab === 'Processing' ? 'Pending' : tab); setCurrentPage(1); }}
+                className={`px-4 py-2 rounded-xl text-xs font-extrabold tracking-wider uppercase whitespace-nowrap transition-all shrink-0 shadow-2xs ${
+                  isTabActive
+                    ? 'bg-[#0B2217] text-white shadow-sm'
+                    : 'bg-[#EAECEB] text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {tab}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Orders Card List */}
+        <div className="space-y-3 pt-1">
+          {loading ? (
+            <div className="py-12 text-center text-gray-500 flex flex-col items-center justify-center gap-2">
+              <Loader2 className="w-6 h-6 animate-spin text-[#1E4631]" />
+              <span className="text-xs font-semibold">Loading orders...</span>
+            </div>
+          ) : paginatedOrders.length === 0 ? (
+            <div className="py-12 text-center bg-white rounded-3xl border border-gray-100 p-6 text-gray-400 text-xs italic">
+              No orders match your current filters or search query.
+            </div>
+          ) : (
+            paginatedOrders.map((order) => {
+              const customerName = order.shipping_address?.name || order.users?.full_name || 'Customer';
+              const itemsText = order.order_items?.map((it: any) => `${it.quantity || 1}x ${it.products?.title || 'Plant Item'}`).join(', ') || '1x Botanical Item';
+              const thumbnail = order.order_items?.[0]?.products?.image_url;
+              
+              // Status Styling & Label
+              const isShipped = order.status === 'shipped';
+              const isDelivered = order.status === 'delivered';
+              const isCancelled = order.status === 'cancelled';
+              const isProcessing = !isShipped && !isDelivered && !isCancelled;
+
+              const dateStr = order.created_at 
+                ? new Date(order.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
+                : 'DATE N/A';
+
+              return (
+                <div
+                  key={order.id}
+                  onClick={() => setSelectedOrder(order)}
+                  className="bg-white rounded-[26px] p-5 shadow-[0_2px_18px_rgba(0,0,0,0.04)] border border-gray-100/80 cursor-pointer active:scale-[0.99] transition-transform"
+                >
+                  {/* Top Row: Order ID, Name, Status Badge */}
+                  <div className="flex items-start justify-between gap-2 mb-3">
+                    <div>
+                      <p className="text-[11px] font-extrabold text-gray-900 tracking-wider uppercase mb-0.5 font-sans">
+                        ORDER #{order.id.split('-')[0].toUpperCase()}
+                      </p>
+                      <h4 className="text-base font-extrabold text-gray-900 leading-tight font-sans">
+                        {customerName}
+                      </h4>
+                    </div>
+
+                    <div className="shrink-0">
+                      {isProcessing && (
+                        <span className="bg-[#DFED9F] text-[#41571E] font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#526D27]" />
+                          PROCESSING
+                        </span>
+                      )}
+                      {isShipped && (
+                        <span className="bg-[#CBEAD8] text-[#2B5D47] font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
+                          <Truck className="w-3 h-3 text-[#2B5D47]" />
+                          SHIPPED
+                        </span>
+                      )}
+                      {isDelivered && (
+                        <span className="bg-[#D1F2D9] text-[#1B6331] font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
+                          <CheckCircle className="w-3 h-3 text-[#1B6331]" />
+                          DELIVERED
+                        </span>
+                      )}
+                      {isCancelled && (
+                        <span className="bg-red-100 text-red-800 font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
+                          <X className="w-3 h-3 text-red-800" />
+                          CANCELLED
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Middle Row: Product thumbnail & italic items */}
+                  <div className="flex items-center gap-3.5 my-3">
+                    <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 shadow-2xs shrink-0 overflow-hidden flex items-center justify-center">
+                      {thumbnail ? (
+                        <img src={thumbnail} alt="Order item" className="w-full h-full object-cover mix-blend-multiply" />
+                      ) : (
+                        <Package className="w-6 h-6 text-gray-400" />
+                      )}
+                    </div>
+                    <p className="text-xs italic text-gray-600 font-serif line-clamp-2 leading-relaxed flex-1">
+                      {itemsText}
+                    </p>
+                  </div>
+
+                  {/* Divider Line */}
+                  <div className="border-t border-gray-100 my-3" />
+
+                  {/* Bottom Row: Date, Price, and Chevron */}
+                  <div className="flex items-end justify-between pt-0.5">
+                    <div>
+                      <p className="text-[10px] font-extrabold text-gray-400 tracking-wider uppercase mb-0.5 font-sans">
+                        {dateStr}
+                      </p>
+                      <p className="font-serif text-lg font-extrabold text-gray-900 leading-none">
+                        ₹{Number(order.total_amount || 0).toLocaleString('en-IN')}{!String(order.total_amount || '').includes('.') && '.00'}
+                      </p>
+                    </div>
+                    <div className="w-7 h-7 flex items-center justify-center text-gray-800">
+                      <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* Mobile Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between pt-2 pb-4 px-1 text-xs font-semibold text-gray-600">
+            <span>Page {currentPage} of {totalPages}</span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg shadow-2xs disabled:opacity-40 font-bold"
+              >
+                Prev
+              </button>
+              <button
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg shadow-2xs disabled:opacity-40 font-bold"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* DESKTOP VIEW */}
+      <div className="hidden md:block space-y-6">
+        
+        {/* 1. Statistics Cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {[
           { label: 'Total Orders', tab: 'All Orders', value: stats.total, sub: 'All Time', icon: <Package className="w-5 h-5 text-purple-500"/>, bg: 'bg-purple-50' },
@@ -430,6 +605,7 @@ export default function AdminOrdersPage() {
             </button>
           </div>
         </div>
+      </div>
       </div>
 
       {/* Order Details Sidebar Overlay */}
