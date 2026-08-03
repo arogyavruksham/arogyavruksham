@@ -23,8 +23,13 @@ const inter = Inter({
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: "Premium Indian Plants",
-  description: "Elegant and culturally rich e-commerce for premium Indian Plants.",
+  title: "Arogyavruksham | Premium Indian Plants",
+  description: "Elegant and culturally rich e-commerce for premium Indian Plants from Arogyavruksham.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export const viewport: Viewport = {
