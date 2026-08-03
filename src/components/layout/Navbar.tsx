@@ -24,9 +24,14 @@ const navLinksRight = [
 
 export function Navbar() {
   const pathname = usePathname()
+  const [selectedHref, setSelectedHref] = useState(pathname)
   const { items, toggleCart } = useCartStore()
   const { user, isAuthenticated } = useAuthStore()
   const itemCount = items.reduce((total, item) => total + item.quantity, 0)
+
+  useEffect(() => {
+    setSelectedHref(pathname)
+  }, [pathname])
 
   const [mounted, setMounted] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -104,14 +109,14 @@ export function Navbar() {
     return () => clearInterval(pollInterval)
   }, [isAuthenticated, user?.email])
 
-  const isProfile = pathname?.startsWith('/profile')
-  if (pathname !== '/' && !isProfile) return null
+  if (pathname?.startsWith('/admin')) return null
 
   // Cart total (approximate display)
   const cartTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
-  // On profile page, show ONLY on PC view (xl). On homepage, hide only on mobile phones (< md).
-  const visibilityClass = isProfile ? 'hidden xl:block' : 'hidden md:block'
+  // On homepage, visible on tablet & PC (hidden only on mobile phone, < md). On ALL other pages (shop, profile, portfolio, etc.), visible STRICTLY in PC view (hidden xl:block).
+  const isHome = pathname === '/'
+  const visibilityClass = isHome ? 'hidden md:block' : 'hidden xl:block'
 
   return (
     <>
@@ -147,15 +152,19 @@ export function Navbar() {
             {/* ── Left Nav Links ── */}
             <nav className="flex items-center justify-end gap-6 2xl:gap-9 flex-1 pr-6 2xl:pr-10 h-full">
               {navLinks.map(({ label, href }) => {
-                const isActive = pathname === href || (href !== '/' && pathname?.startsWith(href))
+                const isActive = selectedHref === href || (href !== '/' && selectedHref?.startsWith(href))
                 return (
-                  <Link key={href} href={href}
+                  <Link key={href} href={href} onClick={() => setSelectedHref(href)}
                     className={`relative flex items-center gap-1.5 h-full text-[12px] 2xl:text-[13px] font-bold tracking-wide transition-colors ${isActive ? 'text-primary' : 'text-gray-800 hover:text-primary'}`}>
                     {label}
                     <ChevronDown className={`w-3 h-3 2xl:w-3.5 2xl:h-3.5 ${isActive ? 'text-primary' : 'text-gray-600'}`} />
-                    {/* Active Bottom Border */}
+                    {/* Active Bottom Border - Shared Sliding Indicator */}
                     {isActive && (
-                      <motion.div layoutId="activeNavIndicatorLeft" className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary" />
+                      <motion.div 
+                        layoutId="navbar-shared-indicator" 
+                        className="absolute bottom-0 left-0 right-0 h-[3.5px] bg-[#235839] rounded-t-sm shadow-xs"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
                     )}
                   </Link>
                 )
@@ -165,7 +174,7 @@ export function Navbar() {
             {/* ── CENTER: Breakout Logo ── */}
             <div className="relative flex justify-center items-center shrink-0 w-[150px] xl:w-[165px] z-20">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center mt-1">
-                <Link href="/" className="block">
+                <Link href="/" onClick={() => setSelectedHref('/')} className="block">
                   <motion.img
                     whileHover={{ scale: 1.03 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -180,15 +189,19 @@ export function Navbar() {
             {/* ── Right Nav Links ── */}
             <nav className="flex items-center justify-start gap-6 2xl:gap-9 flex-1 pl-6 2xl:pl-10 h-full">
               {navLinksRight.map(({ label, href }) => {
-                const isActive = pathname === href || (href !== '/' && pathname?.startsWith(href))
+                const isActive = selectedHref === href || (href !== '/' && selectedHref?.startsWith(href))
                 return (
-                  <Link key={href} href={href}
+                  <Link key={href} href={href} onClick={() => setSelectedHref(href)}
                     className={`relative flex items-center gap-1.5 h-full text-[12px] 2xl:text-[13px] font-bold tracking-wide transition-colors ${isActive ? 'text-primary' : 'text-gray-800 hover:text-primary'}`}>
                     {label}
                     <ChevronDown className={`w-3 h-3 2xl:w-3.5 2xl:h-3.5 ${isActive ? 'text-primary' : 'text-gray-600'}`} />
-                    {/* Active Bottom Border */}
+                    {/* Active Bottom Border - Shared Sliding Indicator */}
                     {isActive && (
-                      <motion.div layoutId="activeNavIndicatorRight" className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary" />
+                      <motion.div 
+                        layoutId="navbar-shared-indicator" 
+                        className="absolute bottom-0 left-0 right-0 h-[3.5px] bg-[#235839] rounded-t-sm shadow-xs"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
                     )}
                   </Link>
                 )

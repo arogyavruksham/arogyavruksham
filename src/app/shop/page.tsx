@@ -21,7 +21,7 @@ export default async function ShopPage(props: { searchParams: Promise<{ category
   }
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 xl:pt-40">
       <div className="mb-10">
         <h1 className="font-serif text-[32px] md:text-[42px] font-bold text-[#1E4631] tracking-tight mb-3">
           {q ? `Search Results for "${q}"` : category && category !== 'All' ? `${category}` : 'Botanical Collection'}
