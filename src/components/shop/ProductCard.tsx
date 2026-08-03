@@ -14,7 +14,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ id, title, price, original_price, category, imageUrl, stock_count }: ProductCardProps) {
-  const fallbackImage = 'https://images.unsplash.com/photo-1583391733958-693b3f29b809?auto=format&fit=crop&q=80'
+  const fallbackImage = 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=800&auto=format&fit=crop'
   const isOutOfStock = stock_count !== undefined && stock_count <= 0;
   
   return (
@@ -44,6 +44,7 @@ export function ProductCard({ id, title, price, original_price, category, imageU
             <img 
               src={imageUrl || fallbackImage} 
               alt={title}
+              onError={(e) => { e.currentTarget.src = fallbackImage; }}
               className={`w-full h-full object-contain transition-transform duration-500 mix-blend-multiply ${!isOutOfStock && 'group-hover:scale-105'} ${isOutOfStock && 'opacity-60 grayscale-[50%]'}`}
             />
           </Link>
@@ -55,7 +56,7 @@ export function ProductCard({ id, title, price, original_price, category, imageU
               {title}
             </h3>
             <span className="text-[10px] sm:text-xs text-gray-500 italic mb-2">
-              by Arogyavruksham Silks
+              by Arogyavruksham
             </span>
             <div className="flex items-center gap-1.5 mt-auto">
               <p className="font-sans font-bold text-sm text-[#212121]">
@@ -100,6 +101,7 @@ export function ProductCard({ id, title, price, original_price, category, imageU
           <img 
             src={imageUrl || fallbackImage} 
             alt={title}
+            onError={(e) => { e.currentTarget.src = fallbackImage; }}
             className={`w-full h-full object-contain transition-transform duration-500 mix-blend-multiply ${!isOutOfStock && 'group-hover:scale-105'} ${isOutOfStock && 'opacity-60 grayscale-[50%]'}`}
           />
         </Link>
@@ -107,7 +109,7 @@ export function ProductCard({ id, title, price, original_price, category, imageU
         <div className="px-1 flex flex-col flex-1">
           <Link href={`/shop/${id}`} className="flex flex-col h-full">
             <span className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 font-sans">
-              AROGYAVRUKSHAM SILKS
+              AROGYAVRUKSHAM
             </span>
             <h3 className="font-sans text-xs sm:text-sm md:text-base font-bold text-gray-900 uppercase leading-snug line-clamp-2 hover:text-[#0A58FF] transition-colors flex-1 mb-2">
               {title}

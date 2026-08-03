@@ -44,6 +44,7 @@ function MobileProductCard({ product, index }: { product: any; index: number }) 
           <img 
             src={product.image_url} 
             alt={product.title} 
+            onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=800&auto=format&fit=crop'; }}
             className="h-full w-full object-contain mix-blend-multiply origin-bottom" 
           />
         </div>
@@ -93,6 +94,7 @@ function ProductMiniCard({ product, index }: { product: any; index: number }) {
           <motion.img 
             src={product.image_url} 
             alt={product.title}
+            onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=800&auto=format&fit=crop'; }}
             className="w-[85%] h-[85%] object-contain mix-blend-multiply origin-bottom"
             animate={{ scale: hovered ? 1.08 : 1 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -229,7 +231,12 @@ export function NewArrivalsAndDeals() {
                     className="bg-[#f9f9fb] w-full aspect-[4/5] flex flex-col justify-center items-center p-8 group relative overflow-hidden">
                     
                     <div className="flex-1 w-full flex items-center justify-center p-4">
-                      <img src={dealProduct.image_url} alt={dealProduct.title} className="w-[85%] h-auto max-h-[400px] object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-700 origin-bottom" />
+                      <img 
+                        src={dealProduct.image_url} 
+                        alt={dealProduct.title} 
+                        onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=800&auto=format&fit=crop'; }}
+                        className="w-[85%] h-auto max-h-[400px] object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-700 origin-bottom" 
+                      />
                     </div>
                     
                     <div className="text-center mt-6 w-full">

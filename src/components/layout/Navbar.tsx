@@ -140,12 +140,12 @@ export function Navbar() {
             {/* ── Far Left: Currency + Phone ── */}
             <div className="flex items-center gap-4 2xl:gap-6 shrink-0 w-[210px] 2xl:w-[250px]">
               <span className="text-[11px] 2xl:text-[12px] font-bold text-gray-700 tracking-wide cursor-pointer hover:text-primary transition-colors uppercase">
-                USD | EN
+                INR | IN
               </span>
               <div className="w-px h-4 bg-gray-200" />
               <span className="flex items-center gap-1.5 text-[11px] 2xl:text-[12px] font-bold text-gray-700 whitespace-nowrap">
                 <Phone className="w-3.5 h-3.5 text-gray-700 shrink-0" />
-                034 2333 3444
+                9346297026
               </span>
             </div>
 
