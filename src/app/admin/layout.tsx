@@ -271,7 +271,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* Mobile Centered Logo */}
           <div className={`flex-1 flex justify-center px-2 md:hidden overflow-hidden ${isMobileSearchOpen ? 'hidden' : 'flex'}`}>
-            <img src="/text_logo.png" alt="Arogyavruksham Silks" className="h-6 md:h-8 w-auto max-w-[140px] object-contain" />
+            <Link href="/admin" className="flex items-center justify-center gap-1.5 hover:opacity-95 transition-opacity">
+              <img src="/logo.png" alt="Arogyavruksham Logo" className="h-9 w-auto object-contain mix-blend-multiply scale-110" />
+              <span className="font-serif text-lg font-extrabold text-[#1E4631] tracking-tight">Arogyavruksham</span>
+            </Link>
           </div>
           
           {/* Search Bar */}

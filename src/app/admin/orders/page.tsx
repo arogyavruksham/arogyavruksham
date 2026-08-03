@@ -5,6 +5,19 @@ import { Search, Filter, MoreHorizontal, Eye, Truck, CheckCircle, Loader2, X, Us
 import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/store/authStore'
 
+export const getStatusDisplayName = (status?: string) => {
+  switch (status) {
+    case 'pending': return 'Pending (COD)'
+    case 'paid': return 'Paid / Processing'
+    case 'packed': return 'Packed'
+    case 'shipped': return 'Shipped'
+    case 'out_for_delivery': return 'Out For Delivery'
+    case 'delivered': return 'Delivered'
+    case 'cancelled': return 'Cancelled'
+    default: return status ? status.replace(/_/g, ' ') : 'Unknown'
+  }
+}
+
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -214,10 +227,8 @@ export default function AdminOrdersPage() {
               const thumbnail = order.order_items?.[0]?.products?.image_url;
               
               // Status Styling & Label
-              const isShipped = order.status === 'shipped';
-              const isDelivered = order.status === 'delivered';
-              const isCancelled = order.status === 'cancelled';
-              const isProcessing = !isShipped && !isDelivered && !isCancelled;
+              const status = order.status;
+              const statusLabel = getStatusDisplayName(status).toUpperCase();
 
               const dateStr = order.created_at 
                 ? new Date(order.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
@@ -241,25 +252,43 @@ export default function AdminOrdersPage() {
                     </div>
 
                     <div className="shrink-0">
-                      {isProcessing && (
-                        <span className="bg-[#DFED9F] text-[#41571E] font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#526D27]" />
-                          PROCESSING
+                      {status === 'pending' && (
+                        <span className="bg-yellow-100 text-yellow-800 font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
+                          <span className="w-1.5 h-1.5 rounded-full bg-yellow-600" />
+                          {statusLabel}
                         </span>
                       )}
-                      {isShipped && (
+                      {(status === 'paid' || (!status || (status !== 'pending' && status !== 'packed' && status !== 'shipped' && status !== 'out_for_delivery' && status !== 'delivered' && status !== 'cancelled'))) && (
+                        <span className="bg-[#DFED9F] text-[#41571E] font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#526D27]" />
+                          {statusLabel}
+                        </span>
+                      )}
+                      {status === 'packed' && (
+                        <span className="bg-indigo-100 text-indigo-800 font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
+                          <Package className="w-3 h-3 text-indigo-700" />
+                          PACKED
+                        </span>
+                      )}
+                      {status === 'shipped' && (
                         <span className="bg-[#CBEAD8] text-[#2B5D47] font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
                           <Truck className="w-3 h-3 text-[#2B5D47]" />
                           SHIPPED
                         </span>
                       )}
-                      {isDelivered && (
+                      {status === 'out_for_delivery' && (
+                        <span className="bg-purple-100 text-purple-800 font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
+                          <Truck className="w-3 h-3 text-purple-700" />
+                          OUT FOR DELIVERY
+                        </span>
+                      )}
+                      {status === 'delivered' && (
                         <span className="bg-[#D1F2D9] text-[#1B6331] font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
                           <CheckCircle className="w-3 h-3 text-[#1B6331]" />
                           DELIVERED
                         </span>
                       )}
-                      {isCancelled && (
+                      {status === 'cancelled' && (
                         <span className="bg-red-100 text-red-800 font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
                           <X className="w-3 h-3 text-red-800" />
                           CANCELLED
@@ -556,7 +585,7 @@ export default function AdminOrdersPage() {
                         {order.status === 'out_for_delivery' && <Truck className="w-3 h-3" />}
                         {order.status === 'delivered' && <CheckCircle className="w-3 h-3" />}
                         {order.status === 'cancelled' && <X className="w-3 h-3" />}
-                        <span className="capitalize">{order.status === 'pending' ? 'COD Order' : order.status === 'paid' ? 'Pending' : order.status.replace(/_/g, ' ')}</span>
+                        <span className="capitalize font-medium">{getStatusDisplayName(order.status)}</span>
                       </span>
                     </td>
                     <td className="p-4 text-right">
@@ -742,9 +771,9 @@ export default function AdminOrdersPage() {
                 <div className="relative flex-1">
                   <button 
                     onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
-                    className="w-full text-left bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-sm font-medium text-gray-700 flex justify-between items-center cursor-pointer"
+                    className="w-full text-left bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-sm font-bold text-gray-800 flex justify-between items-center cursor-pointer"
                   >
-                    <span className="capitalize">{selectedOrder.status === 'paid' ? 'Pending' : selectedOrder.status.replace(/_/g, ' ')}</span>
+                    <span>{getStatusDisplayName(selectedOrder.status)}</span>
                     <ChevronDown className="w-4 h-4 text-gray-400" />
                   </button>
                   {statusDropdownOpen && (
@@ -755,9 +784,10 @@ export default function AdminOrdersPage() {
                           onClick={() => {
                             handleUpdateStatus(selectedOrder.id, opt)
                           }}
-                          className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 capitalize cursor-pointer ${selectedOrder.status === opt ? 'bg-blue-50 text-[#1A73E8] font-medium' : 'text-gray-700'}`}
+                          className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 cursor-pointer flex items-center justify-between ${selectedOrder.status === opt ? 'bg-blue-50/90 text-[#1A73E8] font-bold' : 'text-gray-700 font-medium'}`}
                         >
-                          {opt === 'paid' ? 'Pending' : opt.replace(/_/g, ' ')}
+                          <span>{getStatusDisplayName(opt)}</span>
+                          {selectedOrder.status === opt && <CheckCircle className="w-4 h-4 text-[#1A73E8]" />}
                         </button>
                       ))}
                     </div>
