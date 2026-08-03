@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
-import { Search, Filter, MoreHorizontal, Eye, Truck, CheckCircle, Loader2, X, User, MapPin, Package, CreditCard, ChevronDown, Download, Calendar } from 'lucide-react'
+import { Search, Filter, MoreHorizontal, Eye, Truck, CheckCircle, Loader2, X, User, MapPin, Package, CreditCard, ChevronDown, ChevronRight, Download, Calendar } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/store/authStore'
 
