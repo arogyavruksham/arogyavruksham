@@ -40,7 +40,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const searchRef = useRef<HTMLDivElement>(null)
   const notificationsRef = useRef<HTMLDivElement>(null)
 
-  // Handle click outside to close dropdowns
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -54,7 +53,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [searchRef, notificationsRef])
 
-  // Live order notifications
   useEffect(() => {
     if (!isAdminUnlocked) return;
 
@@ -83,7 +81,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     };
   }, [isAdminUnlocked])
 
-  // Perform search
   useEffect(() => {
     if (!searchQuery.trim()) {
       setSearchResults({ products: [], orders: [] })
@@ -129,18 +126,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (user && user.role !== 'admin' && user.role !== 'manager' && user.role !== 'editor') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 flex-col gap-4">
-        <ShieldCheck className="w-16 h-16 text-red-500" />
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 flex-col gap-4 font-sans">
+        <ShieldCheck className="w-16 h-16 text-gray-900" />
         <h1 className="text-2xl font-bold text-gray-900">Access Denied</h1>
         <p className="text-gray-500">You do not have administrator privileges.</p>
-        <Link href="/" className="text-blue-600 hover:underline">Return Home</Link>
+        <Link href="/" className="text-gray-900 underline font-bold">Return Home</Link>
       </div>
     )
   }
 
   if (!isAdminUnlocked) {
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen font-sans">
         <AdminLockScreen />
       </div>
     )
@@ -152,10 +149,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="flex flex-col h-screen bg-[#F8F9FB] overflow-hidden font-sans">
+    <div className="flex flex-col h-screen bg-[#F9FAFB] overflow-hidden font-sans text-gray-900">
       
       {/* Mobile Bottom Nav */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-md border-t border-gray-200 pb-safe shadow-[0_-4px_25px_rgba(0,0,0,0.06)]">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-md border-t border-gray-200 pb-safe shadow-md">
         <div className="flex items-center justify-around h-[70px] px-2 max-w-md mx-auto">
           {[
             { name: 'Dashboard', path: '/admin', icon: DashboardGridIcon, active: pathname === '/admin' },
@@ -166,8 +163,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             const Icon = tab.icon;
             const content = (
               <>
-                <Icon className={`w-5 h-5 mb-0.5 ${tab.active ? 'text-[#FF6B26]' : 'text-gray-500'}`} />
-                <span className={`text-[11px] tracking-tight ${tab.active ? 'font-black text-[#E55B18]' : 'font-semibold text-gray-500'}`}>
+                <Icon className={`w-5 h-5 mb-0.5 ${tab.active ? 'text-gray-900' : 'text-gray-400'}`} />
+                <span className={`text-[11px] tracking-tight ${tab.active ? 'font-black text-gray-900' : 'font-semibold text-gray-500'}`}>
                   {tab.name}
                 </span>
               </>
@@ -178,7 +175,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <button
                   key={tab.name}
                   onClick={tab.onClick}
-                  className="flex flex-col items-center justify-center transition-all text-gray-500 hover:text-red-600 py-1.5 px-3 font-medium min-w-[72px] cursor-pointer"
+                  className="flex flex-col items-center justify-center transition-all text-gray-500 hover:text-gray-900 py-1.5 px-3 font-medium min-w-[72px] cursor-pointer"
                 >
                   {content}
                 </button>
@@ -191,8 +188,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 href={tab.path!}
                 className={`flex flex-col items-center justify-center transition-all ${
                   tab.active 
-                    ? 'bg-[#FFF6F0] text-[#FF6B26] py-1.5 px-3 sm:px-4 rounded-full font-bold shadow-2xs border border-[#FFE1D1] min-w-[76px]' 
-                    : 'text-gray-500 hover:text-gray-800 py-1.5 px-3 font-medium min-w-[72px]'
+                    ? 'bg-gray-100 text-gray-900 py-1.5 px-3 sm:px-4 rounded-xl font-bold min-w-[76px]' 
+                    : 'text-gray-500 hover:text-gray-900 py-1.5 px-3 font-medium min-w-[72px]'
                 }`}
               >
                 {content}
@@ -202,25 +199,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </div>
 
-      {/* Top Header Bar - Clean style without center navigation icons */}
-      <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-6 z-20 shrink-0 shadow-2xs">
+      {/* Top Header Bar - Monochrome Minimalist Style */}
+      <header className="h-16 bg-white border-b border-gray-200/80 flex items-center justify-between px-4 md:px-6 z-20 shrink-0 shadow-2xs">
         <div className="flex items-center gap-3">
-          <Link href="/admin" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
+          <Link href="/admin" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
             <div className="w-8 h-8 rounded-lg bg-white border border-gray-200 shadow-2xs p-1 flex items-center justify-center shrink-0">
               <img src="/logo.png" alt="Logo" className="w-full h-full object-contain mix-blend-multiply" />
             </div>
             <span className="font-sans font-black text-xl tracking-tight text-gray-900 flex items-center">
-              arogyavruksham <span className="ml-2 text-xs font-bold px-2 py-0.5 bg-[#FFF6F0] text-[#FF6B26] rounded-md border border-[#FFE1D1] hidden sm:inline-block">Admin</span>
+              arogyavruksham <span className="ml-2 text-xs font-black px-2 py-0.5 bg-gray-900 text-white rounded-md hidden sm:inline-block">Admin</span>
             </span>
           </Link>
         </div>
 
-        {/* Clean Center - No icons as requested by user */}
+        {/* Clean Center */}
         <div className="flex-1"></div>
 
         {/* Right Side Tools & Icons */}
         <div className="flex items-center gap-2 sm:gap-3">
-          <button className="p-2.5 rounded-full text-gray-600 hover:bg-gray-100 transition-colors hidden sm:flex items-center justify-center cursor-pointer" title="Apps & Shortcuts">
+          <button className="p-2.5 rounded-xl text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors hidden sm:flex items-center justify-center cursor-pointer" title="Apps & Shortcuts">
             <LayoutGrid className="w-5 h-5" />
           </button>
           
@@ -231,12 +228,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 setShowNotifications(!showNotifications)
                 if (!showNotifications) setUnreadCount(0)
               }}
-              className="p-2.5 rounded-full text-gray-600 hover:bg-gray-100 transition-colors relative flex items-center justify-center cursor-pointer"
+              className="p-2.5 rounded-xl text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors relative flex items-center justify-center cursor-pointer"
               title="Order Notifications"
             >
               <Bell className="w-5 h-5" />
               {unreadCount > 0 && (
-                <span className="absolute top-1 right-1 bg-[#FF6B26] text-white font-black text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs animate-pulse">
+                <span className="absolute top-1 right-1 bg-gray-900 text-white font-black text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs">
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </span>
               )}
@@ -244,12 +241,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
             {showNotifications && (
               <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 text-left">
-                <div className="p-4 bg-gray-50/80 border-b border-gray-200 flex justify-between items-center">
+                <div className="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
                   <div className="flex items-center gap-2">
-                    <Bell className="w-4 h-4 text-[#FF6B26]" />
+                    <Bell className="w-4 h-4 text-gray-900" />
                     <h4 className="font-bold text-gray-900 text-sm">New Order Notifications</h4>
                   </div>
-                  <span className="text-[10px] font-black uppercase tracking-wider bg-[#FFF6F0] text-[#FF6B26] border border-[#FFE1D1] px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-black uppercase tracking-wider bg-gray-900 text-white px-2 py-0.5 rounded-full">
                     Live Feed
                   </span>
                 </div>
@@ -274,16 +271,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             setShowNotifications(false);
                             router.push('/admin/orders');
                           }}
-                          className="p-3.5 hover:bg-orange-50/40 transition-colors cursor-pointer flex items-start gap-3 group"
+                          className="p-3.5 hover:bg-gray-50 transition-colors cursor-pointer flex items-start gap-3 group"
                         >
                           <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
-                            notif.status === 'pending' ? 'bg-[#FFF6F0] text-[#FF6B26] border border-[#FFE1D1]' : 'bg-gray-50 text-gray-500 border border-gray-100'
+                            notif.status === 'pending' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600'
                           }`}>
                             <ShoppingBag className="w-4 h-4" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-baseline gap-2">
-                              <p className="font-bold text-gray-900 text-xs truncate group-hover:text-[#FF6B26] transition-colors">
+                              <p className="font-bold text-gray-900 text-xs truncate group-hover:underline transition-colors">
                                 Order #{notif.id.slice(0, 8).toUpperCase()}
                               </p>
                               <span className="text-[10px] text-gray-400 shrink-0 font-mono">{dateStr}, {timeStr}</span>
@@ -295,9 +292,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                               <span className="font-black text-gray-900 text-xs">
                                 ₹{Number(notif.total_amount || 0).toLocaleString('en-IN')}
                               </span>
-                              <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest ${
-                                notif.status === 'pending' ? 'bg-[#FFF6F0] text-[#FF6B26] border border-[#FFE1D1]' : 'bg-gray-100 text-gray-600'
-                              }`}>
+                              <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest bg-gray-100 text-gray-800">
                                 {notif.status}
                               </span>
                             </div>
@@ -312,7 +307,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   <Link 
                     href="/admin/orders" 
                     onClick={() => setShowNotifications(false)}
-                    className="text-xs font-bold text-[#FF6B26] hover:underline flex items-center justify-center gap-1"
+                    className="text-xs font-bold text-gray-900 hover:underline flex items-center justify-center gap-1"
                   >
                     View All Orders <ChevronRight className="w-3.5 h-3.5" />
                   </Link>
@@ -322,7 +317,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           {/* User Profile Button */}
-          <button className="w-9 h-9 bg-[#FFF6F0] text-[#FF6B26] border border-[#FFE1D1] rounded-full shadow-xs flex items-center justify-center font-black text-sm hover:bg-orange-100/60 transition-colors" title="Account">
+          <button className="w-9 h-9 bg-gray-900 text-white rounded-full shadow-xs flex items-center justify-center font-black text-sm hover:bg-black transition-colors cursor-pointer" title="Account">
             {user?.email?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
           </button>
           
@@ -339,8 +334,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Container below header */}
       <div className="flex flex-1 overflow-hidden relative">
         
-        {/* Left Sidebar - Clean white with Search at top */}
-        <aside className="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col shrink-0 overflow-y-auto">
+        {/* Left Sidebar - Monochrome white & black navigation */}
+        <aside className="w-64 bg-white border-r border-gray-200/80 hidden md:flex flex-col shrink-0 overflow-y-auto">
           
           {/* Sidebar Top Search Input Box */}
           <div className="p-4 pb-3" ref={searchRef}>
@@ -352,7 +347,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => { if (searchQuery.trim()) setShowDropdown(true) }}
                 placeholder="Search..." 
-                className="w-full pl-9 pr-8 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#FF6B26] focus:ring-1 focus:ring-[#FF6B26] transition-all shadow-2xs"
+                className="w-full pl-9 pr-8 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-all shadow-2xs"
               />
               {isSearching && (
                 <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 animate-spin" />
@@ -380,7 +375,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 <p className="text-[11px] text-gray-500">{order.users?.full_name || 'Guest'}</p>
                               </div>
                               <div className="text-right">
-                                <p className="text-xs font-bold text-[#FF6B26]">₹{order.total_amount}</p>
+                                <p className="text-xs font-bold text-gray-900">₹{order.total_amount}</p>
                                 <span className="text-[9px] font-bold text-gray-400 uppercase">{order.status}</span>
                               </div>
                             </Link>
@@ -445,38 +440,38 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   href={item.path} 
                   className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
                     isActive 
-                      ? 'bg-[#FFF6F0] text-[#FF6B26] font-bold shadow-2xs border border-[#FFE1D1]' 
+                      ? 'bg-gray-900 text-white font-bold shadow-xs' 
                       : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <item.icon className={`w-4 h-4 ${isActive ? 'text-[#FF6B26]' : 'text-gray-400'}`} />
+                    <item.icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-400'}`} />
                     <span>{item.name}</span>
                   </div>
                   {item.chevron ? (
-                    <ChevronDown className={`w-3.5 h-3.5 ${isActive ? 'text-[#FF6B26]' : 'text-gray-400'}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-gray-400'}`} />
                   ) : isActive ? (
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#FF6B26]" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-white" />
                   ) : null}
                 </Link>
               )
             })}
           </nav>
 
-          {/* Clean footer - No partner ad banners */}
+          {/* Clean footer */}
           <div className="p-3 border-t border-gray-100 mt-auto">
             <button 
               onClick={handleAdminLogout} 
-              className="flex items-center gap-3 px-3.5 py-2.5 w-full rounded-xl text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors text-sm font-medium cursor-pointer"
+              className="flex items-center gap-3 px-3.5 py-2.5 w-full rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors text-sm font-semibold cursor-pointer"
             >
-              <LogOut className="w-4 h-4 text-gray-400 group-hover:text-red-500" />
+              <LogOut className="w-4 h-4 text-gray-400" />
               <span>Lock Admin Panel</span>
             </button>
           </div>
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto bg-[#F8F9FB] p-4 md:p-8 pb-24 md:pb-12">
+        <main className="flex-1 overflow-y-auto bg-[#F9FAFB] p-4 md:p-8 pb-24 md:pb-12">
           <div className="w-full max-w-7xl mx-auto">
             {children}
           </div>
@@ -506,7 +501,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search orders or products..." 
-                  className="w-full pl-9 pr-4 py-2 bg-gray-50 rounded-xl text-xs text-gray-700 outline-none"
+                  className="w-full pl-9 pr-4 py-2 bg-gray-50 rounded-xl text-xs text-gray-900 outline-none"
                 />
               </div>
             </div>
@@ -533,11 +528,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all ${
                       isActive 
-                        ? 'bg-[#FFF6F0] text-[#FF6B26] font-bold border border-[#FFE1D1]' 
+                        ? 'bg-gray-900 text-white font-bold' 
                         : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
                     }`}
                   >
-                    <item.icon className={`w-4 h-4 ${isActive ? 'text-[#FF6B26]' : 'text-gray-400'}`} /> 
+                    <item.icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-400'}`} /> 
                     <span>{item.name}</span>
                   </Link>
                 )
@@ -547,7 +542,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="p-4 border-t border-gray-100">
               <button 
                 onClick={() => { setIsMobileMenuOpen(false); handleAdminLogout(); }} 
-                className="flex items-center gap-3 px-3.5 py-2.5 w-full rounded-xl text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors font-medium text-sm"
+                className="flex items-center gap-3 px-3.5 py-2.5 w-full rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors font-semibold text-sm"
               >
                 <LogOut className="w-4 h-4 text-gray-400" /> Lock Panel
               </button>

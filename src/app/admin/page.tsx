@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { adminDbProxy } from '@/lib/admin-proxy'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 
-const PIE_COLORS = ['#FF6B26', '#E2E8F0'];
+const PIE_COLORS = ['#111827', '#E2E8F0'];
 
 export default function AdminDashboard() {
   const [metrics, setMetrics] = useState({
@@ -199,16 +199,16 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <Loader2 className="w-8 h-8 animate-spin text-[#FF6B26]" />
+        <Loader2 className="w-8 h-8 animate-spin text-gray-900" />
       </div>
     )
   }
 
   return (
-    <div className="space-y-6 max-w-full overflow-hidden pb-16 font-sans">
+    <div className="space-y-6 max-w-full overflow-hidden pb-16 font-sans text-gray-900">
       
       {/* Header & Global Filter */}
-      <div className="flex justify-between items-center border-b border-gray-200 pb-4">
+      <div className="flex justify-between items-center border-b border-gray-200/80 pb-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight">Dashboard Overview</h1>
           <p className="text-xs text-gray-500 mt-1">
@@ -218,7 +218,7 @@ export default function AdminDashboard() {
         <select 
           value={globalDateFilter}
           onChange={(e) => setGlobalDateFilter(e.target.value)}
-          className="bg-white border border-gray-200 text-gray-700 text-sm font-bold rounded-xl px-4 py-2 outline-none shadow-2xs cursor-pointer hover:border-gray-300"
+          className="bg-white border border-gray-300 text-gray-900 text-sm font-bold rounded-xl px-4 py-2 outline-none shadow-2xs cursor-pointer hover:border-gray-900 transition-colors"
         >
           <option value="Last 7 Days">Last 7 Days</option>
           <option value="Last 30 Days">Last 30 Days</option>
@@ -227,87 +227,87 @@ export default function AdminDashboard() {
         </select>
       </div>
 
-      {/* Metric Cards - Clean TagMango orange styling */}
+      {/* Metric Cards - Clean Monochrome Styling */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Total Revenue */}
-        <div className="bg-white p-5 rounded-2xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
+        <div className="bg-white p-5 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
           <div className="flex justify-between items-start">
             <span className="text-gray-500 font-semibold text-sm">Total Revenue ({globalDateFilter})</span>
-            <div className="w-9 h-9 bg-[#FFF6F0] rounded-xl flex items-center justify-center text-[#FF6B26] border border-[#FFE1D1]">
+            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-900 border border-gray-200">
               <TrendingUp className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <p className="text-2xl md:text-3xl font-black text-[#FF6B26]">₹{metrics.totalSales.toLocaleString('en-IN')}</p>
-            <span className="inline-flex items-center text-xs font-bold text-green-600 mt-1">
+            <p className="text-2xl md:text-3xl font-black text-gray-900">₹{metrics.totalSales.toLocaleString('en-IN')}</p>
+            <span className="inline-flex items-center text-xs font-semibold text-gray-600 mt-1">
               <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" /> +14.2% from previous term
             </span>
           </div>
         </div>
 
         {/* Total Order */}
-        <div className="bg-white p-5 rounded-2xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
+        <div className="bg-white p-5 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
           <div className="flex justify-between items-start">
             <span className="text-gray-500 font-semibold text-sm">Total Orders ({globalDateFilter})</span>
-            <div className="w-9 h-9 bg-blue-50/80 rounded-xl flex items-center justify-center text-blue-600 border border-blue-100">
+            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-900 border border-gray-200">
               <ShoppingBag className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <p className="text-2xl md:text-3xl font-black text-[#FF6B26]">{metrics.totalOrders}</p>
-            <span className="inline-flex items-center text-xs font-bold text-green-600 mt-1">
+            <p className="text-2xl md:text-3xl font-black text-gray-900">{metrics.totalOrders}</p>
+            <span className="inline-flex items-center text-xs font-semibold text-gray-600 mt-1">
               <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" /> +8.4% order velocity
             </span>
           </div>
         </div>
 
         {/* Total Customer */}
-        <div className="bg-white p-5 rounded-2xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
+        <div className="bg-white p-5 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
           <div className="flex justify-between items-start">
             <span className="text-gray-500 font-semibold text-sm">Unique Customers ({globalDateFilter})</span>
-            <div className="w-9 h-9 bg-emerald-50/80 rounded-xl flex items-center justify-center text-emerald-600 border border-emerald-100">
+            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-900 border border-gray-200">
               <Users className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <p className="text-2xl md:text-3xl font-black text-[#FF6B26]">{metrics.totalCustomers}</p>
-            <span className="inline-flex items-center text-xs font-bold text-blue-600 mt-1">
+            <p className="text-2xl md:text-3xl font-black text-gray-900">{metrics.totalCustomers}</p>
+            <span className="inline-flex items-center text-xs font-semibold text-gray-600 mt-1">
               <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" /> Repeat & new retention
             </span>
           </div>
         </div>
 
         {/* Pending Delivery */}
-        <div className="bg-white p-5 rounded-2xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
+        <div className="bg-white p-5 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
           <div className="flex justify-between items-start">
             <span className="text-gray-500 font-semibold text-sm">Pending Fulfillment</span>
-            <div className="w-9 h-9 bg-amber-50/80 rounded-xl flex items-center justify-center text-amber-600 border border-amber-100">
+            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-900 border border-gray-200">
               <Package className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <p className="text-2xl md:text-3xl font-black text-[#FF6B26]">{metrics.pendingDelivery}</p>
-            <span className="inline-flex items-center text-xs font-bold text-orange-600 mt-1">
+            <p className="text-2xl md:text-3xl font-black text-gray-900">{metrics.pendingDelivery}</p>
+            <span className="inline-flex items-center text-xs font-semibold text-gray-500 mt-1">
               Requires immediate action
             </span>
           </div>
         </div>
       </div>
       
-      {/* Charts Row */}
+      {/* Charts Row - Monochrome Black & White Recharts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Sales Analytic Chart */}
-        <div className="bg-white p-6 rounded-2xl shadow-2xs border border-gray-200/80 lg:col-span-2 flex flex-col">
+        <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80 lg:col-span-2 flex flex-col">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-[#FF6B26]" /> Revenue & Expense Velocity
+              <TrendingUp className="w-5 h-5 text-gray-900" /> Revenue & Expense Velocity
             </h2>
             <select 
               value={salesMonthFilter}
               onChange={(e) => setSalesMonthFilter(e.target.value)}
-              className="bg-gray-50 border border-gray-200 text-gray-700 font-bold text-xs rounded-xl px-3.5 py-1.5 outline-none cursor-pointer"
+              className="bg-gray-50 border border-gray-200 text-gray-900 font-bold text-xs rounded-xl px-3.5 py-1.5 outline-none cursor-pointer hover:border-gray-400"
             >
               {availableMonths.map(m => (
                 <option key={m} value={m}>{m}</option>
@@ -316,24 +316,24 @@ export default function AdminDashboard() {
           </div>
           <div className="flex flex-wrap gap-4 sm:gap-8 mb-6 bg-gray-50/60 p-4 rounded-xl border border-gray-100">
             <div>
-              <p className="text-xs font-bold uppercase text-gray-400 mb-1">Total Income</p>
+              <p className="text-xs font-bold uppercase text-gray-500 mb-1">Total Income</p>
               <div className="flex items-baseline gap-2">
                 <p className="text-xl font-black text-gray-900">₹{chartTotals.income.toLocaleString('en-IN')}</p>
-                <span className="text-[10px] bg-green-100 text-green-800 px-1.5 py-0.5 rounded font-bold">+12%</span>
+                <span className="text-[10px] bg-gray-200 text-gray-800 px-1.5 py-0.5 rounded font-bold">+12%</span>
               </div>
             </div>
             <div>
-              <p className="text-xs font-bold uppercase text-gray-400 mb-1">Est. Expenses</p>
+              <p className="text-xs font-bold uppercase text-gray-500 mb-1">Est. Expenses</p>
               <div className="flex items-baseline gap-2">
                 <p className="text-xl font-black text-gray-900">₹{chartTotals.expenses.toLocaleString('en-IN')}</p>
-                <span className="text-[10px] bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded font-bold">40% Cost</span>
+                <span className="text-[10px] bg-gray-200 text-gray-800 px-1.5 py-0.5 rounded font-bold">40% Cost</span>
               </div>
             </div>
             <div>
-              <p className="text-xs font-black uppercase text-[#FF6B26] mb-1">Net Margin Balance</p>
+              <p className="text-xs font-black uppercase text-gray-900 mb-1">Net Margin Balance</p>
               <div className="flex items-baseline gap-2">
-                <p className="text-xl font-black text-[#FF6B26]">₹{chartTotals.balance.toLocaleString('en-IN')}</p>
-                <span className="text-[10px] bg-[#FFF6F0] text-[#FF6B26] border border-[#FFE1D1] px-1.5 py-0.5 rounded font-bold">Optimal</span>
+                <p className="text-xl font-black text-gray-900">₹{chartTotals.balance.toLocaleString('en-IN')}</p>
+                <span className="text-[10px] bg-gray-900 text-white px-1.5 py-0.5 rounded font-bold">Optimal</span>
               </div>
             </div>
           </div>
@@ -342,23 +342,23 @@ export default function AdminDashboard() {
               <AreaChart data={salesData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#FF6B26" stopOpacity={0.35}/>
-                    <stop offset="95%" stopColor="#FF6B26" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#111827" stopOpacity={0.25}/>
+                    <stop offset="95%" stopColor="#111827" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#94a3b8', fontWeight: 600 }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#94a3b8', fontWeight: 600 }} />
-                <Tooltip cursor={{ stroke: '#f1f5f9', strokeWidth: 2, strokeDasharray: '3 3', fill: 'transparent' }} contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }} />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748b', fontWeight: 600 }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748b', fontWeight: 600 }} />
+                <Tooltip cursor={{ stroke: '#cbd5e1', strokeWidth: 1.5, strokeDasharray: '3 3', fill: 'transparent' }} contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }} />
                 <Area 
                   type="monotone" 
                   dataKey="income" 
-                  stroke="#FF6B26" 
-                  strokeWidth={3} 
+                  stroke="#111827" 
+                  strokeWidth={2.5} 
                   fillOpacity={1} 
                   fill="url(#colorIncome)" 
-                  dot={{ r: 4, fill: '#fff', stroke: '#FF6B26', strokeWidth: 2 }} 
-                  activeDot={{ r: 6, fill: '#FF6B26', stroke: '#fff', strokeWidth: 2 }} 
+                  dot={{ r: 3, fill: '#fff', stroke: '#111827', strokeWidth: 2 }} 
+                  activeDot={{ r: 5, fill: '#111827', stroke: '#fff', strokeWidth: 2 }} 
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -366,9 +366,9 @@ export default function AdminDashboard() {
         </div>
 
         {/* Sales Target Donut */}
-        <div className="bg-white p-6 rounded-2xl shadow-2xs border border-gray-200/80 flex flex-col">
+        <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col">
           <h2 className="text-lg font-black text-gray-900 mb-6 flex items-center gap-2">
-            <Info className="w-5 h-5 text-[#FF6B26]" /> Sales Target Quota
+            <Info className="w-5 h-5 text-gray-900" /> Sales Target Quota
           </h2>
           <div className="flex-1 flex flex-col justify-center items-center relative">
             <div className="h-52 w-full">
@@ -406,11 +406,11 @@ export default function AdminDashboard() {
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-[#FF6B26]"></div>
-                  <span className="text-xs text-gray-700 font-black uppercase">Monthly Goal</span>
+                  <div className="w-3 h-3 rounded-full bg-gray-900"></div>
+                  <span className="text-xs text-gray-900 font-black uppercase">Monthly Goal</span>
                 </div>
-                <div className="flex items-center gap-1 font-black text-[#FF6B26] text-base">
-                  <ArrowUpRight className="w-4 h-4 text-[#FF6B26]" /> ₹145,000
+                <div className="flex items-center gap-1 font-black text-gray-900 text-base">
+                  <ArrowUpRight className="w-4 h-4 text-gray-900" /> ₹145,000
                 </div>
               </div>
             </div>
@@ -422,19 +422,19 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Top Selling Products */}
-        <div className="bg-white p-6 rounded-2xl shadow-2xs border border-gray-200/80 lg:col-span-2">
+        <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80 lg:col-span-2">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
-              <Package className="w-5 h-5 text-[#FF6B26]" /> Top Performing Products
+              <Package className="w-5 h-5 text-gray-900" /> Top Performing Products
             </h2>
             <div className="flex gap-2">
-              <button className="p-1 hover:bg-gray-100 rounded-lg text-gray-400">&larr;</button>
-              <button className="p-1 hover:bg-gray-100 rounded-lg text-gray-600">&rarr;</button>
+              <button className="p-1 hover:bg-gray-100 rounded-lg text-gray-500">&larr;</button>
+              <button className="p-1 hover:bg-gray-100 rounded-lg text-gray-900">&rarr;</button>
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {topProducts.map((product) => (
-              <div key={product.id} className="flex flex-col border border-gray-100 rounded-xl p-3 hover:border-orange-200 transition-all group">
+              <div key={product.id} className="flex flex-col border border-gray-200 rounded-xl p-3 hover:border-gray-900 transition-all group">
                 <div className="bg-gray-50 rounded-xl aspect-square mb-3 p-3 flex items-center justify-center overflow-hidden">
                   {product.image_url ? (
                     <img src={product.image_url} alt={product.title} className="object-contain w-full h-full mix-blend-multiply group-hover:scale-105 transition-transform" />
@@ -444,8 +444,8 @@ export default function AdminDashboard() {
                 </div>
                 <h4 className="font-bold text-gray-900 text-xs truncate">{product.title || product.name}</h4>
                 <div className="flex items-center justify-between mt-1">
-                  <span className="text-xs font-black text-[#FF6B26]">₹{product.price}</span>
-                  <span className="text-[10px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded font-semibold">{product.sales_count} Sold</span>
+                  <span className="text-xs font-black text-gray-900">₹{product.price}</span>
+                  <span className="text-[10px] bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded font-semibold">{product.sales_count} Sold</span>
                 </div>
               </div>
             ))}
@@ -453,12 +453,12 @@ export default function AdminDashboard() {
         </div>
 
         {/* Current Offer */}
-        <div className="bg-white p-6 rounded-2xl shadow-2xs border border-gray-200/80">
+        <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-[#FF6B26]" /> Active Campaigns
+              <TrendingUp className="w-5 h-5 text-gray-900" /> Active Campaigns
             </h2>
-            <a href="/admin/offers" className="text-xs font-bold text-[#FF6B26] hover:underline">Manage</a>
+            <a href="/admin/offers" className="text-xs font-bold text-gray-900 underline hover:no-underline">Manage</a>
           </div>
           <div className="space-y-6">
             {activeCoupons.length === 0 ? (
@@ -483,21 +483,21 @@ export default function AdminDashboard() {
               const isExpired = now > end;
 
               return (
-                <div key={coupon.id} className="p-3 bg-gray-50/60 rounded-xl border border-gray-100">
+                <div key={coupon.id} className="p-3 bg-gray-50 rounded-xl border border-gray-200">
                   <div className="flex justify-between items-center text-sm mb-2">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-gray-900">{coupon.title}</span>
-                      {isExpired && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-red-50 text-red-600 border border-red-100 uppercase">Expired</span>}
-                      {isUpcoming && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-50 text-amber-600 border border-amber-100 uppercase">Scheduled</span>}
-                      {!isExpired && !isUpcoming && <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-[#FFF6F0] text-[#FF6B26] border border-[#FFE1D1] uppercase">Active</span>}
+                      {isExpired && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gray-200 text-gray-600 uppercase">Expired</span>}
+                      {isUpcoming && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gray-200 text-gray-800 uppercase">Scheduled</span>}
+                      {!isExpired && !isUpcoming && <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-gray-900 text-white uppercase">Active</span>}
                     </div>
-                    <span className="text-gray-400 text-[11px] font-medium">
+                    <span className="text-gray-500 text-[11px] font-medium">
                       {new Date(coupon.expiry_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                     <div 
-                      className={`h-2 rounded-full ${isUpcoming ? 'bg-amber-400' : (isExpired ? 'bg-red-400' : 'bg-[#FF6B26]')}`} 
+                      className={`h-2 rounded-full ${isUpcoming ? 'bg-gray-400' : (isExpired ? 'bg-gray-300' : 'bg-gray-900')}`} 
                       style={{ width: `${progress}%` }}
                     ></div>
                   </div>
@@ -508,16 +508,16 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Detailed Orders Table */}
-      <div className="bg-white rounded-2xl shadow-2xs border border-gray-200/80 overflow-hidden mt-6">
-        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+      {/* Detailed Orders Table - Clean Card System */}
+      <div className="bg-white rounded-xl shadow-2xs border border-gray-200/80 overflow-hidden mt-6">
+        <div className="p-6 border-b border-gray-200/80 flex justify-between items-center bg-gray-50/50">
           <div>
             <h2 className="font-black text-lg text-gray-900 flex items-center gap-2">
-              <ShoppingBag className="w-5 h-5 text-[#FF6B26]" /> Recent Orders Details
+              <ShoppingBag className="w-5 h-5 text-gray-900" /> Recent Orders Details
             </h2>
             <p className="text-xs text-gray-500 mt-0.5">Live transaction records across all payment gateways</p>
           </div>
-          <a href="/admin/orders" className="text-xs font-bold bg-[#FFF6F0] text-[#FF6B26] border border-[#FFE1D1] hover:bg-[#FF6B26] hover:text-white px-3.5 py-2 rounded-xl transition-all">
+          <a href="/admin/orders" className="text-xs font-bold bg-gray-900 text-white hover:bg-black px-4 py-2 rounded-xl transition-all shadow-xs">
             View All Orders
           </a>
         </div>
@@ -525,7 +525,7 @@ export default function AdminDashboard() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[800px] whitespace-nowrap">
             <thead>
-              <tr className="bg-gray-50/80 border-b border-gray-200/80 text-xs uppercase tracking-wider text-gray-500 font-bold">
+              <tr className="bg-gray-50 border-b border-gray-200/80 text-xs uppercase tracking-wider text-gray-500 font-semibold">
                 <th className="p-4 pl-6">Order Info</th>
                 <th className="p-4">Customer Details</th>
                 <th className="p-4 w-1/3">Shipping Address</th>
@@ -546,14 +546,14 @@ export default function AdminDashboard() {
                 const avatarLetter = customerName.charAt(0).toUpperCase()
                 
                 return (
-                  <tr key={order.id} className="hover:bg-orange-50/20 transition-colors">
+                  <tr key={order.id} className="hover:bg-gray-50/80 transition-colors">
                     <td className="p-4 pl-6 align-top">
                       <p className="font-bold font-mono text-gray-900">#{order.id.split('-')[0].toUpperCase()}</p>
                       <p className="text-xs text-gray-400 mt-0.5 font-mono">{new Date(order.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                     </td>
                     <td className="p-4 align-top">
                       <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-[#FFF6F0] text-[#FF6B26] border border-[#FFE1D1] flex items-center justify-center font-black text-xs shrink-0">{avatarLetter}</div>
+                        <div className="w-8 h-8 rounded-xl bg-gray-100 text-gray-900 border border-gray-200 flex items-center justify-center font-black text-xs shrink-0">{avatarLetter}</div>
                         <div>
                           <p className="font-bold text-gray-900">{customerName}</p>
                           <p className="text-xs text-gray-500 mt-0.5">{customerEmail}</p>
@@ -564,7 +564,7 @@ export default function AdminDashboard() {
                       {order.shipping_address ? (
                         <div className="text-xs text-gray-600 bg-gray-50/80 p-3 rounded-xl border border-gray-100 w-full min-w-[200px] whitespace-normal">
                           <div className="flex items-center gap-1.5 mb-1">
-                            <MapPin className="w-3.5 h-3.5 text-[#FF6B26]" />
+                            <MapPin className="w-3.5 h-3.5 text-gray-700" />
                             <span className="font-bold text-gray-900">{order.shipping_address.name}</span>
                           </div>
                           <p className="leading-relaxed text-gray-600 line-clamp-2">
@@ -580,11 +580,10 @@ export default function AdminDashboard() {
                       ₹{Number(order.total_amount).toLocaleString('en-IN')}
                     </td>
                     <td className="p-4 pr-6 align-top">
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black tracking-wide uppercase ${
-                        order.status === 'delivered' ? 'bg-green-50 text-green-700 border border-green-200/60' :
-                        order.status === 'cancelled' ? 'bg-red-50 text-red-600 border border-red-200/60' :
-                        order.status === 'shipped' ? 'bg-blue-50 text-blue-700 border border-blue-200/60' :
-                        'bg-[#FFF6F0] text-[#FF6B26] border border-[#FFE1D1]'
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide ${
+                        order.status === 'delivered' ? 'bg-gray-100 text-gray-900 border border-gray-300' :
+                        order.status === 'cancelled' ? 'bg-gray-100 text-gray-400 border border-gray-200 line-through' :
+                        'bg-gray-900 text-white'
                       }`}>
                         {order.status.toUpperCase()}
                       </span>
