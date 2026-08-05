@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Package, Settings, LogOut, ShoppingCart, Users, ShieldCheck, Menu, X, BarChart2, Tag, Archive, TrendingUp, Mail, Calendar, Bell, Search, ChevronRight, Loader2, ShoppingBag, Megaphone, Lock } from 'lucide-react'
+import { LayoutDashboard, Package, Settings, LogOut, ShoppingCart, Users, ShieldCheck, Menu, X, BarChart2, Tag, Archive, TrendingUp, Mail, Calendar, Bell, Search, ChevronRight, Loader2, ShoppingBag, Megaphone, Lock, LayoutGrid, User, ChevronDown, Sparkles } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { AdminLockScreen } from '@/components/admin/AdminLockScreen'
 import { useEffect, useState, useRef } from 'react'

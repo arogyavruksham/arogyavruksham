@@ -1,11 +1,11 @@
 'use client'
 
-import { TrendingUp, Users, Package, ShoppingBag, ArrowUpRight, ArrowDownRight, MoreVertical, Loader2, MapPin } from 'lucide-react'
+import { TrendingUp, Users, Package, ShoppingBag, ArrowUpRight, ArrowDownRight, MoreVertical, Loader2, MapPin, Info } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { adminDbProxy } from '@/lib/admin-proxy'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 
-const PIE_COLORS = ['#51D3B7', '#E2E8F0'];
+const PIE_COLORS = ['#FF6B26', '#E2E8F0'];
 
 export default function AdminDashboard() {
   const [metrics, setMetrics] = useState({

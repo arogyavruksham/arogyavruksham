@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { 
   BarChart3, TrendingUp, ShoppingBag, PackageCheck, Loader2, Tag, 
   CheckCircle2, Clock, Calendar, ChevronRight, X, Eye, DollarSign, 
-  Users, Truck, ArrowUpRight, User, MapPin, Package, CreditCard
+  Users, Truck, ArrowUpRight, User, MapPin, Package, CreditCard, Info, ChevronDown
 } from 'lucide-react'
 import { adminDbProxy } from '@/lib/admin-proxy'
 import { 
