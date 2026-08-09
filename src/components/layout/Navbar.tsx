@@ -133,7 +133,7 @@ export function Navbar() {
 
         {/* ─── DESKTOP ─── */}
         <div className={`hidden xl:flex w-full items-center border-b border-gray-100 overflow-visible transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-white'}`}
-          style={{ height: '82px' }}>
+          style={{ height: '64px' }}>
           
           <div className="w-full max-w-full mx-auto px-4 xl:px-8 2xl:px-12 flex items-center overflow-visible h-full">
 
@@ -180,7 +180,7 @@ export function Navbar() {
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     src="/logo.png"
                     alt="Arogyavruksham"
-                    className="w-[150px] h-[150px] xl:w-[165px] xl:h-[165px] drop-shadow-md object-contain"
+                    className="w-[110px] h-[110px] xl:w-[125px] xl:h-[125px] drop-shadow-md object-contain"
                   />
                 </Link>
               </div>

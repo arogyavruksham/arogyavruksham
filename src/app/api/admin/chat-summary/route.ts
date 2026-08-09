@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server'
-import { GoogleGenAI } from '@google/genai'
 import { createClient } from '@/lib/supabase/server'
-
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
 
 export async function POST(req: Request) {
   try {
@@ -25,27 +22,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'No transcript provided' }, { status: 400 })
     }
 
-    const prompt = `
-You are an executive assistant for the Arogyavruksham store administrator.
-Read the following chat logs between our customers and our AI support bot from today.
+    // Simple rule-based summary since AI API is not used
+    const lines = transcript.split('\n');
+    const userMessageCount = lines.filter((l: string) => l.startsWith('User:')).length;
 
-Please provide a concise, bulleted executive summary covering:
-1. **Key Inquiries:** What are customers asking about most? (e.g., specific products, policies, delivery).
-2. **Issues/Complaints:** Were there any negative experiences or failed answers?
-3. **Actionable Insights:** What should the store admin do based on these conversations?
+    const summaryText = `
+**Rule-Based AI Summary Fallback**
+(AI generation is disabled to avoid API costs/errors)
 
-Keep it professional and easy to read.
+- **Total Messages Exchanged Today**: ${lines.length}
+- **Questions Asked by Users**: ${userMessageCount}
 
-Here are the logs:
-${transcript}
-`
+*Tip: Scroll down to view the raw conversation logs below.*
+    `;
 
-    const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: prompt,
-    })
-
-    return NextResponse.json({ summary: response.text })
+    return NextResponse.json({ summary: summaryText })
 
   } catch (error: any) {
     console.error('Chat Summary error:', error)

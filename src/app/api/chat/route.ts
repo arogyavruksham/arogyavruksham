@@ -1,9 +1,5 @@
 import { NextResponse } from 'next/server'
-import { GoogleGenAI } from '@google/genai'
 import { createClient } from '@/lib/supabase/server'
-
-// Initialize the Google Gen AI client
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
 
 export async function POST(req: Request) {
   try {
@@ -18,45 +14,24 @@ export async function POST(req: Request) {
     // Get basic context about the store to feed to the AI
     const { data: products } = await supabase.from('products').select('title, price, stock_count, description').limit(10)
     
-    const storeContext = `
-You are the Arogyavruksham AI Assistant. Your job is to help customers with their queries about our premium Indian Plants.
-Be friendly, concise, and helpful. You can also share general botanical and Ayurvedic knowledge.
-Here are some of our popular products:
-${(products || []).map((p: any) => `- ${p.title}: ₹${p.price} (${p.stock_count > 0 ? 'In Stock' : 'Out of Stock'}) - ${p.description?.substring(0, 50)}...`).join('\n')}
-
-Important Policies:
-- Free delivery on all orders
-- Orders can be cancelled from the 'My Profile' page before they are shipped.
-- Contact support at: support@arogyavruksham.com
-`
-
-    // Format history for Gemini
-    const formattedHistory = history.map((msg: any) => ({
-      role: msg.role === 'model' ? 'model' : 'user',
-      parts: [{ text: msg.content }]
-    }))
-
-    // Add context to the first user message if history is empty, otherwise we rely on system prompt if supported
-    // But since `systemInstruction` is supported in `gemini-2.5-flash`:
-    
     let replyText = '';
-    
-    try {
-      const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash',
-          contents: [
-            ...formattedHistory,
-            { role: 'user', parts: [{ text: message }] }
-          ],
-          config: {
-              systemInstruction: storeContext,
-              temperature: 0.7
-          }
-      })
-      replyText = response.text || "I'm sorry, I couldn't understand that.";
-    } catch(aiError) {
-      console.error("AI Error:", aiError)
-      replyText = "I'm currently experiencing technical difficulties. Please try again later."
+    const userMsg = message.toLowerCase();
+
+    // --- RULE-BASED LOGIC ---
+    if (userMsg.includes('shipping') || userMsg.includes('delivery')) {
+      replyText = "We offer free delivery on all our orders! Shipping usually takes 3-5 business days depending on your location. Our plants are carefully packaged to ensure they reach you in perfect health.";
+    } else if (userMsg.includes('refund') || userMsg.includes('cancel')) {
+      replyText = "You can easily cancel your order from the 'My Profile' > 'My Orders' section, provided the order is still processing. We do not offer refunds once an order has been shipped.";
+    } else if (userMsg.includes('hello') || userMsg.includes('hi') || userMsg.includes('hey')) {
+      replyText = "Hello there! Welcome to Arogyavruksham. I'm your botanical assistant. How can I help you with our premium Indian plants today?";
+    } else if (userMsg.includes('plant') || userMsg.includes('buy') || userMsg.includes('shop')) {
+      replyText = "We have a wide variety of premium, resilient Indian plants perfect for modern homes. Check out our latest collections in the 'Shop' section! Some of our top plants are: \n" + (products || []).map((p: any) => `- ${p.title} (₹${p.price})`).join('\n');
+    } else if (userMsg.includes('contact') || userMsg.includes('support') || userMsg.includes('help')) {
+      replyText = "If you need human assistance, our support team is always ready to help! You can reach us at support@arogyavruksham.com or message us on WhatsApp using the button on the screen.";
+    } else if (userMsg.includes('thank')) {
+      replyText = "You're very welcome! Let me know if there's anything else you need.";
+    } else {
+      replyText = "I'm sorry, I don't quite understand that. Since I am a simple rule-based assistant, you might want to try asking about 'shipping', 'refunds', or 'plants'. If you need more help, please contact our support team at support@arogyavruksham.com!";
     }
 
     // Log the session and messages in the database
