@@ -30,8 +30,14 @@ export async function POST(req: Request) {
       replyText = "If you need human assistance, our support team is always ready to help! You can reach us at support@arogyavruksham.com or message us on WhatsApp using the button on the screen.";
     } else if (userMsg.includes('thank')) {
       replyText = "You're very welcome! Let me know if there's anything else you need.";
+    } else if (userMsg.includes('order') || userMsg.includes('update') || userMsg.includes('track') || userMsg.includes('status')) {
+      replyText = "To check your order status, please log in and visit the 'My Profile' > 'My Orders' section. You'll find live updates there!";
+    } else if (userMsg.includes('payment') || userMsg.includes('cod') || userMsg.includes('pay')) {
+      replyText = "We accept all major credit/debit cards and UPI via Razorpay. Currently, we do not offer Cash on Delivery (COD).";
+    } else if (userMsg.includes('return') || userMsg.includes('exchange')) {
+      replyText = "Due to the nature of live plants, we do not accept returns. However, if your plant arrives damaged, please contact us with photos within 24 hours of delivery at support@arogyavruksham.com for a replacement.";
     } else {
-      replyText = "I'm sorry, I don't quite understand that. Since I am a simple rule-based assistant, you might want to try asking about 'shipping', 'refunds', or 'plants'. If you need more help, please contact our support team at support@arogyavruksham.com!";
+      replyText = "I'm sorry, I don't quite understand that. Since I am a simple rule-based assistant, you might want to try asking about 'orders', 'shipping', 'refunds', or 'plants'. If you need more help, please contact our support team at support@arogyavruksham.com!";
     }
 
     // Log the session and messages in the database

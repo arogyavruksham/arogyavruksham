@@ -63,8 +63,14 @@ export function Chatbot() {
         className={`fixed bottom-40 md:bottom-24 right-6 w-14 h-14 bg-green-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-green-700 hover:scale-110 transition-all z-40 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
         aria-label="Open Chat"
       >
-        <MessageCircle className="w-6 h-6" />
+        <Bot className="w-6 h-6" />
       </button>
+
+      {/* Help Tooltip */}
+      <div className={`fixed bottom-[11.5rem] md:bottom-[7.5rem] right-24 bg-white px-3 py-1.5 rounded-lg shadow-md border border-gray-100 text-sm font-medium text-gray-700 z-30 transition-all ${isOpen ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'} animate-bounce`}>
+        Need help?
+        <div className="absolute top-1/2 -right-2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></div>
+      </div>
 
       {/* Chat Window */}
       <div className={`fixed bottom-40 md:bottom-24 right-6 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 transform origin-bottom-right z-50 border border-gray-200 ${isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'}`} style={{ height: '500px', maxHeight: 'calc(100vh - 100px)' }}>
@@ -95,9 +101,10 @@ export function Chatbot() {
           ))}
           {isLoading && (
             <div className="flex justify-start">
-              <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-2 shadow-sm">
-                <Loader2 className="w-4 h-4 text-green-600 animate-spin" />
-                <span className="text-xs text-gray-500 font-medium">Typing...</span>
+              <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1 shadow-sm h-[40px]">
+                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
               </div>
             </div>
           )}
