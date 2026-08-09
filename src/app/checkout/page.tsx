@@ -126,6 +126,10 @@ export default function CheckoutPage() {
         setCouponError('This coupon has expired.')
         return
       }
+      if (data.usage_limit !== null && data.usage_count >= data.usage_limit) {
+        setCouponError('This coupon has reached its usage limit.')
+        return
+      }
 
       applyCoupon({ code: data.code, discount_type: data.discount_type, discount_value: data.discount_value })
       setCouponInput('')

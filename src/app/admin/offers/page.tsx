@@ -224,6 +224,7 @@ export default function OffersPage() {
                 const end = new Date(coupon.expiry_date).getTime()
                 let statusBadge = { label: 'Active', classes: 'bg-green-50 text-green-700 border-green-200/60' }
                 if (!coupon.is_active) statusBadge = { label: 'Inactive', classes: 'bg-gray-100 text-gray-500 border-gray-200' }
+                else if (coupon.usage_limit !== null && coupon.usage_count >= coupon.usage_limit) statusBadge = { label: 'Limit Reached', classes: 'bg-red-50 text-red-700 border-red-200/60' }
                 else if (now > end) statusBadge = { label: 'Expired', classes: 'bg-red-50 text-red-700 border-red-200/60' }
                 else if (now < start) statusBadge = { label: 'Scheduled', classes: 'bg-amber-50 text-amber-700 border-amber-200/60' }
 
