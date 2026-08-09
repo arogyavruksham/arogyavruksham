@@ -35,9 +35,7 @@ export default function AISummaryPage() {
         table: 'chat_messages',
         order: { column: 'created_at', ascending: true }
       })
-      
-      if (error) throw new Error(error.message)
-      
+      if (error) throw new Error((error as any).message)
       // Filter for today client-side for simplicity since admin proxy doesn't support complex filters
       const todayMessages = (data || []).filter((msg: ChatMessage) => new Date(msg.created_at) >= today)
       setMessages(todayMessages)

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { GoogleGenAI } from '@google/genai'
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import { createClient } from '@/lib/supabase/server'
 
 // Initialize the Google Gen AI client
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
@@ -9,7 +8,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
 export async function POST(req: Request) {
   try {
     const { message, history } = await req.json()
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!message) {
@@ -23,7 +22,7 @@ export async function POST(req: Request) {
 You are the Arogyavruksham AI Assistant. Your job is to help customers with their queries about our premium Indian Plants.
 Be friendly, concise, and helpful. You can also share general botanical and Ayurvedic knowledge.
 Here are some of our popular products:
-${products?.map(p => `- ${p.title}: ₹${p.price} (${p.stock_count > 0 ? 'In Stock' : 'Out of Stock'}) - ${p.description.substring(0, 50)}...`).join('\n')}
+${(products || []).map((p: any) => `- ${p.title}: ₹${p.price} (${p.stock_count > 0 ? 'In Stock' : 'Out of Stock'}) - ${p.description?.substring(0, 50)}...`).join('\n')}
 
 Important Policies:
 - Free delivery on all orders
@@ -68,7 +67,7 @@ Important Policies:
     let sessionId = null;
     
     // Find a recent session
-    const { data: recentSession } = await supabase
+    const { data: recentSession } = await (supabase as any)
       .from('chat_sessions')
       .select('id')
       .eq(userId ? 'user_id' : 'id', userId || '00000000-0000-0000-0000-000000000000') // Dummy if anonymous and no session handling implemented
@@ -77,18 +76,18 @@ Important Policies:
       .single()
 
     if (recentSession && userId) {
-      sessionId = recentSession.id
-      await supabase.from('chat_sessions').update({ last_activity: new Date().toISOString() }).eq('id', sessionId)
+      sessionId = (recentSession as any).id
+      await (supabase as any).from('chat_sessions').update({ last_activity: new Date().toISOString() }).eq('id', sessionId)
     } else {
-      const { data: newSession } = await supabase.from('chat_sessions').insert({ user_id: userId }).select('id').single()
-      sessionId = newSession?.id
+      const { data: newSession } = await (supabase as any).from('chat_sessions').insert({ user_id: userId }).select('id').single()
+      sessionId = (newSession as any)?.id
     }
 
     if (sessionId) {
       // Insert user message
-      await supabase.from('chat_messages').insert({ session_id: sessionId, role: 'user', content: message })
+      await (supabase as any).from('chat_messages').insert({ session_id: sessionId, role: 'user', content: message })
       // Insert bot message
-      await supabase.from('chat_messages').insert({ session_id: sessionId, role: 'model', content: replyText })
+      await (supabase as any).from('chat_messages').insert({ session_id: sessionId, role: 'model', content: replyText })
     }
 
     return NextResponse.json({ reply: replyText })

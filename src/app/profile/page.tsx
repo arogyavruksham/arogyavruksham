@@ -151,25 +151,7 @@ function ProfileContent() {
       fetchAddresses()
     }
 
-    const handleCancelOrder = async (orderId: string) => {
-      if (!confirm('Are you sure you want to cancel this order?')) return;
-      try {
-        const res = await fetch('/api/orders/cancel', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderId })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          alert('Order cancelled successfully.');
-          fetchOrders();
-        } else {
-          alert(data.error || 'Failed to cancel order.');
-        }
-      } catch (err) {
-        alert('An error occurred.');
-      }
-    };
+
 
     window.addEventListener('address-updated', handleAddressUpdate)
     return () => {
@@ -177,6 +159,28 @@ function ProfileContent() {
       if (pollInterval) clearInterval(pollInterval)
     }
   }, [isAuthenticated])
+
+  const handleCancelOrder = async (orderId: string) => {
+    if (!confirm('Are you sure you want to cancel this order?')) return;
+    try {
+      const res = await fetch('/api/orders/cancel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('Order cancelled successfully.');
+        // fetchOrders is inside useEffect, so we can trigger a reload or abstract fetchOrders.
+        // For simplicity, we can just reload the page.
+        window.location.reload();
+      } else {
+        alert(data.error || 'Failed to cancel order.');
+      }
+    } catch (err) {
+      alert('An error occurred.');
+    }
+  };
 
   if (!mounted || !isAuthenticated) return null
 

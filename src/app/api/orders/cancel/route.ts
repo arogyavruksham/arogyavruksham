@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server'
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import { createClient } from '@/lib/supabase/server'
 
 export async function POST(req: Request) {
   try {
     const { orderId } = await req.json()
-    const supabase = createRouteHandlerClient({ cookies })
+    const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
@@ -17,7 +16,7 @@ export async function POST(req: Request) {
     }
 
     // Check order status and ownership
-    const { data: order, error: orderError } = await supabase
+    const { data: order, error: orderError } = await (supabase as any)
       .from('orders')
       .select('status, user_id, order_items(product_id, quantity)')
       .eq('id', orderId)
@@ -36,7 +35,7 @@ export async function POST(req: Request) {
     }
 
     // Mark order as cancelled
-    const { error: updateError } = await supabase
+    const { error: updateError } = await (supabase as any)
       .from('orders')
       .update({ status: 'cancelled' })
       .eq('id', orderId)
