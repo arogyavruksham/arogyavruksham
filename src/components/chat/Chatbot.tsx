@@ -57,19 +57,23 @@ export function Chatbot() {
 
   return (
     <>
-      {/* Floating Button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className={`fixed bottom-40 md:bottom-24 right-6 w-14 h-14 bg-green-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-green-700 hover:scale-110 transition-all z-40 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-        aria-label="Open Chat"
-      >
-        <Bot className="w-6 h-6" />
-      </button>
+      {/* Floating Button Container */}
+      <div className={`fixed bottom-40 md:bottom-24 right-6 z-40 flex items-center gap-4 transition-all ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+        
+        {/* Help Tooltip */}
+        <div className="relative bg-white px-3 py-2 rounded-lg shadow-md border border-gray-100 text-sm font-medium text-gray-700 animate-pulse">
+          Need help?
+          <div className="absolute top-1/2 -right-2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></div>
+        </div>
 
-      {/* Help Tooltip */}
-      <div className={`fixed bottom-[11.5rem] md:bottom-[7.5rem] right-24 bg-white px-3 py-1.5 rounded-lg shadow-md border border-gray-100 text-sm font-medium text-gray-700 z-30 transition-all ${isOpen ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'} animate-bounce`}>
-        Need help?
-        <div className="absolute top-1/2 -right-2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></div>
+        {/* Button */}
+        <button
+          onClick={() => setIsOpen(true)}
+          className="w-14 h-14 bg-green-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-green-700 hover:scale-110 transition-all"
+          aria-label="Open Chat"
+        >
+          <Bot className="w-6 h-6" />
+        </button>
       </div>
 
       {/* Chat Window */}
