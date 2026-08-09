@@ -13,6 +13,8 @@ type Coupon = {
   start_date: string
   expiry_date: string
   is_active: boolean
+  usage_count: number
+  usage_limit: number | null
 }
 
 function toLocalDateTimeInput(d?: string | Date) {
@@ -42,7 +44,8 @@ export default function OffersPage() {
     discount_value: '',
     start_date: toLocalDateTimeInput(),
     expiry_date: '',
-    is_active: true
+    is_active: true,
+    usage_limit: ''
   })
 
   useEffect(() => {
@@ -74,7 +77,8 @@ export default function OffersPage() {
         discount_value: coupon.discount_value.toString(),
         start_date: toLocalDateTimeInput(coupon.start_date),
         expiry_date: toLocalDateTimeInput(coupon.expiry_date),
-        is_active: coupon.is_active
+        is_active: coupon.is_active,
+        usage_limit: coupon.usage_limit !== null && coupon.usage_limit !== undefined ? coupon.usage_limit.toString() : ''
       })
     } else {
       setEditingId(null)
@@ -85,7 +89,8 @@ export default function OffersPage() {
         discount_value: '',
         start_date: toLocalDateTimeInput(),
         expiry_date: '',
-        is_active: true
+        is_active: true,
+        usage_limit: ''
       })
     }
     setIsModalOpen(true)
@@ -99,6 +104,7 @@ export default function OffersPage() {
       ...formData,
       code: formData.code.toUpperCase(),
       discount_value: Number(formData.discount_value),
+      usage_limit: formData.usage_limit ? Number(formData.usage_limit) : null,
       start_date: formData.start_date ? new Date(formData.start_date).toISOString() : null,
       expiry_date: formData.expiry_date ? new Date(formData.expiry_date).toISOString() : null
     }
@@ -192,6 +198,7 @@ export default function OffersPage() {
                 <th className="p-4 font-bold">OFFER TITLE</th>
                 <th className="p-4 font-bold">PROMO CODE</th>
                 <th className="p-4 font-bold">DISCOUNT VALUE</th>
+                <th className="p-4 font-bold">USAGE</th>
                 <th className="p-4 font-bold">VALIDITY WINDOW</th>
                 <th className="p-4 font-bold">STATUS</th>
                 <th className="p-4 pr-6 font-bold text-right">ACTIONS</th>
@@ -233,6 +240,9 @@ export default function OffersPage() {
                     </td>
                     <td className="p-4 font-black text-gray-900 text-base">
                       {coupon.discount_type === 'percentage' ? `${coupon.discount_value}% OFF` : `₹${coupon.discount_value} OFF`}
+                    </td>
+                    <td className="p-4 text-sm font-semibold text-gray-700">
+                      {coupon.usage_count} / {coupon.usage_limit === null ? '∞' : coupon.usage_limit}
                     </td>
                     <td className="p-4 text-xs font-mono text-gray-600 space-y-0.5">
                       <div><span className="font-bold text-gray-400">START:</span> {new Date(coupon.start_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
@@ -297,6 +307,10 @@ export default function OffersPage() {
               </div>
 
               <div className="flex flex-col gap-4">
+                <div>
+                  <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Usage Limit</label>
+                  <input type="number" min="1" placeholder="Unlimited if left empty" value={formData.usage_limit} onChange={e => setFormData({...formData, usage_limit: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 text-gray-900 font-bold text-sm" />
+                </div>
                 <div>
                   <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Start Timestamp</label>
                   <input required type="datetime-local" value={formData.start_date} onChange={e => setFormData({...formData, start_date: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900 text-gray-900 font-semibold text-xs font-mono" />

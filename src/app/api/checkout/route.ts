@@ -29,6 +29,9 @@ export async function POST(request: Request) {
       if (now < start || now > end) {
         return NextResponse.json({ error: 'Applied coupon has expired or is not active yet.' }, { status: 400 })
       }
+      if (couponData.usage_limit !== null && couponData.usage_count >= couponData.usage_limit) {
+        return NextResponse.json({ error: 'Applied coupon has reached its usage limit.' }, { status: 400 })
+      }
     }
 
     // 1. Create the Order
@@ -56,6 +59,12 @@ export async function POST(request: Request) {
       .in('id', productIds)
 
     if (productsError) throw new Error(`Failed to fetch products: ${productsError.message}`)
+
+    // 2.5 Increment coupon usage count
+    if (appliedCoupon && appliedCoupon.code) {
+      await (supabaseAdmin as any).rpc('increment_coupon_usage', { p_code: appliedCoupon.code })
+        .catch((err: any) => console.error("Failed to increment coupon usage", err));
+    }
 
     const productMap = new Map()
     if (productsData) {

@@ -150,7 +150,28 @@ function ProfileContent() {
     const handleAddressUpdate = () => {
       fetchAddresses()
     }
-    window.addEventListener('addressUpdated', handleAddressUpdate)
+
+    const handleCancelOrder = async (orderId: string) => {
+      if (!confirm('Are you sure you want to cancel this order?')) return;
+      try {
+        const res = await fetch('/api/orders/cancel', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alert('Order cancelled successfully.');
+          fetchOrders();
+        } else {
+          alert(data.error || 'Failed to cancel order.');
+        }
+      } catch (err) {
+        alert('An error occurred.');
+      }
+    };
+
+    window.addEventListener('address-updated', handleAddressUpdate)
     return () => {
       window.removeEventListener('addressUpdated', handleAddressUpdate)
       if (pollInterval) clearInterval(pollInterval)
@@ -406,6 +427,15 @@ function ProfileContent() {
                                 </div>
                               );
                             })()}
+                            
+                            {(order.status === 'pending' || order.status === 'paid' || order.status === 'processing') && (
+                              <button 
+                                onClick={() => handleCancelOrder(order.id)}
+                                className="mt-4 w-full px-4 py-2 bg-white border border-red-200 text-red-600 rounded-xl text-xs font-bold hover:bg-red-50 transition-colors shadow-xs cursor-pointer"
+                              >
+                                Cancel Order
+                              </button>
+                            )}
                           </div>
                         </div>
                         
@@ -981,6 +1011,15 @@ function ProfileContent() {
                     <span className="font-bold text-[#689f38] text-lg">₹{mobileActiveOrder.total_amount?.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
+                
+                {(mobileActiveOrder.status === 'pending' || mobileActiveOrder.status === 'paid' || mobileActiveOrder.status === 'processing') && (
+                  <button 
+                    onClick={() => handleCancelOrder(mobileActiveOrder.id)}
+                    className="mt-6 w-full px-4 py-3 bg-white border border-red-200 text-red-600 rounded-2xl text-sm font-bold hover:bg-red-50 transition-colors shadow-xs cursor-pointer"
+                  >
+                    Cancel Order
+                  </button>
+                )}
               </div>
 
               <div className="pb-8">

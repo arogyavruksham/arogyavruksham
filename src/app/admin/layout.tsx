@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Package, Settings, LogOut, ShoppingCart, Users, ShieldCheck, Menu, X, BarChart2, Tag, Archive, TrendingUp, Mail, Calendar, Bell, Search, ChevronRight, Loader2, ShoppingBag, Megaphone, Lock, LayoutGrid, User, ChevronDown, Sparkles } from 'lucide-react'
+import { LayoutDashboard, Package, Settings, LogOut, ShoppingCart, Users, ShieldCheck, Menu, X, BarChart2, Tag, Archive, TrendingUp, Mail, Calendar, Bell, Search, ChevronRight, Loader2, ShoppingBag, Megaphone, Lock, LayoutGrid, User, ChevronDown, Sparkles, Bot } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { AdminLockScreen } from '@/components/admin/AdminLockScreen'
 import { useEffect, useState, useRef } from 'react'
@@ -419,6 +419,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {[
               { name: 'Get Started', path: '/admin', icon: Sparkles },
               { name: 'Analytics', path: '/admin/analytics', icon: BarChart2 },
+              { name: 'AI Summaries', path: '/admin/ai-summary', icon: Bot },
               { name: 'Products', path: '/admin/products', icon: Package, chevron: true },
               { name: 'Orders & Sales', path: '/admin/orders', icon: ShoppingCart, chevron: true },
               { name: 'Offers & Coupons', path: '/admin/offers', icon: Tag },

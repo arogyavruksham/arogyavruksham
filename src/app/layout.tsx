@@ -9,6 +9,7 @@ import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { ReviewPromptModal } from "@/components/reviews/ReviewPromptModal";
 import { AuthProvider } from "@/components/providers/AuthProvider";
+import { Chatbot } from "@/components/chat/Chatbot";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -57,6 +58,7 @@ export default function RootLayout({
           <CartDrawer />
           <AuthModal />
           <WhatsAppButton />
+          <Chatbot />
           <BottomNav />
           <ReviewPromptModal />
         </AuthProvider>
