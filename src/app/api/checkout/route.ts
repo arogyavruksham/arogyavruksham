@@ -62,8 +62,8 @@ export async function POST(request: Request) {
 
     // 2.5 Increment coupon usage count
     if (appliedCoupon && appliedCoupon.code) {
-      await (supabaseAdmin as any).rpc('increment_coupon_usage', { p_code: appliedCoupon.code })
-        .catch((err: any) => console.error("Failed to increment coupon usage", err));
+      const { error: couponErr } = await (supabaseAdmin as any).rpc('increment_coupon_usage', { p_code: appliedCoupon.code })
+      if (couponErr) console.error("Failed to increment coupon usage", couponErr);
     }
 
     const productMap = new Map()
