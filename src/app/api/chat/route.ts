@@ -124,7 +124,7 @@ ${userContextText}
     }))
 
     const result = await streamText({
-      model: openrouter('openrouter/free'),
+      model: openrouter('openrouter/auto'),
       system: systemPrompt,
       messages: coreMessages,
       async onFinish({ text }) {
