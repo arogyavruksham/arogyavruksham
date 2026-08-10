@@ -9,7 +9,7 @@ export function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const [input, setInput] = useState('')
-  const { messages, sendMessage, status } = useChat({
+  const { messages, sendMessage, status, error } = useChat({
     messages: [
       { id: '1', role: 'assistant', parts: [{ type: 'text', text: 'Hi there! I am your Arogyavruksham assistant. How can I help you today?' }] }
     ] as any
@@ -75,7 +75,7 @@ export function Chatbot() {
                   ? 'bg-green-600 text-white rounded-tr-sm' 
                   : 'bg-white border border-gray-200 text-gray-800 rounded-tl-sm shadow-sm'
               }`}>
-                {msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')}
+                {msg.content || (msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join(''))}
               </div>
             </div>
           ))}
@@ -85,6 +85,13 @@ export function Chatbot() {
                 <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                 <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                 <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              </div>
+            </div>
+          )}
+          {error && (
+            <div className="flex justify-center">
+              <div className="bg-red-50 text-red-500 rounded-lg px-4 py-2 text-sm border border-red-100">
+                Connection error. Please try again.
               </div>
             </div>
           )}
