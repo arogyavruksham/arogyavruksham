@@ -36,9 +36,9 @@ export default function AISummaryPage() {
       today.setHours(0, 0, 0, 0)
       
       const [ordersRes, usersRes, chatsRes] = await Promise.all([
-        adminDbProxy({ action: 'select', table: 'orders' }),
-        adminDbProxy({ action: 'select', table: 'users' }),
-        adminDbProxy({ action: 'select', table: 'chat_messages' })
+        adminDbProxy({ action: 'select', table: 'orders' }).catch(e => { console.error(e); return { data: [] } }),
+        adminDbProxy({ action: 'select', table: 'users' }).catch(e => { console.error(e); return { data: [] } }),
+        adminDbProxy({ action: 'select', table: 'chat_messages' }).catch(e => { console.error(e); return { data: [] } })
       ])
 
       const todayOrders = (ordersRes.data || []).filter((o: any) => new Date(o.created_at) >= today).length
