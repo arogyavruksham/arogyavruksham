@@ -80,7 +80,7 @@ ${(products || []).map((p: any) => `- ${p.title} (₹${p.price}) - ${p.stock_cou
       }
     });
 
-    return result.toTextStreamResponse();
+    return result.toUIMessageStreamResponse();
 
   } catch (error: any) {
     console.error('Chat error:', error)
