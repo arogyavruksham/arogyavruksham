@@ -18,9 +18,9 @@ export async function POST(req: Request) {
 
     // Get basic context about the store to feed to the AI
     const { data: products } = await supabase.from('products').select('title, price, stock_count, description').limit(20)
-    
+
     // Fetch user's recent orders if logged in
-    let userOrdersText = "User is not logged in or has no recent orders."
+    let userContextText = ""
     if (user?.id) {
       const { data: orders } = await supabase
         .from('orders')
@@ -40,13 +40,15 @@ export async function POST(req: Request) {
         .limit(5)
 
       if (orders && orders.length > 0) {
-        userOrdersText = orders.map((o: any) => 
+        userContextText = `[SYSTEM: The user IS currently logged in. Here are their recent orders:]\n` + orders.map((o: any) => 
           `Order ID: ${o.id.split('-')[0]}... | Date: ${new Date(o.created_at).toLocaleDateString()} | Status: ${o.status.toUpperCase()} | Total: ₹${o.total_amount}\n` +
           `Items: ${o.order_items.map((i: any) => `${i.quantity}x ${i.products?.title || 'Unknown Plant'}`).join(', ')}`
         ).join('\n\n')
       } else {
-        userOrdersText = "User has no past orders."
+        userContextText = "[SYSTEM: The user IS logged in, but they have zero past orders in the database. Tell them they haven't placed any orders yet.]"
       }
+    } else {
+      userContextText = "[SYSTEM: The user is NOT logged in. Tell them they need to log in to view their orders.]"
     }
 
     // Initialize OpenRouter client
@@ -69,8 +71,8 @@ Store Context:
 Current Top Plants in Stock:
 ${(products || []).map((p: any) => `- ${p.title} (₹${p.price}) - ${p.stock_count > 0 ? 'In Stock' : 'Out of Stock'}\n  Description: ${p.description}`).join('\n')}
 
-User's Recent Orders:
-${userOrdersText}
+User Context:
+${userContextText}
 `
 
     // Find or create session for logging
