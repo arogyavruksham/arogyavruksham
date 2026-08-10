@@ -2,21 +2,18 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react'
-
-type Message = {
-  id: string
-  role: 'user' | 'model'
-  content: string
-}
+import { useChat } from '@ai-sdk/react'
 
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([
-    { id: '1', role: 'model', content: 'Hi there! I am your Arogyavruksham assistant. How can I help you today?' }
-  ])
-  const [input, setInput] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+    api: '/api/chat',
+    initialMessages: [
+      { id: '1', role: 'assistant', content: 'Hi there! I am your Arogyavruksham assistant. How can I help you today?' }
+    ]
+  })
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -25,35 +22,6 @@ export function Chatbot() {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!input.trim() || isLoading) return
-
-    const userMsg: Message = { id: Date.now().toString(), role: 'user', content: input.trim() }
-    setMessages(prev => [...prev, userMsg])
-    setInput('')
-    setIsLoading(true)
-
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMsg.content, history: messages.slice(1) })
-      })
-      
-      const data = await res.json()
-      if (res.ok) {
-        setMessages(prev => [...prev, { id: Date.now().toString(), role: 'model', content: data.reply }])
-      } else {
-        throw new Error(data.error || 'Failed to get response')
-      }
-    } catch (error: any) {
-      setMessages(prev => [...prev, { id: Date.now().toString(), role: 'model', content: `Sorry, I encountered an error: ${error.message}` }])
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   return (
     <>
@@ -121,7 +89,7 @@ export function Chatbot() {
             <input
               type="text"
               value={input}
-              onChange={e => setInput(e.target.value)}
+              onChange={handleInputChange}
               placeholder="Type your message..."
               className="flex-1 bg-gray-100 border-transparent focus:bg-white focus:border-green-500 focus:ring-1 focus:ring-green-500 rounded-full px-4 py-2.5 text-sm outline-none transition-all pr-12"
             />

@@ -1,11 +1,14 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { generateText } from 'ai'
+import { streamText } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'
 
 export async function POST(req: Request) {
   try {
-    const { message, history } = await req.json()
+    const { messages } = await req.json()
+    const lastMessage = messages[messages.length - 1]
+    const message = lastMessage?.content
+
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -16,7 +19,7 @@ export async function POST(req: Request) {
     // Get basic context about the store to feed to the AI
     const { data: products } = await supabase.from('products').select('title, price, stock_count, description').limit(20)
     
-    // Initialize OpenRouter client (using OpenAI SDK structure since they are compatible)
+    // Initialize OpenRouter client
     const openrouter = createOpenAI({
       baseURL: 'https://openrouter.ai/api/v1',
       apiKey: process.env.OPENROUTER_API_KEY || '',
@@ -37,32 +40,13 @@ Current Top Plants in Stock:
 ${(products || []).map((p: any) => `- ${p.title} (₹${p.price}) - ${p.stock_count > 0 ? 'In Stock' : 'Out of Stock'}\n  Description: ${p.description}`).join('\n')}
 `
 
-    let replyText = '';
-    
-    try {
-      const { text } = await generateText({
-        model: openrouter('openai/gpt-oss-20b:free'),
-        system: systemPrompt,
-        prompt: message,
-      });
-      replyText = text;
-    } catch (aiError) {
-      console.error('DeepSeek AI Error:', aiError);
-      replyText = "I'm experiencing a temporary issue connecting to my AI brain. Please email support@arogyavruksham.com if you need immediate assistance.";
-    }
-
-    // Log the session and messages in the database
-    // We will simplify: just fetch the latest active session for this user in the last 2 hours, or create one.
-    // If anonymous, we can use a session cookie, but for simplicity we'll just create a new session if none provided in request.
-    
+    // Find or create session for logging
     const userId = user?.id || null;
     let sessionId = null;
-    
-    // Find a recent session
     const { data: recentSession } = await (supabase as any)
       .from('chat_sessions')
       .select('id')
-      .eq(userId ? 'user_id' : 'id', userId || '00000000-0000-0000-0000-000000000000') // Dummy if anonymous and no session handling implemented
+      .eq(userId ? 'user_id' : 'id', userId || '00000000-0000-0000-0000-000000000000')
       .order('last_activity', { ascending: false })
       .limit(1)
       .single()
@@ -76,13 +60,22 @@ ${(products || []).map((p: any) => `- ${p.title} (₹${p.price}) - ${p.stock_cou
     }
 
     if (sessionId) {
-      // Insert user message
       await (supabase as any).from('chat_messages').insert({ session_id: sessionId, role: 'user', content: message })
-      // Insert bot message
-      await (supabase as any).from('chat_messages').insert({ session_id: sessionId, role: 'model', content: replyText })
     }
 
-    return NextResponse.json({ reply: replyText })
+    // Stream the response
+    const result = await streamText({
+      model: openrouter('openai/gpt-oss-20b:free'),
+      system: systemPrompt,
+      messages: messages,
+      async onFinish({ text }) {
+        if (sessionId) {
+          await (supabase as any).from('chat_messages').insert({ session_id: sessionId, role: 'model', content: text })
+        }
+      }
+    });
+
+    return result.toTextStreamResponse();
 
   } catch (error: any) {
     console.error('Chat error:', error)
