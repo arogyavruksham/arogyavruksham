@@ -11,7 +11,7 @@ export function Chatbot() {
   const [input, setInput] = useState('')
   const { messages, sendMessage, status } = useChat({
     messages: [
-      { id: '1', role: 'assistant', content: 'Hi there! I am your Arogyavruksham assistant. How can I help you today?' }
+      { id: '1', role: 'assistant', parts: [{ type: 'text', text: 'Hi there! I am your Arogyavruksham assistant. How can I help you today?' }] }
     ]
   })
   const isLoading = status === 'in_progress' || status === 'submitted'
@@ -19,7 +19,7 @@ export function Chatbot() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!input.trim() || isLoading) return
-    sendMessage({ role: 'user', content: input.trim() })
+    sendMessage({ text: input.trim() })
     setInput('')
   }
 
@@ -75,7 +75,7 @@ export function Chatbot() {
                   ? 'bg-green-600 text-white rounded-tr-sm' 
                   : 'bg-white border border-gray-200 text-gray-800 rounded-tl-sm shadow-sm'
               }`}>
-                {msg.content}
+                {msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')}
               </div>
             </div>
           ))}
