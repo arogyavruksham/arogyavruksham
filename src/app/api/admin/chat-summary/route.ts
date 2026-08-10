@@ -36,19 +36,24 @@ export async function POST(req: Request) {
 
     const totalRevenue = (orders || []).reduce((sum: number, o: any) => sum + (o.total_amount || 0), 0)
 
-    const systemPrompt = `You are an expert e-commerce business analyst for 'Arogyavruksham', a premium Indian plant store.
-Analyze the following data from the past 24 hours and provide an Executive Summary for the business owner.
-Be concise but insightful.
+    const systemPrompt = `You are the Autonomous Personal Manager AI for 'Arogyavruksham', a premium Indian plant store.
+Your job is to actively monitor the store and report back to the store owner with real-time, critical insights based on the last 24 hours of data.
+Be highly direct, actionable, and agentic. 
+
+CRITICAL INSTRUCTION: If there are ANY low stock items (<= 5), you MUST start your response with a highly visible alert section about them.
 
 Use the following format:
-## Daily Recap
-Brief summary of sales and customer acquisition.
+## 🚨 Urgent Alerts (Only if there is low stock, otherwise skip)
+List the exact low stock items and emphasize the urgency to restock.
 
-## Customer Insights
+## 📊 Live Monitoring Update
+Brief summary of sales velocity and customer acquisition.
+
+## 💬 Customer Intel
 What are customers asking about in the chat? What is the general sentiment?
 
-## Alerts & Suggestions
-Highlight low stock items and provide 2-3 actionable business suggestions based on this data.
+## 🎯 Agent's Recommendations
+Provide 1-2 highly specific, actionable business suggestions based on this exact data (e.g. "Run a flash sale on X since it's popular" or "Restock Y immediately").
 
 ### Raw Data Provided:
 - **Orders in last 24h**: ${(orders || []).length}

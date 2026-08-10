@@ -1,4 +1,6 @@
+const fs = require('fs');
 
+const code = `
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
@@ -83,7 +85,7 @@ export default function AISummaryPage() {
         throw new Error(data.error)
       }
     } catch (err: any) {
-      setError(`Failed to generate summary: ${err.message}`)
+      setError(\`Failed to generate summary: \${err.message}\`)
     } finally {
       setSummaryLoading(false)
     }
@@ -164,12 +166,12 @@ export default function AISummaryPage() {
               <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm font-semibold">{error}</div>
             ) : summary ? (
               <div className="prose prose-sm max-w-none text-gray-700 space-y-4">
-                {summary.split('\n').map((line, i) => {
+                {summary.split('\\n').map((line, i) => {
                   if (line.startsWith('## ')) return <h2 key={i} className="text-lg font-black text-gray-900 mt-4 mb-2">{line.replace('## ', '')}</h2>
                   if (line.startsWith('### ')) return <h3 key={i} className="text-base font-bold text-gray-800 mt-3 mb-1">{line.replace('### ', '')}</h3>
                   if (line.startsWith('- ')) return <li key={i} className="ml-4 list-disc">{line.substring(2)}</li>
                   if (line.startsWith('**')) {
-                    const match = line.match(/\*\*(.*?)\*\*(.*)/);
+                    const match = line.match(/\\*\\*(.*?)\\*\\*(.*)/);
                     if (match) return <p key={i} className="leading-relaxed"><strong>{match[1]}</strong>{match[2]}</p>
                   }
                   if (line.trim() === '') return <br key={i} />
@@ -185,12 +187,15 @@ export default function AISummaryPage() {
           </div>
         </div>
       </div>
-      <style dangerouslySetInnerHTML={{__html: `
+      <style dangerouslySetInnerHTML={{__html: \`
         @keyframes progress {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(200%); }
         }
-      `}} />
+      \`}} />
     </div>
   )
 }
+`
+
+fs.writeFileSync('C:\\Users\\saiva\\OneDrive\\Desktop\\WEBSITES\\Arogyavruksham\\src\\app\\admin\\ai-summary\\page.tsx', code, 'utf8')
