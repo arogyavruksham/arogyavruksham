@@ -8,12 +8,21 @@ export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+  const [input, setInput] = useState('')
+  const { messages, sendMessage, status } = useChat({
     api: '/api/chat',
     initialMessages: [
       { id: '1', role: 'assistant', content: 'Hi there! I am your Arogyavruksham assistant. How can I help you today?' }
     ]
   })
+  const isLoading = status === 'in_progress' || status === 'submitted'
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!input.trim() || isLoading) return
+    sendMessage({ role: 'user', content: input.trim() })
+    setInput('')
+  }
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -89,7 +98,7 @@ export function Chatbot() {
             <input
               type="text"
               value={input}
-              onChange={handleInputChange}
+              onChange={e => setInput(e.target.value)}
               placeholder="Type your message..."
               className="flex-1 bg-gray-100 border-transparent focus:bg-white focus:border-green-500 focus:ring-1 focus:ring-green-500 rounded-full px-4 py-2.5 text-sm outline-none transition-all pr-12"
             />
