@@ -3,14 +3,16 @@
 import { useState, useRef, useEffect } from 'react'
 import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react'
 import { useChat } from '@ai-sdk/react'
+import { useAuthStore } from '@/lib/store'
 
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const [input, setInput] = useState('')
+  const user = useAuthStore((state) => state.user)
   const { messages, sendMessage, status, error } = useChat({
-    fetch: (input, init) => fetch(input, { ...init, credentials: 'include' }),
+    body: { userId: user?.id },
     messages: [
       { id: '1', role: 'assistant', parts: [{ type: 'text', text: 'Hi there! I am your Arogyavruksham assistant. How can I help you today?' }] }
     ] as any

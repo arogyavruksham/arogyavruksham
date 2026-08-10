@@ -5,12 +5,13 @@ import { createOpenAI } from '@ai-sdk/openai'
 
 export async function POST(req: Request) {
   try {
-    const { messages } = await req.json()
+    const { messages, userId: clientUserId } = await req.json()
     const lastMessage = messages[messages.length - 1]
     const message = lastMessage?.content || (lastMessage?.parts ? lastMessage.parts.map((p: any) => p.text).join('') : '')
 
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
+    const finalUserId = user?.id || clientUserId
 
     if (!message) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 })
@@ -21,7 +22,7 @@ export async function POST(req: Request) {
 
     // Fetch user's recent orders if logged in
     let userContextText = ""
-    if (user?.id) {
+    if (finalUserId) {
       const { data: orders } = await supabase
         .from('orders')
         .select(`
@@ -35,7 +36,7 @@ export async function POST(req: Request) {
             products (title)
           )
         `)
-        .eq('user_id', user.id)
+        .eq('user_id', finalUserId)
         .order('created_at', { ascending: false })
         .limit(5)
 
@@ -77,7 +78,7 @@ ${userContextText}
 `
 
     // Find or create session for logging
-    const userId = user?.id || null;
+    const userId = finalUserId || null;
     let sessionId = null;
     const { data: recentSession } = await (supabase as any)
       .from('chat_sessions')
