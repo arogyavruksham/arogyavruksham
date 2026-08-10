@@ -12,7 +12,7 @@ export function Chatbot() {
   const { messages, sendMessage, status } = useChat({
     messages: [
       { id: '1', role: 'assistant', parts: [{ type: 'text', text: 'Hi there! I am your Arogyavruksham assistant. How can I help you today?' }] }
-    ]
+    ] as any
   })
   const isLoading = status === 'streaming' || status === 'submitted'
 
