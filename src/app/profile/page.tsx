@@ -342,6 +342,7 @@ export default function ProfilePage() {
         <nav className="flex-1 px-4 space-y-1.5 mt-2">
           {[
             { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+            ...(user?.role === 'admin' || user?.role === 'manager' || user?.role === 'editor' ? [{ id: 'admin', label: 'Admin Panel', icon: Settings, onClick: () => router.push('/admin') }] : []),
             { id: 'orders', label: 'Order History', icon: Clock },
             { id: 'settings', label: 'Settings', icon: Settings },
           ].map(item => {
@@ -374,7 +375,10 @@ export default function ProfilePage() {
         {/* Mobile Top Bar */}
         <div className="md:hidden flex items-center justify-between mb-8 sticky top-0 bg-[#FCFDFD]/90 backdrop-blur-md py-4 z-20 border-b border-gray-50">
           <button onClick={() => router.push('/')} className="p-2 -ml-2 text-gray-400"><ArrowLeft className="w-5 h-5" /></button>
-          <h1 className="text-lg font-black text-[#11311F]">Arogyavruksham</h1>
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="Logo" className="w-6 h-6 object-contain" />
+            <h1 className="text-lg font-black text-[#11311F]">Arogyavruksham</h1>
+          </div>
           <button className="p-2 -mr-2 text-gray-400"><Settings className="w-5 h-5" onClick={() => setActiveTab('settings')} /></button>
         </div>
 
@@ -387,9 +391,9 @@ export default function ProfilePage() {
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-md border-t border-gray-100 flex items-center justify-around h-[72px] pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
         {[
           { id: 'dashboard', label: 'Dashboard', icon: Home },
-          { id: 'explore', label: 'Explore', icon: Search, onClick: () => router.push('/shop') },
+          ...(user?.role === 'admin' || user?.role === 'manager' || user?.role === 'editor' ? [{ id: 'admin', label: 'Admin', icon: LayoutDashboard, onClick: () => router.push('/admin') }] : []),
           { id: 'orders', label: 'Orders', icon: Clock },
-          { id: 'settings', label: 'Profile', icon: User }
+          { id: 'shop', label: 'Shop', icon: Search, onClick: () => router.push('/shop') }
         ].map(item => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -397,8 +401,8 @@ export default function ProfilePage() {
           if (item.id === 'orders') {
             return (
               <button key={item.id} onClick={() => setActiveTab('orders')} className="flex flex-col items-center gap-1.5 p-2 px-4 cursor-pointer relative">
-                <div className={`p-3.5 rounded-full -mt-7 shadow-lg transition-transform ${isActive ? 'bg-[#11311F] text-white scale-110' : 'bg-[#E9F3ED] text-[#235839]'}`}>
-                  <Icon className="w-5 h-5" />
+                <div className={`p-3 rounded-full transition-colors ${isActive ? 'bg-[#E9F3ED] text-[#11311F]' : 'bg-transparent text-gray-400'}`}>
+                  <Icon className="w-6 h-6" />
                 </div>
                 <span className={`text-[10px] font-bold ${isActive ? 'text-[#11311F]' : 'text-gray-500'}`}>{item.label}</span>
               </button>
@@ -407,7 +411,7 @@ export default function ProfilePage() {
 
           return (
             <button key={item.id} onClick={item.onClick || (() => setActiveTab(item.id as any))} className="flex flex-col items-center justify-center gap-1.5 p-2 flex-1 cursor-pointer">
-              <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-[#11311F]' : 'text-gray-400'}`} />
+              <Icon className={`w-6 h-6 transition-colors ${isActive ? 'text-[#11311F]' : 'text-gray-400'}`} />
               <span className={`text-[10px] font-bold ${isActive ? 'text-[#11311F]' : 'text-gray-500'}`}>{item.label}</span>
             </button>
           )
