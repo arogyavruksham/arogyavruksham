@@ -5,6 +5,7 @@ import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react'
 import { useChat } from '@ai-sdk/react'
 import { useAuthStore } from '@/store/authStore'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false)
@@ -85,14 +86,24 @@ export function Chatbot() {
                 {msg.role === 'user' ? (
                   msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')
                 ) : (
-                  <div className="space-y-2">
+                  <div className="space-y-2 overflow-x-auto">
                     <ReactMarkdown 
+                      remarkPlugins={[remarkGfm]}
                       components={{
                         p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
                         ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2" {...props} />,
                         ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2" {...props} />,
                         li: ({node, ...props}) => <li className="mb-1" {...props} />,
-                        strong: ({node, ...props}) => <strong className="font-semibold" {...props} />
+                        strong: ({node, ...props}) => <strong className="font-semibold" {...props} />,
+                        table: ({node, ...props}) => (
+                          <div className="overflow-x-auto my-2">
+                            <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg" {...props} />
+                          </div>
+                        ),
+                        thead: ({node, ...props}) => <thead className="bg-gray-50" {...props} />,
+                        th: ({node, ...props}) => <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b" {...props} />,
+                        tbody: ({node, ...props}) => <tbody className="bg-white divide-y divide-gray-200" {...props} />,
+                        td: ({node, ...props}) => <td className="px-3 py-2 text-sm text-gray-700 whitespace-nowrap" {...props} />
                       }}
                     >
                       {msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')}
