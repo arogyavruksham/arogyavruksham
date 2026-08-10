@@ -6,9 +6,21 @@ import { sendOrderConfirmationEmail } from '@/lib/emailService'
 
 export async function POST(request: Request) {
   try {
-    const { userId, total, items, addressData, appliedCoupon, discountAmount, paymentMethod } = await request.json()
+    const { userId: clientUserId, userEmail, total, items, addressData, appliedCoupon, discountAmount, paymentMethod } = await request.json()
 
-    if (!userId || !items || items.length === 0) {
+    let finalUserId = clientUserId;
+    if (!finalUserId && userEmail) {
+      const { data: userData } = await (supabaseAdmin as any)
+        .from('users')
+        .select('id')
+        .eq('email', userEmail)
+        .single();
+      if (userData?.id) {
+        finalUserId = userData.id;
+      }
+    }
+
+    if (!finalUserId || !items || items.length === 0) {
       return NextResponse.json({ error: 'Invalid checkout data' }, { status: 400 })
     }
 
@@ -38,7 +50,7 @@ export async function POST(request: Request) {
     const { data: order, error: orderError } = await (supabaseAdmin as any)
       .from('orders')
       .insert({
-        user_id: userId,
+        user_id: finalUserId,
         total_amount: total,
         status: paymentMethod === 'online' ? 'paid' : 'pending',
         shipping_address: addressData,
@@ -102,7 +114,7 @@ export async function POST(request: Request) {
       const { data: userData } = await (supabaseAdmin as any)
         .from('users')
         .select('email, full_name')
-        .eq('id', userId)
+        .eq('id', finalUserId)
         .single()
       
       const customerEmail = userData?.email || addressData?.email

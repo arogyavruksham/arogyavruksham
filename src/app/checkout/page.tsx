@@ -181,21 +181,7 @@ export default function CheckoutPage() {
       let finalUserId = null;
       const { data: { user } } = await supabase.auth.getUser()
       
-      if (user) {
-        finalUserId = user.id;
-      } else if (authUser?.email) {
-        // Fallback for custom email OTP login which doesn't set Supabase auth cookies
-        const { data: userData } = await supabase
-          .from('users')
-          .select('id')
-          .eq('email', authUser.email)
-          .single();
-        if (userData?.id) {
-          finalUserId = userData.id;
-        }
-      }
-
-      if (finalUserId) {
+      if (user || authUser?.email) {
         try {
           const res = await fetch('/api/checkout', {
             method: 'POST',
@@ -203,7 +189,8 @@ export default function CheckoutPage() {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              userId: finalUserId,
+              userId: user?.id || null,
+              userEmail: authUser?.email || null,
               total,
               items,
               addressData,

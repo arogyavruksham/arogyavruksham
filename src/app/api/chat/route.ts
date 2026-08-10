@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { supabaseAdmin } from '@/lib/supabase-admin'
 import { streamText } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'
 
@@ -19,8 +20,8 @@ export async function POST(req: Request) {
     
     let finalUserId = user?.id || null;
     if (!finalUserId && clientUserEmail) {
-      // Look up user ID from the public users table based on email
-      const { data: userData } = await (supabase as any)
+      // Look up user ID from the public users table based on email using Admin client to bypass RLS
+      const { data: userData } = await (supabaseAdmin as any)
         .from('users')
         .select('id')
         .eq('email', clientUserEmail)
