@@ -53,7 +53,7 @@ export default function InventoryPage() {
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
               placeholder="Search stock catalog..." 
-              className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
         </div>
@@ -62,21 +62,21 @@ export default function InventoryPage() {
         <div className="flex bg-white border border-gray-200 p-1 rounded-xl shadow-2xs w-full sm:w-auto overflow-x-auto">
           <button 
             onClick={() => setActiveTab('LOW_STOCK')}
-            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'LOW_STOCK' ? 'bg-gray-900 text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`}
+            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'LOW_STOCK' ? 'bg-emerald-800 text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`}
           >
             <AlertTriangle className="w-4 h-4" /> 
             Low Stock ({lowStock.length})
           </button>
           <button 
             onClick={() => setActiveTab('OUT_OF_STOCK')}
-            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'OUT_OF_STOCK' ? 'bg-gray-900 text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`}
+            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'OUT_OF_STOCK' ? 'bg-emerald-800 text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`}
           >
             <PackageX className="w-4 h-4" /> 
             Out of Stock ({outOfStock.length})
           </button>
           <button 
             onClick={() => setActiveTab('FULL_STOCK')}
-            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'FULL_STOCK' ? 'bg-gray-900 text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`}
+            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'FULL_STOCK' ? 'bg-emerald-800 text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}`}
           >
             <CheckCircle className="w-4 h-4" /> 
             Full Stock ({fullStock.length})
@@ -100,7 +100,7 @@ export default function InventoryPage() {
             <table className="w-full text-left border-collapse whitespace-nowrap min-w-[600px]">
               <thead>
                 <tr className="bg-gray-50/50 border-b border-gray-200/80 text-xs uppercase tracking-wider text-gray-500 font-bold">
-                  <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer" /></th>
+                  <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" /></th>
                   <th className="p-4 font-bold">PRODUCT</th>
                   <th className="p-4 font-bold">CATEGORY</th>
                   <th className="p-4 font-bold">STOCK COUNT</th>
@@ -111,7 +111,7 @@ export default function InventoryPage() {
                 {getActiveList().map(product => (
                   <tr key={product.id} className="hover:bg-gray-50/80 transition-colors">
                     <td className="p-4 pl-6">
-                      <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer" />
+                      <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" />
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-3.5">

@@ -62,7 +62,7 @@ export default function CustomersPage() {
               placeholder="Search customers..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
           <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shrink-0 shadow-2xs cursor-pointer">
@@ -82,7 +82,7 @@ export default function CustomersPage() {
           <table className="w-full text-left border-collapse whitespace-nowrap min-w-[700px]">
             <thead>
               <tr className="bg-gray-50/50 border-b border-gray-200/80 text-xs uppercase tracking-wider text-gray-500 font-bold">
-                <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer" /></th>
+                <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" /></th>
                 <th className="p-4 font-bold">USER & CONTACT</th>
                 <th className="p-4 font-bold">ASSIGNED ROLE</th>
                 <th className="p-4 font-bold">JOINED DATE</th>
@@ -107,7 +107,7 @@ export default function CustomersPage() {
                 filteredUsers.map((user) => (
                   <tr key={user.id} className="hover:bg-gray-50/80 transition-colors">
                     <td className="p-4 pl-6">
-                      <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer" />
+                      <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" />
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-3.5">
@@ -124,7 +124,7 @@ export default function CustomersPage() {
                     </td>
                     <td className="p-4">
                       <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold capitalize border ${
-                        user.role === 'admin' ? 'bg-gray-900 text-white border-gray-900' :
+                        user.role === 'admin' ? 'bg-emerald-800 text-white border-emerald-800' :
                         user.role === 'manager' || user.role === 'editor' ? 'bg-gray-100 text-gray-900 border-gray-300' :
                         'bg-gray-50 text-gray-600 border-gray-200'
                       }`}>
@@ -142,7 +142,7 @@ export default function CustomersPage() {
                         <select 
                           value={user.role || 'user'}
                           onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                          className="bg-white border border-gray-200 text-gray-900 text-xs font-bold rounded-xl focus:ring-1 focus:ring-gray-900 focus:border-gray-900 py-1.5 px-3 outline-none shadow-2xs cursor-pointer ml-auto transition-all hover:border-gray-900"
+                          className="bg-white border border-gray-200 text-gray-900 text-xs font-bold rounded-xl focus:ring-1 focus:ring-emerald-800 focus:border-emerald-800 py-1.5 px-3 outline-none shadow-2xs cursor-pointer ml-auto transition-all hover:border-emerald-800"
                         >
                           <option value="user">User</option>
                           <option value="editor">Editor</option>

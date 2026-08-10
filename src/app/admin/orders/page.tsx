@@ -189,7 +189,7 @@ export default function AdminOrdersPage() {
                 onClick={() => { setActiveTab(tab === 'Processing' ? 'Pending' : tab); setCurrentPage(1); }}
                 className={`px-4 py-2 rounded-xl text-xs font-black uppercase whitespace-nowrap transition-all shrink-0 shadow-2xs cursor-pointer ${
                   isTabActive
-                    ? 'bg-gray-900 text-white shadow-xs'
+                    ? 'bg-emerald-800 text-white shadow-xs'
                     : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
                 }`}
               >
@@ -316,8 +316,8 @@ export default function AdminOrdersPage() {
               onClick={() => { setActiveTab(stat.tab); setCurrentPage(1); }}
               className={`rounded-xl border p-4 shadow-2xs flex flex-col gap-2 cursor-pointer transition-all ${
                 activeTab === stat.tab 
-                  ? 'bg-gray-900 text-white border-gray-900 shadow-sm' 
-                  : 'bg-white text-gray-900 border-gray-200/80 hover:border-gray-900'
+                  ? 'bg-emerald-800 text-white border-emerald-800 shadow-sm' 
+                  : 'bg-white text-gray-900 border-gray-200/80 hover:border-emerald-800'
               }`}
             >
               <div className="flex justify-between items-start">
@@ -344,13 +344,13 @@ export default function AdminOrdersPage() {
                 placeholder="Search orders or customer..." 
                 value={searchQuery}
                 onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-                className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
+                className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
               />
             </div>
             <select 
               value={paymentFilter}
               onChange={(e) => { setPaymentFilter(e.target.value); setCurrentPage(1); }}
-              className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 shadow-2xs outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 cursor-pointer"
+              className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 shadow-2xs outline-none focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 cursor-pointer"
             >
               <option value="All Payment Methods">All Payment Methods</option>
               <option value="Prepaid">Prepaid</option>
@@ -365,7 +365,7 @@ export default function AdminOrdersPage() {
             <button onClick={exportToCSV} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-all shadow-2xs cursor-pointer">
               <Download className="w-4 h-4" /> Export CSV
             </button>
-            <button onClick={() => setCurrentPage(1)} className="flex items-center gap-2 px-4.5 py-2 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-black transition-all shadow-xs cursor-pointer">
+            <button onClick={() => setCurrentPage(1)} className="flex items-center gap-2 px-4.5 py-2 bg-emerald-800 text-white rounded-xl text-sm font-bold hover:bg-emerald-900 transition-all shadow-xs cursor-pointer">
               Refresh Feed
             </button>
           </div>
@@ -377,7 +377,7 @@ export default function AdminOrdersPage() {
             <table className="w-full text-left border-collapse whitespace-nowrap min-w-[800px]">
               <thead>
                 <tr className="bg-gray-50/50 border-b border-gray-200/80 text-xs uppercase tracking-wider text-gray-500 font-bold">
-                  <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer" /></th>
+                  <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" /></th>
                   <th className="p-4 font-bold">ORDER ID</th>
                   <th className="p-4 font-bold">CUSTOMER</th>
                   <th className="p-4 font-bold">DATE</th>
@@ -411,7 +411,7 @@ export default function AdminOrdersPage() {
                   return (
                     <tr key={order.id} className="hover:bg-gray-50/80 transition-colors group">
                       <td className="p-4 pl-6 align-top">
-                        <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer" />
+                        <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" />
                       </td>
                       <td className="p-4 align-top font-bold font-mono text-gray-900 cursor-pointer hover:underline transition-colors" onClick={() => setSelectedOrder(order)}>
                         #{order.id.split('-')[0].toUpperCase()}
@@ -466,7 +466,7 @@ export default function AdminOrdersPage() {
                           <span className={`inline-flex items-center px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wide border ${
                             order.status === 'cancelled' ? 'bg-gray-100 text-gray-600 border-gray-200 line-through' : 
                             (order.status === 'pending' || (order.payment_method === 'Cash on Delivery' && order.status !== 'delivered')) ? 'bg-gray-100 text-gray-800 border-gray-300' :
-                            'bg-gray-900 text-white border-gray-900'
+                            'bg-emerald-800 text-white border-emerald-800'
                           }`}>
                             {order.status === 'cancelled' ? 'Refunded' : (order.status === 'pending' || (order.payment_method === 'Cash on Delivery' && order.status !== 'delivered') ? 'Unpaid' : 'Verified')}
                           </span>
@@ -476,7 +476,7 @@ export default function AdminOrdersPage() {
                         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
                           order.status === 'delivered' ? 'bg-green-50 text-green-700 border-green-200/60' : 
                           order.status === 'cancelled' ? 'bg-gray-100 text-gray-500 border-gray-200 line-through' : 
-                          'bg-gray-900 text-white border-gray-900'
+                          'bg-emerald-800 text-white border-emerald-800'
                         }`}>
                           <span className="capitalize">{getStatusDisplayName(order.status)}</span>
                         </span>
@@ -510,7 +510,7 @@ export default function AdminOrdersPage() {
                     key={i}
                     onClick={() => setCurrentPage(i + 1)}
                     className={`w-8 h-8 flex items-center justify-center rounded-xl text-xs font-black transition-colors cursor-pointer ${
-                      currentPage === i + 1 ? 'bg-gray-900 text-white shadow-xs' : 'text-gray-600 hover:bg-gray-100'
+                      currentPage === i + 1 ? 'bg-emerald-800 text-white shadow-xs' : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
                     {i + 1}
@@ -606,7 +606,7 @@ export default function AdminOrdersPage() {
                   </div>
                   <div className="flex justify-between items-center text-gray-600">
                     <span>Payment Status</span>
-                    <span className="font-bold px-2 py-0.5 rounded uppercase text-[10px] tracking-widest border bg-gray-900 text-white border-gray-900">
+                    <span className="font-bold px-2 py-0.5 rounded uppercase text-[10px] tracking-widest border bg-emerald-800 text-white border-emerald-800">
                       {selectedOrder.payment_method === 'Cash on Delivery' && selectedOrder.status !== 'delivered' ? 'Pending' : 'Verified Paid'}
                     </span>
                   </div>
@@ -638,8 +638,8 @@ export default function AdminOrdersPage() {
 
                     return (
                       <div key={status.id} className="relative z-10 flex gap-4 items-start">
-                        <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 border-2 bg-white ${isCompleted ? 'border-gray-900' : 'border-gray-300'}`}>
-                          {isCompleted ? <div className="w-2.5 h-2.5 bg-gray-900 rounded-full"></div> : null}
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 border-2 bg-white ${isCompleted ? 'border-emerald-800' : 'border-gray-300'}`}>
+                          {isCompleted ? <div className="w-2.5 h-2.5 bg-emerald-800 rounded-full"></div> : null}
                         </div>
                         <div>
                           <p className={`text-sm font-bold leading-none ${isCompleted ? 'text-gray-900' : 'text-gray-400'}`}>{status.label}</p>
@@ -660,7 +660,7 @@ export default function AdminOrdersPage() {
                 <div className="relative flex-1">
                   <button 
                     onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
-                    className="w-full text-left bg-white border border-gray-300 rounded-xl px-4 py-2.5 text-sm font-bold text-gray-900 flex justify-between items-center cursor-pointer shadow-2xs hover:border-gray-900 transition-colors"
+                    className="w-full text-left bg-white border border-gray-300 rounded-xl px-4 py-2.5 text-sm font-bold text-gray-900 flex justify-between items-center cursor-pointer shadow-2xs hover:border-emerald-800 transition-colors"
                   >
                     <span>{getStatusDisplayName(selectedOrder.status)}</span>
                     <ChevronDown className="w-4 h-4 text-gray-500" />
@@ -671,7 +671,7 @@ export default function AdminOrdersPage() {
                         <button
                           key={opt}
                           onClick={() => handleUpdateStatus(selectedOrder.id, opt)}
-                          className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 cursor-pointer flex items-center justify-between ${selectedOrder.status === opt ? 'bg-gray-900 text-white font-bold' : 'text-gray-700 font-medium'}`}
+                          className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 cursor-pointer flex items-center justify-between ${selectedOrder.status === opt ? 'bg-emerald-800 text-white font-bold' : 'text-gray-700 font-medium'}`}
                         >
                           <span>{getStatusDisplayName(opt)}</span>
                           {selectedOrder.status === opt && <CheckCircle className="w-4 h-4 text-white" />}
@@ -683,7 +683,7 @@ export default function AdminOrdersPage() {
                 <button 
                   disabled={updatingStatus}
                   onClick={() => handleUpdateStatus(selectedOrder.id, selectedOrder.status)}
-                  className="bg-gray-900 hover:bg-black text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs disabled:opacity-50 shrink-0 cursor-pointer"
+                  className="bg-emerald-800 hover:bg-emerald-900 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs disabled:opacity-50 shrink-0 cursor-pointer"
                 >
                   {updatingStatus ? 'Saving...' : 'Save Status'}
                 </button>

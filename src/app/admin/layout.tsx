@@ -207,7 +207,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <img src="/logo.png" alt="Logo" className="w-full h-full object-contain mix-blend-multiply" />
             </div>
             <span className="font-sans font-black text-xl tracking-tight text-gray-900 flex items-center">
-              arogyavruksham <span className="ml-2 text-xs font-black px-2 py-0.5 bg-gray-900 text-white rounded-md hidden sm:inline-block">Admin</span>
+              arogyavruksham <span className="ml-2 text-xs font-black px-2 py-0.5 bg-emerald-800 text-white rounded-md hidden sm:inline-block">Admin</span>
             </span>
           </Link>
         </div>
@@ -233,7 +233,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             >
               <Bell className="w-5 h-5" />
               {unreadCount > 0 && (
-                <span className="absolute top-1 right-1 bg-gray-900 text-white font-black text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs">
+                <span className="absolute top-1 right-1 bg-emerald-800 text-white font-black text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs">
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </span>
               )}
@@ -246,7 +246,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <Bell className="w-4 h-4 text-gray-900" />
                     <h4 className="font-bold text-gray-900 text-sm">New Order Notifications</h4>
                   </div>
-                  <span className="text-[10px] font-black uppercase tracking-wider bg-gray-900 text-white px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-800 text-white px-2 py-0.5 rounded-full">
                     Live Feed
                   </span>
                 </div>
@@ -274,7 +274,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                           className="p-3.5 hover:bg-gray-50 transition-colors cursor-pointer flex items-start gap-3 group"
                         >
                           <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
-                            notif.status === 'pending' ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600'
+                            notif.status === 'pending' ? 'bg-emerald-800 text-white' : 'bg-gray-100 text-gray-600'
                           }`}>
                             <ShoppingBag className="w-4 h-4" />
                           </div>
@@ -317,7 +317,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           {/* User Profile Button */}
-          <button className="w-9 h-9 bg-gray-900 text-white rounded-full shadow-xs flex items-center justify-center font-black text-sm hover:bg-black transition-colors cursor-pointer" title="Account">
+          <button className="w-9 h-9 bg-emerald-800 text-white rounded-full shadow-xs flex items-center justify-center font-black text-sm hover:bg-emerald-900 transition-colors cursor-pointer" title="Account">
             {user?.email?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
           </button>
           
@@ -347,7 +347,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => { if (searchQuery.trim()) setShowDropdown(true) }}
                 placeholder="Search..." 
-                className="w-full pl-9 pr-8 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-all shadow-2xs"
+                className="w-full pl-9 pr-8 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 transition-all shadow-2xs"
               />
               {isSearching && (
                 <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 animate-spin" />
@@ -441,7 +441,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   href={item.path} 
                   className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
                     isActive 
-                      ? 'bg-gray-900 text-white font-bold shadow-xs' 
+                      ? 'bg-emerald-800 text-white font-bold shadow-xs' 
                       : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
                   }`}
                 >
@@ -529,7 +529,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all ${
                       isActive 
-                        ? 'bg-gray-900 text-white font-bold' 
+                        ? 'bg-emerald-800 text-white font-bold' 
                         : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
                     }`}
                   >

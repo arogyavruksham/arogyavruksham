@@ -109,7 +109,7 @@ export default function AISummaryPage() {
           <button 
             onClick={generateSummary}
             disabled={summaryLoading || loading}
-            className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gray-900 text-white rounded-2xl text-sm font-bold hover:bg-black transition-all shadow-xs disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-emerald-800 text-white rounded-2xl text-sm font-bold hover:bg-emerald-900 transition-all shadow-xs disabled:opacity-50"
           >
             {summaryLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Bot className="w-5 h-5" />}
             {summaryLoading ? 'Analyzing Website Data...' : 'Generate Executive Summary'}

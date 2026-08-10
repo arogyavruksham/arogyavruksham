@@ -69,7 +69,7 @@ export default function CategoriesPage() {
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
               placeholder="Search categories..." 
-              className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
           <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shrink-0 shadow-2xs cursor-pointer">
@@ -78,15 +78,15 @@ export default function CategoriesPage() {
         </div>
         <button
           onClick={() => setIsAdding(!isAdding)}
-          className="flex items-center gap-2 px-4.5 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-black transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
+          className="flex items-center gap-2 px-4.5 py-2.5 bg-emerald-800 text-white rounded-xl text-sm font-bold hover:bg-emerald-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
         >
           <Plus className="w-4 h-4" /> {isAdding ? 'Close Creator' : 'Add New Category'}
         </button>
       </div>
 
       {successMsg && (
-        <div className="p-4 bg-white border border-gray-900 text-gray-900 rounded-2xl shadow-2xs flex items-center gap-3 animate-in fade-in">
-          <div className="p-1 bg-gray-900 text-white rounded-full"><Check className="w-3 h-3" /></div>
+        <div className="p-4 bg-white border border-emerald-800 text-gray-900 rounded-2xl shadow-2xs flex items-center gap-3 animate-in fade-in">
+          <div className="p-1 bg-emerald-800 text-white rounded-full"><Check className="w-3 h-3" /></div>
           <span className="font-bold text-sm">{successMsg}</span>
         </div>
       )}
@@ -110,7 +110,7 @@ export default function CategoriesPage() {
                     setName(e.target.value)
                     if (!slug) setSlug(e.target.value)
                   }}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none font-bold text-gray-900 text-sm"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none font-bold text-gray-900 text-sm"
                 />
               </div>
 
@@ -121,7 +121,7 @@ export default function CategoriesPage() {
                   placeholder="e.g. Ficus"
                   value={slug}
                   onChange={e => setSlug(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none font-bold text-gray-900 text-sm"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none font-bold text-gray-900 text-sm"
                 />
                 <span className="text-[11px] font-medium text-gray-400 mt-1 block">URL param: /shop?category=...</span>
               </div>
@@ -133,7 +133,7 @@ export default function CategoriesPage() {
                   placeholder="https://images.unsplash.com/..."
                   value={image}
                   onChange={e => setImage(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none font-bold text-gray-900 text-sm"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none font-bold text-gray-900 text-sm"
                 />
                 <span className="text-[11px] font-medium text-gray-400 mt-1 block">Optional botanic thumbnail</span>
               </div>
@@ -161,7 +161,7 @@ export default function CategoriesPage() {
               </button>
               <button
                 type="submit"
-                className="px-6 py-2.5 bg-gray-900 hover:bg-black text-white font-extrabold text-xs rounded-xl shadow-xs transition-all cursor-pointer"
+                className="px-6 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-xs rounded-xl shadow-xs transition-all cursor-pointer"
               >
                 Save Category
               </button>
@@ -176,7 +176,7 @@ export default function CategoriesPage() {
           <table className="w-full text-left border-collapse whitespace-nowrap min-w-[700px]">
             <thead>
               <tr className="bg-gray-50/50 border-b border-gray-200/80 text-xs uppercase tracking-wider text-gray-500 font-bold">
-                <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer" /></th>
+                <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" /></th>
                 <th className="p-4 font-bold">CATEGORY NAME</th>
                 <th className="p-4 font-bold">URL SLUG</th>
                 <th className="p-4 font-bold">STORE LINK</th>
@@ -193,7 +193,7 @@ export default function CategoriesPage() {
               ) : filteredCategories.map((cat, idx) => (
                 <tr key={idx} className="hover:bg-gray-50/80 transition-colors group">
                   <td className="p-4 pl-6">
-                    <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer" />
+                    <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" />
                   </td>
                   <td className="p-4">
                     <div className="flex items-center gap-3.5">

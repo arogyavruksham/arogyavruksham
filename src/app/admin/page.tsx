@@ -218,7 +218,7 @@ export default function AdminDashboard() {
         <select 
           value={globalDateFilter}
           onChange={(e) => setGlobalDateFilter(e.target.value)}
-          className="bg-white border border-gray-300 text-gray-900 text-sm font-bold rounded-xl px-4 py-2 outline-none shadow-2xs cursor-pointer hover:border-gray-900 transition-colors"
+          className="bg-white border border-gray-300 text-gray-900 text-sm font-bold rounded-xl px-4 py-2 outline-none shadow-2xs cursor-pointer hover:border-emerald-800 transition-colors"
         >
           <option value="Last 7 Days">Last 7 Days</option>
           <option value="Last 30 Days">Last 30 Days</option>
@@ -333,7 +333,7 @@ export default function AdminDashboard() {
               <p className="text-xs font-black uppercase text-gray-900 mb-1">Net Margin Balance</p>
               <div className="flex items-baseline gap-2">
                 <p className="text-xl font-black text-gray-900">₹{chartTotals.balance.toLocaleString('en-IN')}</p>
-                <span className="text-[10px] bg-gray-900 text-white px-1.5 py-0.5 rounded font-bold">Optimal</span>
+                <span className="text-[10px] bg-emerald-800 text-white px-1.5 py-0.5 rounded font-bold">Optimal</span>
               </div>
             </div>
           </div>
@@ -406,7 +406,7 @@ export default function AdminDashboard() {
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-gray-900"></div>
+                  <div className="w-3 h-3 rounded-full bg-emerald-800"></div>
                   <span className="text-xs text-gray-900 font-black uppercase">Monthly Goal</span>
                 </div>
                 <div className="flex items-center gap-1 font-black text-gray-900 text-base">
@@ -434,7 +434,7 @@ export default function AdminDashboard() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {topProducts.map((product) => (
-              <div key={product.id} className="flex flex-col border border-gray-200 rounded-xl p-3 hover:border-gray-900 transition-all group">
+              <div key={product.id} className="flex flex-col border border-gray-200 rounded-xl p-3 hover:border-emerald-800 transition-all group">
                 <div className="bg-gray-50 rounded-xl aspect-square mb-3 p-3 flex items-center justify-center overflow-hidden">
                   {product.image_url ? (
                     <img src={product.image_url} alt={product.title} className="object-contain w-full h-full mix-blend-multiply group-hover:scale-105 transition-transform" />
@@ -489,7 +489,7 @@ export default function AdminDashboard() {
                       <span className="font-bold text-gray-900">{coupon.title}</span>
                       {isExpired && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gray-200 text-gray-600 uppercase">Expired</span>}
                       {isUpcoming && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gray-200 text-gray-800 uppercase">Scheduled</span>}
-                      {!isExpired && !isUpcoming && <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-gray-900 text-white uppercase">Active</span>}
+                      {!isExpired && !isUpcoming && <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-800 text-white uppercase">Active</span>}
                     </div>
                     <span className="text-gray-500 text-[11px] font-medium">
                       {new Date(coupon.expiry_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
@@ -497,7 +497,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                     <div 
-                      className={`h-2 rounded-full ${isUpcoming ? 'bg-gray-400' : (isExpired ? 'bg-gray-300' : 'bg-gray-900')}`} 
+                      className={`h-2 rounded-full ${isUpcoming ? 'bg-gray-400' : (isExpired ? 'bg-gray-300' : 'bg-emerald-800')}`} 
                       style={{ width: `${progress}%` }}
                     ></div>
                   </div>
@@ -517,7 +517,7 @@ export default function AdminDashboard() {
             </h2>
             <p className="text-xs text-gray-500 mt-0.5">Live transaction records across all payment gateways</p>
           </div>
-          <a href="/admin/orders" className="text-xs font-bold bg-gray-900 text-white hover:bg-black px-4 py-2 rounded-xl transition-all shadow-xs">
+          <a href="/admin/orders" className="text-xs font-bold bg-emerald-800 text-white hover:bg-emerald-900 px-4 py-2 rounded-xl transition-all shadow-xs">
             View All Orders
           </a>
         </div>
@@ -583,7 +583,7 @@ export default function AdminDashboard() {
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide ${
                         order.status === 'delivered' ? 'bg-gray-100 text-gray-900 border border-gray-300' :
                         order.status === 'cancelled' ? 'bg-gray-100 text-gray-400 border border-gray-200 line-through' :
-                        'bg-gray-900 text-white'
+                        'bg-emerald-800 text-white'
                       }`}>
                         {order.status.toUpperCase()}
                       </span>

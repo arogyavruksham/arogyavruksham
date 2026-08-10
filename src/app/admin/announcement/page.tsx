@@ -103,8 +103,8 @@ export default function AdminAnnouncementPage() {
 
       {/* Status Notifications */}
       {successMsg && (
-        <div className="p-4 bg-white border border-gray-900 text-gray-900 rounded-2xl flex items-center gap-3 animate-in fade-in shadow-2xs">
-          <div className="p-1 bg-gray-900 text-white rounded-full"><Check className="w-3.5 h-3.5 stroke-[3]" /></div>
+        <div className="p-4 bg-white border border-emerald-800 text-gray-900 rounded-2xl flex items-center gap-3 animate-in fade-in shadow-2xs">
+          <div className="p-1 bg-emerald-800 text-white rounded-full"><Check className="w-3.5 h-3.5 stroke-[3]" /></div>
           <span className="font-bold text-sm">{successMsg}</span>
         </div>
       )}
@@ -194,7 +194,7 @@ export default function AdminAnnouncementPage() {
               onChange={e => handleChange('is_active', e.target.checked)} 
               className="sr-only peer" 
             />
-            <div className="w-14 h-7 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-gray-900"></div>
+            <div className="w-14 h-7 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-emerald-800"></div>
           </label>
         </div>
 
@@ -214,7 +214,7 @@ export default function AdminAnnouncementPage() {
                 value={formData.text}
                 onChange={e => handleChange('text', e.target.value)}
                 placeholder="e.g. Free Shipping Every Day, Every Order Over ₹999"
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 font-semibold text-sm transition-all bg-white"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 font-semibold text-sm transition-all bg-white"
               />
               <span className="text-[11px] font-medium text-gray-400 mt-1.5 block">Full message displayed on PC & Desktop wide screens.</span>
             </div>
@@ -228,7 +228,7 @@ export default function AdminAnnouncementPage() {
                 value={formData.mobile_text}
                 onChange={e => handleChange('mobile_text', e.target.value)}
                 placeholder="e.g. Free Shipping Every Day Over ₹999"
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 font-semibold text-sm transition-all bg-white"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 font-semibold text-sm transition-all bg-white"
               />
               <span className="text-[11px] font-medium text-gray-400 mt-1.5 block">Slightly shorter wording optimized for narrow mobile screens.</span>
             </div>
@@ -250,7 +250,7 @@ export default function AdminAnnouncementPage() {
                 value={formData.link_text}
                 onChange={e => handleChange('link_text', e.target.value)}
                 placeholder="e.g. Shop Now, Explore Deals, View Collection"
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 font-semibold text-sm transition-all bg-white"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 font-semibold text-sm transition-all bg-white"
               />
             </div>
 
@@ -263,7 +263,7 @@ export default function AdminAnnouncementPage() {
                 value={formData.link_url}
                 onChange={e => handleChange('link_url', e.target.value)}
                 placeholder="e.g. /shop or /shop?category=Silk"
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 font-mono text-sm transition-all bg-white"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 font-mono text-sm transition-all bg-white"
               />
             </div>
           </div>
@@ -284,7 +284,7 @@ export default function AdminAnnouncementPage() {
                   type="button"
                   onClick={() => handleApplySwatch(swatch.bg, swatch.text)}
                   style={{ backgroundColor: swatch.bg, color: swatch.text }}
-                  className={`py-2.5 px-3 rounded-xl font-bold text-xs shadow-2xs transition-all cursor-pointer border ${formData.bg_color === swatch.bg ? 'ring-2 ring-gray-900 ring-offset-2 font-black scale-105' : 'border-gray-300 opacity-90 hover:opacity-100'}`}
+                  className={`py-2.5 px-3 rounded-xl font-bold text-xs shadow-2xs transition-all cursor-pointer border ${formData.bg_color === swatch.bg ? 'ring-2 ring-emerald-800 ring-offset-2 font-black scale-105' : 'border-gray-300 opacity-90 hover:opacity-100'}`}
                 >
                   {swatch.label}
                 </button>
@@ -340,7 +340,7 @@ export default function AdminAnnouncementPage() {
           <button
             type="submit"
             disabled={isSaving}
-            className="px-8 py-3.5 bg-gray-900 hover:bg-black disabled:bg-gray-400 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-sm transition-all duration-200 flex items-center gap-2 cursor-pointer"
+            className="px-8 py-3.5 bg-emerald-800 hover:bg-emerald-900 disabled:bg-gray-400 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-sm transition-all duration-200 flex items-center gap-2 cursor-pointer"
           >
             {isSaving ? 'Publishing Changes...' : 'Save & Publish Announcement Bar'}
           </button>

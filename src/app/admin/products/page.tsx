@@ -199,7 +199,7 @@ export default function AdminProductsPage() {
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
               placeholder="Search products..." 
-              className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none text-sm font-medium text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-sm font-medium text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
           <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shrink-0 shadow-2xs cursor-pointer">
@@ -208,7 +208,7 @@ export default function AdminProductsPage() {
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 px-4.5 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-black transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
+          className="flex items-center gap-2 px-4.5 py-2.5 bg-emerald-800 text-white rounded-xl text-sm font-bold hover:bg-emerald-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
         >
           <Plus className="w-4 h-4" /> Add New Product
         </button>
@@ -221,7 +221,7 @@ export default function AdminProductsPage() {
             <thead>
               <tr className="bg-gray-50/50 border-b border-gray-200/80 text-xs uppercase tracking-wider text-gray-500 font-bold">
                 <th className="p-4 pl-6 font-semibold w-12">
-                  <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer" />
+                  <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" />
                 </th>
                 <th className="p-4 font-bold">PRODUCT</th>
                 <th className="p-4 font-bold">CATEGORY</th>
@@ -251,7 +251,7 @@ export default function AdminProductsPage() {
                 return (
                   <tr key={product.id} className="hover:bg-gray-50/80 transition-colors group">
                     <td className="p-4 pl-6">
-                      <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer" />
+                      <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" />
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-3.5">
@@ -337,12 +337,12 @@ export default function AdminProductsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1.5">
                   <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide">Product Name</label>
-                  <input required type="text" value={title} onChange={e => setTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none text-gray-900 placeholder:text-gray-400 font-semibold text-sm transition-all" placeholder="e.g. Fiddle Leaf Fig Plant" />
+                  <input required type="text" value={title} onChange={e => setTitle(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-gray-900 placeholder:text-gray-400 font-semibold text-sm transition-all" placeholder="e.g. Fiddle Leaf Fig Plant" />
                 </div>
                 
                 <div className="space-y-1.5">
                   <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide">Category</label>
-                  <select required value={category} onChange={e => setCategory(e.target.value)} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none text-gray-900 font-semibold text-sm cursor-pointer transition-all">
+                  <select required value={category} onChange={e => setCategory(e.target.value)} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-gray-900 font-semibold text-sm cursor-pointer transition-all">
                     {categoriesList.map((cat, idx) => (
                       <option key={idx} value={cat.name}>{cat.name}</option>
                     ))}
@@ -356,7 +356,7 @@ export default function AdminProductsPage() {
                   <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide">Actual Price (MRP)</label>
                   <div className="relative">
                     <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 font-bold">₹</span>
-                    <input required type="number" min="0" value={originalPrice} onChange={e => setOriginalPrice(e.target.value)} className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none text-gray-900 placeholder:text-gray-400 font-bold text-sm transition-all" placeholder="2400" />
+                    <input required type="number" min="0" value={originalPrice} onChange={e => setOriginalPrice(e.target.value)} className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-gray-900 placeholder:text-gray-400 font-bold text-sm transition-all" placeholder="2400" />
                   </div>
                   <p className="text-[11px] text-gray-400 font-medium">Original price displayed with strikethrough.</p>
                 </div>
@@ -365,7 +365,7 @@ export default function AdminProductsPage() {
                   <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide">Selling Price</label>
                   <div className="relative">
                     <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-900 font-black">₹</span>
-                    <input required type="number" min="0" value={price} onChange={e => setPrice(e.target.value)} className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none text-gray-900 placeholder:text-gray-400 font-black text-sm transition-all" placeholder="1800" />
+                    <input required type="number" min="0" value={price} onChange={e => setPrice(e.target.value)} className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-gray-900 placeholder:text-gray-400 font-black text-sm transition-all" placeholder="1800" />
                   </div>
                   <p className="text-[11px] text-gray-400 font-medium">Actual purchase price for customers.</p>
                 </div>
@@ -374,20 +374,20 @@ export default function AdminProductsPage() {
                   <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide">Cost Price (Business Cost)</label>
                   <div className="relative">
                     <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 font-bold">₹</span>
-                    <input required type="number" min="0" value={actualPrice} onChange={e => setActualPrice(e.target.value)} className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none text-gray-900 placeholder:text-gray-400 font-semibold text-sm transition-all" placeholder="1000" />
+                    <input required type="number" min="0" value={actualPrice} onChange={e => setActualPrice(e.target.value)} className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-gray-900 placeholder:text-gray-400 font-semibold text-sm transition-all" placeholder="1000" />
                   </div>
                   <p className="text-[11px] text-gray-400 font-medium">Used for automatic net profit calculation.</p>
                 </div>
 
                 <div className="space-y-1.5">
                   <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide">Initial Stock Count</label>
-                  <input required type="number" min="0" value={stockCount} onChange={e => setStockCount(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none text-gray-900 placeholder:text-gray-400 font-bold text-sm transition-all" placeholder="35" />
+                  <input required type="number" min="0" value={stockCount} onChange={e => setStockCount(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-gray-900 placeholder:text-gray-400 font-bold text-sm transition-all" placeholder="35" />
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide">Description</label>
-                <textarea rows={3} value={description} onChange={e => setDescription(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none text-gray-900 placeholder:text-gray-400 font-medium text-sm transition-all" placeholder="Describe the plant care instructions, sunlight requirements, and features..." />
+                <textarea rows={3} value={description} onChange={e => setDescription(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-gray-900 placeholder:text-gray-400 font-medium text-sm transition-all" placeholder="Describe the plant care instructions, sunlight requirements, and features..." />
               </div>
 
               {error && (
@@ -406,7 +406,7 @@ export default function AdminProductsPage() {
                   <button type="button" onClick={() => { setIsModalOpen(false); resetForm(); }} className="px-5 py-2.5 text-xs font-bold text-gray-600 hover:bg-gray-100 rounded-xl border border-gray-300 transition-colors cursor-pointer">
                     Cancel
                   </button>
-                  <button type="submit" disabled={isSubmitting} className="px-6 py-2.5 text-xs font-bold text-white bg-gray-900 hover:bg-black rounded-xl transition-all disabled:opacity-50 flex items-center gap-2 shadow-xs cursor-pointer">
+                  <button type="submit" disabled={isSubmitting} className="px-6 py-2.5 text-xs font-bold text-white bg-emerald-800 hover:bg-emerald-900 rounded-xl transition-all disabled:opacity-50 flex items-center gap-2 shadow-xs cursor-pointer">
                     {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
                     {isSubmitting ? 'Saving...' : 'Save Product'}
                   </button>
