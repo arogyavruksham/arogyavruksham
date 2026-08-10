@@ -10,6 +10,7 @@ export function Chatbot() {
 
   const [input, setInput] = useState('')
   const { messages, sendMessage, status, error } = useChat({
+    fetch: (input, init) => fetch(input, { ...init, credentials: 'include' }),
     messages: [
       { id: '1', role: 'assistant', parts: [{ type: 'text', text: 'Hi there! I am your Arogyavruksham assistant. How can I help you today?' }] }
     ] as any
