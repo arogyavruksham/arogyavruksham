@@ -1,4 +1,6 @@
+const fs = require('fs');
 
+const code = `
 'use client'
 
 import { useAuthStore } from '@/store/authStore'
@@ -210,9 +212,9 @@ export default function ProfilePage() {
             <button
               key={f.id}
               onClick={() => setOrderFilter(f.id as any)}
-              className={`px-5 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
+              className={\`px-5 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap \${
                 orderFilter === f.id ? 'bg-[#11311F] text-white shadow-md' : 'text-gray-500 hover:text-gray-900'
-              }`}
+              }\`}
             >
               {f.label}
             </button>
@@ -242,7 +244,7 @@ export default function ProfilePage() {
                 <div className="md:hidden px-5 pt-5 pb-3 flex justify-between items-center border-b border-gray-50">
                   <div className="flex items-center gap-2">
                     {isDelivered ? <CheckCircle className="w-4 h-4 text-[#11311F]" /> : <Truck className="w-4 h-4 text-gray-400" />}
-                    <span className={`text-[11px] font-black uppercase tracking-wider ${isDelivered ? 'text-[#11311F]' : 'text-gray-500'}`}>
+                    <span className={\`text-[11px] font-black uppercase tracking-wider \${isDelivered ? 'text-[#11311F]' : 'text-gray-500'}\`}>
                       {isDelivered ? 'Delivered' : 'In Transit'}
                     </span>
                   </div>
@@ -268,7 +270,7 @@ export default function ProfilePage() {
                     </h4>
                     
                     <p className="text-xs text-gray-500 mb-3 truncate">
-                      {order.order_items?.length > 1 ? `+ ${order.order_items.length - 1} more items` : 'Single Item'}
+                      {order.order_items?.length > 1 ? \`+ \${order.order_items.length - 1} more items\` : 'Single Item'}
                     </p>
                     
                     <div className="flex items-center justify-between">
@@ -351,11 +353,11 @@ export default function ProfilePage() {
               <button 
                 key={item.id} 
                 onClick={() => setActiveTab(item.id as any)}
-                className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all cursor-pointer ${
+                className={\`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all cursor-pointer \${
                   isActive ? 'bg-[#E9F3ED] text-[#11311F]' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
-                }`}
+                }\`}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-[#235839]' : 'text-gray-400'}`} />
+                <Icon className={\`w-5 h-5 \${isActive ? 'text-[#235839]' : 'text-gray-400'}\`} />
                 {item.label}
               </button>
             )
@@ -397,18 +399,18 @@ export default function ProfilePage() {
           if (item.id === 'orders') {
             return (
               <button key={item.id} onClick={() => setActiveTab('orders')} className="flex flex-col items-center gap-1.5 p-2 px-4 cursor-pointer relative">
-                <div className={`p-3.5 rounded-full -mt-7 shadow-lg transition-transform ${isActive ? 'bg-[#11311F] text-white scale-110' : 'bg-[#E9F3ED] text-[#235839]'}`}>
+                <div className={\`p-3.5 rounded-full -mt-7 shadow-lg transition-transform \${isActive ? 'bg-[#11311F] text-white scale-110' : 'bg-[#E9F3ED] text-[#235839]'}\`}>
                   <Icon className="w-5 h-5" />
                 </div>
-                <span className={`text-[10px] font-bold ${isActive ? 'text-[#11311F]' : 'text-gray-500'}`}>{item.label}</span>
+                <span className={\`text-[10px] font-bold \${isActive ? 'text-[#11311F]' : 'text-gray-500'}\`}>{item.label}</span>
               </button>
             )
           }
 
           return (
             <button key={item.id} onClick={item.onClick || (() => setActiveTab(item.id as any))} className="flex flex-col items-center justify-center gap-1.5 p-2 flex-1 cursor-pointer">
-              <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-[#11311F]' : 'text-gray-400'}`} />
-              <span className={`text-[10px] font-bold ${isActive ? 'text-[#11311F]' : 'text-gray-500'}`}>{item.label}</span>
+              <Icon className={\`w-5 h-5 transition-colors \${isActive ? 'text-[#11311F]' : 'text-gray-400'}\`} />
+              <span className={\`text-[10px] font-bold \${isActive ? 'text-[#11311F]' : 'text-gray-500'}\`}>{item.label}</span>
             </button>
           )
         })}
@@ -417,3 +419,6 @@ export default function ProfilePage() {
     </div>
   )
 }
+`
+
+fs.writeFileSync('C:\\Users\\saiva\\OneDrive\\Desktop\\WEBSITES\\Arogyavruksham\\src\\app\\profile\\page.tsx', code, 'utf8')

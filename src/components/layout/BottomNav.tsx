@@ -73,7 +73,7 @@ export function BottomNav() {
     }
   }
 
-  if (pathname === '/checkout' || pathname?.startsWith('/admin') || isAuthModalOpen) return null
+  if (pathname === '/checkout' || pathname?.startsWith('/admin') || pathname?.startsWith('/profile') || isAuthModalOpen) return null
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50">
