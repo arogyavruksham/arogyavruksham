@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { adminDbProxy } from '@/lib/admin-proxy'
+import { useAuthStore } from '@/store/authStore'
 import { Bot, Calendar, Loader2, MessageSquare, AlertCircle, ShoppingBag, Users, Activity } from 'lucide-react'
 
 export default function AISummaryPage() {
@@ -70,9 +71,13 @@ export default function AISummaryPage() {
   async function generateSummary() {
     setSummaryLoading(true)
     try {
+      const adminPassword = useAuthStore.getState().adminPassword
       const res = await fetch('/api/admin/chat-summary', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminPassword}`
+        },
         body: JSON.stringify({}) 
       })
 
