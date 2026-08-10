@@ -36,12 +36,12 @@ export async function POST(req: Request) {
     }
 
     // Get basic context about the store to feed to the AI
-    const { data: products } = await supabase.from('products').select('title, price, stock_count, description').limit(20)
+    const { data: products } = await (supabaseAdmin as any).from('products').select('title, price, stock_count, description').limit(20)
 
     // Fetch user's recent orders if logged in
     let userContextText = ""
     if (finalUserId) {
-      const { data: orders } = await supabase
+      const { data: orders } = await (supabaseAdmin as any)
         .from('orders')
         .select(`
           id, 
@@ -98,7 +98,7 @@ ${userContextText}
     // Find or create session for logging
     const userId = finalUserId || null;
     let sessionId = null;
-    const { data: recentSession } = await (supabase as any)
+    const { data: recentSession } = await (supabaseAdmin as any)
       .from('chat_sessions')
       .select('id')
       .eq(userId ? 'user_id' : 'id', userId || '00000000-0000-0000-0000-000000000000')
@@ -108,14 +108,14 @@ ${userContextText}
 
     if (recentSession && userId) {
       sessionId = (recentSession as any).id
-      await (supabase as any).from('chat_sessions').update({ last_activity: new Date().toISOString() }).eq('id', sessionId)
+      await (supabaseAdmin as any).from('chat_sessions').update({ last_activity: new Date().toISOString() }).eq('id', sessionId)
     } else {
-      const { data: newSession } = await (supabase as any).from('chat_sessions').insert({ user_id: userId }).select('id').single()
+      const { data: newSession } = await (supabaseAdmin as any).from('chat_sessions').insert({ user_id: userId }).select('id').single()
       sessionId = (newSession as any)?.id
     }
 
     if (sessionId) {
-      await (supabase as any).from('chat_messages').insert({ session_id: sessionId, role: 'user', content: message })
+      await (supabaseAdmin as any).from('chat_messages').insert({ session_id: sessionId, role: 'user', content: message })
     }
 
     // Stream the response
@@ -130,7 +130,7 @@ ${userContextText}
       messages: coreMessages,
       async onFinish({ text }) {
         if (sessionId) {
-          await (supabase as any).from('chat_messages').insert({ session_id: sessionId, role: 'model', content: text })
+          await (supabaseAdmin as any).from('chat_messages').insert({ session_id: sessionId, role: 'assistant', content: text })
         }
       }
     });
