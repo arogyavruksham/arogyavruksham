@@ -9,14 +9,26 @@ export async function POST(req: Request) {
     const lastMessage = messages[messages.length - 1]
     const message = lastMessage?.content || (lastMessage?.parts ? lastMessage.parts.map((p: any) => p.text).join('') : '')
 
-    let clientUserId = null;
-    if (lastMessage?.id?.startsWith('userid_')) {
-      clientUserId = lastMessage.id.split('_')[1];
+    let clientUserEmail = null;
+    if (lastMessage?.id?.startsWith('useremail_')) {
+      clientUserEmail = decodeURIComponent(lastMessage.id.split('_')[1]);
     }
 
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
-    const finalUserId = user?.id || clientUserId
+    
+    let finalUserId = user?.id || null;
+    if (!finalUserId && clientUserEmail) {
+      // Look up user ID from the public users table based on email
+      const { data: userData } = await (supabase as any)
+        .from('users')
+        .select('id')
+        .eq('email', clientUserEmail)
+        .single();
+      if (userData?.id) {
+        finalUserId = userData.id;
+      }
+    }
 
     if (!message) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 })

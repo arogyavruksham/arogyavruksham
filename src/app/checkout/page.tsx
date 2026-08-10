@@ -11,7 +11,7 @@ import { motion } from 'framer-motion'
 
 export default function CheckoutPage() {
   const { items, clearCart, updateQuantity, removeItem, appliedCoupon, applyCoupon } = useCartStore()
-  const { isAuthenticated, setAuthModalOpen, logout } = useAuthStore()
+  const { user: authUser, isAuthenticated, setAuthModalOpen, logout } = useAuthStore()
   const router = useRouter()
 
   const [mounted, setMounted] = useState(false)
@@ -178,8 +178,24 @@ export default function CheckoutPage() {
 
     setIsProcessing(true)
     try {
+      let finalUserId = null;
       const { data: { user } } = await supabase.auth.getUser()
+      
       if (user) {
+        finalUserId = user.id;
+      } else if (authUser?.email) {
+        // Fallback for custom email OTP login which doesn't set Supabase auth cookies
+        const { data: userData } = await supabase
+          .from('users')
+          .select('id')
+          .eq('email', authUser.email)
+          .single();
+        if (userData?.id) {
+          finalUserId = userData.id;
+        }
+      }
+
+      if (finalUserId) {
         try {
           const res = await fetch('/api/checkout', {
             method: 'POST',
@@ -187,7 +203,7 @@ export default function CheckoutPage() {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              userId: user.id,
+              userId: finalUserId,
               total,
               items,
               addressData,

@@ -22,8 +22,8 @@ export function Chatbot() {
     e.preventDefault()
     if (!input.trim() || isLoading) return
     
-    // Encode the user ID into the message ID so the backend can read it without needing 'body' or 'api' SDK options
-    const messageId = user?.id ? `userid_${user.id}_${Date.now()}` : `msg_${Date.now()}`
+    // Encode the user Email into the message ID so the backend can read it without needing 'body' or 'api' SDK options
+    const messageId = user?.email ? `useremail_${encodeURIComponent(user.email)}_${Date.now()}` : `msg_${Date.now()}`
     
     sendMessage({ id: messageId, role: 'user', parts: [{ type: 'text', text: input.trim() }] } as any)
     setInput('')
