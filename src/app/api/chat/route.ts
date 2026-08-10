@@ -16,10 +16,10 @@ export async function POST(req: Request) {
     // Get basic context about the store to feed to the AI
     const { data: products } = await supabase.from('products').select('title, price, stock_count, description').limit(20)
     
-    // Initialize DeepSeek client (using OpenAI SDK structure since they are compatible)
-    const deepseek = createOpenAI({
-      baseURL: 'https://api.deepseek.com/v1',
-      apiKey: process.env.DEEPSEEK_API_KEY || '',
+    // Initialize OpenRouter client (using OpenAI SDK structure since they are compatible)
+    const openrouter = createOpenAI({
+      baseURL: 'https://openrouter.ai/api/v1',
+      apiKey: process.env.OPENROUTER_API_KEY || '',
     })
 
     const systemPrompt = `You are the botanical assistant for Arogyavruksham, a premium Indian plant store.
@@ -41,7 +41,7 @@ ${(products || []).map((p: any) => `- ${p.title} (₹${p.price}) - ${p.stock_cou
     
     try {
       const { text } = await generateText({
-        model: deepseek('deepseek-chat'),
+        model: openrouter('openai/gpt-oss-20b:free'),
         system: systemPrompt,
         prompt: message,
       });

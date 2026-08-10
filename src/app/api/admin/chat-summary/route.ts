@@ -59,13 +59,13 @@ Highlight low stock items and provide 2-3 actionable business suggestions based 
 ${(chats || []).slice(0, 50).map((c: any) => `[${c.role.toUpperCase()}]: ${c.content}`).join('\n')}
 `
 
-    const deepseek = createOpenAI({
-      baseURL: 'https://api.deepseek.com/v1',
-      apiKey: process.env.DEEPSEEK_API_KEY || '',
+    const openrouter = createOpenAI({
+      baseURL: 'https://openrouter.ai/api/v1',
+      apiKey: process.env.OPENROUTER_API_KEY || '',
     })
 
     const { text } = await generateText({
-      model: deepseek('deepseek-chat'),
+      model: openrouter('openai/gpt-oss-20b:free'),
       system: systemPrompt,
       prompt: 'Please generate the executive summary based on the provided data.',
     });
