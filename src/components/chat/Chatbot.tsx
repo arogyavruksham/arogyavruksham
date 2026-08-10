@@ -12,7 +12,6 @@ export function Chatbot() {
   const [input, setInput] = useState('')
   const user = useAuthStore((state) => state.user)
   const { messages, sendMessage, status, error } = useChat({
-    body: { userId: user?.id },
     messages: [
       { id: '1', role: 'assistant', parts: [{ type: 'text', text: 'Hi there! I am your Arogyavruksham assistant. How can I help you today?' }] }
     ] as any
@@ -22,7 +21,11 @@ export function Chatbot() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!input.trim() || isLoading) return
-    sendMessage({ text: input.trim() })
+    
+    // Encode the user ID into the message ID so the backend can read it without needing 'body' or 'api' SDK options
+    const messageId = user?.id ? `userid_${user.id}_${Date.now()}` : `msg_${Date.now()}`
+    
+    sendMessage({ id: messageId, role: 'user', parts: [{ type: 'text', text: input.trim() }] } as any)
     setInput('')
   }
 

@@ -5,9 +5,14 @@ import { createOpenAI } from '@ai-sdk/openai'
 
 export async function POST(req: Request) {
   try {
-    const { messages, userId: clientUserId } = await req.json()
+    const { messages } = await req.json()
     const lastMessage = messages[messages.length - 1]
     const message = lastMessage?.content || (lastMessage?.parts ? lastMessage.parts.map((p: any) => p.text).join('') : '')
+
+    let clientUserId = null;
+    if (lastMessage?.id?.startsWith('userid_')) {
+      clientUserId = lastMessage.id.split('_')[1];
+    }
 
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
