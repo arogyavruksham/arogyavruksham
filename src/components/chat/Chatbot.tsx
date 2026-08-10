@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react'
 import { useChat } from '@ai-sdk/react'
-import { useAuthStore } from '@/lib/store'
+import { useAuthStore } from '@/store/authStore'
 
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false)
