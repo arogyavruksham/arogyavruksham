@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react'
 import { useChat } from '@ai-sdk/react'
 import { useAuthStore } from '@/store/authStore'
+import ReactMarkdown from 'react-markdown'
 
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false)
@@ -81,7 +82,22 @@ export function Chatbot() {
                   ? 'bg-green-600 text-white rounded-tr-sm' 
                   : 'bg-white border border-gray-200 text-gray-800 rounded-tl-sm shadow-sm'
               }`}>
-                {msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')}
+                {msg.role === 'user' ? (
+                  msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')
+                ) : (
+                  <ReactMarkdown 
+                    className="space-y-2"
+                    components={{
+                      p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                      ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2" {...props} />,
+                      ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2" {...props} />,
+                      li: ({node, ...props}) => <li className="mb-1" {...props} />,
+                      strong: ({node, ...props}) => <strong className="font-semibold" {...props} />
+                    }}
+                  >
+                    {msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')}
+                  </ReactMarkdown>
+                )}
               </div>
             </div>
           ))}
