@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { generateText } from 'ai'
+import { createOpenAI } from '@ai-sdk/openai'
 
 export async function POST(req: Request) {
   try {
@@ -12,32 +14,41 @@ export async function POST(req: Request) {
     }
 
     // Get basic context about the store to feed to the AI
-    const { data: products } = await supabase.from('products').select('title, price, stock_count, description').limit(10)
+    const { data: products } = await supabase.from('products').select('title, price, stock_count, description').limit(20)
     
-    let replyText = '';
-    const userMsg = message.toLowerCase();
+    // Initialize DeepSeek client (using OpenAI SDK structure since they are compatible)
+    const deepseek = createOpenAI({
+      baseURL: 'https://api.deepseek.com/v1',
+      apiKey: process.env.DEEPSEEK_API_KEY || '',
+    })
 
-    // --- RULE-BASED LOGIC ---
-    if (userMsg.includes('shipping') || userMsg.includes('delivery')) {
-      replyText = "We offer free delivery on all our orders! Shipping usually takes 3-5 business days depending on your location. Our plants are carefully packaged to ensure they reach you in perfect health.";
-    } else if (userMsg.includes('refund') || userMsg.includes('cancel')) {
-      replyText = "You can easily cancel your order from the 'My Profile' > 'My Orders' section, provided the order is still processing. We do not offer refunds once an order has been shipped.";
-    } else if (userMsg.includes('hello') || userMsg.includes('hi') || userMsg.includes('hey')) {
-      replyText = "Hello there! Welcome to Arogyavruksham. I'm your botanical assistant. How can I help you with our premium Indian plants today?";
-    } else if (userMsg.includes('plant') || userMsg.includes('buy') || userMsg.includes('shop')) {
-      replyText = "We have a wide variety of premium, resilient Indian plants perfect for modern homes. Check out our latest collections in the 'Shop' section! Some of our top plants are: \n" + (products || []).map((p: any) => `- ${p.title} (₹${p.price})`).join('\n');
-    } else if (userMsg.includes('contact') || userMsg.includes('support') || userMsg.includes('help')) {
-      replyText = "If you need human assistance, our support team is always ready to help! You can reach us at support@arogyavruksham.com or message us on WhatsApp using the button on the screen.";
-    } else if (userMsg.includes('thank')) {
-      replyText = "You're very welcome! Let me know if there's anything else you need.";
-    } else if (userMsg.includes('order') || userMsg.includes('update') || userMsg.includes('track') || userMsg.includes('status')) {
-      replyText = "To check your order status, please log in and visit the 'My Profile' > 'My Orders' section. You'll find live updates there!";
-    } else if (userMsg.includes('payment') || userMsg.includes('cod') || userMsg.includes('pay')) {
-      replyText = "We accept all major credit/debit cards and UPI via Razorpay. Currently, we do not offer Cash on Delivery (COD).";
-    } else if (userMsg.includes('return') || userMsg.includes('exchange')) {
-      replyText = "Due to the nature of live plants, we do not accept returns. However, if your plant arrives damaged, please contact us with photos within 24 hours of delivery at support@arogyavruksham.com for a replacement.";
-    } else {
-      replyText = "I'm sorry, I don't quite understand that. Since I am a simple rule-based assistant, you might want to try asking about 'orders', 'shipping', 'refunds', or 'plants'. If you need more help, please contact our support team at support@arogyavruksham.com!";
+    const systemPrompt = `You are the botanical assistant for Arogyavruksham, a premium Indian plant store.
+You help customers with their inquiries about plants, orders, and store policies.
+Keep your answers helpful, friendly, and concise.
+
+Store Context:
+- Free delivery on all orders. Shipping takes 3-5 business days.
+- Cancellations are allowed from 'My Profile' > 'My Orders' if still processing. No refunds after shipping.
+- Accept all major credit/debit cards and UPI via Razorpay. No Cash on Delivery (COD).
+- No returns due to the nature of live plants. If damaged, customers must email support@arogyavruksham.com within 24 hours with photos for a replacement.
+- Support Email: support@arogyavruksham.com
+
+Current Top Plants in Stock:
+${(products || []).map((p: any) => `- ${p.title} (₹${p.price}) - ${p.stock_count > 0 ? 'In Stock' : 'Out of Stock'}\n  Description: ${p.description}`).join('\n')}
+`
+
+    let replyText = '';
+    
+    try {
+      const { text } = await generateText({
+        model: deepseek('deepseek-chat'),
+        system: systemPrompt,
+        prompt: message,
+      });
+      replyText = text;
+    } catch (aiError) {
+      console.error('DeepSeek AI Error:', aiError);
+      replyText = "I'm experiencing a temporary issue connecting to my AI brain. Please email support@arogyavruksham.com if you need immediate assistance.";
     }
 
     // Log the session and messages in the database

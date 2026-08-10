@@ -9,12 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^4.0.36",
     "@google/genai": "^2.16.0",
     "@stripe/stripe-js": "^9.8.0",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.1",
     "@types/nodemailer": "^8.0.1",
     "@types/pdfkit": "^0.17.6",
+    "ai": "^7.0.58",
     "firebase": "^12.15.0",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.21.0",

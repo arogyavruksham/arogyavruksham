@@ -2,43 +2,37 @@
 
 import { useState, useEffect } from 'react'
 import { adminDbProxy } from '@/lib/admin-proxy'
-import { Bot, Calendar, Loader2, MessageSquare, AlertCircle } from 'lucide-react'
-
-type ChatMessage = {
-  id: string
-  session_id: string
-  role: 'user' | 'model'
-  content: string
-  created_at: string
-}
+import { Bot, Calendar, Loader2, MessageSquare, AlertCircle, ShoppingBag, Users } from 'lucide-react'
 
 export default function AISummaryPage() {
   const [loading, setLoading] = useState(true)
   const [summaryLoading, setSummaryLoading] = useState(false)
-  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [stats, setStats] = useState({ orders: 0, customers: 0, chats: 0 })
   const [summary, setSummary] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetchTodayMessages()
+    fetchTodayStats()
   }, [])
 
-  async function fetchTodayMessages() {
+  async function fetchTodayStats() {
     setLoading(true)
     setError(null)
     try {
       const today = new Date()
       today.setHours(0, 0, 0, 0)
       
-      const { data, error } = await adminDbProxy({
-        action: 'select',
-        table: 'chat_messages',
-        order: { column: 'created_at', ascending: true }
-      })
-      if (error) throw new Error((error as any).message)
-      // Filter for today client-side for simplicity since admin proxy doesn't support complex filters
-      const todayMessages = (data || []).filter((msg: ChatMessage) => new Date(msg.created_at) >= today)
-      setMessages(todayMessages)
+      const [ordersRes, usersRes, chatsRes] = await Promise.all([
+        adminDbProxy({ action: 'select', table: 'orders' }),
+        adminDbProxy({ action: 'select', table: 'users' }),
+        adminDbProxy({ action: 'select', table: 'chat_messages' })
+      ])
+
+      const todayOrders = (ordersRes.data || []).filter((o: any) => new Date(o.created_at) >= today).length
+      const todayUsers = (usersRes.data || []).filter((u: any) => new Date(u.created_at) >= today).length
+      const todayChats = (chatsRes.data || []).filter((m: any) => new Date(m.created_at) >= today).length
+
+      setStats({ orders: todayOrders, customers: todayUsers, chats: todayChats })
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -47,30 +41,12 @@ export default function AISummaryPage() {
   }
 
   async function generateSummary() {
-    if (messages.length === 0) return
-    
     setSummaryLoading(true)
     try {
-      // Group by session to make it readable
-      const sessions: Record<string, ChatMessage[]> = {}
-      messages.forEach(msg => {
-        if (!sessions[msg.session_id]) sessions[msg.session_id] = []
-        sessions[msg.session_id].push(msg)
-      })
-
-      let transcript = "Today's Chat Logs:\n\n"
-      Object.keys(sessions).forEach(sessionId => {
-        transcript += `--- Session ${sessionId} ---\n`
-        sessions[sessionId].forEach(msg => {
-          transcript += `${msg.role.toUpperCase()}: ${msg.content}\n`
-        })
-        transcript += '\n'
-      })
-
       const res = await fetch('/api/admin/chat-summary', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ transcript })
+        body: JSON.stringify({}) // API will fetch everything on the server
       })
 
       const data = await res.json()
@@ -92,9 +68,9 @@ export default function AISummaryPage() {
         <div>
           <h1 className="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
             <Bot className="w-8 h-8 text-green-600" />
-            AI Chat Summaries
+            Website Activity & AI Insights
           </h1>
-          <p className="text-sm font-semibold text-gray-500 mt-1">Review daily customer interactions and insights.</p>
+          <p className="text-sm font-semibold text-gray-500 mt-1">Review daily website activity, orders, and customer interactions.</p>
         </div>
         <div className="flex items-center gap-2 bg-white px-4 py-2 border border-gray-200 rounded-xl shadow-xs">
           <Calendar className="w-4 h-4 text-gray-400" />
@@ -105,28 +81,38 @@ export default function AISummaryPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Stats & Logs */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-2xs p-6">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-2xs p-6 space-y-4">
+            <div className="flex items-center justify-between mb-2">
               <h3 className="font-bold text-gray-900">Today's Traffic</h3>
-              <MessageSquare className="w-5 h-5 text-gray-400" />
             </div>
             {loading ? (
               <div className="flex justify-center p-4"><Loader2 className="w-6 h-6 animate-spin text-gray-400" /></div>
             ) : (
-              <div className="text-4xl font-black text-gray-900">
-                {new Set(messages.map(m => m.session_id)).size} <span className="text-base font-medium text-gray-500">sessions</span>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2"><ShoppingBag className="w-5 h-5 text-blue-500"/> <span className="font-semibold">Orders</span></div>
+                  <span className="text-xl font-black">{stats.orders}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2"><Users className="w-5 h-5 text-purple-500"/> <span className="font-semibold">New Customers</span></div>
+                  <span className="text-xl font-black">{stats.customers}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2"><MessageSquare className="w-5 h-5 text-green-500"/> <span className="font-semibold">Chat Messages</span></div>
+                  <span className="text-xl font-black">{stats.chats}</span>
+                </div>
               </div>
             )}
-            <p className="text-xs text-gray-500 mt-2 font-medium">Total of {messages.length} messages exchanged today.</p>
+            <p className="text-xs text-gray-500 mt-2 font-medium">Activity recorded since midnight.</p>
           </div>
 
           <button 
             onClick={generateSummary}
-            disabled={messages.length === 0 || summaryLoading || loading}
+            disabled={summaryLoading || loading}
             className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gray-900 text-white rounded-2xl text-sm font-bold hover:bg-black transition-all shadow-xs disabled:opacity-50"
           >
             {summaryLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Bot className="w-5 h-5" />}
-            {summaryLoading ? 'Analyzing Conversations...' : 'Generate Executive Summary'}
+            {summaryLoading ? 'Analyzing Website Data...' : 'Generate Executive Summary'}
           </button>
         </div>
 
@@ -135,19 +121,27 @@ export default function AISummaryPage() {
           <div className="bg-white rounded-2xl border border-gray-200 shadow-2xs p-6 min-h-[400px] flex flex-col">
             <h3 className="font-bold text-gray-900 mb-6 flex items-center gap-2">
               <AlertCircle className="w-5 h-5 text-green-600" />
-              Executive Summary
+              DeepSeek AI Insights
             </h3>
             
             {summary ? (
               <div className="prose prose-sm max-w-none text-gray-700 space-y-4">
-                {summary.split('\n').map((line, i) => (
-                  <p key={i} className="leading-relaxed">{line}</p>
-                ))}
+                {summary.split('\n').map((line, i) => {
+                  if (line.startsWith('##')) return <h2 key={i} className="text-lg font-black text-gray-900 mt-4 mb-2">{line.replace('##', '')}</h2>
+                  if (line.startsWith('###')) return <h3 key={i} className="text-base font-bold text-gray-800 mt-3 mb-1">{line.replace('###', '')}</h3>
+                  if (line.startsWith('- ')) return <li key={i} className="ml-4 list-disc">{line.substring(2)}</li>
+                  if (line.startsWith('**')) {
+                    const match = line.match(/\*\*(.*?)\*\*(.*)/);
+                    if (match) return <p key={i} className="leading-relaxed"><strong>{match[1]}</strong>{match[2]}</p>
+                  }
+                  if (line.trim() === '') return <br key={i} />
+                  return <p key={i} className="leading-relaxed">{line}</p>
+                })}
               </div>
             ) : (
               <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
                 <Bot className="w-16 h-16 text-gray-200 mb-4" />
-                <p className="text-sm font-medium text-center">Click "Generate Executive Summary" to analyze today's chat logs using Gemini AI.</p>
+                <p className="text-sm font-medium text-center">Click "Generate Executive Summary" to analyze today's activity using DeepSeek AI.</p>
               </div>
             )}
           </div>
