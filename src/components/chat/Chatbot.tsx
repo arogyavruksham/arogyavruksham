@@ -75,7 +75,7 @@ export function Chatbot() {
                   ? 'bg-green-600 text-white rounded-tr-sm' 
                   : 'bg-white border border-gray-200 text-gray-800 rounded-tl-sm shadow-sm'
               }`}>
-                {msg.content || (msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join(''))}
+                {msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')}
               </div>
             </div>
           ))}
