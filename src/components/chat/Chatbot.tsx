@@ -10,7 +10,7 @@ export function Chatbot() {
 
   const [input, setInput] = useState('')
   const { messages, sendMessage, status } = useChat({
-    initialMessages: [
+    messages: [
       { id: '1', role: 'assistant', content: 'Hi there! I am your Arogyavruksham assistant. How can I help you today?' }
     ]
   })
