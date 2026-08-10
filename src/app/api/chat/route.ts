@@ -70,7 +70,7 @@ ${(products || []).map((p: any) => `- ${p.title} (₹${p.price}) - ${p.stock_cou
     }))
 
     const result = await streamText({
-      model: openrouter('meta-llama/llama-3.1-8b-instruct:free'),
+      model: openrouter('google/gemma-4-31b-it:free'),
       system: systemPrompt,
       messages: coreMessages,
       async onFinish({ text }) {
