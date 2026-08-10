@@ -32,10 +32,10 @@ export async function POST(req: Request) {
       { data: chats },
       { data: lowStock }
     ] = await Promise.all([
-      supabase.from('orders').select('id, total_amount, status, created_at').gte('created_at', yesterdayIso),
-      supabase.from('users').select('id, name, created_at').gte('created_at', yesterdayIso),
-      supabase.from('chat_messages').select('role, content, created_at').gte('created_at', yesterdayIso),
-      supabase.from('products').select('title, stock_count').lte('stock_count', 5)
+      (supabaseAdmin as any).from('orders').select('id, total_amount, status, created_at').gte('created_at', yesterdayIso),
+      (supabaseAdmin as any).from('users').select('id, name, created_at').gte('created_at', yesterdayIso),
+      (supabaseAdmin as any).from('chat_messages').select('role, content, created_at').gte('created_at', yesterdayIso),
+      (supabaseAdmin as any).from('products').select('title, stock_count').lte('stock_count', 5)
     ])
 
     const totalRevenue = (orders || []).reduce((sum: number, o: any) => sum + (o.total_amount || 0), 0)
