@@ -70,7 +70,7 @@ ${(products || []).map((p: any) => `- ${p.title} (₹${p.price}) - ${p.stock_cou
     }))
 
     const result = await streamText({
-      model: openrouter('openai/gpt-oss-20b:free'),
+      model: openrouter('meta-llama/llama-3.1-8b-instruct:free'),
       system: systemPrompt,
       messages: coreMessages,
       async onFinish({ text }) {
