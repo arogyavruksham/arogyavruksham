@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { adminDbProxy } from '@/lib/admin-proxy'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 
-const PIE_COLORS = ['#111827', '#E2E8F0'];
+const PIE_COLORS = ['#059669', '#E2E8F0'];
 
 export default function AdminDashboard() {
   const [metrics, setMetrics] = useState({
@@ -199,18 +199,18 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-900" />
+        <Loader2 className="w-8 h-8 animate-spin text-emerald-900" />
       </div>
     )
   }
 
   return (
-    <div className="space-y-6 max-w-full overflow-hidden pb-16 font-sans text-gray-900">
+    <div className="space-y-6 max-w-full overflow-hidden pb-16 font-sans text-emerald-900">
       
       {/* Header & Global Filter */}
       <div className="flex justify-between items-center border-b border-gray-200/80 pb-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight">Dashboard Overview</h1>
+          <h1 className="text-2xl md:text-3xl font-black text-emerald-900 tracking-tight">Dashboard Overview</h1>
           <p className="text-xs text-gray-500 mt-1">
             Comprehensive snapshot of store revenue, customer acquisition, and fulfillment rates.
           </p>
@@ -218,7 +218,7 @@ export default function AdminDashboard() {
         <select 
           value={globalDateFilter}
           onChange={(e) => setGlobalDateFilter(e.target.value)}
-          className="bg-white border border-gray-300 text-gray-900 text-sm font-bold rounded-xl px-4 py-2 outline-none shadow-2xs cursor-pointer hover:border-emerald-800 transition-colors"
+          className="bg-white border border-gray-300 text-emerald-900 text-sm font-bold rounded-xl px-4 py-2 outline-none shadow-2xs cursor-pointer hover:border-emerald-600 transition-colors"
         >
           <option value="Last 7 Days">Last 7 Days</option>
           <option value="Last 30 Days">Last 30 Days</option>
@@ -234,12 +234,12 @@ export default function AdminDashboard() {
         <div className="bg-white p-5 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
           <div className="flex justify-between items-start">
             <span className="text-gray-500 font-semibold text-sm">Total Revenue ({globalDateFilter})</span>
-            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-900 border border-gray-200">
+            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-emerald-900 border border-gray-200">
               <TrendingUp className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <p className="text-2xl md:text-3xl font-black text-gray-900">₹{metrics.totalSales.toLocaleString('en-IN')}</p>
+            <p className="text-2xl md:text-3xl font-black text-emerald-900">₹{metrics.totalSales.toLocaleString('en-IN')}</p>
             <span className="inline-flex items-center text-xs font-semibold text-gray-600 mt-1">
               <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" /> +14.2% from previous term
             </span>
@@ -250,12 +250,12 @@ export default function AdminDashboard() {
         <div className="bg-white p-5 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
           <div className="flex justify-between items-start">
             <span className="text-gray-500 font-semibold text-sm">Total Orders ({globalDateFilter})</span>
-            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-900 border border-gray-200">
+            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-emerald-900 border border-gray-200">
               <ShoppingBag className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <p className="text-2xl md:text-3xl font-black text-gray-900">{metrics.totalOrders}</p>
+            <p className="text-2xl md:text-3xl font-black text-emerald-900">{metrics.totalOrders}</p>
             <span className="inline-flex items-center text-xs font-semibold text-gray-600 mt-1">
               <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" /> +8.4% order velocity
             </span>
@@ -266,12 +266,12 @@ export default function AdminDashboard() {
         <div className="bg-white p-5 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
           <div className="flex justify-between items-start">
             <span className="text-gray-500 font-semibold text-sm">Unique Customers ({globalDateFilter})</span>
-            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-900 border border-gray-200">
+            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-emerald-900 border border-gray-200">
               <Users className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <p className="text-2xl md:text-3xl font-black text-gray-900">{metrics.totalCustomers}</p>
+            <p className="text-2xl md:text-3xl font-black text-emerald-900">{metrics.totalCustomers}</p>
             <span className="inline-flex items-center text-xs font-semibold text-gray-600 mt-1">
               <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" /> Repeat & new retention
             </span>
@@ -282,12 +282,12 @@ export default function AdminDashboard() {
         <div className="bg-white p-5 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
           <div className="flex justify-between items-start">
             <span className="text-gray-500 font-semibold text-sm">Pending Fulfillment</span>
-            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-900 border border-gray-200">
+            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-emerald-900 border border-gray-200">
               <Package className="w-4 h-4" />
             </div>
           </div>
           <div>
-            <p className="text-2xl md:text-3xl font-black text-gray-900">{metrics.pendingDelivery}</p>
+            <p className="text-2xl md:text-3xl font-black text-emerald-900">{metrics.pendingDelivery}</p>
             <span className="inline-flex items-center text-xs font-semibold text-gray-500 mt-1">
               Requires immediate action
             </span>
@@ -301,13 +301,13 @@ export default function AdminDashboard() {
         {/* Sales Analytic Chart */}
         <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80 lg:col-span-2 flex flex-col">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-gray-900" /> Revenue & Expense Velocity
+            <h2 className="text-lg font-black text-emerald-900 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-emerald-900" /> Revenue & Expense Velocity
             </h2>
             <select 
               value={salesMonthFilter}
               onChange={(e) => setSalesMonthFilter(e.target.value)}
-              className="bg-gray-50 border border-gray-200 text-gray-900 font-bold text-xs rounded-xl px-3.5 py-1.5 outline-none cursor-pointer hover:border-gray-400"
+              className="bg-gray-50 border border-gray-200 text-emerald-900 font-bold text-xs rounded-xl px-3.5 py-1.5 outline-none cursor-pointer hover:border-gray-400"
             >
               {availableMonths.map(m => (
                 <option key={m} value={m}>{m}</option>
@@ -318,22 +318,22 @@ export default function AdminDashboard() {
             <div>
               <p className="text-xs font-bold uppercase text-gray-500 mb-1">Total Income</p>
               <div className="flex items-baseline gap-2">
-                <p className="text-xl font-black text-gray-900">₹{chartTotals.income.toLocaleString('en-IN')}</p>
+                <p className="text-xl font-black text-emerald-900">₹{chartTotals.income.toLocaleString('en-IN')}</p>
                 <span className="text-[10px] bg-gray-200 text-gray-800 px-1.5 py-0.5 rounded font-bold">+12%</span>
               </div>
             </div>
             <div>
               <p className="text-xs font-bold uppercase text-gray-500 mb-1">Est. Expenses</p>
               <div className="flex items-baseline gap-2">
-                <p className="text-xl font-black text-gray-900">₹{chartTotals.expenses.toLocaleString('en-IN')}</p>
+                <p className="text-xl font-black text-emerald-900">₹{chartTotals.expenses.toLocaleString('en-IN')}</p>
                 <span className="text-[10px] bg-gray-200 text-gray-800 px-1.5 py-0.5 rounded font-bold">40% Cost</span>
               </div>
             </div>
             <div>
-              <p className="text-xs font-black uppercase text-gray-900 mb-1">Net Margin Balance</p>
+              <p className="text-xs font-black uppercase text-emerald-900 mb-1">Net Margin Balance</p>
               <div className="flex items-baseline gap-2">
-                <p className="text-xl font-black text-gray-900">₹{chartTotals.balance.toLocaleString('en-IN')}</p>
-                <span className="text-[10px] bg-emerald-800 text-white px-1.5 py-0.5 rounded font-bold">Optimal</span>
+                <p className="text-xl font-black text-emerald-900">₹{chartTotals.balance.toLocaleString('en-IN')}</p>
+                <span className="text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded font-bold">Optimal</span>
               </div>
             </div>
           </div>
@@ -342,8 +342,8 @@ export default function AdminDashboard() {
               <AreaChart data={salesData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#111827" stopOpacity={0.25}/>
-                    <stop offset="95%" stopColor="#111827" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#059669" stopOpacity={0.25}/>
+                    <stop offset="95%" stopColor="#059669" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -353,12 +353,12 @@ export default function AdminDashboard() {
                 <Area 
                   type="monotone" 
                   dataKey="income" 
-                  stroke="#111827" 
+                  stroke="#059669" 
                   strokeWidth={2.5} 
                   fillOpacity={1} 
                   fill="url(#colorIncome)" 
-                  dot={{ r: 3, fill: '#fff', stroke: '#111827', strokeWidth: 2 }} 
-                  activeDot={{ r: 5, fill: '#111827', stroke: '#fff', strokeWidth: 2 }} 
+                  dot={{ r: 3, fill: '#fff', stroke: '#059669', strokeWidth: 2 }} 
+                  activeDot={{ r: 5, fill: '#059669', stroke: '#fff', strokeWidth: 2 }} 
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -367,8 +367,8 @@ export default function AdminDashboard() {
 
         {/* Sales Target Donut */}
         <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col">
-          <h2 className="text-lg font-black text-gray-900 mb-6 flex items-center gap-2">
-            <Info className="w-5 h-5 text-gray-900" /> Sales Target Quota
+          <h2 className="text-lg font-black text-emerald-900 mb-6 flex items-center gap-2">
+            <Info className="w-5 h-5 text-emerald-900" /> Sales Target Quota
           </h2>
           <div className="flex-1 flex flex-col justify-center items-center relative">
             <div className="h-52 w-full">
@@ -400,17 +400,17 @@ export default function AdminDashboard() {
                   <div className="w-3 h-3 rounded-full bg-gray-300"></div>
                   <span className="text-xs text-gray-500 font-bold uppercase">Daily Target</span>
                 </div>
-                <div className="flex items-center gap-1 font-bold text-gray-900 text-sm">
+                <div className="flex items-center gap-1 font-bold text-emerald-900 text-sm">
                   ₹5,000
                 </div>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-emerald-800"></div>
-                  <span className="text-xs text-gray-900 font-black uppercase">Monthly Goal</span>
+                  <div className="w-3 h-3 rounded-full bg-emerald-600"></div>
+                  <span className="text-xs text-emerald-900 font-black uppercase">Monthly Goal</span>
                 </div>
-                <div className="flex items-center gap-1 font-black text-gray-900 text-base">
-                  <ArrowUpRight className="w-4 h-4 text-gray-900" /> ₹145,000
+                <div className="flex items-center gap-1 font-black text-emerald-900 text-base">
+                  <ArrowUpRight className="w-4 h-4 text-emerald-900" /> ₹145,000
                 </div>
               </div>
             </div>
@@ -424,17 +424,17 @@ export default function AdminDashboard() {
         {/* Top Selling Products */}
         <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80 lg:col-span-2">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
-              <Package className="w-5 h-5 text-gray-900" /> Top Performing Products
+            <h2 className="text-lg font-black text-emerald-900 flex items-center gap-2">
+              <Package className="w-5 h-5 text-emerald-900" /> Top Performing Products
             </h2>
             <div className="flex gap-2">
               <button className="p-1 hover:bg-gray-100 rounded-lg text-gray-500">&larr;</button>
-              <button className="p-1 hover:bg-gray-100 rounded-lg text-gray-900">&rarr;</button>
+              <button className="p-1 hover:bg-gray-100 rounded-lg text-emerald-900">&rarr;</button>
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {topProducts.map((product) => (
-              <div key={product.id} className="flex flex-col border border-gray-200 rounded-xl p-3 hover:border-emerald-800 transition-all group">
+              <div key={product.id} className="flex flex-col border border-gray-200 rounded-xl p-3 hover:border-emerald-600 transition-all group">
                 <div className="bg-gray-50 rounded-xl aspect-square mb-3 p-3 flex items-center justify-center overflow-hidden">
                   {product.image_url ? (
                     <img src={product.image_url} alt={product.title} className="object-contain w-full h-full mix-blend-multiply group-hover:scale-105 transition-transform" />
@@ -442,9 +442,9 @@ export default function AdminDashboard() {
                     <Package className="w-8 h-8 text-gray-300" />
                   )}
                 </div>
-                <h4 className="font-bold text-gray-900 text-xs truncate">{product.title || product.name}</h4>
+                <h4 className="font-bold text-emerald-900 text-xs truncate">{product.title || product.name}</h4>
                 <div className="flex items-center justify-between mt-1">
-                  <span className="text-xs font-black text-gray-900">₹{product.price}</span>
+                  <span className="text-xs font-black text-emerald-900">₹{product.price}</span>
                   <span className="text-[10px] bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded font-semibold">{product.sales_count} Sold</span>
                 </div>
               </div>
@@ -455,10 +455,10 @@ export default function AdminDashboard() {
         {/* Current Offer */}
         <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-gray-900" /> Active Campaigns
+            <h2 className="text-lg font-black text-emerald-900 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-emerald-900" /> Active Campaigns
             </h2>
-            <a href="/admin/offers" className="text-xs font-bold text-gray-900 underline hover:no-underline">Manage</a>
+            <a href="/admin/offers" className="text-xs font-bold text-emerald-900 underline hover:no-underline">Manage</a>
           </div>
           <div className="space-y-6">
             {activeCoupons.length === 0 ? (
@@ -486,10 +486,10 @@ export default function AdminDashboard() {
                 <div key={coupon.id} className="p-3 bg-gray-50 rounded-xl border border-gray-200">
                   <div className="flex justify-between items-center text-sm mb-2">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-gray-900">{coupon.title}</span>
+                      <span className="font-bold text-emerald-900">{coupon.title}</span>
                       {isExpired && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gray-200 text-gray-600 uppercase">Expired</span>}
                       {isUpcoming && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gray-200 text-gray-800 uppercase">Scheduled</span>}
-                      {!isExpired && !isUpcoming && <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-800 text-white uppercase">Active</span>}
+                      {!isExpired && !isUpcoming && <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-600 text-white uppercase">Active</span>}
                     </div>
                     <span className="text-gray-500 text-[11px] font-medium">
                       {new Date(coupon.expiry_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
@@ -497,7 +497,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                     <div 
-                      className={`h-2 rounded-full ${isUpcoming ? 'bg-gray-400' : (isExpired ? 'bg-gray-300' : 'bg-emerald-800')}`} 
+                      className={`h-2 rounded-full ${isUpcoming ? 'bg-gray-400' : (isExpired ? 'bg-gray-300' : 'bg-emerald-600')}`} 
                       style={{ width: `${progress}%` }}
                     ></div>
                   </div>
@@ -512,12 +512,12 @@ export default function AdminDashboard() {
       <div className="bg-white rounded-xl shadow-2xs border border-gray-200/80 overflow-hidden mt-6">
         <div className="p-6 border-b border-gray-200/80 flex justify-between items-center bg-gray-50/50">
           <div>
-            <h2 className="font-black text-lg text-gray-900 flex items-center gap-2">
-              <ShoppingBag className="w-5 h-5 text-gray-900" /> Recent Orders Details
+            <h2 className="font-black text-lg text-emerald-900 flex items-center gap-2">
+              <ShoppingBag className="w-5 h-5 text-emerald-900" /> Recent Orders Details
             </h2>
             <p className="text-xs text-gray-500 mt-0.5">Live transaction records across all payment gateways</p>
           </div>
-          <a href="/admin/orders" className="text-xs font-bold bg-emerald-800 text-white hover:bg-emerald-900 px-4 py-2 rounded-xl transition-all shadow-xs">
+          <a href="/admin/orders" className="text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-900 px-4 py-2 rounded-xl transition-all shadow-xs">
             View All Orders
           </a>
         </div>
@@ -548,14 +548,14 @@ export default function AdminDashboard() {
                 return (
                   <tr key={order.id} className="hover:bg-gray-50/80 transition-colors">
                     <td className="p-4 pl-6 align-top">
-                      <p className="font-bold font-mono text-gray-900">#{order.id.split('-')[0].toUpperCase()}</p>
+                      <p className="font-bold font-mono text-emerald-900">#{order.id.split('-')[0].toUpperCase()}</p>
                       <p className="text-xs text-gray-400 mt-0.5 font-mono">{new Date(order.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                     </td>
                     <td className="p-4 align-top">
                       <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-gray-100 text-gray-900 border border-gray-200 flex items-center justify-center font-black text-xs shrink-0">{avatarLetter}</div>
+                        <div className="w-8 h-8 rounded-xl bg-gray-100 text-emerald-900 border border-gray-200 flex items-center justify-center font-black text-xs shrink-0">{avatarLetter}</div>
                         <div>
-                          <p className="font-bold text-gray-900">{customerName}</p>
+                          <p className="font-bold text-emerald-900">{customerName}</p>
                           <p className="text-xs text-gray-500 mt-0.5">{customerEmail}</p>
                         </div>
                       </div>
@@ -565,7 +565,7 @@ export default function AdminDashboard() {
                         <div className="text-xs text-gray-600 bg-gray-50/80 p-3 rounded-xl border border-gray-100 w-full min-w-[200px] whitespace-normal">
                           <div className="flex items-center gap-1.5 mb-1">
                             <MapPin className="w-3.5 h-3.5 text-gray-700" />
-                            <span className="font-bold text-gray-900">{order.shipping_address.name}</span>
+                            <span className="font-bold text-emerald-900">{order.shipping_address.name}</span>
                           </div>
                           <p className="leading-relaxed text-gray-600 line-clamp-2">
                             {order.shipping_address.fullAddress}, {order.shipping_address.city}
@@ -576,14 +576,14 @@ export default function AdminDashboard() {
                         <span className="text-xs text-gray-400 italic bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100 inline-block">No shipping info</span>
                       )}
                     </td>
-                    <td className="p-4 align-top font-black text-gray-900 text-base">
+                    <td className="p-4 align-top font-black text-emerald-900 text-base">
                       ₹{Number(order.total_amount).toLocaleString('en-IN')}
                     </td>
                     <td className="p-4 pr-6 align-top">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide ${
-                        order.status === 'delivered' ? 'bg-gray-100 text-gray-900 border border-gray-300' :
+                        order.status === 'delivered' ? 'bg-gray-100 text-emerald-900 border border-gray-300' :
                         order.status === 'cancelled' ? 'bg-gray-100 text-gray-400 border border-gray-200 line-through' :
-                        'bg-emerald-800 text-white'
+                        'bg-emerald-600 text-white'
                       }`}>
                         {order.status.toUpperCase()}
                       </span>
