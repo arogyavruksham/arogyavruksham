@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   try {
     const { messages } = await req.json()
     const lastMessage = messages[messages.length - 1]
-    const message = lastMessage?.content
+    const message = lastMessage?.content || (lastMessage?.parts ? lastMessage.parts.map((p: any) => p.text).join('') : '')
 
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
