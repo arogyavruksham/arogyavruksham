@@ -14,7 +14,7 @@ export function Chatbot() {
       { id: '1', role: 'assistant', parts: [{ type: 'text', text: 'Hi there! I am your Arogyavruksham assistant. How can I help you today?' }] }
     ]
   })
-  const isLoading = status === 'in_progress' || status === 'submitted'
+  const isLoading = status === 'streaming' || status === 'submitted'
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
