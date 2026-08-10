@@ -64,10 +64,15 @@ ${(products || []).map((p: any) => `- ${p.title} (₹${p.price}) - ${p.stock_cou
     }
 
     // Stream the response
+    const coreMessages = messages.map((m: any) => ({
+      role: m.role,
+      content: m.content || (m.parts ? m.parts.map((p: any) => p.type === 'text' ? p.text : '').join('') : '')
+    }))
+
     const result = await streamText({
       model: openrouter('openai/gpt-oss-20b:free'),
       system: systemPrompt,
-      messages: messages,
+      messages: coreMessages,
       async onFinish({ text }) {
         if (sessionId) {
           await (supabase as any).from('chat_messages').insert({ session_id: sessionId, role: 'model', content: text })
