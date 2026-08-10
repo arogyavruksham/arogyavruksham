@@ -85,18 +85,19 @@ export function Chatbot() {
                 {msg.role === 'user' ? (
                   msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')
                 ) : (
-                  <ReactMarkdown 
-                    className="space-y-2"
-                    components={{
-                      p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
-                      ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2" {...props} />,
-                      ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2" {...props} />,
-                      li: ({node, ...props}) => <li className="mb-1" {...props} />,
-                      strong: ({node, ...props}) => <strong className="font-semibold" {...props} />
-                    }}
-                  >
-                    {msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')}
-                  </ReactMarkdown>
+                  <div className="space-y-2">
+                    <ReactMarkdown 
+                      components={{
+                        p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                        ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2" {...props} />,
+                        ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2" {...props} />,
+                        li: ({node, ...props}) => <li className="mb-1" {...props} />,
+                        strong: ({node, ...props}) => <strong className="font-semibold" {...props} />
+                      }}
+                    >
+                      {msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')}
+                    </ReactMarkdown>
+                  </div>
                 )}
               </div>
             </div>
