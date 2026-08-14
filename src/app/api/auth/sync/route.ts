@@ -44,7 +44,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true, email: existingUser.email, password })
     } else {
       // Phone not found
-      if (!isSignup || !name) {
+      if (!name) {
         // Tell frontend we need name to complete signup
         return NextResponse.json({ needsSignup: true })
       }
