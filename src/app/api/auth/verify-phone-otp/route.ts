@@ -30,11 +30,13 @@ export async function POST(request: Request) {
       
       if (phone) {
         try {
-          const { data: userData, error: dbErr } = await supabaseAdmin
+          const { data, error: dbErr } = await supabaseAdmin
             .from('users')
             .select('role, full_name, email')
             .eq('phone', phone)
             .maybeSingle();
+
+          const userData = data as any;
 
           if (userData) {
             userRole = userData.role || 'user';
