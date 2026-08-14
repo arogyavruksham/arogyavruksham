@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         data: {
           channel: selectedChannel,
-          sender: 'Arogya', // Your sender name
+          sender: process.env.GETOTP_SENDER_ID, // Your sender ID
           phone: phone, // Example: '919876543210' (Include country code, no +)
           code_length: 6, // Length of the OTP
           template: process.env.GETOTP_TEMPLATE_ID, // ADDED TEMPLATE ID
