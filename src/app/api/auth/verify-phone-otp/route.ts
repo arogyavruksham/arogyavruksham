@@ -28,9 +28,20 @@ export async function POST(request: Request) {
        return NextResponse.json({ success: false, message: `GetOTP Error: ${errorMsg}` }, { status: 400 });
     }
     
-    // If the data array is not empty, the OTP is valid
-    if (result?.data?.data && Array.isArray(result.data.data) && result.data.data.length > 0) {
-      // ✅ OTP is valid! Register or fetch user
+    // The GetOTP API returns the array in result.data directly
+    if (result?.data && Array.isArray(result.data) && result.data.length > 0) {
+      // Find a verification that matches the phone number (to handle formatting differences)
+      // The user's phone state might be e.g. 9966789855, but GetOTP might have stored 919966789855
+      const cleanPhone = phone.replace(/\D/g, '');
+      const cleanPhoneTrimmed = cleanPhone.startsWith('91') ? cleanPhone.substring(2) : cleanPhone;
+      
+      const matchedVerification = result.data.find((v: any) => {
+         const vPhone = (v.phone || '').replace(/\D/g, '');
+         return vPhone.includes(cleanPhoneTrimmed);
+      });
+
+      if (matchedVerification) {
+        // ✅ OTP is valid! Register or fetch user
       let userRole = 'user';
       let fullName = 'Member';
       let userEmail = '';
@@ -82,9 +93,9 @@ export async function POST(request: Request) {
         success: true, 
         message: 'OTP Verified Successfully'
       });
-    } else {
-      return NextResponse.json({ success: false, message: 'Invalid OTP' }, { status: 400 });
     }
+    
+    return NextResponse.json({ success: false, message: 'Invalid OTP' }, { status: 400 });
 
   } catch (error: any) {
     console.error('Error in verify-phone-otp endpoint:', error);
