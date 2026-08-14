@@ -80,7 +80,7 @@ export function AuthModal() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to send OTP')
       
-      setReferenceId(data.reference_id)
+      setReferenceId(data.data?.message_id)
       setOtpStep('phone_otp')
       setTimer(60)
       setSuccessMsg(`6-digit code sent via ${otpChannel.toUpperCase()}!`)
