@@ -24,6 +24,7 @@ export async function POST(request: Request) {
           sender: 'Arogya', // Your sender name
           phone: phone, // Example: '919876543210' (Include country code, no +)
           code_length: 6, // Length of the OTP
+          template: process.env.GETOTP_TEMPLATE_ID, // ADDED TEMPLATE ID
         }
       })
     });
@@ -32,7 +33,8 @@ export async function POST(request: Request) {
     
     if (!response.ok) {
        console.error("GetOTP Send Error:", data);
-       return NextResponse.json({ error: 'Failed to send OTP from provider' }, { status: response.status });
+       const errorMessage = data?.data?.errors?.[0]?.message || 'Failed to send OTP from provider';
+       return NextResponse.json({ error: errorMessage }, { status: response.status });
     }
 
     return NextResponse.json(data);
