@@ -48,10 +48,18 @@ export async function POST(request: Request) {
       
       if (phone) {
         try {
+          const dbPhoneVariations = [phone];
+          if (!phone.startsWith('+')) {
+            dbPhoneVariations.push(`+${phone}`);
+          } else {
+            dbPhoneVariations.push(phone.substring(1));
+          }
+
           const { data, error: dbErr } = await supabaseAdmin
             .from('users')
             .select('role, full_name, email')
-            .eq('phone', phone)
+            .in('phone', dbPhoneVariations)
+            .limit(1)
             .maybeSingle();
 
           const userData = data as any;
