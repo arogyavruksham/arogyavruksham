@@ -12,6 +12,11 @@ export async function POST(request: Request) {
     // channel can be 'sms' or 'whatsapp'
     const selectedChannel = channel || 'sms'; 
 
+    // Select the correct template ID based on the channel
+    const templateId = selectedChannel === 'whatsapp' 
+      ? process.env.GETOTP_WHATSAPP_TEMPLATE_ID 
+      : process.env.GETOTP_TEMPLATE_ID;
+
     const response = await fetch('https://api.otp.dev/v1/verifications', {
       method: 'POST',
       headers: {
@@ -24,7 +29,7 @@ export async function POST(request: Request) {
           sender: process.env.GETOTP_SENDER_ID, // Your sender ID
           phone: phone, // Example: '919876543210' (Include country code, no +)
           code_length: 6, // Length of the OTP
-          template: process.env.GETOTP_TEMPLATE_ID, // ADDED TEMPLATE ID
+          template: templateId, // Use the channel-specific template ID
         }
       })
     });
