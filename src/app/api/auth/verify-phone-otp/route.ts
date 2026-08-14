@@ -93,6 +93,7 @@ export async function POST(request: Request) {
         success: true, 
         message: 'OTP Verified Successfully'
       });
+      }
     }
     
     return NextResponse.json({ success: false, message: 'Invalid OTP' }, { status: 400 });
