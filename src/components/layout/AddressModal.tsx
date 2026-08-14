@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/store/authStore'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Plus, MapPin, Trash2 } from 'lucide-react'
+import { useHardwareBack } from '@/hooks/useHardwareBack'
 
 interface AddressModalProps {
   isOpen: boolean
@@ -17,6 +18,9 @@ export function AddressModal({ isOpen, onClose }: AddressModalProps) {
   const [addresses, setAddresses] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
+  
+  // Intercept mobile hardware back button to close address modal
+  useHardwareBack(isOpen, onClose, 'address')
   
   const [newAddress, setNewAddress] = useState({
     name: '',

@@ -10,6 +10,7 @@ import { supabase } from '@/lib/supabase'
 import { AddressModal } from './AddressModal'
 import { AnnouncementBar } from './AnnouncementBar'
 import { usePathname, useRouter } from 'next/navigation'
+import { useHardwareBack } from '@/hooks/useHardwareBack'
 
 const navLinks = [
   { label: 'HOME', href: '/' },
@@ -46,6 +47,12 @@ export function Navbar() {
   const router = useRouter()
   const { scrollY } = useScroll()
   const lastScrollY = useRef(0)
+
+  // Intercept mobile hardware back button to close mobile menu
+  useHardwareBack(isMobileMenuOpen, () => setIsMobileMenuOpen(false), 'menu')
+  
+  // Intercept mobile hardware back button to close search dropdown
+  useHardwareBack(showSearchDropdown, () => setShowSearchDropdown(false), 'search')
 
   useMotionValueEvent(scrollY, 'change', (y) => {
     const diff = y - lastScrollY.current

@@ -5,10 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Minus, Plus, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { useHardwareBack } from '@/hooks/useHardwareBack'
 
 export function CartDrawer() {
   const { items, isOpen, setCartOpen, removeItem, updateQuantity } = useCartStore()
   const [mounted, setMounted] = useState(false)
+  
+  // Intercept mobile hardware back button to close cart drawer
+  useHardwareBack(isOpen, () => setCartOpen(false), 'cart')
   
   useEffect(() => {
     setMounted(true)

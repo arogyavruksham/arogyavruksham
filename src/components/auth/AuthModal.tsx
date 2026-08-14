@@ -5,9 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle2, Eye, EyeOff, ArrowRight, Mail, Lock, User, Phone, Sparkles, KeyRound } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
+import { useHardwareBack } from '@/hooks/useHardwareBack'
 
 export function AuthModal() {
   const { isAuthModalOpen, setAuthModalOpen, login } = useAuthStore()
+  
+  // Intercept mobile hardware back button to close auth modal
+  useHardwareBack(isAuthModalOpen, () => setAuthModalOpen(false), 'auth')
   
   // Main view navigation tabs & toggles
   const [mode, setMode] = useState<'login' | 'signup'>('login')
