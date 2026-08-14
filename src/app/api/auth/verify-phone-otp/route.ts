@@ -21,6 +21,13 @@ export async function POST(request: Request) {
 
     const result = await response.json();
     
+    // GetOTP returns errors at the root level when failing, e.g., { errors: [...] }
+    if (result.errors && Array.isArray(result.errors)) {
+       console.error("GetOTP Verify API Error:", result);
+       const errorMsg = result.errors[0]?.message || 'Verification API Error';
+       return NextResponse.json({ success: false, message: `GetOTP Error: ${errorMsg}` }, { status: 400 });
+    }
+    
     // If the data array is not empty, the OTP is valid
     if (result?.data?.data && Array.isArray(result.data.data) && result.data.data.length > 0) {
       // ✅ OTP is valid! Register or fetch user
