@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     
     if (!response.ok) {
        console.error("GetOTP Send Error:", data);
-       const errorMessage = data?.data?.errors?.[0]?.message || 'Failed to send OTP from provider';
+       const errorMessage = data?.errors?.[0]?.message || 'Failed to send OTP from provider';
        return NextResponse.json({ error: errorMessage }, { status: response.status });
     }
 
