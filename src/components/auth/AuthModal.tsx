@@ -5,14 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle2, Eye, EyeOff, ArrowRight, Mail, Lock, User, Phone, Sparkles, KeyRound } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import { auth } from '@/lib/firebase'
-import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth'
-
-declare global {
-  interface Window {
-    recaptchaVerifier: RecaptchaVerifier;
-  }
-}
 
 export function AuthModal() {
   const { isAuthModalOpen, setAuthModalOpen, login } = useAuthStore()
@@ -36,7 +28,8 @@ export function AuthModal() {
   const [loading, setLoading] = useState(false)
   const [timer, setTimer] = useState(0)
   const [showPassword, setShowPassword] = useState(false)
-  const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null)
+  const [referenceId, setReferenceId] = useState<string | null>(null)
+  const [otpChannel, setOtpChannel] = useState<'sms' | 'whatsapp'>('sms')
 
   useEffect(() => {
     if (!isAuthModalOpen) {
@@ -52,15 +45,9 @@ export function AuthModal() {
         setError('')
         setSuccessMsg('')
         setTimer(0)
-        setConfirmationResult(null)
+        setReferenceId(null)
       }, 300)
       return () => clearTimeout(timeout)
-    } else {
-      if (!window.recaptchaVerifier && typeof window !== 'undefined') {
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-          size: 'invisible'
-        })
-      }
     }
   }, [isAuthModalOpen])
 
@@ -74,7 +61,7 @@ export function AuthModal() {
     return () => clearInterval(interval)
   }, [timer, otpStep])
 
-  // Firebase Phone OTP Sender
+  // GetOTP Phone Sender
   const handleSendPhoneOtp = async (customPhone?: string) => {
     setError('')
     setLoading(true)
@@ -83,13 +70,20 @@ export function AuthModal() {
       if (!targetPhone || targetPhone.replace(/\D/g, '').length < 10) {
         throw new Error('Please enter a valid 10-digit mobile number')
       }
-      const formattedPhone = targetPhone.startsWith('+') ? targetPhone : `+91${targetPhone}`
-      const appVerifier = window.recaptchaVerifier
-      const confirmation = await signInWithPhoneNumber(auth, formattedPhone, appVerifier)
-      setConfirmationResult(confirmation)
+      const formattedPhone = targetPhone.startsWith('+') ? targetPhone.substring(1) : `91${targetPhone}`
+      
+      const res = await fetch('/api/auth/send-phone-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: formattedPhone, channel: otpChannel })
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to send OTP')
+      
+      setReferenceId(data.reference_id)
       setOtpStep('phone_otp')
       setTimer(60)
-      setSuccessMsg('6-digit code sent to your mobile phone!')
+      setSuccessMsg(`6-digit code sent via ${otpChannel.toUpperCase()}!`)
     } catch (err: unknown) {
       console.error(err)
       setError(err instanceof Error ? err.message : 'Failed to send phone OTP. Please try again.')
@@ -98,36 +92,48 @@ export function AuthModal() {
     }
   }
 
-  // Firebase Phone OTP Verifier
+  // GetOTP Phone Verifier
   const handleVerifyPhoneOtp = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
     setLoading(true)
     try {
-      if (!confirmationResult) throw new Error('Please request a new OTP.')
-      await confirmationResult.confirm(otpCode)
-      const formattedPhone = phone.startsWith('+') ? phone : `+91${phone}`
+      if (!referenceId) throw new Error('Please request a new OTP.')
       
+      const formattedPhone = phone.startsWith('+') ? phone.substring(1) : `91${phone}`
+      
+      // 1. Verify OTP with GetOTP via our backend route
+      const verifyRes = await fetch('/api/auth/verify-phone-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reference_id: referenceId, code: otpCode, phone: formattedPhone })
+      })
+      const verifyData = await verifyRes.json()
+      if (!verifyRes.ok) throw new Error(verifyData.message || 'Invalid verification code.')
+      
+      // 2. Sync to Supabase Auth using the existing sync endpoint
+      const syncPhone = phone.startsWith('+') ? phone : `+91${phone}`
       const res = await fetch('/api/auth/sync', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: formattedPhone, name: name || 'Member', isSignup: mode === 'signup' })
+        body: JSON.stringify({ phone: syncPhone, name: name || 'Member', isSignup: mode === 'signup' })
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to complete phone authentication')
       
+      // 3. Login to Supabase
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password
       })
       if (signInError) throw signInError
       
-      login({ name: name || data.email.split('@')[0] || 'Member', email: data.email, phone: formattedPhone, role: 'user' })
+      login({ name: name || data.email.split('@')[0] || 'Member', email: data.email, phone: syncPhone, role: 'user' })
       setOtpStep('success')
       setTimeout(() => setAuthModalOpen(false), 1500)
     } catch (err: unknown) {
       console.error(err)
-      setError(err instanceof Error ? err.message : 'Invalid verification code.')
+      setError(err instanceof Error ? err.message : 'Authentication error occurred.')
     } finally {
       setLoading(false)
     }
@@ -271,7 +277,6 @@ export function AuthModal() {
             transition={{ type: 'spring', damping: 26, stiffness: 350 }}
             className="relative w-full sm:max-w-[420px] bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden z-10 p-6 sm:p-8 max-h-[92vh] overflow-y-auto border border-gray-100"
           >
-            <div id="recaptcha-container" />
 
             {/* Mobile Top Drag Indicator */}
             <div className="w-12 h-1.5 bg-gray-300/80 rounded-full mx-auto mb-5 sm:hidden" />
@@ -542,7 +547,31 @@ export function AuthModal() {
                           className="w-full pl-10 pr-4 py-3 sm:py-3.5 rounded-xl border border-gray-300 focus:border-[#235839] focus:ring-1 focus:ring-[#235839] text-sm text-gray-800 placeholder:text-gray-400 bg-white outline-none transition-all font-medium"
                         />
                       </div>
-                      <p className="text-[11px] text-gray-400 mt-1.5 px-0.5">We will text a 6-digit confirmation code to your phone.</p>
+                      
+                      {/* SMS vs WhatsApp Toggle */}
+                      <div className="flex gap-4 mt-3 px-1">
+                        <label className="flex items-center gap-1.5 cursor-pointer text-xs text-gray-600 font-bold hover:text-[#1E4631] transition-colors">
+                          <input 
+                            type="radio" 
+                            name="otpChannel" 
+                            checked={otpChannel === 'sms'} 
+                            onChange={() => setOtpChannel('sms')}
+                            className="text-[#235839] focus:ring-[#235839]"
+                          />
+                          SMS
+                        </label>
+                        <label className="flex items-center gap-1.5 cursor-pointer text-xs text-gray-600 font-bold hover:text-[#1E4631] transition-colors">
+                          <input 
+                            type="radio" 
+                            name="otpChannel" 
+                            checked={otpChannel === 'whatsapp'} 
+                            onChange={() => setOtpChannel('whatsapp')}
+                            className="text-[#235839] focus:ring-[#235839]"
+                          />
+                          WhatsApp
+                        </label>
+                      </div>
+                      <p className="text-[11px] text-gray-400 mt-2 px-1">We will send a 6-digit confirmation code via {otpChannel === 'whatsapp' ? 'WhatsApp' : 'SMS'}.</p>
                     </div>
                   )}
 
