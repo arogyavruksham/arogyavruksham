@@ -71,18 +71,17 @@ export async function POST(request: Request) {
         }
       }
 
-      // Create brand new phone-only user
+      // Create brand new phone-only user (using a synthetic email to bypass Supabase phone restrictions)
+      const syntheticEmail = email || `${phone.replace('+', '')}@arogya.auth.local`;
+      
       const userData: any = {
         phone,
         password,
+        email: syntheticEmail,
+        email_confirm: true,
         phone_confirm: true,
         user_metadata: { full_name: name }
       };
-      
-      if (email) {
-         userData.email = email;
-         userData.email_confirm = true;
-      }
 
       const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser(userData)
       
@@ -93,7 +92,7 @@ export async function POST(request: Request) {
         await supabaseAdmin.from('users').update({ phone }).eq('id', newUser.user.id)
       }
       
-      return NextResponse.json({ success: true, email: email || null, phone, password })
+      return NextResponse.json({ success: true, email: syntheticEmail, phone, password })
     }
   } catch (error: unknown) {
     console.error('Auth Sync Error:', error)

@@ -106,9 +106,9 @@ export function AuthModal() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to complete phone authentication')
       
-      // Login to Supabase using phone instead of email
+      // Login to Supabase using the synthetic email returned by sync
       const { error: signInError } = await supabase.auth.signInWithPassword({
-        phone: syncPhone,
+        email: data.email,
         password: data.password
       })
       if (signInError) throw signInError
