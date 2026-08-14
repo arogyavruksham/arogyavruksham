@@ -10,19 +10,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Reference ID and verification code are required.' }, { status: 400 });
     }
 
-    // Call GetOTP Verify endpoint
-    const response = await fetch(`https://api.otp.dev/v1/verifications/${reference_id}/check`, {
-      method: 'POST',
+    // Call GetOTP Verify endpoint using GET
+    const response = await fetch(`https://api.otp.dev/v1/verifications?code=${code}&phone=${phone}`, {
+      method: 'GET',
       headers: {
         'X-OTP-Key': process.env.GETOTP_API_KEY || '',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ code })
+        'accept': 'application/json',
+      }
     });
 
-    const data = await response.json();
+    const result = await response.json();
     
-    if (data.status === 'success') {
+    // If the data array is not empty, the OTP is valid
+    if (result?.data?.data && Array.isArray(result.data.data) && result.data.data.length > 0) {
       // ✅ OTP is valid! Register or fetch user
       let userRole = 'user';
       let fullName = 'Member';
