@@ -42,30 +42,38 @@ export async function POST(request: Request) {
             userRole = userData.role || 'user';
             fullName = userData.full_name || fullName;
             userEmail = userData.email || '';
-          } else {
-            // Automatically register new user with phone
-            await supabaseAdmin.from('users').insert([
-              {
+            
+            return NextResponse.json({ 
+              success: true, 
+              message: 'OTP Verified Successfully',
+              user: {
                 phone: phone,
-                full_name: fullName,
-                role: 'user',
+                name: fullName,
+                email: userEmail,
+                role: userRole,
               }
-            ] as any);
+            });
+          } else {
+            // User not found in database, prompt frontend to ask for name
+            return NextResponse.json({
+              success: true,
+              needsName: true,
+              message: 'OTP Verified, but user is new',
+              user: {
+                phone: phone
+              }
+            });
           }
         } catch (dbErr) {
           console.warn('Database lookup during Phone OTP verify notice:', dbErr);
+          return NextResponse.json({ error: 'Database lookup failed.' }, { status: 500 });
         }
       }
 
+      // Fallback if no phone provided
       return NextResponse.json({ 
         success: true, 
-        message: 'OTP Verified Successfully',
-        user: {
-          phone: phone,
-          name: fullName,
-          email: userEmail,
-          role: userRole,
-        }
+        message: 'OTP Verified Successfully'
       });
     } else {
       return NextResponse.json({ success: false, message: 'Invalid OTP' }, { status: 400 });

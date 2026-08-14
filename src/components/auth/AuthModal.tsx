@@ -12,7 +12,7 @@ export function AuthModal() {
   // Main view navigation tabs & toggles
   const [mode, setMode] = useState<'login' | 'signup'>('login')
   const [channel, setChannel] = useState<'email' | 'phone'>('email')
-  const [otpStep, setOtpStep] = useState<'none' | 'email_otp_verify' | 'phone_otp' | 'success'>('none')
+  const [otpStep, setOtpStep] = useState<'none' | 'email_otp_verify' | 'phone_otp' | 'ask_name' | 'success'>('none')
   
   // Form State
   const [email, setEmail] = useState('')
@@ -92,6 +92,38 @@ export function AuthModal() {
     }
   }
 
+  // Phone Signup Completion Helper
+  const handleCompletePhoneSignup = async (finalName: string) => {
+    setError('')
+    setLoading(true)
+    try {
+      const syncPhone = phone.startsWith('+') ? phone : `+91${phone}`
+      const res = await fetch('/api/auth/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: syncPhone, name: finalName, isSignup: mode === 'signup' })
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to complete phone authentication')
+      
+      // Login to Supabase using phone instead of email
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        phone: syncPhone,
+        password: data.password
+      })
+      if (signInError) throw signInError
+      
+      login({ name: finalName, email: data.email || '', phone: syncPhone, role: 'user' })
+      setOtpStep('success')
+      setTimeout(() => setAuthModalOpen(false), 1500)
+    } catch (err: unknown) {
+      console.error(err)
+      setError(err instanceof Error ? err.message : 'Authentication error occurred.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   // GetOTP Phone Verifier
   const handleVerifyPhoneOtp = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -111,30 +143,18 @@ export function AuthModal() {
       const verifyData = await verifyRes.json()
       if (!verifyRes.ok) throw new Error(verifyData.message || 'Invalid verification code.')
       
-      // 2. Sync to Supabase Auth using the existing sync endpoint
-      const syncPhone = phone.startsWith('+') ? phone : `+91${phone}`
-      const res = await fetch('/api/auth/sync', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: syncPhone, name: name || 'Member', isSignup: mode === 'signup' })
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Failed to complete phone authentication')
+      // 2. Check if we need to ask for a name
+      if (verifyData.needsName && !name) {
+         setOtpStep('ask_name')
+         setLoading(false)
+         return
+      }
       
-      // 3. Login to Supabase
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: data.email,
-        password: data.password
-      })
-      if (signInError) throw signInError
-      
-      login({ name: name || data.email.split('@')[0] || 'Member', email: data.email, phone: syncPhone, role: 'user' })
-      setOtpStep('success')
-      setTimeout(() => setAuthModalOpen(false), 1500)
+      // 3. Sync to Supabase Auth and Login
+      await handleCompletePhoneSignup(name || verifyData.user?.name || 'Member');
     } catch (err: unknown) {
       console.error(err)
       setError(err instanceof Error ? err.message : 'Authentication error occurred.')
-    } finally {
       setLoading(false)
     }
   }
@@ -300,6 +320,46 @@ export function AuthModal() {
                   <span className="w-3 h-3 border-2 border-[#1E4631] border-t-transparent rounded-full animate-spin" />
                   Entering botanical space...
                 </p>
+              </div>
+            ) : otpStep === 'ask_name' ? (
+              /* Ask Name View */
+              <div className="space-y-6 pt-2">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-emerald-100/80">
+                    <User className="w-6 h-6 text-[#235839]" />
+                  </div>
+                  <h3 className="font-serif text-2xl font-extrabold text-[#1E4631]">Welcome!</h3>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Please provide your name to complete your profile.
+                  </p>
+                </div>
+                
+                {error && (
+                  <div className="p-3 text-xs text-red-600 bg-red-50 rounded-xl border border-red-100 flex items-center gap-2">
+                    <span>{error}</span>
+                  </div>
+                )}
+                
+                <form onSubmit={(e) => { e.preventDefault(); if (name.trim()) handleCompletePhoneSignup(name.trim()); }} className="space-y-4">
+                  <div>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={e => setName(e.target.value)}
+                      placeholder="Your Full Name"
+                      required
+                      className="w-full text-center py-3.5 px-4 text-xl font-bold rounded-2xl border border-gray-300 focus:border-[#235839] focus:ring-1 focus:ring-[#235839] outline-none"
+                    />
+                  </div>
+                  
+                  <button
+                    type="submit"
+                    disabled={loading || !name.trim()}
+                    className="w-full py-3.5 sm:py-4 rounded-2xl bg-[#1E4631] hover:bg-[#153423] text-white font-extrabold text-sm sm:text-base shadow-lg shadow-emerald-950/15 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    {loading ? 'Saving...' : 'Complete Profile & Login'}
+                  </button>
+                </form>
               </div>
             ) : otpStep === 'email_otp_verify' || otpStep === 'phone_otp' ? (
               /* OTP Verification View */

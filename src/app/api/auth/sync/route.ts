@@ -44,49 +44,56 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true, email: existingUser.email, password })
     } else {
       // Phone not found
-      if (!isSignup || !email || !name) {
-        // Tell frontend we need email and name to complete signup
+      if (!isSignup || !name) {
+        // Tell frontend we need name to complete signup
         return NextResponse.json({ needsSignup: true })
       }
 
-      // Check if email already exists
-      const { data: existingEmailUser } = await supabaseAdmin
-        .from('users')
-        .select('id')
-        .eq('email', email)
-        .single()
+      // Check if email already exists (only if email was provided)
+      if (email) {
+        const { data: existingEmailUser } = await supabaseAdmin
+          .from('users')
+          .select('id')
+          .eq('email', email)
+          .single()
 
-      if (existingEmailUser) {
-        // Link phone to existing email user
-        const { error: updateAuthError } = await supabaseAdmin.auth.admin.updateUserById(existingEmailUser.id, { 
-          phone, 
-          password 
-        })
-        if (updateAuthError) throw updateAuthError
+        if (existingEmailUser) {
+          // Link phone to existing email user
+          const { error: updateAuthError } = await supabaseAdmin.auth.admin.updateUserById(existingEmailUser.id, { 
+            phone, 
+            password 
+          })
+          if (updateAuthError) throw updateAuthError
 
-        await supabaseAdmin.from('users').update({ phone, full_name: name }).eq('id', existingEmailUser.id)
-        
-        return NextResponse.json({ success: true, email, password })
-      } else {
-        // Create brand new user
-        const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
-          email,
-          phone,
-          password,
-          email_confirm: true,
-          phone_confirm: true,
-          user_metadata: { full_name: name }
-        })
-        
-        if (createError) throw createError
-        
-        // Update the phone in public.users (since handle_new_user trigger creates the row)
-        if (newUser.user) {
-          await supabaseAdmin.from('users').update({ phone }).eq('id', newUser.user.id)
+          await supabaseAdmin.from('users').update({ phone, full_name: name }).eq('id', existingEmailUser.id)
+          
+          return NextResponse.json({ success: true, email, phone, password })
         }
-        
-        return NextResponse.json({ success: true, email, password })
       }
+
+      // Create brand new phone-only user
+      const userData: any = {
+        phone,
+        password,
+        phone_confirm: true,
+        user_metadata: { full_name: name }
+      };
+      
+      if (email) {
+         userData.email = email;
+         userData.email_confirm = true;
+      }
+
+      const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser(userData)
+      
+      if (createError) throw createError
+      
+      // Update the phone in public.users (since handle_new_user trigger creates the row)
+      if (newUser.user) {
+        await supabaseAdmin.from('users').update({ phone }).eq('id', newUser.user.id)
+      }
+      
+      return NextResponse.json({ success: true, email: email || null, phone, password })
     }
   } catch (error: unknown) {
     console.error('Auth Sync Error:', error)
