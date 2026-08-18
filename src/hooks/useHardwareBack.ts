@@ -12,6 +12,12 @@ import { useEffect, useRef } from 'react';
  */
 export function useHardwareBack(isOpen: boolean, close: () => void, hashId: string) {
   const isBackButtonPressed = useRef(false);
+  const closeRef = useRef(close);
+
+  // Update the ref to the latest close function on every render
+  useEffect(() => {
+    closeRef.current = close;
+  }, [close]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -28,7 +34,7 @@ export function useHardwareBack(isOpen: boolean, close: () => void, hashId: stri
         // When back button is pressed, the hash will be removed by the browser
         if (window.location.hash !== hash) {
           isBackButtonPressed.current = true;
-          close();
+          closeRef.current();
         }
       };
 
@@ -46,5 +52,5 @@ export function useHardwareBack(isOpen: boolean, close: () => void, hashId: stri
         isBackButtonPressed.current = false;
       };
     }
-  }, [isOpen, close, hashId]);
+  }, [isOpen, hashId]);
 }
