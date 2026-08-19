@@ -31,6 +31,27 @@ export const metadata: Metadata = {
     shortcut: "/logo.png",
     apple: "/logo.png",
   },
+  openGraph: {
+    title: "Arogyavruksham",
+    description: "Elegant and culturally rich e-commerce for premium Indian Plants.",
+    url: "https://arogyavruksham.com",
+    siteName: "Arogyavruksham",
+    images: [
+      {
+        url: "/logo.png",
+        width: 800,
+        height: 600,
+      },
+    ],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Arogyavruksham",
+    description: "Premium Indian Plants for your home and garden.",
+    images: ["/logo.png"],
+  },
 };
 
 export const viewport: Viewport = {
