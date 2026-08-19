@@ -14,7 +14,7 @@ const SECTION_ICONS: Record<string, any> = {
   Sparkles, BarChart2, Bot, Package, Archive, ShoppingCart, LayoutGrid, Tag, Megaphone, Mail, Users, Settings,
 }
 
-const PIE_COLORS = ['#000000', '#F3F4F6'];
+const PIE_COLORS = ['#22c55e', '#F3F4F6'];
 
 export default function AdminDashboard() {
   const [metrics, setMetrics] = useState({
@@ -374,8 +374,8 @@ export default function AdminDashboard() {
               <AreaChart data={salesData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#000" stopOpacity={0.15}/>
-                    <stop offset="95%" stopColor="#000" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#22c55e" stopOpacity={0.25}/>
+                    <stop offset="95%" stopColor="#22c55e" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
@@ -385,12 +385,12 @@ export default function AdminDashboard() {
                 <Area 
                   type="monotone" 
                   dataKey="income" 
-                  stroke="#000" 
+                  stroke="#22c55e" 
                   strokeWidth={3} 
                   fillOpacity={1} 
                   fill="url(#colorIncome)" 
-                  dot={{ r: 4, fill: '#fff', stroke: '#000', strokeWidth: 2 }} 
-                  activeDot={{ r: 6, fill: '#000', stroke: '#fff', strokeWidth: 2 }} 
+                  dot={{ r: 4, fill: '#fff', stroke: '#22c55e', strokeWidth: 2 }} 
+                  activeDot={{ r: 6, fill: '#22c55e', stroke: '#fff', strokeWidth: 2 }} 
                 />
               </AreaChart>
             </ResponsiveContainer>
