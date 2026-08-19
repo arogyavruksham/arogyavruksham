@@ -71,7 +71,7 @@ export default function InventoryPage() {
   }
 
   return (
-    <div className="space-y-6 text-gray-900 font-sans">
+    <div className="space-y-6 text-stone-800 font-sans">
       <AdminPageHeader
         eyebrow="Commerce"
         title="Inventory"
@@ -82,36 +82,36 @@ export default function InventoryPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <div className="relative flex-1 sm:w-64">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
             <input 
               type="text" 
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
               placeholder="Search stock catalog..." 
-              className="w-full pl-10 pr-4 py-2 bg-white border border-black/5 rounded-xl focus:border-black focus:ring-1 focus:ring-black outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-stone-200 rounded-xl focus:border-[#1B4332] focus:ring-1 focus:ring-[#1B4332] outline-none text-sm font-semibold text-stone-800 placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
         </div>
 
         {/* Monochrome Header Tabs */}
-        <div className="flex bg-white border border-black/5 p-1 rounded-xl shadow-2xs w-full sm:w-auto overflow-x-auto">
+        <div className="flex bg-white border border-stone-200 p-1 rounded-xl shadow-2xs w-full sm:w-auto overflow-x-auto">
           <button 
             onClick={() => setActiveTab('LOW_STOCK')}
-            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'LOW_STOCK' ? 'bg-black text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-[#FCFCFD]'}`}
+            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200 shadow-2xs' : 'text-stone-600 hover:text-stone-800 hover:bg-[#F9F9F8]'}`}
           >
             <AlertTriangle className="w-4 h-4" /> 
             Low Stock ({lowStock.length})
           </button>
           <button 
             onClick={() => setActiveTab('OUT_OF_STOCK')}
-            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'OUT_OF_STOCK' ? 'bg-black text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-[#FCFCFD]'}`}
+            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'OUT_OF_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200 shadow-2xs' : 'text-stone-600 hover:text-stone-800 hover:bg-[#F9F9F8]'}`}
           >
             <PackageX className="w-4 h-4" /> 
             Out of Stock ({outOfStock.length})
           </button>
           <button 
             onClick={() => setActiveTab('FULL_STOCK')}
-            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'FULL_STOCK' ? 'bg-black text-white shadow-2xs' : 'text-gray-600 hover:text-gray-900 hover:bg-[#FCFCFD]'}`}
+            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'FULL_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200 shadow-2xs' : 'text-stone-600 hover:text-stone-800 hover:bg-[#F9F9F8]'}`}
           >
             <CheckCircle className="w-4 h-4" /> 
             Full Stock ({fullStock.length})
@@ -120,22 +120,22 @@ export default function InventoryPage() {
       </div>
 
       {/* Inventory Table - Clean Monochrome Reference Style */}
-      <div className="bg-white rounded-2xl border border-black/5 shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden">
         {loading ? (
-          <div className="flex flex-col items-center justify-center p-14 gap-2 text-gray-500">
-            <Loader2 className="w-8 h-8 animate-spin text-gray-900" />
-            <span className="text-xs font-bold text-gray-700">Checking inventory logs...</span>
+          <div className="flex flex-col items-center justify-center p-14 gap-2 text-stone-500">
+            <Loader2 className="w-8 h-8 animate-spin text-stone-800" />
+            <span className="text-xs font-bold text-stone-700">Checking inventory logs...</span>
           </div>
         ) : getActiveList().length === 0 ? (
-          <div className="p-14 text-center text-gray-400 font-medium italic">
+          <div className="p-14 text-center text-stone-400 font-medium italic">
             No products match this inventory threshold.
           </div>
         ) : (
           <div className="overflow-x-auto w-full">
             <table className="w-full text-left border-collapse whitespace-nowrap min-w-[600px]">
               <thead>
-                <tr className="bg-[#FCFCFD] border-b border-black/5 text-xs uppercase tracking-wider text-gray-500 font-bold">
-                  <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-black cursor-pointer" /></th>
+                <tr className="bg-[#F9F9F8] border-b border-stone-200 text-xs uppercase tracking-wider text-stone-500 font-bold">
+                  <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-stone-300 text-stone-800 focus:ring-[#1B4332] cursor-pointer" /></th>
                   <th className="p-4 font-bold">PRODUCT</th>
                   <th className="p-4 font-bold">CATEGORY</th>
                   <th className="p-4 font-bold">STOCK COUNT</th>
@@ -145,40 +145,40 @@ export default function InventoryPage() {
               </thead>
               <tbody className="text-sm divide-y divide-gray-100 font-medium">
                 {getActiveList().map(product => (
-                  <tr key={product.id} className="hover:bg-[#FCFCFD]/80 transition-colors">
+                  <tr key={product.id} className="hover:bg-[#F9F9F8]/80 transition-colors">
                     <td className="p-4 pl-6">
-                      <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-black cursor-pointer" />
+                      <input type="checkbox" className="rounded border-stone-300 text-stone-800 focus:ring-[#1B4332] cursor-pointer" />
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-3.5">
-                        <div className="w-11 h-11 rounded-xl bg-[#FCFCFD] overflow-hidden shrink-0 border border-gray-100 p-1 flex items-center justify-center">
+                        <div className="w-11 h-11 rounded-xl bg-[#F9F9F8] overflow-hidden shrink-0 border border-gray-100 p-1 flex items-center justify-center">
                           {product.image_url ? (
                             <img src={product.image_url} alt={product.title} className="w-full h-full object-contain mix-blend-multiply" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-400 font-bold text-[10px] bg-gray-100 rounded-lg">N/A</div>
+                            <div className="w-full h-full flex items-center justify-center text-stone-400 font-bold text-[10px] bg-stone-100 rounded-lg">N/A</div>
                           )}
                         </div>
                         <div>
-                          <p className="font-bold text-gray-900 text-sm leading-snug">{product.title}</p>
-                          <p className="text-xs text-gray-400 font-mono mt-0.5">{product.id.split('-')[0].toLowerCase()}</p>
+                          <p className="font-bold text-stone-800 text-sm leading-snug">{product.title}</p>
+                          <p className="text-xs text-stone-400 font-mono mt-0.5">{product.id.split('-')[0].toLowerCase()}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="p-4 text-gray-600 font-semibold">{product.category}</td>
+                    <td className="p-4 text-stone-600 font-semibold">{product.category}</td>
                     <td className="p-4">
                       <input
                         type="number"
                         min="0"
                         value={draftStock[product.id] ?? product.stock_count}
                         onChange={(e) => setDraftStock({ ...draftStock, [product.id]: e.target.value })}
-                        className="w-24 px-3 py-1.5 border border-black/5 rounded-xl font-black text-gray-900 text-sm outline-none focus:border-black"
+                        className="w-24 px-3 py-1.5 border border-stone-200 rounded-xl font-black text-stone-800 text-sm outline-none focus:border-[#1B4332]"
                       />
                     </td>
                     <td className="p-4">
                       <button
                         onClick={() => saveStock(product.id)}
                         disabled={savingId === product.id || Number(draftStock[product.id]) === Number(product.stock_count)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-black text-white disabled:opacity-40"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 disabled:opacity-40"
                       >
                         {savingId === product.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
                         Save

@@ -162,7 +162,7 @@ export default function OffersPage() {
   })
 
   return (
-    <div className="space-y-6 text-gray-900 font-sans pb-12">
+    <div className="space-y-6 text-stone-800 font-sans pb-12">
       <AdminPageHeader
         eyebrow="Marketing"
         title="Offers & Coupons"
@@ -173,31 +173,31 @@ export default function OffersPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <div className="relative flex-1 sm:w-64">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
             <input 
               type="text" 
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
               placeholder="Search offers & codes..." 
-              className="w-full pl-10 pr-4 py-2 bg-white border border-black/5 rounded-xl focus:border-black focus:ring-1 focus:ring-black outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-stone-200 rounded-xl focus:border-[#1B4332] focus:ring-1 focus:ring-[#1B4332] outline-none text-sm font-semibold text-stone-800 placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
         </div>
         <button 
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 px-4.5 py-2.5 bg-black text-white rounded-xl text-sm font-bold hover:bg-gray-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
+          className="flex items-center gap-2 px-4.5 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl text-sm font-bold hover:bg-gray-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
         >
           <Plus className="w-4 h-4" /> Add Coupon
         </button>
       </div>
 
       {/* Offers Table - Universal Clean Screenshot Design */}
-      <div className="bg-white rounded-2xl border border-black/5 shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse whitespace-nowrap min-w-[750px]">
             <thead>
-              <tr className="bg-[#FCFCFD] border-b border-black/5 text-xs uppercase tracking-wider text-gray-500 font-bold">
-                <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-black cursor-pointer" /></th>
+              <tr className="bg-[#F9F9F8] border-b border-stone-200 text-xs uppercase tracking-wider text-stone-500 font-bold">
+                <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-stone-300 text-stone-800 focus:ring-[#1B4332] cursor-pointer" /></th>
                 <th className="p-4 font-bold">OFFER TITLE</th>
                 <th className="p-4 font-bold">PROMO CODE</th>
                 <th className="p-4 font-bold">DISCOUNT VALUE</th>
@@ -210,14 +210,14 @@ export default function OffersPage() {
             <tbody className="text-sm divide-y divide-gray-100 font-medium">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="p-14 text-center text-gray-500">
-                    <Loader2 className="w-7 h-7 animate-spin text-gray-900 mx-auto mb-2" />
-                    <span className="text-xs font-bold text-gray-700">Loading discount vouchers...</span>
+                  <td colSpan={7} className="p-14 text-center text-stone-500">
+                    <Loader2 className="w-7 h-7 animate-spin text-stone-800 mx-auto mb-2" />
+                    <span className="text-xs font-bold text-stone-700">Loading discount vouchers...</span>
                   </td>
                 </tr>
               ) : filteredCoupons.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-14 text-center text-gray-400 italic">
+                  <td colSpan={7} className="p-14 text-center text-stone-400 italic">
                     No active coupons found in catalog. Click "Add Coupon" to generate one.
                   </td>
                 </tr>
@@ -226,31 +226,31 @@ export default function OffersPage() {
                 const start = new Date(coupon.start_date).getTime()
                 const end = new Date(coupon.expiry_date).getTime()
                 let statusBadge = { label: 'Active', classes: 'bg-green-50 text-green-700 border-green-200/60' }
-                if (!coupon.is_active) statusBadge = { label: 'Inactive', classes: 'bg-gray-100 text-gray-500 border-black/5' }
+                if (!coupon.is_active) statusBadge = { label: 'Inactive', classes: 'bg-stone-100 text-stone-500 border-stone-200' }
                 else if (coupon.usage_limit !== null && coupon.usage_count >= coupon.usage_limit) statusBadge = { label: 'Limit Reached', classes: 'bg-red-50 text-red-700 border-red-200/60' }
                 else if (now > end) statusBadge = { label: 'Expired', classes: 'bg-red-50 text-red-700 border-red-200/60' }
                 else if (now < start) statusBadge = { label: 'Scheduled', classes: 'bg-amber-50 text-amber-700 border-amber-200/60' }
 
                 return (
-                  <tr key={coupon.id} className="hover:bg-[#FCFCFD]/80 transition-colors">
+                  <tr key={coupon.id} className="hover:bg-[#F9F9F8]/80 transition-colors">
                     <td className="p-4 pl-6">
-                      <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-black cursor-pointer" />
+                      <input type="checkbox" className="rounded border-stone-300 text-stone-800 focus:ring-[#1B4332] cursor-pointer" />
                     </td>
-                    <td className="p-4 font-bold text-gray-900 text-sm">{coupon.title}</td>
+                    <td className="p-4 font-bold text-stone-800 text-sm">{coupon.title}</td>
                     <td className="p-4">
-                      <span className="bg-gray-100 text-gray-900 px-3 py-1 rounded-lg font-mono text-xs font-black border border-black/5 shadow-2xs">
+                      <span className="bg-stone-100 text-stone-800 px-3 py-1 rounded-lg font-mono text-xs font-black border border-stone-200 shadow-2xs">
                         {coupon.code}
                       </span>
                     </td>
-                    <td className="p-4 font-black text-gray-900 text-base">
+                    <td className="p-4 font-black text-stone-800 text-base">
                       {coupon.discount_type === 'percentage' ? `${coupon.discount_value}% OFF` : `₹${coupon.discount_value} OFF`}
                     </td>
-                    <td className="p-4 text-sm font-semibold text-gray-700">
+                    <td className="p-4 text-sm font-semibold text-stone-700">
                       {coupon.usage_count} / {coupon.usage_limit === null ? '∞' : coupon.usage_limit}
                     </td>
-                    <td className="p-4 text-xs font-mono text-gray-600 space-y-0.5">
-                      <div><span className="font-bold text-gray-400">START:</span> {new Date(coupon.start_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
-                      <div><span className="font-bold text-gray-400">EXPIRES:</span> {new Date(coupon.expiry_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+                    <td className="p-4 text-xs font-mono text-stone-600 space-y-0.5">
+                      <div><span className="font-bold text-stone-400">START:</span> {new Date(coupon.start_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+                      <div><span className="font-bold text-stone-400">EXPIRES:</span> {new Date(coupon.expiry_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
                     </td>
                     <td className="p-4">
                       <span className={`px-3 py-0.5 rounded-full text-xs font-bold border ${statusBadge.classes}`}>
@@ -259,10 +259,10 @@ export default function OffersPage() {
                     </td>
                     <td className="p-4 pr-6 text-right">
                       <div className="flex justify-end gap-2">
-                        <button onClick={() => handleOpenModal(coupon)} className="p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-xl transition-colors cursor-pointer" title="Edit Coupon">
+                        <button onClick={() => handleOpenModal(coupon)} className="p-2 text-stone-400 hover:text-stone-800 hover:bg-stone-100 rounded-xl transition-colors cursor-pointer" title="Edit Coupon">
                           <Edit2 className="w-4 h-4" />
                         </button>
-                        <button onClick={() => handleDelete(coupon.id)} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer" title="Delete Coupon">
+                        <button onClick={() => handleDelete(coupon.id)} className="p-2 text-stone-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer" title="Delete Coupon">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -277,64 +277,64 @@ export default function OffersPage() {
 
       {/* Add / Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-black/5">
-            <div className="px-6 py-5 border-b border-black/5 flex justify-between items-center bg-[#FCFCFD]">
-              <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
-                <Tag className="w-5 h-5 text-gray-900" /> {editingId ? 'Modify Coupon Offer' : 'Create New Coupon'}
+        <div className="fixed inset-0 bg-[#1B4332]/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-stone-200">
+            <div className="px-6 py-5 border-b border-stone-200 flex justify-between items-center bg-[#F9F9F8]">
+              <h2 className="text-lg font-black text-stone-800 flex items-center gap-2">
+                <Tag className="w-5 h-5 text-stone-800" /> {editingId ? 'Modify Coupon Offer' : 'Create New Coupon'}
               </h2>
             </div>
             
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Coupon Promo Code</label>
-                <input required type="text" placeholder="e.g. MONSOON30" value={formData.code} onChange={e => setFormData({...formData, code: e.target.value.toUpperCase()})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-mono font-bold uppercase text-sm" />
+                <label className="block text-xs font-black text-stone-700 uppercase tracking-wide mb-1.5">Coupon Promo Code</label>
+                <input required type="text" placeholder="e.g. MONSOON30" value={formData.code} onChange={e => setFormData({...formData, code: e.target.value.toUpperCase()})} className="w-full px-4 py-2 bg-white border border-stone-300 rounded-xl outline-none focus:ring-1 focus:ring-[#1B4332] focus:border-[#1B4332] text-stone-800 font-mono font-bold uppercase text-sm" />
               </div>
 
               <div>
-                <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Offer Title</label>
-                <input required type="text" placeholder="e.g. Monsoon Special 30% Discount" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-semibold text-sm" />
+                <label className="block text-xs font-black text-stone-700 uppercase tracking-wide mb-1.5">Offer Title</label>
+                <input required type="text" placeholder="e.g. Monsoon Special 30% Discount" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 bg-white border border-stone-300 rounded-xl outline-none focus:ring-1 focus:ring-[#1B4332] focus:border-[#1B4332] text-stone-800 font-semibold text-sm" />
               </div>
 
               <div className="flex gap-4">
                 <div className="flex-1">
-                  <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Type</label>
-                  <select value={formData.discount_type} onChange={e => setFormData({...formData, discount_type: e.target.value as 'percentage' | 'fixed'})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-semibold text-sm cursor-pointer">
+                  <label className="block text-xs font-black text-stone-700 uppercase tracking-wide mb-1.5">Type</label>
+                  <select value={formData.discount_type} onChange={e => setFormData({...formData, discount_type: e.target.value as 'percentage' | 'fixed'})} className="w-full px-4 py-2 bg-white border border-stone-300 rounded-xl outline-none focus:ring-1 focus:ring-[#1B4332] focus:border-[#1B4332] text-stone-800 font-semibold text-sm cursor-pointer">
                     <option value="percentage">Percentage (%)</option>
                     <option value="fixed">Fixed Amount (₹)</option>
                   </select>
                 </div>
                 <div className="flex-1">
-                  <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Value</label>
-                  <input required type="number" min="1" step="0.01" placeholder="30" value={formData.discount_value} onChange={e => setFormData({...formData, discount_value: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-bold text-sm" />
+                  <label className="block text-xs font-black text-stone-700 uppercase tracking-wide mb-1.5">Value</label>
+                  <input required type="number" min="1" step="0.01" placeholder="30" value={formData.discount_value} onChange={e => setFormData({...formData, discount_value: e.target.value})} className="w-full px-4 py-2 bg-white border border-stone-300 rounded-xl outline-none focus:ring-1 focus:ring-[#1B4332] focus:border-[#1B4332] text-stone-800 font-bold text-sm" />
                 </div>
               </div>
 
               <div className="flex flex-col gap-4">
                 <div>
-                  <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Usage Limit</label>
-                  <input type="number" min="1" placeholder="Unlimited if left empty" value={formData.usage_limit} onChange={e => setFormData({...formData, usage_limit: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-bold text-sm" />
+                  <label className="block text-xs font-black text-stone-700 uppercase tracking-wide mb-1.5">Usage Limit</label>
+                  <input type="number" min="1" placeholder="Unlimited if left empty" value={formData.usage_limit} onChange={e => setFormData({...formData, usage_limit: e.target.value})} className="w-full px-4 py-2 bg-white border border-stone-300 rounded-xl outline-none focus:ring-1 focus:ring-[#1B4332] focus:border-[#1B4332] text-stone-800 font-bold text-sm" />
                 </div>
                 <div>
-                  <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Start Timestamp</label>
-                  <input required type="datetime-local" value={formData.start_date} onChange={e => setFormData({...formData, start_date: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-semibold text-xs font-mono" />
+                  <label className="block text-xs font-black text-stone-700 uppercase tracking-wide mb-1.5">Start Timestamp</label>
+                  <input required type="datetime-local" value={formData.start_date} onChange={e => setFormData({...formData, start_date: e.target.value})} className="w-full px-4 py-2 bg-white border border-stone-300 rounded-xl outline-none focus:ring-1 focus:ring-[#1B4332] focus:border-[#1B4332] text-stone-800 font-semibold text-xs font-mono" />
                 </div>
                 <div>
-                  <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Expiry Timestamp</label>
-                  <input required type="datetime-local" value={formData.expiry_date} onChange={e => setFormData({...formData, expiry_date: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-semibold text-xs font-mono" />
+                  <label className="block text-xs font-black text-stone-700 uppercase tracking-wide mb-1.5">Expiry Timestamp</label>
+                  <input required type="datetime-local" value={formData.expiry_date} onChange={e => setFormData({...formData, expiry_date: e.target.value})} className="w-full px-4 py-2 bg-white border border-stone-300 rounded-xl outline-none focus:ring-1 focus:ring-[#1B4332] focus:border-[#1B4332] text-stone-800 font-semibold text-xs font-mono" />
                 </div>
               </div>
 
               <div className="flex items-center gap-2.5 pt-2">
-                <input type="checkbox" id="isActive" checked={formData.is_active} onChange={e => setFormData({...formData, is_active: e.target.checked})} className="w-4 h-4 text-gray-900 border-gray-300 rounded focus:ring-black cursor-pointer" />
-                <label htmlFor="isActive" className="text-xs font-bold text-gray-700 cursor-pointer">Coupon is active and available for customer checkout</label>
+                <input type="checkbox" id="isActive" checked={formData.is_active} onChange={e => setFormData({...formData, is_active: e.target.checked})} className="w-4 h-4 text-stone-800 border-stone-300 rounded focus:ring-[#1B4332] cursor-pointer" />
+                <label htmlFor="isActive" className="text-xs font-bold text-stone-700 cursor-pointer">Coupon is active and available for customer checkout</label>
               </div>
 
               <div className="flex gap-3 pt-4 border-t border-gray-100">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 px-4 py-2.5 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors cursor-pointer">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 px-4 py-2.5 text-xs font-bold text-stone-700 bg-stone-100 hover:bg-gray-200 rounded-xl transition-colors cursor-pointer">
                   Cancel
                 </button>
-                <button type="submit" disabled={isProcessing} className="flex-1 px-4 py-2.5 text-xs font-bold text-white bg-black hover:bg-gray-900 rounded-xl transition-all shadow-xs disabled:opacity-50 cursor-pointer">
+                <button type="submit" disabled={isProcessing} className="flex-1 px-4 py-2.5 text-xs font-bold text-white bg-[#1B4332] hover:bg-gray-900 rounded-xl transition-all shadow-xs disabled:opacity-50 cursor-pointer">
                   {isProcessing ? 'Saving...' : 'Save Coupon'}
                 </button>
               </div>
@@ -345,17 +345,17 @@ export default function OffersPage() {
 
       {/* Delete Confirmation Modal */}
       {deletingId && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden p-6 text-center border border-black/5">
+        <div className="fixed inset-0 bg-[#1B4332]/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden p-6 text-center border border-stone-200">
             <div className="w-10 h-10 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-100">
               <Trash2 className="w-7 h-7" />
             </div>
-            <h2 className="text-lg font-black text-gray-900 mb-2">Delete Coupon?</h2>
-            <p className="text-xs text-gray-500 font-medium mb-6 leading-relaxed">Are you sure you want to permanently delete this discount voucher? Customers will no longer be able to claim it.</p>
+            <h2 className="text-lg font-black text-stone-800 mb-2">Delete Coupon?</h2>
+            <p className="text-xs text-stone-500 font-medium mb-6 leading-relaxed">Are you sure you want to permanently delete this discount voucher? Customers will no longer be able to claim it.</p>
             <div className="flex gap-3">
               <button 
                 onClick={() => setDeletingId(null)} 
-                className="flex-1 px-4 py-2.5 text-xs text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl font-bold transition-colors cursor-pointer"
+                className="flex-1 px-4 py-2.5 text-xs text-stone-700 bg-stone-100 hover:bg-gray-200 rounded-xl font-bold transition-colors cursor-pointer"
               >
                 Cancel
               </button>
