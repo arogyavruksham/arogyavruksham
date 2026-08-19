@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     position: 'bottom-right',
   },
   serverExternalPackages: ['pdfkit'],
+  poweredByHeader: false,
   async headers() {
     return [
       {
@@ -41,6 +42,10 @@ const nextConfig: NextConfig = {
           {
             key: 'Content-Security-Policy',
             value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' blob: data: https:; font-src 'self' data: https:; connect-src 'self' wss: https:; frame-src 'self' https:;",
+          },
+          {
+            key: 'Server',
+            value: 'Arogyavruksham',
           },
         ],
       },
