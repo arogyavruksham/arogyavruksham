@@ -139,21 +139,21 @@ export default function NewsletterPage() {
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white border border-black/5 rounded-xl p-5">
+        <div className="bg-white border border-black/5 rounded-xl p-3">
           <p className="text-xs font-bold text-gray-500 uppercase">Total subscribers</p>
-          <p className="text-3xl font-black text-gray-900 mt-2">{subscribers.length}</p>
+          <p className="text-2xl font-black text-gray-900 mt-2">{subscribers.length}</p>
         </div>
-        <div className="bg-white border border-black/5 rounded-xl p-5">
+        <div className="bg-white border border-black/5 rounded-xl p-3">
           <p className="text-xs font-bold text-gray-500 uppercase">New this month</p>
-          <p className="text-3xl font-black text-gray-900 mt-2">{thisMonth}</p>
+          <p className="text-2xl font-black text-gray-900 mt-2">{thisMonth}</p>
         </div>
-        <div className="bg-white border border-black/5 rounded-xl p-5">
+        <div className="bg-white border border-black/5 rounded-xl p-3">
           <p className="text-xs font-bold text-gray-500 uppercase">Signup source</p>
           <p className="text-sm font-semibold text-gray-700 mt-3">Store footer + admin add</p>
         </div>
       </div>
 
-      <form onSubmit={handleAdd} className="bg-white border border-black/5 rounded-[2rem] p-5 flex flex-col sm:flex-row gap-3">
+      <form onSubmit={handleAdd} className="bg-white border border-black/5 rounded-2xl p-3 flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
@@ -187,7 +187,7 @@ export default function NewsletterPage() {
         </span>
       </div>
 
-      <div className="bg-white rounded-[2rem] border border-black/5 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-black/5 overflow-hidden">
         <table className="w-full text-left min-w-[640px]">
           <thead>
             <tr className="bg-[#FCFCFD] border-b border-black/5 text-xs uppercase tracking-wider text-gray-500 font-bold">

@@ -96,7 +96,7 @@ export default function CustomersPage() {
       </div>
 
       {/* Customers Table - Universal Clean Screenshot Design */}
-      <div className="bg-white rounded-[2rem] border border-black/5 shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-black/5 shadow-2xs overflow-hidden">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse whitespace-nowrap min-w-[700px]">
             <thead>

@@ -103,20 +103,20 @@ export default function AdminAnnouncementPage() {
 
       {/* Status Notifications */}
       {successMsg && (
-        <div className="p-4 bg-white border border-black text-gray-900 rounded-[2rem] flex items-center gap-3 animate-in fade-in shadow-2xs">
+        <div className="p-4 bg-white border border-black text-gray-900 rounded-2xl flex items-center gap-3 animate-in fade-in shadow-2xs">
           <div className="p-1 bg-black text-white rounded-full"><Check className="w-3.5 h-3.5 stroke-[3]" /></div>
           <span className="font-bold text-sm">{successMsg}</span>
         </div>
       )}
       {errorMsg && (
-        <div className="p-4 bg-red-50 border border-red-200 text-red-800 rounded-[2rem] flex items-center gap-3 animate-in fade-in shadow-2xs">
+        <div className="p-4 bg-red-50 border border-red-200 text-red-800 rounded-2xl flex items-center gap-3 animate-in fade-in shadow-2xs">
           <AlertCircle className="w-5 h-5 text-red-600 shrink-0 stroke-[2.5]" />
           <span className="font-bold text-sm">{errorMsg}</span>
         </div>
       )}
 
       {/* Live Previews Section */}
-      <div className="bg-white p-6 rounded-[2rem] border border-black/5 shadow-2xs space-y-6">
+      <div className="bg-white p-6 rounded-2xl border border-black/5 shadow-2xs space-y-6">
         <h2 className="text-base font-black text-gray-900 flex items-center gap-2 uppercase tracking-wide">
           <Eye className="w-4 h-4 text-gray-900" /> Real-Time Live Preview
         </h2>
@@ -179,10 +179,10 @@ export default function AdminAnnouncementPage() {
       </div>
 
       {/* Configuration Form */}
-      <form onSubmit={handleSubmit} className="bg-white p-6 md:p-8 rounded-[2rem] border border-black/5 shadow-2xs space-y-8">
+      <form onSubmit={handleSubmit} className="bg-white p-6 md:p-5 rounded-2xl border border-black/5 shadow-2xs space-y-5">
         
         {/* Toggle Switch - Monochrome */}
-        <div className="flex items-center justify-between p-5 bg-[#FCFCFD] rounded-[2rem] border border-black/5">
+        <div className="flex items-center justify-between p-3 bg-[#FCFCFD] rounded-2xl border border-black/5">
           <div>
             <span className="font-black text-gray-900 block text-base">Enable Announcement Bar</span>
             <span className="text-xs font-semibold text-gray-500">Turn this toggle on to broadcast your promotional banner across the entire online greenhouse.</span>

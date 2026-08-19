@@ -120,7 +120,7 @@ export default function InventoryPage() {
       </div>
 
       {/* Inventory Table - Clean Monochrome Reference Style */}
-      <div className="bg-white rounded-[2rem] border border-black/5 shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-black/5 shadow-2xs overflow-hidden">
         {loading ? (
           <div className="flex flex-col items-center justify-center p-14 gap-2 text-gray-500">
             <Loader2 className="w-8 h-8 animate-spin text-gray-900" />

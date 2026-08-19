@@ -88,7 +88,7 @@ export default function CategoriesPage() {
       </div>
 
       {successMsg && (
-        <div className="p-4 bg-white border border-black text-gray-900 rounded-[2rem] shadow-2xs flex items-center gap-3 animate-in fade-in">
+        <div className="p-4 bg-white border border-black text-gray-900 rounded-2xl shadow-2xs flex items-center gap-3 animate-in fade-in">
           <div className="p-1 bg-black text-white rounded-full"><Check className="w-3 h-3" /></div>
           <span className="font-bold text-sm">{successMsg}</span>
         </div>
@@ -96,7 +96,7 @@ export default function CategoriesPage() {
 
       {/* Add Form Modal / Inline Box */}
       {isAdding && (
-        <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-black/5 shadow-xl animate-in slide-in-from-top-4">
+        <div className="bg-white p-6 md:p-5 rounded-2xl border border-black/5 shadow-xl animate-in slide-in-from-top-4">
           <h2 className="text-lg font-black text-gray-900 mb-4 flex items-center gap-2">
             <Plus className="w-5 h-5 text-gray-900" /> New Category Specification
           </h2>
@@ -144,7 +144,7 @@ export default function CategoriesPage() {
 
             {image && (
               <div className="flex items-center gap-4 p-4 bg-[#FCFCFD] rounded-xl border border-black/5">
-                <div className="w-16 h-16 rounded-xl overflow-hidden border border-black/5 shadow-2xs">
+                <div className="w-12 h-12 rounded-xl overflow-hidden border border-black/5 shadow-2xs">
                   <img src={image} alt="Preview" className="w-full h-full object-cover" />
                 </div>
                 <div>
@@ -174,7 +174,7 @@ export default function CategoriesPage() {
       )}
 
       {/* Categories Table - Universal Clean Screenshot Design */}
-      <div className="bg-white rounded-[2rem] border border-black/5 shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-black/5 shadow-2xs overflow-hidden">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse whitespace-nowrap min-w-[700px]">
             <thead>

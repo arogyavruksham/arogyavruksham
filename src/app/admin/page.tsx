@@ -241,12 +241,12 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-12 max-w-full font-sans text-gray-900 pb-24">
+    <div className="space-y-6 max-w-full font-sans text-gray-900 pb-24">
       
       {/* Header & Global Filter */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 border-b border-black/5 pb-8">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-5 border-b border-black/5 pb-8">
         <div>
-          <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-gray-900">Dashboard</h1>
+          <h1 className="text-2xl md:text-2xl font-black tracking-tighter text-gray-900">Dashboard</h1>
           <p className="text-sm md:text-base text-gray-500 mt-2 max-w-[65ch]">
             Overview of store performance, catalog status, and active operations.
           </p>
@@ -254,7 +254,7 @@ export default function AdminDashboard() {
         <select 
           value={globalDateFilter}
           onChange={(e) => setGlobalDateFilter(e.target.value)}
-          className="bg-[#FCFCFD] border border-black/5 text-gray-900 text-sm font-bold rounded-2xl px-5 py-3 outline-none hover:bg-black/5 transition-colors cursor-pointer"
+          className="bg-[#FCFCFD] border border-black/5 text-gray-900 text-sm font-bold rounded-2xl px-3 py-2 outline-none hover:bg-black/5 transition-colors cursor-pointer"
         >
           <option value="Last 7 Days">Last 7 Days</option>
           <option value="Last 30 Days">Last 30 Days</option>
@@ -266,7 +266,7 @@ export default function AdminDashboard() {
       {/* Metric Cards - Soft Structuralism */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Revenue */}
-        <div className="bg-white p-8 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
+        <div className="bg-white p-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
           <div className="flex justify-between items-start">
             <span className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Total Revenue</span>
             <div className="w-10 h-10 bg-[#F7F7F8] rounded-xl flex items-center justify-center text-black border border-black/5 group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
@@ -282,7 +282,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Total Orders */}
-        <div className="bg-white p-8 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
+        <div className="bg-white p-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
           <div className="flex justify-between items-start">
             <span className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Total Orders</span>
             <div className="w-10 h-10 bg-[#F7F7F8] rounded-xl flex items-center justify-center text-black border border-black/5 group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
@@ -298,7 +298,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Total Customers */}
-        <div className="bg-white p-8 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
+        <div className="bg-white p-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
           <div className="flex justify-between items-start">
             <span className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Unique Users</span>
             <div className="w-10 h-10 bg-[#F7F7F8] rounded-xl flex items-center justify-center text-black border border-black/5 group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
@@ -314,7 +314,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Pending Delivery */}
-        <div className="bg-white p-8 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
+        <div className="bg-white p-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
           <div className="flex justify-between items-start">
             <span className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Fulfillment</span>
             <div className="w-10 h-10 bg-[#F7F7F8] rounded-xl flex items-center justify-center text-black border border-black/5 group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
@@ -331,11 +331,11 @@ export default function AdminDashboard() {
       </div>
 
       {/* Charts Row - Monochrome / Black & White */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         
         {/* Sales Analytic Chart */}
-        <div className="bg-white p-8 md:p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 lg:col-span-2 flex flex-col">
-          <div className="flex justify-between items-center mb-8">
+        <div className="bg-white p-5 md:p-10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 lg:col-span-2 flex flex-col">
+          <div className="flex justify-between items-center mb-5">
             <h2 className="text-2xl font-black tracking-tighter text-gray-900">Revenue Velocity</h2>
             <select 
               value={salesMonthFilter}
@@ -352,19 +352,19 @@ export default function AdminDashboard() {
             <div>
               <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">Total Income</p>
               <div className="flex items-baseline gap-2">
-                <p className="text-3xl font-black tracking-tighter text-gray-900">₹{chartTotals.income.toLocaleString('en-IN')}</p>
+                <p className="text-2xl font-black tracking-tighter text-gray-900">₹{chartTotals.income.toLocaleString('en-IN')}</p>
               </div>
             </div>
             <div>
               <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">Est. Expenses</p>
               <div className="flex items-baseline gap-2">
-                <p className="text-3xl font-black tracking-tighter text-gray-400">₹{chartTotals.expenses.toLocaleString('en-IN')}</p>
+                <p className="text-2xl font-black tracking-tighter text-gray-400">₹{chartTotals.expenses.toLocaleString('en-IN')}</p>
               </div>
             </div>
             <div>
               <p className="text-[11px] font-bold uppercase tracking-widest text-gray-900 mb-2">Net Balance</p>
               <div className="flex items-baseline gap-2">
-                <p className="text-3xl font-black tracking-tighter text-black">₹{chartTotals.balance.toLocaleString('en-IN')}</p>
+                <p className="text-2xl font-black tracking-tighter text-black">₹{chartTotals.balance.toLocaleString('en-IN')}</p>
               </div>
             </div>
           </div>
@@ -398,11 +398,11 @@ export default function AdminDashboard() {
         </div>
 
         {/* Sales Target Donut */}
-        <div className="bg-white p-8 md:p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col">
-          <h2 className="text-2xl font-black tracking-tighter text-gray-900 mb-8">Target Quota</h2>
+        <div className="bg-white p-5 md:p-10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col">
+          <h2 className="text-2xl font-black tracking-tighter text-gray-900 mb-5">Target Quota</h2>
           
           <div className="flex-1 flex flex-col justify-center items-center relative">
-            <div className="h-56 w-full">
+            <div className="h-40 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -450,11 +450,11 @@ export default function AdminDashboard() {
       </div>
 
       {/* Top Products & Active Campaigns */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         
         {/* Top Selling Products - Bento Style */}
-        <div className="bg-white p-8 md:p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 lg:col-span-2">
-          <div className="flex justify-between items-center mb-8">
+        <div className="bg-white p-5 md:p-10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 lg:col-span-2">
+          <div className="flex justify-between items-center mb-5">
             <h2 className="text-2xl font-black tracking-tighter text-gray-900">Top Performing</h2>
             <div className="flex gap-2">
               <button className="w-10 h-10 rounded-full flex items-center justify-center bg-[#FCFCFD] border border-black/5 text-gray-400 hover:text-black transition-colors">&larr;</button>
@@ -483,8 +483,8 @@ export default function AdminDashboard() {
         </div>
 
         {/* Current Offer */}
-        <div className="bg-white p-8 md:p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5">
-          <div className="flex justify-between items-center mb-8">
+        <div className="bg-white p-5 md:p-10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5">
+          <div className="flex justify-between items-center mb-5">
             <h2 className="text-2xl font-black tracking-tighter text-gray-900">Campaigns</h2>
             <a href="/admin/offers" className="w-10 h-10 rounded-full flex items-center justify-center bg-[#FCFCFD] border border-black/5 hover:bg-black/5 transition-colors">
               <ChevronRight className="w-5 h-5 text-gray-600" strokeWidth={1.5} />
@@ -510,7 +510,7 @@ export default function AdminDashboard() {
               const isExpired = now > end;
 
               return (
-                <div key={coupon.id} className="p-5 bg-[#FCFCFD] rounded-2xl border border-black/5">
+                <div key={coupon.id} className="p-3 bg-[#FCFCFD] rounded-2xl border border-black/5">
                   <div className="flex justify-between items-center text-sm mb-4">
                     <div className="flex items-center gap-3">
                       <span className="font-bold text-gray-900">{coupon.title}</span>
@@ -534,13 +534,13 @@ export default function AdminDashboard() {
       </div>
 
       {/* Detailed Orders Table - Minimalist Data Grid */}
-      <div className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 overflow-hidden">
-        <div className="p-8 md:p-10 border-b border-black/5 flex justify-between items-center bg-[#FCFCFD]">
+      <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 overflow-hidden">
+        <div className="p-5 md:p-10 border-b border-black/5 flex justify-between items-center bg-[#FCFCFD]">
           <div>
             <h2 className="text-2xl font-black tracking-tighter text-gray-900">Recent Transactions</h2>
             <p className="text-sm text-gray-500 mt-1 font-medium">Live fulfillment feed across all gateways</p>
           </div>
-          <a href="/admin/orders" className="px-6 py-3 bg-black text-white rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
+          <a href="/admin/orders" className="px-4 py-2 bg-black text-white rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
             View All
           </a>
         </div>

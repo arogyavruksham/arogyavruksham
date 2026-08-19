@@ -37,9 +37,9 @@ export default function SettingsPage() {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <form onSubmit={handleSubmit} className="lg:col-span-2 bg-white border border-black/5 rounded-[2rem] p-6 md:p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="lg:col-span-2 bg-white border border-black/5 rounded-2xl p-6 md:p-5 space-y-6">
           <h2 className="text-sm font-black uppercase tracking-wide text-gray-900 border-b border-gray-100 pb-3">Store profile</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-black uppercase text-gray-700 mb-1.5">Store name</label>
               <input
@@ -104,7 +104,7 @@ export default function SettingsPage() {
         </form>
 
         <div className="space-y-4">
-          <div className="bg-white border border-black/5 rounded-[2rem] p-6">
+          <div className="bg-white border border-black/5 rounded-2xl p-6">
             <h3 className="font-black text-gray-900 mb-2">Panel security</h3>
             <p className="text-sm text-gray-500 mb-4">Lock the admin panel without signing out of the storefront account.</p>
             <button
@@ -117,7 +117,7 @@ export default function SettingsPage() {
               <Lock className="w-4 h-4" /> Lock admin panel
             </button>
           </div>
-          <div className="bg-black text-white rounded-[2rem] p-6">
+          <div className="bg-black text-white rounded-2xl p-6">
             <h3 className="font-black mb-2">Quick reminder</h3>
             <p className="text-sm text-emerald-100 leading-relaxed">
               Categories and announcement drafts also save locally so the storefront updates immediately. Coupons, products, orders, and customers sync through the admin database.

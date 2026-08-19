@@ -146,9 +146,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <ShieldCheck className="w-12 h-12 text-gray-400" strokeWidth={1.5} />
         </div>
         <div className="text-center">
-          <h1 className="text-3xl font-black tracking-tighter text-gray-900 mb-2">Access Denied</h1>
+          <h1 className="text-2xl font-black tracking-tighter text-gray-900 mb-2">Access Denied</h1>
           <p className="text-gray-500 mb-6 font-medium">Administrator privileges required.</p>
-          <Link href="/" className="px-6 py-3 bg-black text-white rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform">
+          <Link href="/" className="px-4 py-2 bg-black text-white rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform">
             Return Home
           </Link>
         </div>
@@ -173,7 +173,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="flex flex-col h-[100dvh] bg-[#F7F7F8] font-sans text-gray-900 overflow-hidden md:p-3 transition-colors duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
       
       {/* Outer Shell -> Inner Core (Double-Bezel Architecture) */}
-      <div className="flex flex-col md:flex-row flex-1 bg-white md:rounded-[2rem] md:shadow-[0_8px_40px_rgba(0,0,0,0.03)] md:border md:border-black/5 overflow-hidden relative">
+      <div className="flex flex-col md:flex-row flex-1 bg-white md:rounded-2xl md:shadow-[0_8px_40px_rgba(0,0,0,0.03)] md:border md:border-black/5 overflow-hidden relative">
 
         {/* Mobile Bottom Nav - Floating Pill Style */}
         <div className="md:hidden fixed bottom-6 left-4 right-4 z-50">

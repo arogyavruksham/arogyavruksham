@@ -113,7 +113,7 @@ export default function AISummaryPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Stats & Logs */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white rounded-[2rem] border border-black/5 shadow-2xs p-6 space-y-4 relative overflow-hidden">
+          <div className="bg-white rounded-2xl border border-black/5 shadow-2xs p-6 space-y-4 relative overflow-hidden">
             {summaryLoading && (
               <div className="absolute top-0 left-0 w-full h-1 bg-emerald-100 overflow-hidden">
                 <div className="h-full bg-black animate-[progress_1.5s_ease-in-out_infinite] w-1/2 rounded-full"></div>
@@ -146,7 +146,7 @@ export default function AISummaryPage() {
             </div>
           </div>
 
-          <div className="bg-black text-white p-5 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+          <div className="bg-black text-white p-3 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
             <h4 className="font-bold mb-2 flex items-center gap-2"><Bot className="w-4 h-4"/> Agent Status</h4>
             <p className="text-sm text-emerald-100 leading-relaxed">
               I am actively monitoring the store. If stock drops low or new orders arrive, I will instantly re-analyze and update the insights on the right.
@@ -156,7 +156,7 @@ export default function AISummaryPage() {
 
         {/* Right Column: AI Summary Result */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-[2rem] border border-black/5 shadow-2xs p-6 min-h-[400px] flex flex-col">
+          <div className="bg-white rounded-2xl border border-black/5 shadow-2xs p-6 min-h-[400px] flex flex-col">
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-bold text-gray-900 flex items-center gap-2">
                 <AlertCircle className="w-5 h-5 text-gray-900" />

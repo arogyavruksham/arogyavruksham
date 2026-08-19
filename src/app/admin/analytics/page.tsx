@@ -328,17 +328,17 @@ export default function AnalyticsPage() {
 
       {activeTab === 'Customers & Users' && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white rounded-xl p-5 border border-black/5">
+          <div className="bg-white rounded-xl p-3 border border-black/5">
             <p className="text-sm font-semibold text-gray-500">Unique customers</p>
-            <p className="text-3xl font-black mt-2">{uniqueCustomers}</p>
+            <p className="text-2xl font-black mt-2">{uniqueCustomers}</p>
           </div>
-          <div className="bg-white rounded-xl p-5 border border-black/5">
+          <div className="bg-white rounded-xl p-3 border border-black/5">
             <p className="text-sm font-semibold text-gray-500">Orders in range</p>
-            <p className="text-3xl font-black mt-2">{rangeOrders.length}</p>
+            <p className="text-2xl font-black mt-2">{rangeOrders.length}</p>
           </div>
-          <div className="bg-white rounded-xl p-5 border border-black/5">
+          <div className="bg-white rounded-xl p-3 border border-black/5">
             <p className="text-sm font-semibold text-gray-500">Avg. order value</p>
-            <p className="text-3xl font-black mt-2">
+            <p className="text-2xl font-black mt-2">
               ₹{rangeOrders.length ? Math.round(rangeOrders.reduce((s, o) => s + Number(o.total_amount || 0), 0) / rangeOrders.length).toLocaleString('en-IN') : 0}
             </p>
           </div>
@@ -347,13 +347,13 @@ export default function AnalyticsPage() {
 
       {activeTab === 'Offers & Coupons' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="bg-white rounded-xl p-5 border border-black/5">
+          <div className="bg-white rounded-xl p-3 border border-black/5">
             <p className="text-sm font-semibold text-gray-500">Orders with a coupon</p>
-            <p className="text-3xl font-black mt-2">{couponOrders.length}</p>
+            <p className="text-2xl font-black mt-2">{couponOrders.length}</p>
           </div>
-          <div className="bg-white rounded-xl p-5 border border-black/5">
+          <div className="bg-white rounded-xl p-3 border border-black/5">
             <p className="text-sm font-semibold text-gray-500">Coupon usage rate</p>
-            <p className="text-3xl font-black mt-2">
+            <p className="text-2xl font-black mt-2">
               {rangeOrders.length ? Math.round((couponOrders.length / rangeOrders.length) * 100) : 0}%
             </p>
           </div>
@@ -364,7 +364,7 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Card 1: Net Profit */}
-        <div className="bg-white rounded-xl p-5 border border-black/5 shadow-2xs flex flex-col justify-between hover:border-black transition-colors">
+        <div className="bg-white rounded-xl p-3 border border-black/5 shadow-2xs flex flex-col justify-between hover:border-black transition-colors">
           <div className="flex items-center justify-between text-gray-500 text-sm font-semibold">
             <span>Total Net Profit</span>
             <span title="Calculated revenue minus total product acquisition cost" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#FCFCFD] p-1 rounded-full">
@@ -372,7 +372,7 @@ export default function AnalyticsPage() {
             </span>
           </div>
           <div className="mt-4">
-            <h3 className="text-2xl md:text-3xl font-black text-gray-900">
+            <h3 className="text-2xl md:text-2xl font-black text-gray-900">
               ₹{stats.totalProfit.toLocaleString('en-IN')}
             </h3>
             <span className="text-xs text-gray-500 font-semibold mt-1 block">Live profit tracking</span>
@@ -380,7 +380,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Card 2: Completed Orders */}
-        <div className="bg-white rounded-xl p-5 border border-black/5 shadow-2xs flex flex-col justify-between hover:border-black transition-colors">
+        <div className="bg-white rounded-xl p-3 border border-black/5 shadow-2xs flex flex-col justify-between hover:border-black transition-colors">
           <div className="flex items-center justify-between text-gray-500 text-sm font-semibold">
             <span>Completed Orders</span>
             <span title="Orders successfully delivered to customer" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#FCFCFD] p-1 rounded-full">
@@ -388,7 +388,7 @@ export default function AnalyticsPage() {
             </span>
           </div>
           <div className="mt-4">
-            <h3 className="text-2xl md:text-3xl font-black text-gray-900">
+            <h3 className="text-2xl md:text-2xl font-black text-gray-900">
               {stats.completedOrders}
             </h3>
             <span className="text-xs text-gray-500 font-semibold mt-1 block">Fully delivered</span>
@@ -396,7 +396,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Card 3: Delivering (Shipped) */}
-        <div className="bg-white rounded-xl p-5 border border-black/5 shadow-2xs flex flex-col justify-between hover:border-black transition-colors">
+        <div className="bg-white rounded-xl p-3 border border-black/5 shadow-2xs flex flex-col justify-between hover:border-black transition-colors">
           <div className="flex items-center justify-between text-gray-500 text-sm font-semibold">
             <span>In Delivery / Shipped</span>
             <span title="Orders currently dispatched and in transit" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#FCFCFD] p-1 rounded-full">
@@ -404,7 +404,7 @@ export default function AnalyticsPage() {
             </span>
           </div>
           <div className="mt-4">
-            <h3 className="text-2xl md:text-3xl font-black text-gray-900">
+            <h3 className="text-2xl md:text-2xl font-black text-gray-900">
               {stats.deliveringOrders}
             </h3>
             <span className="text-xs text-gray-500 font-semibold mt-1 block">In active transit</span>
@@ -412,7 +412,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Card 4: Coupons Used */}
-        <div className="bg-white rounded-xl p-5 border border-black/5 shadow-2xs flex flex-col justify-between hover:border-black transition-colors">
+        <div className="bg-white rounded-xl p-3 border border-black/5 shadow-2xs flex flex-col justify-between hover:border-black transition-colors">
           <div className="flex items-center justify-between text-gray-500 text-sm font-semibold">
             <span>Coupons Applied</span>
             <span title="Total transactions utilizing promotional discount vouchers" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#FCFCFD] p-1 rounded-full">
@@ -420,7 +420,7 @@ export default function AnalyticsPage() {
             </span>
           </div>
           <div className="mt-4">
-            <h3 className="text-2xl md:text-3xl font-black text-gray-900">
+            <h3 className="text-2xl md:text-2xl font-black text-gray-900">
               {stats.couponsUsed}
             </h3>
             <span className="text-xs text-gray-500 font-semibold mt-1 block">Promotions active</span>
@@ -507,7 +507,7 @@ export default function AnalyticsPage() {
             <tbody className="divide-y divide-gray-100 text-sm font-medium">
               {filteredDailyStats.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-8 text-center text-gray-400 italic">No daily order data recorded yet.</td>
+                  <td colSpan={7} className="p-5 text-center text-gray-400 italic">No daily order data recorded yet.</td>
                 </tr>
               ) : filteredDailyStats.map(day => (
                 <tr 
@@ -576,7 +576,7 @@ export default function AnalyticsPage() {
               </button>
             </div>
 
-            <div className="p-8 overflow-y-auto space-y-8 flex-1">
+            <div className="p-5 overflow-y-auto space-y-5 flex-1">
               
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div className="bg-[#FCFCFD] p-4 rounded-xl border border-black/5">
@@ -660,7 +660,7 @@ export default function AnalyticsPage() {
               </div>
 
               <div className="bg-white rounded-xl border border-black/5 overflow-hidden shadow-2xs">
-                <div className="p-5 bg-[#FCFCFD]/60 border-b border-black/5 flex justify-between items-center">
+                <div className="p-3 bg-[#FCFCFD]/60 border-b border-black/5 flex justify-between items-center">
                   <div>
                     <h4 className="font-bold text-gray-900 flex items-center gap-2 text-sm">
                       <ShoppingBag className="w-4 h-4 text-gray-900" /> All Order Logs for {selectedDayData.formattedDate}
@@ -748,7 +748,7 @@ export default function AnalyticsPage() {
               </button>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-6 space-y-8">
+            <div className="flex-1 overflow-y-auto p-6 space-y-5">
               
               <div className="flex justify-between items-center pb-4 border-b border-black/5">
                 <span className="text-gray-500 font-medium text-sm">Order ID</span>
@@ -779,11 +779,11 @@ export default function AnalyticsPage() {
                   {selectedOrder.order_items?.map((item: any, idx: number) => (
                     <div key={idx} className="flex gap-4 p-3 bg-[#FCFCFD]/60 rounded-xl border border-black/5 items-center">
                       {item.products?.image_url ? (
-                        <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center border border-black/5 shrink-0 overflow-hidden shadow-2xs">
+                        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center border border-black/5 shrink-0 overflow-hidden shadow-2xs">
                           <img src={item.products.image_url} alt={item.products.title} className="w-full h-full object-contain mix-blend-multiply p-1" />
                         </div>
                       ) : (
-                        <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center border border-black/5 shrink-0 shadow-2xs">
+                        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center border border-black/5 shrink-0 shadow-2xs">
                           <Package className="w-6 h-6 text-gray-300" />
                         </div>
                       )}
@@ -825,7 +825,7 @@ export default function AnalyticsPage() {
                 <h3 className="text-xs font-bold text-gray-400 flex items-center gap-2 uppercase tracking-wider">
                   <Truck className="w-4 h-4 text-gray-900" /> Shipping Status
                 </h3>
-                <div className="pl-6 space-y-6 relative mt-4 bg-[#FCFCFD]/60 p-5 rounded-xl border border-black/5">
+                <div className="pl-6 space-y-6 relative mt-4 bg-[#FCFCFD]/60 p-3 rounded-xl border border-black/5">
                   <div className="absolute left-7 top-7 bottom-7 w-0.5 bg-gray-200"></div>
                   
                   {[

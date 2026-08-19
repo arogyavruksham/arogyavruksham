@@ -192,7 +192,7 @@ export default function OffersPage() {
       </div>
 
       {/* Offers Table - Universal Clean Screenshot Design */}
-      <div className="bg-white rounded-[2rem] border border-black/5 shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-black/5 shadow-2xs overflow-hidden">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse whitespace-nowrap min-w-[750px]">
             <thead>
@@ -278,7 +278,7 @@ export default function OffersPage() {
       {/* Add / Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden border border-black/5">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-black/5">
             <div className="px-6 py-5 border-b border-black/5 flex justify-between items-center bg-[#FCFCFD]">
               <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
                 <Tag className="w-5 h-5 text-gray-900" /> {editingId ? 'Modify Coupon Offer' : 'Create New Coupon'}
@@ -346,8 +346,8 @@ export default function OffersPage() {
       {/* Delete Confirmation Modal */}
       {deletingId && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-sm overflow-hidden p-6 text-center border border-black/5">
-            <div className="w-14 h-14 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-100">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden p-6 text-center border border-black/5">
+            <div className="w-10 h-10 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-100">
               <Trash2 className="w-7 h-7" />
             </div>
             <h2 className="text-lg font-black text-gray-900 mb-2">Delete Coupon?</h2>

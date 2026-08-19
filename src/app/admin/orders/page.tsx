@@ -161,9 +161,9 @@ export default function AdminOrdersPage() {
   const paginatedOrders = filteredOrders.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
 
   return (
-    <div className="space-y-12 pb-28 md:pb-8 text-gray-900 font-sans max-w-full">
+    <div className="space-y-6 pb-28 md:pb-8 text-gray-900 font-sans max-w-full">
       <div className="hidden md:block">
-        <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-gray-900 mb-2">Transactions</h1>
+        <h1 className="text-2xl md:text-2xl font-black tracking-tighter text-gray-900 mb-2">Transactions</h1>
         <p className="text-sm md:text-base text-gray-500 max-w-[65ch]">
           Search, filter, update fulfillment status, and export every order.
         </p>
@@ -229,7 +229,7 @@ export default function AdminOrdersPage() {
                 <div
                   key={order.id}
                   onClick={() => setSelectedOrder(order)}
-                  className="bg-white rounded-3xl p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 cursor-pointer active:scale-[0.98] transition-transform"
+                  className="bg-white rounded-3xl p-3 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 cursor-pointer active:scale-[0.98] transition-transform"
                 >
                   <div className="flex items-start justify-between gap-2 mb-4">
                     <div>
@@ -301,7 +301,7 @@ export default function AdminOrdersPage() {
       </div>
 
       {/* DESKTOP VIEW - Soft Structuralism */}
-      <div className="hidden md:block space-y-8">
+      <div className="hidden md:block space-y-5">
         
         {/* Statistics Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -316,7 +316,7 @@ export default function AdminOrdersPage() {
             <div 
               key={i} 
               onClick={() => { setActiveTab(stat.tab); setCurrentPage(1); }}
-              className={`rounded-[1.5rem] border p-6 flex flex-col gap-4 cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+              className={`rounded-xl border p-6 flex flex-col gap-4 cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
                 activeTab === stat.tab 
                   ? 'bg-black text-white border-black shadow-[0_8px_30px_rgba(0,0,0,0.15)] scale-105 z-10' 
                   : 'bg-white text-gray-900 border-black/5 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-black/10'
@@ -329,14 +329,14 @@ export default function AdminOrdersPage() {
               </div>
               <div>
                 <p className={`text-[10px] font-bold uppercase tracking-widest ${activeTab === stat.tab ? 'text-gray-400' : 'text-gray-400'} mb-1`}>{stat.label}</p>
-                <h3 className="text-3xl font-black tracking-tighter">{stat.value.toLocaleString()}</h3>
+                <h3 className="text-2xl font-black tracking-tighter">{stat.value.toLocaleString()}</h3>
               </div>
             </div>
           ))}
         </div>
 
         {/* Top Controls & Filter Bar */}
-        <div className="flex justify-between items-center bg-white p-4 rounded-[2rem] border border-black/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] gap-4">
+        <div className="flex justify-between items-center bg-white p-4 rounded-2xl border border-black/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] gap-4">
           <div className="flex items-center gap-3 w-full sm:w-auto flex-1">
             <div className="relative w-full max-w-sm">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" strokeWidth={1.5} />
@@ -345,13 +345,13 @@ export default function AdminOrdersPage() {
                 placeholder="Search orders or customer..." 
                 value={searchQuery}
                 onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-                className="w-full pl-11 pr-4 py-3 bg-[#FCFCFD] border border-black/5 rounded-2xl focus:border-black/20 focus:ring-1 focus:ring-black/20 outline-none text-sm font-bold text-gray-900 placeholder-gray-400 transition-all"
+                className="w-full pl-9 pr-3 py-2 bg-[#FCFCFD] border border-black/5 rounded-2xl focus:border-black/20 focus:ring-1 focus:ring-black/20 outline-none text-sm font-bold text-gray-900 placeholder-gray-400 transition-all"
               />
             </div>
             <select 
               value={paymentFilter}
               onChange={(e) => { setPaymentFilter(e.target.value); setCurrentPage(1); }}
-              className="px-5 py-3 bg-[#FCFCFD] border border-black/5 rounded-2xl text-sm font-bold text-gray-900 outline-none hover:bg-black/5 transition-colors cursor-pointer"
+              className="px-3 py-2 bg-[#FCFCFD] border border-black/5 rounded-2xl text-sm font-bold text-gray-900 outline-none hover:bg-black/5 transition-colors cursor-pointer"
             >
               <option value="All Payment Methods">All Methods</option>
               <option value="Prepaid">Prepaid</option>
@@ -360,43 +360,43 @@ export default function AdminOrdersPage() {
           </div>
           
           <div className="flex items-center gap-3 shrink-0">
-            <button onClick={exportToCSV} className="flex items-center gap-2 px-6 py-3 bg-[#FCFCFD] border border-black/5 rounded-2xl text-sm font-bold text-gray-900 hover:bg-black/5 transition-colors cursor-pointer">
+            <button onClick={exportToCSV} className="flex items-center gap-2 px-4 py-2 bg-[#FCFCFD] border border-black/5 rounded-2xl text-sm font-bold text-gray-900 hover:bg-black/5 transition-colors cursor-pointer">
               <Download className="w-4 h-4" strokeWidth={1.5} /> Export
             </button>
-            <button onClick={() => setCurrentPage(1)} className="flex items-center gap-2 px-6 py-3 bg-black text-white rounded-2xl text-sm font-bold hover:scale-[0.98] hover:shadow-[0_4px_14px_rgba(0,0,0,0.25)] transition-all cursor-pointer">
+            <button onClick={() => setCurrentPage(1)} className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-2xl text-sm font-bold hover:scale-[0.98] hover:shadow-[0_4px_14px_rgba(0,0,0,0.25)] transition-all cursor-pointer">
               Refresh Feed
             </button>
           </div>
         </div>
 
         {/* Orders Table - Double-Bezel */}
-        <div className="bg-white rounded-[2rem] border border-black/5 shadow-[0_8px_40px_rgba(0,0,0,0.03)] overflow-hidden">
+        <div className="bg-white rounded-2xl border border-black/5 shadow-[0_8px_40px_rgba(0,0,0,0.03)] overflow-hidden">
           <div className="overflow-x-auto w-full">
             <table className="w-full text-left border-collapse whitespace-nowrap min-w-[800px]">
               <thead>
                 <tr className="bg-[#FCFCFD] border-b border-black/5 text-[10px] uppercase tracking-widest text-gray-400 font-bold">
-                  <th className="p-5 pl-8 w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 cursor-pointer" /></th>
-                  <th className="p-5">Order ID</th>
-                  <th className="p-5">Customer</th>
-                  <th className="p-5">Date</th>
-                  <th className="p-5">Summary</th>
-                  <th className="p-5">Destination</th>
-                  <th className="p-5">Amount</th>
-                  <th className="p-5">State</th>
-                  <th className="p-5 pr-8 text-right">Actions</th>
+                  <th className="p-3 pl-4 w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 cursor-pointer" /></th>
+                  <th className="p-3">Order ID</th>
+                  <th className="p-3">Customer</th>
+                  <th className="p-3">Date</th>
+                  <th className="p-3">Summary</th>
+                  <th className="p-3">Destination</th>
+                  <th className="p-3">Amount</th>
+                  <th className="p-3">State</th>
+                  <th className="p-3 pr-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="text-sm divide-y divide-black/5 font-medium">
                 {loading ? (
                   <tr>
-                    <td colSpan={9} className="p-16 text-center text-gray-500">
+                    <td colSpan={9} className="p-8 text-center text-gray-500">
                       <Loader2 className="w-8 h-8 animate-spin mx-auto mb-3 text-gray-400" strokeWidth={1.5} />
                       <span className="font-bold">Syncing ledgers...</span>
                     </td>
                   </tr>
                 ) : paginatedOrders.length === 0 ? (
                   <tr>
-                    <td colSpan={9} className="p-16 text-center text-gray-400 italic font-bold">
+                    <td colSpan={9} className="p-8 text-center text-gray-400 italic font-bold">
                       No matching records found.
                     </td>
                   </tr>
@@ -407,15 +407,15 @@ export default function AdminOrdersPage() {
                   
                   return (
                     <tr key={order.id} className="hover:bg-[#F7F7F8] transition-colors group">
-                      <td className="p-5 pl-8 align-top">
+                      <td className="p-3 pl-4 align-top">
                         <input type="checkbox" className="rounded border-gray-300 text-gray-900 cursor-pointer" />
                       </td>
-                      <td className="p-5 align-top">
+                      <td className="p-3 align-top">
                         <span className="font-bold font-mono text-gray-900 cursor-pointer hover:underline" onClick={() => setSelectedOrder(order)}>
                           #{order.id.split('-')[0].toUpperCase()}
                         </span>
                       </td>
-                      <td className="p-5 align-top">
+                      <td className="p-3 align-top">
                         <div className="flex items-start gap-3">
                           <div className="w-10 h-10 rounded-xl bg-white border border-black/5 flex items-center justify-center font-black text-xs text-gray-900 shrink-0 shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
                             {avatarLetter}
@@ -426,10 +426,10 @@ export default function AdminOrdersPage() {
                           </div>
                         </div>
                       </td>
-                      <td className="p-5 align-top text-gray-600 font-bold text-xs">
+                      <td className="p-3 align-top text-gray-600 font-bold text-xs">
                         {new Date(order.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </td>
-                      <td className="p-5 align-top text-gray-600">
+                      <td className="p-3 align-top text-gray-600">
                         <div className="flex flex-col gap-3 max-w-[220px]">
                           {order.order_items?.map((item: any, idx: number) => (
                             <div key={idx} className="flex items-center gap-3">
@@ -446,7 +446,7 @@ export default function AdminOrdersPage() {
                           ))}
                         </div>
                       </td>
-                      <td className="p-5 align-top">
+                      <td className="p-3 align-top">
                         {order.shipping_address ? (
                           <div className="text-xs text-gray-600 min-w-[180px] max-w-[240px] whitespace-normal">
                             <span className="font-bold text-gray-900 block mb-1">{order.shipping_address.name}</span>
@@ -456,8 +456,8 @@ export default function AdminOrdersPage() {
                           <span className="text-xs text-gray-400 italic font-bold">Digital</span>
                         )}
                       </td>
-                      <td className="p-5 align-top font-black tracking-tight text-gray-900 text-base">₹{Number(order.total_amount).toLocaleString('en-IN')}</td>
-                      <td className="p-5 align-top">
+                      <td className="p-3 align-top font-black tracking-tight text-gray-900 text-base">₹{Number(order.total_amount).toLocaleString('en-IN')}</td>
+                      <td className="p-3 align-top">
                         <div className="flex flex-col items-start gap-2">
                           <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest ${
                             order.status === 'delivered' ? 'bg-[#FCFCFD] text-gray-900 border border-black/5' : 
@@ -468,7 +468,7 @@ export default function AdminOrdersPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="p-5 pr-8 text-right align-top">
+                      <td className="p-3 pr-4 text-right align-top">
                         <button onClick={() => setSelectedOrder(order)} className="p-2.5 text-gray-400 hover:text-black bg-[#FCFCFD] border border-black/5 rounded-xl transition-all cursor-pointer shadow-xs">
                           <Eye className="w-4 h-4" strokeWidth={1.5} />
                         </button>
@@ -481,7 +481,7 @@ export default function AdminOrdersPage() {
           </div>
           
           {/* Pagination */}
-          <div className="p-5 px-8 border-t border-black/5 flex items-center justify-between text-xs font-bold text-gray-500 bg-[#FCFCFD]">
+          <div className="p-3 px-8 border-t border-black/5 flex items-center justify-between text-xs font-bold text-gray-500 bg-[#FCFCFD]">
             <span>Showing {((currentPage - 1) * itemsPerPage) + (paginatedOrders.length > 0 ? 1 : 0)} to {((currentPage - 1) * itemsPerPage) + paginatedOrders.length} of {filteredOrders.length} records</span>
             <div className="flex gap-2 items-center">
               <button 
@@ -521,7 +521,7 @@ export default function AdminOrdersPage() {
         <div className="fixed inset-0 z-[100] flex justify-end">
           <div className="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity" onClick={() => setSelectedOrder(null)} />
           <div className="w-full max-w-lg bg-white h-full shadow-[0_0_60px_rgba(0,0,0,0.1)] flex flex-col relative z-10 animate-in slide-in-from-right duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] border-l border-black/5">
-            <div className="flex items-center justify-between p-8 border-b border-black/5">
+            <div className="flex items-center justify-between p-5 border-b border-black/5">
               <div>
                 <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 block mb-1">Inspection</span>
                 <h2 className="text-2xl font-black tracking-tighter text-gray-900">Order Details</h2>
@@ -531,7 +531,7 @@ export default function AdminOrdersPage() {
               </button>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-8 space-y-10">
+            <div className="flex-1 overflow-y-auto p-5 space-y-10">
               
               <div className="flex justify-between items-end pb-6 border-b border-black/5">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Order Ref</span>
@@ -562,11 +562,11 @@ export default function AdminOrdersPage() {
                   {selectedOrder.order_items?.map((item: any, idx: number) => (
                     <div key={idx} className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-black/5 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
                       {item.products?.image_url ? (
-                        <div className="w-16 h-16 rounded-xl bg-[#FCFCFD] flex items-center justify-center border border-black/5 shrink-0 overflow-hidden p-2">
+                        <div className="w-12 h-12 rounded-xl bg-[#FCFCFD] flex items-center justify-center border border-black/5 shrink-0 overflow-hidden p-2">
                           <img src={item.products.image_url} alt={item.products.title} className="w-full h-full object-contain mix-blend-multiply" />
                         </div>
                       ) : (
-                        <div className="w-16 h-16 rounded-xl bg-[#FCFCFD] flex items-center justify-center border border-black/5 shrink-0">
+                        <div className="w-12 h-12 rounded-xl bg-[#FCFCFD] flex items-center justify-center border border-black/5 shrink-0">
                           <Package className="w-6 h-6 text-gray-300" strokeWidth={1.5} />
                         </div>
                       )}
@@ -607,13 +607,13 @@ export default function AdminOrdersPage() {
             </div>
 
             {/* Update Status Footer */}
-            <div className="p-8 border-t border-black/5 bg-white">
+            <div className="p-5 border-t border-black/5 bg-white">
               <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Modify State</label>
               <div className="flex gap-4 relative">
                 <div className="relative flex-1">
                   <button 
                     onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
-                    className="w-full text-left bg-[#FCFCFD] border border-black/5 rounded-2xl px-5 py-4 text-sm font-bold text-gray-900 flex justify-between items-center cursor-pointer hover:bg-black/5 transition-colors"
+                    className="w-full text-left bg-[#FCFCFD] border border-black/5 rounded-2xl px-3 py-2 text-sm font-bold text-gray-900 flex justify-between items-center cursor-pointer hover:bg-black/5 transition-colors"
                   >
                     <span>{getStatusDisplayName(selectedOrder.status)}</span>
                     <ChevronDown className="w-5 h-5 text-gray-400" strokeWidth={1.5} />
@@ -624,7 +624,7 @@ export default function AdminOrdersPage() {
                         <button
                           key={opt}
                           onClick={() => handleUpdateStatus(selectedOrder.id, opt)}
-                          className={`w-full text-left px-5 py-3 text-sm hover:bg-black/5 cursor-pointer flex items-center justify-between ${selectedOrder.status === opt ? 'font-black text-black' : 'text-gray-600 font-bold'}`}
+                          className={`w-full text-left px-3 py-2 text-sm hover:bg-black/5 cursor-pointer flex items-center justify-between ${selectedOrder.status === opt ? 'font-black text-black' : 'text-gray-600 font-bold'}`}
                         >
                           <span>{getStatusDisplayName(opt)}</span>
                           {selectedOrder.status === opt && <CheckCircle className="w-4 h-4 text-black" strokeWidth={2} />}
@@ -636,7 +636,7 @@ export default function AdminOrdersPage() {
                 <button 
                   disabled={updatingStatus}
                   onClick={() => handleUpdateStatus(selectedOrder.id, selectedOrder.status)}
-                  className="bg-black hover:scale-[0.98] text-white px-8 py-4 rounded-2xl font-bold text-sm transition-transform shadow-[0_4px_20px_rgba(0,0,0,0.15)] disabled:opacity-50 shrink-0 cursor-pointer"
+                  className="bg-black hover:scale-[0.98] text-white px-4 py-2 rounded-2xl font-bold text-sm transition-transform shadow-[0_4px_20px_rgba(0,0,0,0.15)] disabled:opacity-50 shrink-0 cursor-pointer"
                 >
                   {updatingStatus ? 'Syncing...' : 'Commit'}
                 </button>
