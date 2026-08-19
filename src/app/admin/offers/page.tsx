@@ -185,7 +185,7 @@ export default function OffersPage() {
         </div>
         <button 
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 px-4.5 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl text-sm font-bold hover:bg-gray-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
+          className="flex items-center gap-2 px-4.5 py-2.5 bg-[#059669] text-white shadow-sm border-0 rounded-xl text-sm font-bold hover:bg-gray-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
         >
           <Plus className="w-4 h-4" /> Add Coupon
         </button>
@@ -229,7 +229,7 @@ export default function OffersPage() {
                 if (!coupon.is_active) statusBadge = { label: 'Inactive', classes: 'bg-[#E5E7EB] text-[#6B7280] border-[#E5E7EB]' }
                 else if (coupon.usage_limit !== null && coupon.usage_count >= coupon.usage_limit) statusBadge = { label: 'Limit Reached', classes: 'bg-red-50 text-red-700 border-red-200/60' }
                 else if (now > end) statusBadge = { label: 'Expired', classes: 'bg-red-50 text-red-700 border-red-200/60' }
-                else if (now < start) statusBadge = { label: 'Scheduled', classes: 'bg-amber-50 text-amber-700 border-amber-200/60' }
+                else if (now < start) statusBadge = { label: 'Scheduled', classes: 'bg-[#059669]/10 text-[#059669]' }
 
                 return (
                   <tr key={coupon.id} className="hover:bg-[#F9FAFB]/80 transition-colors">

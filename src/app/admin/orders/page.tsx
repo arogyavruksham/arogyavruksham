@@ -196,7 +196,7 @@ export default function AdminOrdersPage() {
                 onClick={() => { setActiveTab(tab === 'Processing' ? 'Pending' : tab); setCurrentPage(1); }}
                 className={`px-4 py-2 rounded-xl text-xs font-black uppercase whitespace-nowrap transition-all shrink-0 cursor-pointer border ${
                   isTabActive
-                    ? 'bg-amber-50 text-amber-700 border border-amber-200 border-[#059669] shadow-[0_4px_14px_rgba(0,0,0,0.1)]'
+                    ? 'bg-[#059669] text-white shadow-sm border-0 border-[#059669] shadow-[0_4px_14px_rgba(0,0,0,0.1)]'
                     : 'bg-white text-[#4B5563] border-[#E5E7EB] hover:bg-[#059669]/5'
                 }`}
               >
@@ -318,7 +318,7 @@ export default function AdminOrdersPage() {
               onClick={() => { setActiveTab(stat.tab); setCurrentPage(1); }}
               className={`rounded-xl border p-6 flex flex-col gap-4 cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
                 activeTab === stat.tab 
-                  ? 'bg-amber-50 text-amber-700 border border-amber-200 border-[#059669] shadow-[0_8px_30px_rgba(0,0,0,0.15)] scale-105 z-10' 
+                  ? 'bg-[#059669] text-white shadow-sm border-0 border-[#059669] shadow-[0_8px_30px_rgba(0,0,0,0.15)] scale-105 z-10' 
                   : 'bg-white text-[#111827] border-[#E5E7EB] shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#D1D5DB]'
               }`}
             >
@@ -363,7 +363,7 @@ export default function AdminOrdersPage() {
             <button onClick={exportToCSV} className="flex items-center gap-2 px-4 py-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-2xl text-sm font-bold text-[#111827] hover:bg-[#059669]/5 transition-colors cursor-pointer">
               <Download className="w-4 h-4" strokeWidth={1.5} /> Export
             </button>
-            <button onClick={() => setCurrentPage(1)} className="flex items-center gap-2 px-4 py-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-2xl text-sm font-bold hover:scale-[0.98] hover:shadow-[0_4px_14px_rgba(0,0,0,0.25)] transition-all cursor-pointer">
+            <button onClick={() => setCurrentPage(1)} className="flex items-center gap-2 px-4 py-2 bg-[#059669] text-white shadow-sm border-0 rounded-2xl text-sm font-bold hover:scale-[0.98] hover:shadow-[0_4px_14px_rgba(0,0,0,0.25)] transition-all cursor-pointer">
               Refresh Feed
             </button>
           </div>
@@ -497,7 +497,7 @@ export default function AdminOrdersPage() {
                     key={i}
                     onClick={() => setCurrentPage(i + 1)}
                     className={`w-8 h-8 flex items-center justify-center rounded-xl text-xs font-black transition-colors cursor-pointer ${
-                      currentPage === i + 1 ? 'bg-amber-50 text-amber-700 border border-amber-200 shadow-xs' : 'text-[#6B7280] hover:bg-[#059669]/5'
+                      currentPage === i + 1 ? 'bg-[#059669] text-white shadow-sm border-0 shadow-xs' : 'text-[#6B7280] hover:bg-[#059669]/5'
                     }`}
                   >
                     {i + 1}
@@ -594,7 +594,7 @@ export default function AdminOrdersPage() {
                   </div>
                   <div className="flex justify-between items-center">
                     <span>Status</span>
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] uppercase tracking-widest border ${selectedOrder.payment_method === 'Cash on Delivery' && selectedOrder.status !== 'delivered' ? 'bg-white text-[#111827] border-[#E5E7EB]' : 'bg-amber-50 text-amber-700 border border-amber-200 border-[#059669]'}`}>
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] uppercase tracking-widest border ${selectedOrder.payment_method === 'Cash on Delivery' && selectedOrder.status !== 'delivered' ? 'bg-white text-[#111827] border-[#E5E7EB]' : 'bg-[#059669] text-white shadow-sm border-0 border-[#059669]'}`}>
                       {selectedOrder.payment_method === 'Cash on Delivery' && selectedOrder.status !== 'delivered' ? 'Unpaid' : 'Verified'}
                     </span>
                   </div>

@@ -540,7 +540,7 @@ export default function AdminDashboard() {
             <h2 className="text-2xl font-black tracking-tighter text-[#111827]">Recent Transactions</h2>
             <p className="text-sm text-[#6B7280] mt-1 font-medium">Live fulfillment feed across all gateways</p>
           </div>
-          <a href="/admin/orders" className="px-4 py-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
+          <a href="/admin/orders" className="px-4 py-2 bg-[#059669] text-white shadow-sm border-0 rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
             View All
           </a>
         </div>
@@ -611,7 +611,7 @@ export default function AdminDashboard() {
                       <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest ${
                         order.status === 'delivered' ? 'bg-white border border-[#E5E7EB] text-[#111827]' :
                         order.status === 'cancelled' ? 'bg-[#F9FAFB] text-[#9CA3AF] line-through border border-transparent' :
-                        'bg-amber-50 text-amber-700 border border-amber-200 shadow-xs'
+                        'bg-[#059669] text-white shadow-sm border-0 shadow-xs'
                       }`}>
                         {order.status}
                       </span>

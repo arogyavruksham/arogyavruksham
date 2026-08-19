@@ -143,7 +143,7 @@ export default function CustomersPage() {
                     </td>
                     <td className="p-4">
                       <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold capitalize border ${
-                        user.role === 'admin' ? 'bg-amber-50 text-amber-700 border border-amber-200 border-[#059669]' :
+                        user.role === 'admin' ? 'bg-[#059669] text-white shadow-sm border-0 border-[#059669]' :
                         user.role === 'manager' || user.role === 'editor' ? 'bg-[#E5E7EB] text-[#111827] border-[#D1D5DB]' :
                         'bg-[#F9FAFB] text-[#4B5563] border-[#E5E7EB]'
                       }`}>

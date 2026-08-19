@@ -104,7 +104,7 @@ export default function AdminAnnouncementPage() {
       {/* Status Notifications */}
       {successMsg && (
         <div className="p-4 bg-white border border-[#059669] text-[#111827] rounded-2xl flex items-center gap-3 animate-in fade-in shadow-2xs">
-          <div className="p-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full"><Check className="w-3.5 h-3.5 stroke-[3]" /></div>
+          <div className="p-1 bg-[#059669] text-white shadow-sm border-0 rounded-full"><Check className="w-3.5 h-3.5 stroke-[3]" /></div>
           <span className="font-bold text-sm">{successMsg}</span>
         </div>
       )}

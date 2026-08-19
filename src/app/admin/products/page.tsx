@@ -206,7 +206,7 @@ export default function AdminProductsPage() {
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center justify-center gap-2 px-4 py-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl font-bold tracking-tight hover:scale-[0.98] transition-transform shadow-[0_8px_30px_rgba(0,0,0,0.15)] cursor-pointer"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-[#059669] text-white shadow-sm border-0 rounded-xl font-bold tracking-tight hover:scale-[0.98] transition-transform shadow-[0_8px_30px_rgba(0,0,0,0.15)] cursor-pointer"
         >
           <Plus className="w-5 h-5" strokeWidth={1.5} /> Add Product
         </button>
@@ -299,7 +299,7 @@ export default function AdminProductsPage() {
                     <td className="p-3 align-top pt-7">
                       <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest ${
                         status === 'In Stock' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 
-                        status === 'Low Stock' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 
+                        status === 'Low Stock' ? 'bg-[#059669] text-white shadow-sm border-0' : 
                         'bg-red-50 text-red-600 border border-red-100'
                       }`}>
                         {status}

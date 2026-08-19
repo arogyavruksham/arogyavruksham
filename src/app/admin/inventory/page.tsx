@@ -97,21 +97,21 @@ export default function InventoryPage() {
         <div className="flex bg-white border border-[#E5E7EB] p-1 rounded-xl shadow-2xs w-full sm:w-auto overflow-x-auto">
           <button 
             onClick={() => setActiveTab('LOW_STOCK')}
-            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200 shadow-2xs' : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'}`}
+            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'LOW_STOCK' ? 'bg-[#059669] text-white shadow-sm border-0 shadow-2xs' : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'}`}
           >
             <AlertTriangle className="w-4 h-4" /> 
             Low Stock ({lowStock.length})
           </button>
           <button 
             onClick={() => setActiveTab('OUT_OF_STOCK')}
-            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'OUT_OF_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200 shadow-2xs' : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'}`}
+            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'OUT_OF_STOCK' ? 'bg-[#059669] text-white shadow-sm border-0 shadow-2xs' : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'}`}
           >
             <PackageX className="w-4 h-4" /> 
             Out of Stock ({outOfStock.length})
           </button>
           <button 
             onClick={() => setActiveTab('FULL_STOCK')}
-            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'FULL_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200 shadow-2xs' : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'}`}
+            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'FULL_STOCK' ? 'bg-[#059669] text-white shadow-sm border-0 shadow-2xs' : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'}`}
           >
             <CheckCircle className="w-4 h-4" /> 
             Full Stock ({fullStock.length})
@@ -178,7 +178,7 @@ export default function InventoryPage() {
                       <button
                         onClick={() => saveStock(product.id)}
                         disabled={savingId === product.id || Number(draftStock[product.id]) === Number(product.stock_count)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 disabled:opacity-40"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#059669] text-white shadow-sm border-0 disabled:opacity-40"
                       >
                         {savingId === product.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
                         Save
@@ -187,7 +187,7 @@ export default function InventoryPage() {
                     <td className="p-4 pr-6">
                       <span className={`inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold ${
                         product.stock_count === 0 ? 'bg-red-50 text-red-700 border border-red-200/60' : 
-                        product.stock_count <= threshold ? 'bg-amber-50 text-amber-700 border border-amber-200/60' : 
+                        product.stock_count <= threshold ? 'bg-[#059669] text-white shadow-sm border-0/60' : 
                         'bg-green-50 text-green-700 border border-green-200/60'
                       }`}>
                         {product.stock_count === 0 ? 'Out of Stock' : product.stock_count <= threshold ? 'Low Stock' : 'In Stock'}

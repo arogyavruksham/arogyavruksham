@@ -165,7 +165,7 @@ export default function NewsletterPage() {
             className="w-full pl-10 pr-4 py-2.5 border border-[#E5E7EB] rounded-xl text-sm font-semibold outline-none focus:border-[#059669]"
           />
         </div>
-        <button type="submit" disabled={saving} className="flex items-center justify-center gap-2 px-5 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl text-sm font-bold hover:bg-gray-900 disabled:opacity-50">
+        <button type="submit" disabled={saving} className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#059669] text-white shadow-sm border-0 rounded-xl text-sm font-bold hover:bg-gray-900 disabled:opacity-50">
           {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
           Add email
         </button>

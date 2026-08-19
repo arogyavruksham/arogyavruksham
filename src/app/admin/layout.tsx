@@ -148,7 +148,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="text-center">
           <h1 className="text-2xl font-black tracking-tighter text-[#111827] mb-2">Access Denied</h1>
           <p className="text-[#6B7280] mb-6 font-medium">Administrator privileges required.</p>
-          <Link href="/" className="px-4 py-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform">
+          <Link href="/" className="px-4 py-2 bg-[#059669] text-white shadow-sm border-0 rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform">
             Return Home
           </Link>
         </div>
@@ -430,7 +430,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 >
                   <Bell className="w-5 h-5" strokeWidth={1.5} />
                   {unreadCount > 0 && (
-                    <span className="absolute top-2 right-2 bg-amber-50 text-amber-700 border border-amber-200 font-bold text-[9px] min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center shadow-xs">
+                    <span className="absolute top-2 right-2 bg-[#059669] text-white shadow-sm border-0 font-bold text-[9px] min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center shadow-xs">
                       {unreadCount > 99 ? '99+' : unreadCount}
                     </span>
                   )}
@@ -466,7 +466,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                               className="p-4 hover:bg-[#F3F4F6] transition-colors cursor-pointer flex items-start gap-4 border-b border-[#E5E7EB] last:border-0 group"
                             >
                               <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${
-                                notif.status === 'pending' ? 'bg-amber-50 text-amber-700 border border-amber-200 border-[#059669]' : 'bg-white text-[#9CA3AF] border-[#E5E7EB] shadow-[0_2px_8px_rgb(0,0,0,0.02)]'
+                                notif.status === 'pending' ? 'bg-[#059669] text-white shadow-sm border-0 border-[#059669]' : 'bg-white text-[#9CA3AF] border-[#E5E7EB] shadow-[0_2px_8px_rgb(0,0,0,0.02)]'
                               }`}>
                                 <ShoppingBag className="w-4 h-4" strokeWidth={1.5} />
                               </div>

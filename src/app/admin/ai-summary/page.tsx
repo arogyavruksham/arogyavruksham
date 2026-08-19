@@ -146,7 +146,7 @@ export default function AISummaryPage() {
             </div>
           </div>
 
-          <div className="bg-amber-50 text-amber-700 border border-amber-200 p-3 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+          <div className="bg-[#059669] text-white shadow-sm border-0 p-3 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
             <h4 className="font-bold mb-2 flex items-center gap-2"><Bot className="w-4 h-4"/> Agent Status</h4>
             <p className="text-sm text-emerald-100 leading-relaxed">
               I am actively monitoring the store. If stock drops low or new orders arrive, I will instantly re-analyze and update the insights on the right.

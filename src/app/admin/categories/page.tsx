@@ -81,7 +81,7 @@ export default function CategoriesPage() {
         </div>
         <button
           onClick={() => setIsAdding(!isAdding)}
-          className="flex items-center gap-2 px-4.5 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl text-sm font-bold hover:bg-gray-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
+          className="flex items-center gap-2 px-4.5 py-2.5 bg-[#059669] text-white shadow-sm border-0 rounded-xl text-sm font-bold hover:bg-gray-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
         >
           <Plus className="w-4 h-4" /> {isAdding ? 'Close Creator' : 'Add New Category'}
         </button>
@@ -89,7 +89,7 @@ export default function CategoriesPage() {
 
       {successMsg && (
         <div className="p-4 bg-white border border-[#059669] text-[#111827] rounded-2xl shadow-2xs flex items-center gap-3 animate-in fade-in">
-          <div className="p-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full"><Check className="w-3 h-3" /></div>
+          <div className="p-1 bg-[#059669] text-white shadow-sm border-0 rounded-full"><Check className="w-3 h-3" /></div>
           <span className="font-bold text-sm">{successMsg}</span>
         </div>
       )}

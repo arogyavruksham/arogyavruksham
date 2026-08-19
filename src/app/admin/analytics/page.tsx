@@ -444,7 +444,7 @@ export default function AnalyticsPage() {
             </h2>
             <p className="text-xs text-[#6B7280] mt-0.5">Analyses order placement times across the entire store history</p>
           </div>
-          <span className="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold rounded-full">24-Hour Breakdown</span>
+          <span className="px-3 py-1 bg-[#059669] text-white shadow-sm border-0 text-xs font-bold rounded-full">24-Hour Breakdown</span>
         </div>
 
         <div className="h-72 w-full min-h-[280px]">
@@ -543,7 +543,7 @@ export default function AnalyticsPage() {
                   <td className="p-4 text-right pr-6">
                     <button 
                       onClick={(e) => { e.stopPropagation(); setSelectedDateStr(day.dateStr); }}
-                      className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-200 hover:bg-gray-900 font-bold text-xs transition-all shadow-xs"
+                      className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-[#059669] text-white shadow-sm border-0 hover:bg-gray-900 font-bold text-xs transition-all shadow-xs"
                     >
                       Inspect Date <ChevronRight className="w-3.5 h-3.5" />
                     </button>
@@ -595,7 +595,7 @@ export default function AnalyticsPage() {
                   <p className="text-xs font-bold text-[#6B7280] uppercase">Day Revenue</p>
                   <p className="text-2xl font-black text-[#111827] mt-1">₹{selectedDayData.revenue.toLocaleString('en-IN')}</p>
                 </div>
-                <div className="bg-amber-50 text-amber-700 border border-amber-200 p-4 rounded-xl">
+                <div className="bg-[#059669] text-white shadow-sm border-0 p-4 rounded-xl">
                   <p className="text-xs font-black text-gray-300 uppercase">Net Day Profit</p>
                   <p className="text-2xl font-black text-white mt-1">₹{selectedDayData.profit.toLocaleString('en-IN')}</p>
                 </div>
@@ -724,7 +724,7 @@ export default function AnalyticsPage() {
             <div className="p-4 px-8 border-t border-[#E5E7EB] bg-[#F9FAFB] flex justify-end">
               <button 
                 onClick={() => setSelectedDateStr(null)}
-                className="px-6 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 font-bold text-sm rounded-xl hover:bg-gray-900 transition-colors shadow-xs cursor-pointer"
+                className="px-6 py-2.5 bg-[#059669] text-white shadow-sm border-0 font-bold text-sm rounded-xl hover:bg-gray-900 transition-colors shadow-xs cursor-pointer"
               >
                 Close Deep-Dive
               </button>
@@ -810,7 +810,7 @@ export default function AnalyticsPage() {
                   </div>
                   <div className="flex justify-between items-center text-[#4B5563]">
                     <span>Payment Status</span>
-                    <span className="font-bold px-2 py-0.5 rounded uppercase text-[10px] tracking-widest border bg-amber-50 text-amber-700 border border-amber-200 border-[#059669]">
+                    <span className="font-bold px-2 py-0.5 rounded uppercase text-[10px] tracking-widest border bg-[#059669] text-white shadow-sm border-0 border-[#059669]">
                       {selectedOrder.payment_method === 'Cash on Delivery' && selectedOrder.status !== 'delivered' ? 'Pending' : 'Paid'}
                     </span>
                   </div>
@@ -859,7 +859,7 @@ export default function AnalyticsPage() {
             <div className="p-4 px-6 border-t border-[#E5E7EB] bg-[#F9FAFB] flex justify-end">
               <button 
                 onClick={() => setSelectedOrder(null)}
-                className="px-6 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 font-bold text-sm rounded-xl hover:bg-gray-900 transition-colors shadow-xs w-full cursor-pointer"
+                className="px-6 py-2.5 bg-[#059669] text-white shadow-sm border-0 font-bold text-sm rounded-xl hover:bg-gray-900 transition-colors shadow-xs w-full cursor-pointer"
               >
                 Close Order Inspection
               </button>
