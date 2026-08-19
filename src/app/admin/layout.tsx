@@ -226,15 +226,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* Left Sidebar - Soft Structuralism */}
-        <aside className="w-72 bg-[#FCFCFD] border-r border-black/5 hidden md:flex flex-col shrink-0 overflow-hidden relative z-10">
+        <aside className="w-56 bg-[#FCFCFD] border-r border-black/5 hidden md:flex flex-col shrink-0 overflow-hidden relative z-10">
           
           {/* Brand & Search Area */}
-          <div className="p-6 pb-4">
-            <Link href="/admin" className="flex items-center gap-3 hover:opacity-80 transition-opacity mb-8 group">
-              <div className="w-10 h-10 rounded-xl bg-white border border-black/5 shadow-[0_2px_10px_rgb(0,0,0,0.02)] p-1.5 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+          <div className="p-4 pb-3">
+            <Link href="/admin" className="flex items-center gap-3 hover:opacity-80 transition-opacity mb-6 group">
+              <div className="w-8 h-8 rounded-xl bg-white border border-black/5 shadow-[0_2px_10px_rgb(0,0,0,0.02)] p-1.5 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
                 <img src="/logo.png" alt="Logo" className="w-full h-full object-contain mix-blend-multiply" />
               </div>
-              <span className="font-black text-xl tracking-tighter text-gray-900">
+              <span className="font-black text-lg tracking-tighter text-gray-900">
                 arogyavruksham <span className="block text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-0.5">Admin</span>
               </span>
             </Link>
@@ -247,7 +247,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => { if (searchQuery.trim()) setShowDropdown(true) }}
                 placeholder="Search..." 
-                className="w-full pl-10 pr-8 py-2.5 bg-white border border-black/5 rounded-[1rem] text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.01)]"
+                className="w-full pl-9 pr-8 py-2 bg-white border border-black/5 rounded-[1rem] text-xs font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.01)]"
               />
               {isSearching && (
                 <Loader2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 animate-spin" strokeWidth={1.5} />
@@ -319,9 +319,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               const items = navItems.filter((item) => item.group === group)
               if (items.length === 0) return null
               return (
-                <div key={group} className="mb-8">
-                  <p className="px-4 pb-3 text-[10px] font-bold uppercase tracking-widest text-gray-400">{group}</p>
-                  <div className="space-y-1">
+                <div key={group} className="mb-6">
+                  <p className="px-3 pb-2 text-[9px] font-bold uppercase tracking-widest text-gray-400">{group}</p>
+                  <div className="space-y-0.5">
                     {items.map((item: AdminNavItem) => {
                       const isActive = isNavActive(pathname, item)
                       const Icon = NAV_ICONS[item.icon] || Package
@@ -330,15 +330,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                           key={item.path}
                           href={item.path}
                           title={item.description}
-                          className={`group flex items-center justify-between px-4 py-3 rounded-[1rem] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+                          className={`group flex items-center justify-between px-3 py-2.5 rounded-[0.75rem] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
                             isActive
                               ? 'bg-white shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-black/5 text-gray-900 font-bold'
                               : 'hover:bg-black/5 text-gray-500 hover:text-gray-900 font-medium border border-transparent'
                           }`}
                         >
-                          <div className="flex items-center gap-3.5 min-w-0">
+                          <div className="flex items-center gap-3 min-w-0">
                             <Icon className={`w-4 h-4 shrink-0 transition-transform duration-500 group-hover:scale-110 ${isActive ? 'text-black' : 'text-gray-400'}`} strokeWidth={isActive ? 2 : 1.5} />
-                            <span className="truncate tracking-tight text-sm">{item.name}</span>
+                            <span className="truncate tracking-tight text-xs">{item.name}</span>
                           </div>
                         </Link>
                       )
@@ -373,7 +373,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="flex-1 flex flex-col min-w-0 bg-white">
           
           {/* Top Header Bar (Mobile + Desktop Utilities) */}
-          <header className="h-20 bg-white/80 backdrop-blur-xl border-b border-black/5 flex items-center justify-between px-6 lg:px-12 z-20 shrink-0 sticky top-0">
+          <header className="h-16 bg-white/80 backdrop-blur-xl border-b border-black/5 flex items-center justify-between px-6 lg:px-8 z-20 shrink-0 sticky top-0">
             <div className="flex items-center gap-4 md:hidden">
               {/* Mobile Brand */}
               <div className="w-8 h-8 rounded-lg bg-white border border-black/5 shadow-[0_2px_10px_rgb(0,0,0,0.02)] p-1 flex items-center justify-center shrink-0">
@@ -509,8 +509,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </header>
 
           {/* Page Content */}
-          <main className="flex-1 overflow-y-auto px-4 py-8 md:px-12 md:py-12 lg:px-16 pb-32">
-            <div className="w-full max-w-6xl mx-auto">
+          <main className="flex-1 overflow-y-auto px-4 py-6 md:px-8 md:py-8 lg:px-10 pb-32">
+            <div className="w-full max-w-[1600px] mx-auto">
               {children}
             </div>
           </main>
