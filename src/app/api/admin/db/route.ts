@@ -61,6 +61,21 @@ export async function POST(request: Request) {
           return NextResponse.json({ error: 'Update requires a match condition' }, { status: 400 })
         }
         result = await query.select()
+        
+        // Sync role to Supabase Auth metadata if updating users
+        if (table === 'users' && data.role) {
+          if (result.data && result.data.length > 0) {
+            for (const user of result.data) {
+              try {
+                await supabaseAdmin.auth.admin.updateUserById(user.id, {
+                  user_metadata: { role: data.role }
+                })
+              } catch (e) {
+                console.error(`[DB Proxy] Failed to sync auth metadata for user ${user.id}:`, e)
+              }
+            }
+          }
+        }
         break
       case 'delete':
         query = query.delete()
