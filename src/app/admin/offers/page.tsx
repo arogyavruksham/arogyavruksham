@@ -179,25 +179,25 @@ export default function OffersPage() {
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
               placeholder="Search offers & codes..." 
-              className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-black/5 rounded-xl focus:border-black focus:ring-1 focus:ring-black outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
         </div>
         <button 
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 px-4.5 py-2.5 bg-emerald-800 text-white rounded-xl text-sm font-bold hover:bg-emerald-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
+          className="flex items-center gap-2 px-4.5 py-2.5 bg-black text-white rounded-xl text-sm font-bold hover:bg-gray-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
         >
           <Plus className="w-4 h-4" /> Add Coupon
         </button>
       </div>
 
       {/* Offers Table - Universal Clean Screenshot Design */}
-      <div className="bg-white rounded-2xl border border-gray-200/80 shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-[2rem] border border-black/5 shadow-2xs overflow-hidden">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse whitespace-nowrap min-w-[750px]">
             <thead>
-              <tr className="bg-gray-50/50 border-b border-gray-200/80 text-xs uppercase tracking-wider text-gray-500 font-bold">
-                <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" /></th>
+              <tr className="bg-[#FCFCFD] border-b border-black/5 text-xs uppercase tracking-wider text-gray-500 font-bold">
+                <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-black cursor-pointer" /></th>
                 <th className="p-4 font-bold">OFFER TITLE</th>
                 <th className="p-4 font-bold">PROMO CODE</th>
                 <th className="p-4 font-bold">DISCOUNT VALUE</th>
@@ -226,19 +226,19 @@ export default function OffersPage() {
                 const start = new Date(coupon.start_date).getTime()
                 const end = new Date(coupon.expiry_date).getTime()
                 let statusBadge = { label: 'Active', classes: 'bg-green-50 text-green-700 border-green-200/60' }
-                if (!coupon.is_active) statusBadge = { label: 'Inactive', classes: 'bg-gray-100 text-gray-500 border-gray-200' }
+                if (!coupon.is_active) statusBadge = { label: 'Inactive', classes: 'bg-gray-100 text-gray-500 border-black/5' }
                 else if (coupon.usage_limit !== null && coupon.usage_count >= coupon.usage_limit) statusBadge = { label: 'Limit Reached', classes: 'bg-red-50 text-red-700 border-red-200/60' }
                 else if (now > end) statusBadge = { label: 'Expired', classes: 'bg-red-50 text-red-700 border-red-200/60' }
                 else if (now < start) statusBadge = { label: 'Scheduled', classes: 'bg-amber-50 text-amber-700 border-amber-200/60' }
 
                 return (
-                  <tr key={coupon.id} className="hover:bg-gray-50/80 transition-colors">
+                  <tr key={coupon.id} className="hover:bg-[#FCFCFD]/80 transition-colors">
                     <td className="p-4 pl-6">
-                      <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" />
+                      <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-black cursor-pointer" />
                     </td>
                     <td className="p-4 font-bold text-gray-900 text-sm">{coupon.title}</td>
                     <td className="p-4">
-                      <span className="bg-gray-100 text-gray-900 px-3 py-1 rounded-lg font-mono text-xs font-black border border-gray-200 shadow-2xs">
+                      <span className="bg-gray-100 text-gray-900 px-3 py-1 rounded-lg font-mono text-xs font-black border border-black/5 shadow-2xs">
                         {coupon.code}
                       </span>
                     </td>
@@ -278,8 +278,8 @@ export default function OffersPage() {
       {/* Add / Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-gray-200">
-            <div className="px-6 py-5 border-b border-gray-200/80 flex justify-between items-center bg-gray-50/50">
+          <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden border border-black/5">
+            <div className="px-6 py-5 border-b border-black/5 flex justify-between items-center bg-[#FCFCFD]">
               <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
                 <Tag className="w-5 h-5 text-gray-900" /> {editingId ? 'Modify Coupon Offer' : 'Create New Coupon'}
               </h2>
@@ -288,45 +288,45 @@ export default function OffersPage() {
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
                 <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Coupon Promo Code</label>
-                <input required type="text" placeholder="e.g. MONSOON30" value={formData.code} onChange={e => setFormData({...formData, code: e.target.value.toUpperCase()})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-emerald-800 focus:border-emerald-800 text-gray-900 font-mono font-bold uppercase text-sm" />
+                <input required type="text" placeholder="e.g. MONSOON30" value={formData.code} onChange={e => setFormData({...formData, code: e.target.value.toUpperCase()})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-mono font-bold uppercase text-sm" />
               </div>
 
               <div>
                 <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Offer Title</label>
-                <input required type="text" placeholder="e.g. Monsoon Special 30% Discount" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-emerald-800 focus:border-emerald-800 text-gray-900 font-semibold text-sm" />
+                <input required type="text" placeholder="e.g. Monsoon Special 30% Discount" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-semibold text-sm" />
               </div>
 
               <div className="flex gap-4">
                 <div className="flex-1">
                   <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Type</label>
-                  <select value={formData.discount_type} onChange={e => setFormData({...formData, discount_type: e.target.value as 'percentage' | 'fixed'})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-emerald-800 focus:border-emerald-800 text-gray-900 font-semibold text-sm cursor-pointer">
+                  <select value={formData.discount_type} onChange={e => setFormData({...formData, discount_type: e.target.value as 'percentage' | 'fixed'})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-semibold text-sm cursor-pointer">
                     <option value="percentage">Percentage (%)</option>
                     <option value="fixed">Fixed Amount (₹)</option>
                   </select>
                 </div>
                 <div className="flex-1">
                   <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Value</label>
-                  <input required type="number" min="1" step="0.01" placeholder="30" value={formData.discount_value} onChange={e => setFormData({...formData, discount_value: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-emerald-800 focus:border-emerald-800 text-gray-900 font-bold text-sm" />
+                  <input required type="number" min="1" step="0.01" placeholder="30" value={formData.discount_value} onChange={e => setFormData({...formData, discount_value: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-bold text-sm" />
                 </div>
               </div>
 
               <div className="flex flex-col gap-4">
                 <div>
                   <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Usage Limit</label>
-                  <input type="number" min="1" placeholder="Unlimited if left empty" value={formData.usage_limit} onChange={e => setFormData({...formData, usage_limit: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-emerald-800 focus:border-emerald-800 text-gray-900 font-bold text-sm" />
+                  <input type="number" min="1" placeholder="Unlimited if left empty" value={formData.usage_limit} onChange={e => setFormData({...formData, usage_limit: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-bold text-sm" />
                 </div>
                 <div>
                   <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Start Timestamp</label>
-                  <input required type="datetime-local" value={formData.start_date} onChange={e => setFormData({...formData, start_date: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-emerald-800 focus:border-emerald-800 text-gray-900 font-semibold text-xs font-mono" />
+                  <input required type="datetime-local" value={formData.start_date} onChange={e => setFormData({...formData, start_date: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-semibold text-xs font-mono" />
                 </div>
                 <div>
                   <label className="block text-xs font-black text-gray-700 uppercase tracking-wide mb-1.5">Expiry Timestamp</label>
-                  <input required type="datetime-local" value={formData.expiry_date} onChange={e => setFormData({...formData, expiry_date: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-emerald-800 focus:border-emerald-800 text-gray-900 font-semibold text-xs font-mono" />
+                  <input required type="datetime-local" value={formData.expiry_date} onChange={e => setFormData({...formData, expiry_date: e.target.value})} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl outline-none focus:ring-1 focus:ring-black focus:border-black text-gray-900 font-semibold text-xs font-mono" />
                 </div>
               </div>
 
               <div className="flex items-center gap-2.5 pt-2">
-                <input type="checkbox" id="isActive" checked={formData.is_active} onChange={e => setFormData({...formData, is_active: e.target.checked})} className="w-4 h-4 text-gray-900 border-gray-300 rounded focus:ring-emerald-800 cursor-pointer" />
+                <input type="checkbox" id="isActive" checked={formData.is_active} onChange={e => setFormData({...formData, is_active: e.target.checked})} className="w-4 h-4 text-gray-900 border-gray-300 rounded focus:ring-black cursor-pointer" />
                 <label htmlFor="isActive" className="text-xs font-bold text-gray-700 cursor-pointer">Coupon is active and available for customer checkout</label>
               </div>
 
@@ -334,7 +334,7 @@ export default function OffersPage() {
                 <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 px-4 py-2.5 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors cursor-pointer">
                   Cancel
                 </button>
-                <button type="submit" disabled={isProcessing} className="flex-1 px-4 py-2.5 text-xs font-bold text-white bg-emerald-800 hover:bg-emerald-900 rounded-xl transition-all shadow-xs disabled:opacity-50 cursor-pointer">
+                <button type="submit" disabled={isProcessing} className="flex-1 px-4 py-2.5 text-xs font-bold text-white bg-black hover:bg-gray-900 rounded-xl transition-all shadow-xs disabled:opacity-50 cursor-pointer">
                   {isProcessing ? 'Saving...' : 'Save Coupon'}
                 </button>
               </div>
@@ -346,7 +346,7 @@ export default function OffersPage() {
       {/* Delete Confirmation Modal */}
       {deletingId && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden p-6 text-center border border-gray-200">
+          <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-sm overflow-hidden p-6 text-center border border-black/5">
             <div className="w-14 h-14 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-100">
               <Trash2 className="w-7 h-7" />
             </div>

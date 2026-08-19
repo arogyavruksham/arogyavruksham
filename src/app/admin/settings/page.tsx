@@ -37,7 +37,7 @@ export default function SettingsPage() {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <form onSubmit={handleSubmit} className="lg:col-span-2 bg-white border border-gray-200/80 rounded-2xl p-6 md:p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="lg:col-span-2 bg-white border border-black/5 rounded-[2rem] p-6 md:p-8 space-y-6">
           <h2 className="text-sm font-black uppercase tracking-wide text-gray-900 border-b border-gray-100 pb-3">Store profile</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
@@ -45,7 +45,7 @@ export default function SettingsPage() {
               <input
                 value={form.storeName}
                 onChange={(e) => setForm({ ...form, storeName: e.target.value })}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-semibold outline-none focus:border-emerald-800"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-semibold outline-none focus:border-black"
               />
             </div>
             <div>
@@ -54,7 +54,7 @@ export default function SettingsPage() {
                 type="email"
                 value={form.supportEmail}
                 onChange={(e) => setForm({ ...form, supportEmail: e.target.value })}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-semibold outline-none focus:border-emerald-800"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-semibold outline-none focus:border-black"
               />
             </div>
             <div>
@@ -62,7 +62,7 @@ export default function SettingsPage() {
               <input
                 value={form.supportPhone}
                 onChange={(e) => setForm({ ...form, supportPhone: e.target.value })}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-semibold outline-none focus:border-emerald-800"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-semibold outline-none focus:border-black"
               />
             </div>
             <div>
@@ -72,7 +72,7 @@ export default function SettingsPage() {
                 min="1"
                 value={form.lowStockThreshold}
                 onChange={(e) => setForm({ ...form, lowStockThreshold: Number(e.target.value) })}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-semibold outline-none focus:border-emerald-800"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-semibold outline-none focus:border-black"
               />
               <p className="text-[11px] text-gray-400 mt-1">Inventory flags items at or below this quantity.</p>
             </div>
@@ -83,7 +83,7 @@ export default function SettingsPage() {
                 min="0"
                 value={form.monthlyTarget}
                 onChange={(e) => setForm({ ...form, monthlyTarget: Number(e.target.value) })}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-semibold outline-none focus:border-emerald-800"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-semibold outline-none focus:border-black"
               />
               <p className="text-[11px] text-gray-400 mt-1">Used on the Overview sales quota chart.</p>
             </div>
@@ -91,20 +91,20 @@ export default function SettingsPage() {
 
           <div className="flex items-center justify-between pt-2 border-t border-gray-100">
             {saved ? (
-              <span className="text-sm font-bold text-emerald-800 flex items-center gap-1.5">
+              <span className="text-sm font-bold text-black flex items-center gap-1.5">
                 <Check className="w-4 h-4" /> Settings saved
               </span>
             ) : (
               <span className="text-xs text-gray-400">Signed in as {user?.email || 'admin'}</span>
             )}
-            <button type="submit" className="flex items-center gap-2 px-5 py-2.5 bg-emerald-800 text-white rounded-xl text-sm font-bold hover:bg-emerald-900">
+            <button type="submit" className="flex items-center gap-2 px-5 py-2.5 bg-black text-white rounded-xl text-sm font-bold hover:bg-gray-900">
               <Save className="w-4 h-4" /> Save settings
             </button>
           </div>
         </form>
 
         <div className="space-y-4">
-          <div className="bg-white border border-gray-200/80 rounded-2xl p-6">
+          <div className="bg-white border border-black/5 rounded-[2rem] p-6">
             <h3 className="font-black text-gray-900 mb-2">Panel security</h3>
             <p className="text-sm text-gray-500 mb-4">Lock the admin panel without signing out of the storefront account.</p>
             <button
@@ -117,7 +117,7 @@ export default function SettingsPage() {
               <Lock className="w-4 h-4" /> Lock admin panel
             </button>
           </div>
-          <div className="bg-emerald-800 text-white rounded-2xl p-6">
+          <div className="bg-black text-white rounded-[2rem] p-6">
             <h3 className="font-black mb-2">Quick reminder</h3>
             <p className="text-sm text-emerald-100 leading-relaxed">
               Categories and announcement drafts also save locally so the storefront updates immediately. Coupons, products, orders, and customers sync through the admin database.

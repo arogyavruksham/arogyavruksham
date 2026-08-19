@@ -14,7 +14,7 @@ const SECTION_ICONS: Record<string, any> = {
   Sparkles, BarChart2, Bot, Package, Archive, ShoppingCart, LayoutGrid, Tag, Megaphone, Mail, Users, Settings,
 }
 
-const PIE_COLORS = ['#059669', '#E2E8F0'];
+const PIE_COLORS = ['#000000', '#F3F4F6'];
 
 export default function AdminDashboard() {
   const [metrics, setMetrics] = useState({
@@ -60,7 +60,7 @@ export default function AdminDashboard() {
       if (ordersData) {
         const validOrders = ordersData.filter((o: any) => o.status !== 'cancelled')
         setAllValidOrders(validOrders)
-        setRecentOrders(ordersData.slice(0, 6))
+        setRecentOrders(ordersData.slice(0, 5))
 
         const { data: dailyData } = await adminDbProxy({
           action: 'select',
@@ -234,27 +234,27 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="w-8 h-8 animate-spin text-emerald-900" />
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Loader2 className="w-10 h-10 animate-spin text-gray-300" strokeWidth={1.5} />
       </div>
     )
   }
 
   return (
-    <div className="space-y-6 max-w-full overflow-hidden pb-16 font-sans text-emerald-900">
+    <div className="space-y-12 max-w-full font-sans text-gray-900 pb-24">
       
       {/* Header & Global Filter */}
-      <div className="flex justify-between items-center border-b border-gray-200/80 pb-4">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 border-b border-black/5 pb-8">
         <div>
-          <h1 className="text-2xl md:text-3xl font-black text-emerald-900 tracking-tight">Admin Overview</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Every store tool in one place — revenue, catalog, fulfillment, and marketing.
+          <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-gray-900">Dashboard</h1>
+          <p className="text-sm md:text-base text-gray-500 mt-2 max-w-[65ch]">
+            Overview of store performance, catalog status, and active operations.
           </p>
         </div>
         <select 
           value={globalDateFilter}
           onChange={(e) => setGlobalDateFilter(e.target.value)}
-          className="bg-white border border-gray-300 text-emerald-900 text-sm font-bold rounded-xl px-4 py-2 outline-none shadow-2xs cursor-pointer hover:border-emerald-600 transition-colors"
+          className="bg-[#FCFCFD] border border-black/5 text-gray-900 text-sm font-bold rounded-2xl px-5 py-3 outline-none hover:bg-black/5 transition-colors cursor-pointer"
         >
           <option value="Last 7 Days">Last 7 Days</option>
           <option value="Last 30 Days">Last 30 Days</option>
@@ -263,174 +263,134 @@ export default function AdminDashboard() {
         </select>
       </div>
 
-      {/* Metric Cards - Clean Monochrome Styling */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        
+      {/* Metric Cards - Soft Structuralism */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Revenue */}
-        <div className="bg-white p-5 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
+        <div className="bg-white p-8 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
           <div className="flex justify-between items-start">
-            <span className="text-gray-500 font-semibold text-sm">Total Revenue ({globalDateFilter})</span>
-            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-emerald-900 border border-gray-200">
-              <TrendingUp className="w-4 h-4" />
+            <span className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Total Revenue</span>
+            <div className="w-10 h-10 bg-[#F7F7F8] rounded-xl flex items-center justify-center text-black border border-black/5 group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+              <TrendingUp className="w-5 h-5" strokeWidth={1.5} />
             </div>
           </div>
           <div>
-            <p className="text-2xl md:text-3xl font-black text-emerald-900">₹{metrics.totalSales.toLocaleString('en-IN')}</p>
-            <span className="inline-flex items-center text-xs font-semibold text-gray-600 mt-1">
-              <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" /> +14.2% from previous term
+            <p className="text-4xl font-black tracking-tighter text-gray-900 mb-1">₹{metrics.totalSales.toLocaleString('en-IN')}</p>
+            <span className="inline-flex items-center text-[10px] font-bold text-gray-400 tracking-wide uppercase">
+              <ArrowUpRight className="w-3 h-3 mr-1" /> +14.2% Growth
             </span>
           </div>
         </div>
 
-        {/* Total Order */}
-        <div className="bg-white p-5 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
+        {/* Total Orders */}
+        <div className="bg-white p-8 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
           <div className="flex justify-between items-start">
-            <span className="text-gray-500 font-semibold text-sm">Total Orders ({globalDateFilter})</span>
-            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-emerald-900 border border-gray-200">
-              <ShoppingBag className="w-4 h-4" />
+            <span className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Total Orders</span>
+            <div className="w-10 h-10 bg-[#F7F7F8] rounded-xl flex items-center justify-center text-black border border-black/5 group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+              <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
             </div>
           </div>
           <div>
-            <p className="text-2xl md:text-3xl font-black text-emerald-900">{metrics.totalOrders}</p>
-            <span className="inline-flex items-center text-xs font-semibold text-gray-600 mt-1">
-              <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" /> +8.4% order velocity
+            <p className="text-4xl font-black tracking-tighter text-gray-900 mb-1">{metrics.totalOrders}</p>
+            <span className="inline-flex items-center text-[10px] font-bold text-gray-400 tracking-wide uppercase">
+              <ArrowUpRight className="w-3 h-3 mr-1" /> +8.4% Velocity
             </span>
           </div>
         </div>
 
-        {/* Total Customer */}
-        <div className="bg-white p-5 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
+        {/* Total Customers */}
+        <div className="bg-white p-8 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
           <div className="flex justify-between items-start">
-            <span className="text-gray-500 font-semibold text-sm">Unique Customers ({globalDateFilter})</span>
-            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-emerald-900 border border-gray-200">
-              <Users className="w-4 h-4" />
+            <span className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Unique Users</span>
+            <div className="w-10 h-10 bg-[#F7F7F8] rounded-xl flex items-center justify-center text-black border border-black/5 group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+              <Users className="w-5 h-5" strokeWidth={1.5} />
             </div>
           </div>
           <div>
-            <p className="text-2xl md:text-3xl font-black text-emerald-900">{metrics.totalCustomers}</p>
-            <span className="inline-flex items-center text-xs font-semibold text-gray-600 mt-1">
-              <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" /> Repeat & new retention
+            <p className="text-4xl font-black tracking-tighter text-gray-900 mb-1">{metrics.totalCustomers}</p>
+            <span className="inline-flex items-center text-[10px] font-bold text-gray-400 tracking-wide uppercase">
+              <ArrowUpRight className="w-3 h-3 mr-1" /> Retention Stable
             </span>
           </div>
         </div>
 
         {/* Pending Delivery */}
-        <div className="bg-white p-5 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col justify-between h-36">
+        <div className="bg-white p-8 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
           <div className="flex justify-between items-start">
-            <span className="text-gray-500 font-semibold text-sm">Pending Fulfillment</span>
-            <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-emerald-900 border border-gray-200">
-              <Package className="w-4 h-4" />
+            <span className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Fulfillment</span>
+            <div className="w-10 h-10 bg-[#F7F7F8] rounded-xl flex items-center justify-center text-black border border-black/5 group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+              <Package className="w-5 h-5" strokeWidth={1.5} />
             </div>
           </div>
           <div>
-            <p className="text-2xl md:text-3xl font-black text-emerald-900">{metrics.pendingDelivery}</p>
-            <span className="inline-flex items-center text-xs font-semibold text-gray-500 mt-1">
-              Requires immediate action
+            <p className="text-4xl font-black tracking-tighter text-gray-900 mb-1">{metrics.pendingDelivery}</p>
+            <span className="inline-flex items-center text-[10px] font-bold text-orange-500 tracking-wide uppercase">
+              Action Required
             </span>
           </div>
         </div>
       </div>
 
-      {/* All admin sections */}
-      <div>
-        <div className="flex items-end justify-between mb-3">
-          <div>
-            <h2 className="text-lg font-black text-emerald-900">All admin sections</h2>
-            <p className="text-xs text-gray-500">Open any module — each page is live and connected to your store data.</p>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
-          {filterNavForRole(user?.role).map((item) => {
-            const Icon = SECTION_ICONS[item.icon] || Package
-            return (
-              <Link
-                key={item.path}
-                href={item.path}
-                className="group bg-white border border-gray-200/80 rounded-xl p-4 hover:border-emerald-800 hover:shadow-sm transition-all"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-100 flex items-center justify-center">
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-1 rounded-full">
-                    {sectionCounts[item.path] || item.group}
-                  </span>
-                </div>
-                <h3 className="mt-3 font-black text-gray-900 group-hover:text-emerald-800">{item.name}</h3>
-                <p className="text-xs text-gray-500 mt-1 leading-relaxed">{item.description}</p>
-                <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-800 mt-3">
-                  Open <ChevronRight className="w-3.5 h-3.5" />
-                </span>
-              </Link>
-            )
-          })}
-        </div>
-      </div>
-      
-      {/* Charts Row - Monochrome Black & White Recharts */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Charts Row - Monochrome / Black & White */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         {/* Sales Analytic Chart */}
-        <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80 lg:col-span-2 flex flex-col">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-black text-emerald-900 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-emerald-900" /> Revenue & Expense Velocity
-            </h2>
+        <div className="bg-white p-8 md:p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 lg:col-span-2 flex flex-col">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-black tracking-tighter text-gray-900">Revenue Velocity</h2>
             <select 
               value={salesMonthFilter}
               onChange={(e) => setSalesMonthFilter(e.target.value)}
-              className="bg-gray-50 border border-gray-200 text-emerald-900 font-bold text-xs rounded-xl px-3.5 py-1.5 outline-none cursor-pointer hover:border-gray-400"
+              className="bg-[#FCFCFD] border border-black/5 text-gray-900 font-bold text-sm rounded-xl px-4 py-2 outline-none cursor-pointer hover:bg-black/5 transition-colors"
             >
               {availableMonths.map(m => (
                 <option key={m} value={m}>{m}</option>
               ))}
             </select>
           </div>
-          <div className="flex flex-wrap gap-4 sm:gap-8 mb-6 bg-gray-50/60 p-4 rounded-xl border border-gray-100">
+
+          <div className="flex flex-wrap gap-6 sm:gap-10 mb-10 pb-8 border-b border-black/5">
             <div>
-              <p className="text-xs font-bold uppercase text-gray-500 mb-1">Total Income</p>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">Total Income</p>
               <div className="flex items-baseline gap-2">
-                <p className="text-xl font-black text-emerald-900">₹{chartTotals.income.toLocaleString('en-IN')}</p>
-                <span className="text-[10px] bg-gray-200 text-gray-800 px-1.5 py-0.5 rounded font-bold">+12%</span>
+                <p className="text-3xl font-black tracking-tighter text-gray-900">₹{chartTotals.income.toLocaleString('en-IN')}</p>
               </div>
             </div>
             <div>
-              <p className="text-xs font-bold uppercase text-gray-500 mb-1">Est. Expenses</p>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">Est. Expenses</p>
               <div className="flex items-baseline gap-2">
-                <p className="text-xl font-black text-emerald-900">₹{chartTotals.expenses.toLocaleString('en-IN')}</p>
-                <span className="text-[10px] bg-gray-200 text-gray-800 px-1.5 py-0.5 rounded font-bold">40% Cost</span>
+                <p className="text-3xl font-black tracking-tighter text-gray-400">₹{chartTotals.expenses.toLocaleString('en-IN')}</p>
               </div>
             </div>
             <div>
-              <p className="text-xs font-black uppercase text-emerald-900 mb-1">Net Margin Balance</p>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-gray-900 mb-2">Net Balance</p>
               <div className="flex items-baseline gap-2">
-                <p className="text-xl font-black text-emerald-900">₹{chartTotals.balance.toLocaleString('en-IN')}</p>
-                <span className="text-[10px] bg-emerald-600 text-white px-1.5 py-0.5 rounded font-bold">Optimal</span>
+                <p className="text-3xl font-black tracking-tighter text-black">₹{chartTotals.balance.toLocaleString('en-IN')}</p>
               </div>
             </div>
           </div>
-          <div className="h-64 w-full flex-1 min-h-[240px]">
+
+          <div className="h-72 w-full flex-1">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={salesData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#059669" stopOpacity={0.25}/>
-                    <stop offset="95%" stopColor="#059669" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#000" stopOpacity={0.15}/>
+                    <stop offset="95%" stopColor="#000" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748b', fontWeight: 600 }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748b', fontWeight: 600 }} />
-                <Tooltip cursor={{ stroke: '#cbd5e1', strokeWidth: 1.5, strokeDasharray: '3 3', fill: 'transparent' }} contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#9ca3af', fontWeight: 600 }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#9ca3af', fontWeight: 600 }} />
+                <Tooltip cursor={{ stroke: '#e5e7eb', strokeWidth: 1.5, strokeDasharray: '3 3', fill: 'transparent' }} contentStyle={{ borderRadius: '16px', border: '1px solid rgba(0,0,0,0.05)', boxShadow: '0 8px 30px rgba(0,0,0,0.08)', fontWeight: 'bold' }} />
                 <Area 
                   type="monotone" 
                   dataKey="income" 
-                  stroke="#059669" 
-                  strokeWidth={2.5} 
+                  stroke="#000" 
+                  strokeWidth={3} 
                   fillOpacity={1} 
                   fill="url(#colorIncome)" 
-                  dot={{ r: 3, fill: '#fff', stroke: '#059669', strokeWidth: 2 }} 
-                  activeDot={{ r: 5, fill: '#059669', stroke: '#fff', strokeWidth: 2 }} 
+                  dot={{ r: 4, fill: '#fff', stroke: '#000', strokeWidth: 2 }} 
+                  activeDot={{ r: 6, fill: '#000', stroke: '#fff', strokeWidth: 2 }} 
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -438,20 +398,19 @@ export default function AdminDashboard() {
         </div>
 
         {/* Sales Target Donut */}
-        <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80 flex flex-col">
-          <h2 className="text-lg font-black text-emerald-900 mb-6 flex items-center gap-2">
-            <Info className="w-5 h-5 text-emerald-900" /> Sales Target Quota
-          </h2>
+        <div className="bg-white p-8 md:p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 flex flex-col">
+          <h2 className="text-2xl font-black tracking-tighter text-gray-900 mb-8">Target Quota</h2>
+          
           <div className="flex-1 flex flex-col justify-center items-center relative">
-            <div className="h-52 w-full">
+            <div className="h-56 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={targetData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={65}
-                    outerRadius={85}
+                    innerRadius={70}
+                    outerRadius={90}
                     startAngle={90}
                     endAngle={-270}
                     paddingAngle={3}
@@ -466,23 +425,23 @@ export default function AdminDashboard() {
               </ResponsiveContainer>
             </div>
             
-            <div className="w-full mt-6 space-y-4 bg-gray-50/60 p-4 rounded-xl border border-gray-100">
+            <div className="w-full mt-8 space-y-5 bg-[#FCFCFD] p-6 rounded-2xl border border-black/5">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-                  <span className="text-xs text-gray-500 font-bold uppercase">Daily Target</span>
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full bg-gray-200"></div>
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-gray-500">Daily Mark</span>
                 </div>
-                <div className="flex items-center gap-1 font-bold text-emerald-900 text-sm">
+                <div className="font-bold text-gray-900 text-sm">
                   ₹5,000
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-emerald-600"></div>
-                  <span className="text-xs text-emerald-900 font-black uppercase">Monthly Goal</span>
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full bg-black"></div>
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-gray-900">Monthly</span>
                 </div>
-                <div className="flex items-center gap-1 font-black text-emerald-900 text-base">
-                  <ArrowUpRight className="w-4 h-4 text-emerald-900" /> ₹{monthlyTarget.toLocaleString('en-IN')}
+                <div className="flex items-center gap-1 font-black text-gray-900 text-base">
+                  <ArrowUpRight className="w-4 h-4" /> ₹{monthlyTarget.toLocaleString('en-IN')}
                 </div>
               </div>
             </div>
@@ -490,34 +449,33 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Top Products & Offers Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Top Products & Active Campaigns */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {/* Top Selling Products */}
-        <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80 lg:col-span-2">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-black text-emerald-900 flex items-center gap-2">
-              <Package className="w-5 h-5 text-emerald-900" /> Top Performing Products
-            </h2>
+        {/* Top Selling Products - Bento Style */}
+        <div className="bg-white p-8 md:p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 lg:col-span-2">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-black tracking-tighter text-gray-900">Top Performing</h2>
             <div className="flex gap-2">
-              <button className="p-1 hover:bg-gray-100 rounded-lg text-gray-500">&larr;</button>
-              <button className="p-1 hover:bg-gray-100 rounded-lg text-emerald-900">&rarr;</button>
+              <button className="w-10 h-10 rounded-full flex items-center justify-center bg-[#FCFCFD] border border-black/5 text-gray-400 hover:text-black transition-colors">&larr;</button>
+              <button className="w-10 h-10 rounded-full flex items-center justify-center bg-[#FCFCFD] border border-black/5 text-gray-400 hover:text-black transition-colors">&rarr;</button>
             </div>
           </div>
+
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {topProducts.map((product) => (
-              <div key={product.id} className="flex flex-col border border-gray-200 rounded-xl p-3 hover:border-emerald-600 transition-all group">
-                <div className="bg-gray-50 rounded-xl aspect-square mb-3 p-3 flex items-center justify-center overflow-hidden">
+              <div key={product.id} className="group flex flex-col p-4 bg-[#FCFCFD] border border-black/5 rounded-2xl hover:bg-black/5 transition-colors cursor-pointer">
+                <div className="bg-white rounded-xl aspect-square mb-4 p-4 flex items-center justify-center overflow-hidden border border-black/5 shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
                   {product.image_url ? (
-                    <img src={product.image_url} alt={product.title} className="object-contain w-full h-full mix-blend-multiply group-hover:scale-105 transition-transform" />
+                    <img src={product.image_url} alt={product.title} className="object-contain w-full h-full mix-blend-multiply group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]" />
                   ) : (
-                    <Package className="w-8 h-8 text-gray-300" />
+                    <Package className="w-8 h-8 text-gray-300" strokeWidth={1.5} />
                   )}
                 </div>
-                <h4 className="font-bold text-emerald-900 text-xs truncate">{product.title || product.name}</h4>
-                <div className="flex items-center justify-between mt-1">
-                  <span className="text-xs font-black text-emerald-900">₹{product.price}</span>
-                  <span className="text-[10px] bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded font-semibold">{product.sales_count} Sold</span>
+                <h4 className="font-bold text-gray-900 text-sm truncate mb-2">{product.title || product.name}</h4>
+                <div className="flex items-center justify-between mt-auto">
+                  <span className="text-sm font-black tracking-tight text-gray-900">₹{product.price}</span>
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-gray-500">{product.sales_count} Sold</span>
                 </div>
               </div>
             ))}
@@ -525,16 +483,17 @@ export default function AdminDashboard() {
         </div>
 
         {/* Current Offer */}
-        <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-black text-emerald-900 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-emerald-900" /> Active Campaigns
-            </h2>
-            <a href="/admin/offers" className="text-xs font-bold text-emerald-900 underline hover:no-underline">Manage</a>
+        <div className="bg-white p-8 md:p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-black tracking-tighter text-gray-900">Campaigns</h2>
+            <a href="/admin/offers" className="w-10 h-10 rounded-full flex items-center justify-center bg-[#FCFCFD] border border-black/5 hover:bg-black/5 transition-colors">
+              <ChevronRight className="w-5 h-5 text-gray-600" strokeWidth={1.5} />
+            </a>
           </div>
-          <div className="space-y-6">
+
+          <div className="space-y-4">
             {activeCoupons.length === 0 ? (
-              <p className="text-sm text-gray-500 italic">No active offers available.</p>
+              <p className="text-sm text-gray-500 italic">No active campaigns.</p>
             ) : activeCoupons.map(coupon => {
               const start = new Date(coupon.start_date).getTime();
               const end = new Date(coupon.expiry_date).getTime();
@@ -543,33 +502,27 @@ export default function AdminDashboard() {
               const elapsed = now - start;
               let progress = 0;
               
-              if (now < start) {
-                progress = 0;
-              } else if (now > end) {
-                progress = 100;
-              } else {
-                progress = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
-              }
+              if (now < start) progress = 0;
+              else if (now > end) progress = 100;
+              else progress = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
 
               const isUpcoming = now < start;
               const isExpired = now > end;
 
               return (
-                <div key={coupon.id} className="p-3 bg-gray-50 rounded-xl border border-gray-200">
-                  <div className="flex justify-between items-center text-sm mb-2">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-emerald-900">{coupon.title}</span>
-                      {isExpired && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gray-200 text-gray-600 uppercase">Expired</span>}
-                      {isUpcoming && <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-gray-200 text-gray-800 uppercase">Scheduled</span>}
-                      {!isExpired && !isUpcoming && <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-600 text-white uppercase">Active</span>}
+                <div key={coupon.id} className="p-5 bg-[#FCFCFD] rounded-2xl border border-black/5">
+                  <div className="flex justify-between items-center text-sm mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="font-bold text-gray-900">{coupon.title}</span>
+                      {!isExpired && !isUpcoming && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>}
                     </div>
-                    <span className="text-gray-500 text-[11px] font-medium">
+                    <span className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">
                       {new Date(coupon.expiry_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-gray-200 rounded-full h-1 overflow-hidden">
                     <div 
-                      className={`h-2 rounded-full ${isUpcoming ? 'bg-gray-400' : (isExpired ? 'bg-gray-300' : 'bg-emerald-600')}`} 
+                      className={`h-1 rounded-full ${isUpcoming ? 'bg-gray-400' : (isExpired ? 'bg-gray-300' : 'bg-black')}`} 
                       style={{ width: `${progress}%` }}
                     ></div>
                   </div>
@@ -580,84 +533,87 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Detailed Orders Table - Clean Card System */}
-      <div className="bg-white rounded-xl shadow-2xs border border-gray-200/80 overflow-hidden mt-6">
-        <div className="p-6 border-b border-gray-200/80 flex justify-between items-center bg-gray-50/50">
+      {/* Detailed Orders Table - Minimalist Data Grid */}
+      <div className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5 overflow-hidden">
+        <div className="p-8 md:p-10 border-b border-black/5 flex justify-between items-center bg-[#FCFCFD]">
           <div>
-            <h2 className="font-black text-lg text-emerald-900 flex items-center gap-2">
-              <ShoppingBag className="w-5 h-5 text-emerald-900" /> Recent Orders Details
-            </h2>
-            <p className="text-xs text-gray-500 mt-0.5">Live transaction records across all payment gateways</p>
+            <h2 className="text-2xl font-black tracking-tighter text-gray-900">Recent Transactions</h2>
+            <p className="text-sm text-gray-500 mt-1 font-medium">Live fulfillment feed across all gateways</p>
           </div>
-          <a href="/admin/orders" className="text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-900 px-4 py-2 rounded-xl transition-all shadow-xs">
-            View All Orders
+          <a href="/admin/orders" className="px-6 py-3 bg-black text-white rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
+            View All
           </a>
         </div>
         
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto p-4 md:p-6">
           <table className="w-full text-left border-collapse min-w-[800px] whitespace-nowrap">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-200/80 text-xs uppercase tracking-wider text-gray-500 font-semibold">
-                <th className="p-4 pl-6">Order Info</th>
-                <th className="p-4">Customer Details</th>
-                <th className="p-4 w-1/3">Shipping Address</th>
-                <th className="p-4">Amount</th>
-                <th className="p-4 pr-6">Status</th>
+              <tr className="border-b border-black/5 text-[10px] uppercase tracking-widest text-gray-400 font-bold">
+                <th className="p-4 pl-6 pb-6">Order Ref</th>
+                <th className="p-4 pb-6">Customer</th>
+                <th className="p-4 w-1/3 pb-6">Destination</th>
+                <th className="p-4 pb-6">Value</th>
+                <th className="p-4 pr-6 pb-6 text-right">State</th>
               </tr>
             </thead>
-            <tbody className="text-sm divide-y divide-gray-100 font-medium">
+            <tbody className="text-sm">
               {recentOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-gray-500 italic">
-                    No recent orders recorded yet.
+                  <td colSpan={5} className="p-10 text-center text-gray-500 font-medium">
+                    No recent transactions recorded.
                   </td>
                 </tr>
               ) : recentOrders.map((order) => {
-                const customerName = order.users?.full_name || 'Guest Customer'
+                const customerName = order.users?.full_name || 'Guest User'
                 const customerEmail = order.users?.email || 'N/A'
                 const avatarLetter = customerName.charAt(0).toUpperCase()
                 
                 return (
-                  <tr key={order.id} className="hover:bg-gray-50/80 transition-colors">
-                    <td className="p-4 pl-6 align-top">
-                      <p className="font-bold font-mono text-emerald-900">#{order.id.split('-')[0].toUpperCase()}</p>
-                      <p className="text-xs text-gray-400 mt-0.5 font-mono">{new Date(order.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                  <tr key={order.id} className="group hover:bg-[#F7F7F8] transition-colors rounded-2xl">
+                    <td className="p-4 pl-6 align-middle rounded-l-2xl">
+                      <p className="font-bold text-gray-900">#{order.id.split('-')[0].toUpperCase()}</p>
+                      <p className="text-xs text-gray-400 mt-1 font-medium">{new Date(order.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                     </td>
-                    <td className="p-4 align-top">
-                      <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-gray-100 text-emerald-900 border border-gray-200 flex items-center justify-center font-black text-xs shrink-0">{avatarLetter}</div>
+                    <td className="p-4 align-middle">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-white border border-black/5 flex items-center justify-center font-black text-xs text-gray-900 shadow-[0_2px_8px_rgba(0,0,0,0.02)] shrink-0">
+                          {avatarLetter}
+                        </div>
                         <div>
-                          <p className="font-bold text-emerald-900">{customerName}</p>
+                          <p className="font-bold text-gray-900">{customerName}</p>
                           <p className="text-xs text-gray-500 mt-0.5">{customerEmail}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="p-4 align-top">
+                    <td className="p-4 align-middle">
                       {order.shipping_address ? (
-                        <div className="text-xs text-gray-600 bg-gray-50/80 p-3 rounded-xl border border-gray-100 w-full min-w-[200px] whitespace-normal">
-                          <div className="flex items-center gap-1.5 mb-1">
-                            <MapPin className="w-3.5 h-3.5 text-gray-700" />
-                            <span className="font-bold text-emerald-900">{order.shipping_address.name}</span>
+                        <div className="flex items-center gap-3 w-full min-w-[200px] whitespace-normal">
+                          <div className="w-8 h-8 rounded-full bg-white border border-black/5 flex items-center justify-center shrink-0">
+                            <MapPin className="w-3 h-3 text-gray-400" strokeWidth={1.5} />
                           </div>
-                          <p className="leading-relaxed text-gray-600 line-clamp-2">
-                            {order.shipping_address.fullAddress}, {order.shipping_address.city}
-                          </p>
-                          <p className="mt-1 font-mono font-bold text-gray-500">{order.shipping_address.phone}</p>
+                          <div>
+                            <span className="font-bold text-gray-900 text-sm block">{order.shipping_address.name}</span>
+                            <span className="text-xs text-gray-500 line-clamp-1">
+                              {order.shipping_address.city} • {order.shipping_address.phone}
+                            </span>
+                          </div>
                         </div>
                       ) : (
-                        <span className="text-xs text-gray-400 italic bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100 inline-block">No shipping info</span>
+                        <span className="text-xs text-gray-400 font-medium">Digital/No Info</span>
                       )}
                     </td>
-                    <td className="p-4 align-top font-black text-emerald-900 text-base">
-                      ₹{Number(order.total_amount).toLocaleString('en-IN')}
+                    <td className="p-4 align-middle">
+                      <span className="font-black tracking-tight text-gray-900 text-base">
+                        ₹{Number(order.total_amount).toLocaleString('en-IN')}
+                      </span>
                     </td>
-                    <td className="p-4 pr-6 align-top">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide ${
-                        order.status === 'delivered' ? 'bg-gray-100 text-emerald-900 border border-gray-300' :
-                        order.status === 'cancelled' ? 'bg-gray-100 text-gray-400 border border-gray-200 line-through' :
-                        'bg-emerald-600 text-white'
+                    <td className="p-4 pr-6 align-middle rounded-r-2xl text-right">
+                      <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest ${
+                        order.status === 'delivered' ? 'bg-white border border-black/5 text-gray-900' :
+                        order.status === 'cancelled' ? 'bg-[#FCFCFD] text-gray-400 line-through border border-transparent' :
+                        'bg-black text-white shadow-xs'
                       }`}>
-                        {order.status.toUpperCase()}
+                        {order.status}
                       </span>
                     </td>
                   </tr>

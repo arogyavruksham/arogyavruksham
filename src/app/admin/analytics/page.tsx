@@ -285,7 +285,7 @@ export default function AnalyticsPage() {
       />
 
       {/* Horizontal Sub-Navigation Tabs */}
-      <div className="flex items-center gap-6 border-b border-gray-200 overflow-x-auto text-sm no-scrollbar">
+      <div className="flex items-center gap-6 border-b border-black/5 overflow-x-auto text-sm no-scrollbar">
         {[
           'Overview', 
           'Transactions & Orders', 
@@ -299,7 +299,7 @@ export default function AnalyticsPage() {
             onClick={() => setActiveTab(tab)}
             className={`pb-3 font-bold whitespace-nowrap transition-all border-b-2 cursor-pointer ${
               activeTab === tab 
-                ? 'text-emerald-800 border-emerald-800 font-black' 
+                ? 'text-black border-black font-black' 
                 : 'text-gray-400 border-transparent hover:text-gray-700 hover:border-gray-300'
             }`}
           >
@@ -314,7 +314,7 @@ export default function AnalyticsPage() {
           <select 
             value={filterOption}
             onChange={(e) => setFilterOption(e.target.value)}
-            className="appearance-none bg-white border border-gray-300 text-gray-900 text-sm font-semibold rounded-xl pl-4 pr-10 py-2 shadow-2xs outline-none focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 cursor-pointer"
+            className="appearance-none bg-white border border-gray-300 text-gray-900 text-sm font-semibold rounded-xl pl-4 pr-10 py-2 shadow-2xs outline-none focus:border-black focus:ring-1 focus:ring-black cursor-pointer"
           >
             <option value="All orders & sales">All orders & sales</option>
             <option value="Completed only">Completed only</option>
@@ -328,15 +328,15 @@ export default function AnalyticsPage() {
 
       {activeTab === 'Customers & Users' && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white rounded-xl p-5 border border-gray-200/80">
+          <div className="bg-white rounded-xl p-5 border border-black/5">
             <p className="text-sm font-semibold text-gray-500">Unique customers</p>
             <p className="text-3xl font-black mt-2">{uniqueCustomers}</p>
           </div>
-          <div className="bg-white rounded-xl p-5 border border-gray-200/80">
+          <div className="bg-white rounded-xl p-5 border border-black/5">
             <p className="text-sm font-semibold text-gray-500">Orders in range</p>
             <p className="text-3xl font-black mt-2">{rangeOrders.length}</p>
           </div>
-          <div className="bg-white rounded-xl p-5 border border-gray-200/80">
+          <div className="bg-white rounded-xl p-5 border border-black/5">
             <p className="text-sm font-semibold text-gray-500">Avg. order value</p>
             <p className="text-3xl font-black mt-2">
               ₹{rangeOrders.length ? Math.round(rangeOrders.reduce((s, o) => s + Number(o.total_amount || 0), 0) / rangeOrders.length).toLocaleString('en-IN') : 0}
@@ -347,11 +347,11 @@ export default function AnalyticsPage() {
 
       {activeTab === 'Offers & Coupons' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="bg-white rounded-xl p-5 border border-gray-200/80">
+          <div className="bg-white rounded-xl p-5 border border-black/5">
             <p className="text-sm font-semibold text-gray-500">Orders with a coupon</p>
             <p className="text-3xl font-black mt-2">{couponOrders.length}</p>
           </div>
-          <div className="bg-white rounded-xl p-5 border border-gray-200/80">
+          <div className="bg-white rounded-xl p-5 border border-black/5">
             <p className="text-sm font-semibold text-gray-500">Coupon usage rate</p>
             <p className="text-3xl font-black mt-2">
               {rangeOrders.length ? Math.round((couponOrders.length / rangeOrders.length) * 100) : 0}%
@@ -364,10 +364,10 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Card 1: Net Profit */}
-        <div className="bg-white rounded-xl p-5 border border-gray-200/80 shadow-2xs flex flex-col justify-between hover:border-emerald-800 transition-colors">
+        <div className="bg-white rounded-xl p-5 border border-black/5 shadow-2xs flex flex-col justify-between hover:border-black transition-colors">
           <div className="flex items-center justify-between text-gray-500 text-sm font-semibold">
             <span>Total Net Profit</span>
-            <span title="Calculated revenue minus total product acquisition cost" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-emerald-50 p-1 rounded-full">
+            <span title="Calculated revenue minus total product acquisition cost" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#FCFCFD] p-1 rounded-full">
               <DollarSign className="w-4 h-4" />
             </span>
           </div>
@@ -380,10 +380,10 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Card 2: Completed Orders */}
-        <div className="bg-white rounded-xl p-5 border border-gray-200/80 shadow-2xs flex flex-col justify-between hover:border-emerald-800 transition-colors">
+        <div className="bg-white rounded-xl p-5 border border-black/5 shadow-2xs flex flex-col justify-between hover:border-black transition-colors">
           <div className="flex items-center justify-between text-gray-500 text-sm font-semibold">
             <span>Completed Orders</span>
-            <span title="Orders successfully delivered to customer" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-emerald-50 p-1 rounded-full">
+            <span title="Orders successfully delivered to customer" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#FCFCFD] p-1 rounded-full">
               <PackageCheck className="w-4 h-4" />
             </span>
           </div>
@@ -396,10 +396,10 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Card 3: Delivering (Shipped) */}
-        <div className="bg-white rounded-xl p-5 border border-gray-200/80 shadow-2xs flex flex-col justify-between hover:border-emerald-800 transition-colors">
+        <div className="bg-white rounded-xl p-5 border border-black/5 shadow-2xs flex flex-col justify-between hover:border-black transition-colors">
           <div className="flex items-center justify-between text-gray-500 text-sm font-semibold">
             <span>In Delivery / Shipped</span>
-            <span title="Orders currently dispatched and in transit" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-emerald-50 p-1 rounded-full">
+            <span title="Orders currently dispatched and in transit" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#FCFCFD] p-1 rounded-full">
               <Truck className="w-4 h-4" />
             </span>
           </div>
@@ -412,10 +412,10 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Card 4: Coupons Used */}
-        <div className="bg-white rounded-xl p-5 border border-gray-200/80 shadow-2xs flex flex-col justify-between hover:border-emerald-800 transition-colors">
+        <div className="bg-white rounded-xl p-5 border border-black/5 shadow-2xs flex flex-col justify-between hover:border-black transition-colors">
           <div className="flex items-center justify-between text-gray-500 text-sm font-semibold">
             <span>Coupons Applied</span>
-            <span title="Total transactions utilizing promotional discount vouchers" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-emerald-50 p-1 rounded-full">
+            <span title="Total transactions utilizing promotional discount vouchers" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#FCFCFD] p-1 rounded-full">
               <Tag className="w-4 h-4" />
             </span>
           </div>
@@ -436,7 +436,7 @@ export default function AnalyticsPage() {
       </div>
 
       {(activeTab === 'Overview' || activeTab === 'Order Times') && (
-      <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80 mt-6">
+      <div className="bg-white p-6 rounded-xl shadow-2xs border border-black/5 mt-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
           <div>
             <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
@@ -444,7 +444,7 @@ export default function AnalyticsPage() {
             </h2>
             <p className="text-xs text-gray-500 mt-0.5">Analyses order placement times across the entire store history</p>
           </div>
-          <span className="px-3 py-1 bg-emerald-800 text-white text-xs font-bold rounded-full">24-Hour Breakdown</span>
+          <span className="px-3 py-1 bg-black text-white text-xs font-bold rounded-full">24-Hour Breakdown</span>
         </div>
 
         <div className="h-72 w-full min-h-[280px]">
@@ -481,8 +481,8 @@ export default function AnalyticsPage() {
       )}
 
       {(activeTab === 'Overview' || activeTab === 'Daily Performance' || activeTab === 'Transactions & Orders') && (
-      <div className="bg-white rounded-xl shadow-2xs border border-gray-200/80 overflow-hidden">
-        <div className="p-6 border-b border-gray-200/80 flex justify-between items-center bg-gray-50/50">
+      <div className="bg-white rounded-xl shadow-2xs border border-black/5 overflow-hidden">
+        <div className="p-6 border-b border-black/5 flex justify-between items-center bg-[#FCFCFD]">
           <div>
             <h2 className="text-lg font-black text-gray-900 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-gray-900" /> Daily Analytics & Performance
@@ -494,7 +494,7 @@ export default function AnalyticsPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse whitespace-nowrap">
             <thead>
-              <tr className="bg-gray-50 border-b border-gray-200/80 text-xs uppercase tracking-wider text-gray-500 font-semibold">
+              <tr className="bg-[#FCFCFD] border-b border-black/5 text-xs uppercase tracking-wider text-gray-500 font-semibold">
                 <th className="p-4 pl-6">Date</th>
                 <th className="p-4">Total Orders</th>
                 <th className="p-4">Delivers (Delivered)</th>
@@ -513,7 +513,7 @@ export default function AnalyticsPage() {
                 <tr 
                   key={day.dateStr} 
                   onClick={() => setSelectedDateStr(day.dateStr)}
-                  className="hover:bg-gray-50/80 cursor-pointer transition-colors group"
+                  className="hover:bg-[#FCFCFD]/80 cursor-pointer transition-colors group"
                 >
                   <td className="p-4 pl-6 font-bold text-gray-900 flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-gray-500 group-hover:text-gray-900 transition-colors" />
@@ -525,12 +525,12 @@ export default function AnalyticsPage() {
                     </span>
                   </td>
                   <td className="p-4">
-                    <span className="px-2.5 py-1 bg-gray-100 text-gray-900 border border-gray-200 rounded-lg font-semibold text-xs flex items-center gap-1 w-fit">
+                    <span className="px-2.5 py-1 bg-gray-100 text-gray-900 border border-black/5 rounded-lg font-semibold text-xs flex items-center gap-1 w-fit">
                       <CheckCircle2 className="w-3.5 h-3.5 text-gray-700" /> {day.deliveredOrders}
                     </span>
                   </td>
                   <td className="p-4">
-                    <span className="px-2.5 py-1 bg-gray-100 text-gray-600 border border-gray-200 rounded-lg font-semibold text-xs flex items-center gap-1 w-fit">
+                    <span className="px-2.5 py-1 bg-gray-100 text-gray-600 border border-black/5 rounded-lg font-semibold text-xs flex items-center gap-1 w-fit">
                       <Clock className="w-3.5 h-3.5 text-gray-400" /> {day.totalOrders - day.deliveredOrders}
                     </span>
                   </td>
@@ -543,7 +543,7 @@ export default function AnalyticsPage() {
                   <td className="p-4 text-right pr-6">
                     <button 
                       onClick={(e) => { e.stopPropagation(); setSelectedDateStr(day.dateStr); }}
-                      className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-emerald-800 text-white hover:bg-emerald-900 font-bold text-xs transition-all shadow-xs"
+                      className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-black text-white hover:bg-gray-900 font-bold text-xs transition-all shadow-xs"
                     >
                       Inspect Date <ChevronRight className="w-3.5 h-3.5" />
                     </button>
@@ -559,9 +559,9 @@ export default function AnalyticsPage() {
       {/* Date Deep-Dive Modal */}
       {selectedDayData && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col border border-gray-200">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col border border-black/5">
             
-            <div className="p-6 px-8 border-b border-gray-200 flex justify-between items-center bg-gray-50/80 sticky top-0 z-10">
+            <div className="p-6 px-8 border-b border-black/5 flex justify-between items-center bg-[#FCFCFD]/80 sticky top-0 z-10">
               <div>
                 <span className="text-xs font-black uppercase tracking-wider text-gray-900 block mb-1">Daily Deep-Dive Analytics</span>
                 <h3 className="text-2xl font-black text-gray-900 flex items-center gap-2">
@@ -579,23 +579,23 @@ export default function AnalyticsPage() {
             <div className="p-8 overflow-y-auto space-y-8 flex-1">
               
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <div className="bg-[#FCFCFD] p-4 rounded-xl border border-black/5">
                   <p className="text-xs font-bold text-gray-500 uppercase">Total Orders</p>
                   <p className="text-2xl font-black text-gray-900 mt-1">{selectedDayData.totalOrders}</p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <div className="bg-[#FCFCFD] p-4 rounded-xl border border-black/5">
                   <p className="text-xs font-bold text-gray-500 uppercase">Delivered</p>
                   <p className="text-2xl font-black text-gray-900 mt-1">{selectedDayData.deliveredOrders}</p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <div className="bg-[#FCFCFD] p-4 rounded-xl border border-black/5">
                   <p className="text-xs font-bold text-gray-500 uppercase">Not Delivered</p>
                   <p className="text-2xl font-black text-gray-900 mt-1">{selectedDayData.totalOrders - selectedDayData.deliveredOrders}</p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <div className="bg-[#FCFCFD] p-4 rounded-xl border border-black/5">
                   <p className="text-xs font-bold text-gray-500 uppercase">Day Revenue</p>
                   <p className="text-2xl font-black text-gray-900 mt-1">₹{selectedDayData.revenue.toLocaleString('en-IN')}</p>
                 </div>
-                <div className="bg-emerald-800 text-white p-4 rounded-xl">
+                <div className="bg-black text-white p-4 rounded-xl">
                   <p className="text-xs font-black text-gray-300 uppercase">Net Day Profit</p>
                   <p className="text-2xl font-black text-white mt-1">₹{selectedDayData.profit.toLocaleString('en-IN')}</p>
                 </div>
@@ -603,7 +603,7 @@ export default function AnalyticsPage() {
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
-                <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-gray-200 shadow-2xs flex flex-col">
+                <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-black/5 shadow-2xs flex flex-col">
                   <h4 className="font-bold text-gray-900 mb-1 flex items-center gap-2">
                     <Clock className="w-4 h-4 text-gray-900" /> Order Time Graph ({selectedDayData.formattedDate})
                   </h4>
@@ -626,7 +626,7 @@ export default function AnalyticsPage() {
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-2xs flex flex-col">
+                <div className="bg-white p-6 rounded-xl border border-black/5 shadow-2xs flex flex-col">
                   <h4 className="font-bold text-gray-900 mb-1">Status Breakdown</h4>
                   <p className="text-xs text-gray-500 mb-6">Proportion of order fulfillment</p>
                   
@@ -659,15 +659,15 @@ export default function AnalyticsPage() {
 
               </div>
 
-              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-2xs">
-                <div className="p-5 bg-gray-50/60 border-b border-gray-200 flex justify-between items-center">
+              <div className="bg-white rounded-xl border border-black/5 overflow-hidden shadow-2xs">
+                <div className="p-5 bg-[#FCFCFD]/60 border-b border-black/5 flex justify-between items-center">
                   <div>
                     <h4 className="font-bold text-gray-900 flex items-center gap-2 text-sm">
                       <ShoppingBag className="w-4 h-4 text-gray-900" /> All Order Logs for {selectedDayData.formattedDate}
                     </h4>
                     <p className="text-[11px] text-gray-500 mt-0.5">Click any row below to view full customer, product & payment info</p>
                   </div>
-                  <span className="text-xs font-bold text-gray-700 bg-white px-2.5 py-1 rounded-full border border-gray-200">
+                  <span className="text-xs font-bold text-gray-700 bg-white px-2.5 py-1 rounded-full border border-black/5">
                     {selectedDayData.orders.length} Records
                   </span>
                 </div>
@@ -675,7 +675,7 @@ export default function AnalyticsPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse whitespace-nowrap text-xs">
                     <thead>
-                      <tr className="bg-gray-50 border-b border-gray-200 text-gray-500 uppercase font-semibold tracking-wider">
+                      <tr className="bg-[#FCFCFD] border-b border-black/5 text-gray-500 uppercase font-semibold tracking-wider">
                         <th className="p-3.5 pl-5">Time</th>
                         <th className="p-3.5">Order ID</th>
                         <th className="p-3.5">Customer Name</th>
@@ -692,14 +692,14 @@ export default function AnalyticsPage() {
                           <tr 
                             key={order.id} 
                             onClick={() => setSelectedOrder(order)}
-                            className="hover:bg-gray-50 cursor-pointer transition-colors group"
+                            className="hover:bg-[#FCFCFD] cursor-pointer transition-colors group"
                           >
                             <td className="p-3.5 pl-5 text-gray-500 font-mono">{timeStr}</td>
                             <td className="p-3.5 font-bold font-mono text-gray-900">#{order.id.slice(0, 8).toUpperCase()}</td>
                             <td className="p-3.5 font-bold text-gray-900">{order.shipping_address?.name || order.users?.full_name || 'Customer'}</td>
                             <td className="p-3.5 text-gray-600">{order.payment_method || 'Online'}</td>
                             <td className="p-3.5">
-                              <span className="px-2 py-0.5 rounded-full font-bold uppercase tracking-wider text-[10px] bg-gray-100 text-gray-900 border border-gray-200">
+                              <span className="px-2 py-0.5 rounded-full font-bold uppercase tracking-wider text-[10px] bg-gray-100 text-gray-900 border border-black/5">
                                 {order.status}
                               </span>
                             </td>
@@ -721,10 +721,10 @@ export default function AnalyticsPage() {
 
             </div>
 
-            <div className="p-4 px-8 border-t border-gray-200 bg-gray-50 flex justify-end">
+            <div className="p-4 px-8 border-t border-black/5 bg-[#FCFCFD] flex justify-end">
               <button 
                 onClick={() => setSelectedDateStr(null)}
-                className="px-6 py-2.5 bg-emerald-800 text-white font-bold text-sm rounded-xl hover:bg-emerald-900 transition-colors shadow-xs cursor-pointer"
+                className="px-6 py-2.5 bg-black text-white font-bold text-sm rounded-xl hover:bg-gray-900 transition-colors shadow-xs cursor-pointer"
               >
                 Close Deep-Dive
               </button>
@@ -737,8 +737,8 @@ export default function AnalyticsPage() {
       {/* Order Details Sidebar Overlay */}
       {selectedOrder && (
         <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-xs flex justify-end animate-in fade-in duration-200">
-          <div className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right overflow-hidden border-l border-gray-200">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gray-50/50">
+          <div className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right overflow-hidden border-l border-black/5">
+            <div className="flex items-center justify-between p-6 border-b border-black/5 bg-[#FCFCFD]">
               <div>
                 <span className="text-[10px] font-black uppercase tracking-wider text-gray-900 block">Order Inspection</span>
                 <h2 className="text-xl font-black text-gray-900">Order Details</h2>
@@ -750,7 +750,7 @@ export default function AnalyticsPage() {
             
             <div className="flex-1 overflow-y-auto p-6 space-y-8">
               
-              <div className="flex justify-between items-center pb-4 border-b border-gray-200">
+              <div className="flex justify-between items-center pb-4 border-b border-black/5">
                 <span className="text-gray-500 font-medium text-sm">Order ID</span>
                 <span className="font-bold font-mono text-gray-900 text-lg">#{selectedOrder.id.split('-')[0].toUpperCase()}</span>
               </div>
@@ -759,11 +759,11 @@ export default function AnalyticsPage() {
                 <h3 className="text-xs font-bold text-gray-400 flex items-center gap-2 uppercase tracking-wider">
                   <User className="w-4 h-4 text-gray-900" /> Customer Information
                 </h3>
-                <div className="pl-6 space-y-1.5 text-sm text-gray-600 bg-gray-50/60 p-4 rounded-xl border border-gray-200">
+                <div className="pl-6 space-y-1.5 text-sm text-gray-600 bg-[#FCFCFD]/60 p-4 rounded-xl border border-black/5">
                   <p className="font-bold text-gray-900 text-base">{selectedOrder.shipping_address?.name || selectedOrder.users?.full_name || 'Customer'}</p>
                   <p className="font-mono text-xs text-gray-500">{selectedOrder.shipping_address?.phone || '-'}</p>
                   {selectedOrder.shipping_address?.fullAddress && (
-                    <div className="flex gap-2 pt-2 border-t border-gray-200 mt-2 text-xs">
+                    <div className="flex gap-2 pt-2 border-t border-black/5 mt-2 text-xs">
                       <MapPin className="w-4 h-4 mt-0.5 text-gray-500 shrink-0" />
                       <p>{selectedOrder.shipping_address.fullAddress},<br/>{selectedOrder.shipping_address.city}, {selectedOrder.shipping_address.state} - {selectedOrder.shipping_address.pincode}</p>
                     </div>
@@ -777,13 +777,13 @@ export default function AnalyticsPage() {
                 </h3>
                 <div className="space-y-3">
                   {selectedOrder.order_items?.map((item: any, idx: number) => (
-                    <div key={idx} className="flex gap-4 p-3 bg-gray-50/60 rounded-xl border border-gray-200 items-center">
+                    <div key={idx} className="flex gap-4 p-3 bg-[#FCFCFD]/60 rounded-xl border border-black/5 items-center">
                       {item.products?.image_url ? (
-                        <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center border border-gray-200 shrink-0 overflow-hidden shadow-2xs">
+                        <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center border border-black/5 shrink-0 overflow-hidden shadow-2xs">
                           <img src={item.products.image_url} alt={item.products.title} className="w-full h-full object-contain mix-blend-multiply p-1" />
                         </div>
                       ) : (
-                        <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center border border-gray-200 shrink-0 shadow-2xs">
+                        <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center border border-black/5 shrink-0 shadow-2xs">
                           <Package className="w-6 h-6 text-gray-300" />
                         </div>
                       )}
@@ -803,18 +803,18 @@ export default function AnalyticsPage() {
                 <h3 className="text-xs font-bold text-gray-400 flex items-center gap-2 uppercase tracking-wider">
                   <CreditCard className="w-4 h-4 text-gray-900" /> Payment Information
                 </h3>
-                <div className="bg-gray-50/60 p-4 rounded-xl border border-gray-200 space-y-3 text-sm">
+                <div className="bg-[#FCFCFD]/60 p-4 rounded-xl border border-black/5 space-y-3 text-sm">
                   <div className="flex justify-between items-center text-gray-600">
                     <span>Payment Method</span>
                     <span className="font-bold text-gray-900">{selectedOrder.payment_method || 'Online Payment'}</span>
                   </div>
                   <div className="flex justify-between items-center text-gray-600">
                     <span>Payment Status</span>
-                    <span className="font-bold px-2 py-0.5 rounded uppercase text-[10px] tracking-widest border bg-emerald-800 text-white border-emerald-800">
+                    <span className="font-bold px-2 py-0.5 rounded uppercase text-[10px] tracking-widest border bg-black text-white border-black">
                       {selectedOrder.payment_method === 'Cash on Delivery' && selectedOrder.status !== 'delivered' ? 'Pending' : 'Paid'}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center text-gray-900 font-black border-t border-gray-200 pt-3 text-base">
+                  <div className="flex justify-between items-center text-gray-900 font-black border-t border-black/5 pt-3 text-base">
                     <span>Total Amount</span>
                     <span className="text-lg text-gray-900">₹{Number(selectedOrder.total_amount || 0).toLocaleString('en-IN')}</span>
                   </div>
@@ -825,7 +825,7 @@ export default function AnalyticsPage() {
                 <h3 className="text-xs font-bold text-gray-400 flex items-center gap-2 uppercase tracking-wider">
                   <Truck className="w-4 h-4 text-gray-900" /> Shipping Status
                 </h3>
-                <div className="pl-6 space-y-6 relative mt-4 bg-gray-50/60 p-5 rounded-xl border border-gray-200">
+                <div className="pl-6 space-y-6 relative mt-4 bg-[#FCFCFD]/60 p-5 rounded-xl border border-black/5">
                   <div className="absolute left-7 top-7 bottom-7 w-0.5 bg-gray-200"></div>
                   
                   {[
@@ -841,8 +841,8 @@ export default function AnalyticsPage() {
 
                     return (
                       <div key={status.id} className="relative z-10 flex gap-4 items-start">
-                        <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 border-2 bg-white ${isCompleted ? 'border-emerald-800' : 'border-gray-300'}`}>
-                          {isCompleted ? <div className="w-2.5 h-2.5 bg-emerald-800 rounded-full"></div> : null}
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 border-2 bg-white ${isCompleted ? 'border-black' : 'border-gray-300'}`}>
+                          {isCompleted ? <div className="w-2.5 h-2.5 bg-black rounded-full"></div> : null}
                         </div>
                         <div>
                           <p className={`text-sm font-bold leading-none ${isCompleted ? 'text-gray-900' : 'text-gray-400'}`}>{status.label}</p>
@@ -856,10 +856,10 @@ export default function AnalyticsPage() {
               
             </div>
 
-            <div className="p-4 px-6 border-t border-gray-200 bg-gray-50 flex justify-end">
+            <div className="p-4 px-6 border-t border-black/5 bg-[#FCFCFD] flex justify-end">
               <button 
                 onClick={() => setSelectedOrder(null)}
-                className="px-6 py-2.5 bg-emerald-800 text-white font-bold text-sm rounded-xl hover:bg-emerald-900 transition-colors shadow-xs w-full cursor-pointer"
+                className="px-6 py-2.5 bg-black text-white font-bold text-sm rounded-xl hover:bg-gray-900 transition-colors shadow-xs w-full cursor-pointer"
               >
                 Close Order Inspection
               </button>

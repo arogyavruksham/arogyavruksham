@@ -95,7 +95,7 @@ export default function AdminAnnouncementPage() {
         <button
           type="button"
           onClick={() => setFormData(DEFAULT_ANNOUNCEMENT)}
-          className="px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 font-bold hover:bg-gray-50 transition-colors text-xs flex items-center gap-1.5 shadow-2xs cursor-pointer"
+          className="px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 font-bold hover:bg-[#FCFCFD] transition-colors text-xs flex items-center gap-1.5 shadow-2xs cursor-pointer"
         >
           <RefreshCw className="w-3.5 h-3.5" /> Reset Defaults
         </button>
@@ -103,20 +103,20 @@ export default function AdminAnnouncementPage() {
 
       {/* Status Notifications */}
       {successMsg && (
-        <div className="p-4 bg-white border border-emerald-800 text-gray-900 rounded-2xl flex items-center gap-3 animate-in fade-in shadow-2xs">
-          <div className="p-1 bg-emerald-800 text-white rounded-full"><Check className="w-3.5 h-3.5 stroke-[3]" /></div>
+        <div className="p-4 bg-white border border-black text-gray-900 rounded-[2rem] flex items-center gap-3 animate-in fade-in shadow-2xs">
+          <div className="p-1 bg-black text-white rounded-full"><Check className="w-3.5 h-3.5 stroke-[3]" /></div>
           <span className="font-bold text-sm">{successMsg}</span>
         </div>
       )}
       {errorMsg && (
-        <div className="p-4 bg-red-50 border border-red-200 text-red-800 rounded-2xl flex items-center gap-3 animate-in fade-in shadow-2xs">
+        <div className="p-4 bg-red-50 border border-red-200 text-red-800 rounded-[2rem] flex items-center gap-3 animate-in fade-in shadow-2xs">
           <AlertCircle className="w-5 h-5 text-red-600 shrink-0 stroke-[2.5]" />
           <span className="font-bold text-sm">{errorMsg}</span>
         </div>
       )}
 
       {/* Live Previews Section */}
-      <div className="bg-white p-6 rounded-2xl border border-gray-200/80 shadow-2xs space-y-6">
+      <div className="bg-white p-6 rounded-[2rem] border border-black/5 shadow-2xs space-y-6">
         <h2 className="text-base font-black text-gray-900 flex items-center gap-2 uppercase tracking-wide">
           <Eye className="w-4 h-4 text-gray-900" /> Real-Time Live Preview
         </h2>
@@ -126,7 +126,7 @@ export default function AdminAnnouncementPage() {
           <span className="text-[11px] font-bold uppercase text-gray-400 flex items-center gap-1.5">
             <Monitor className="w-3.5 h-3.5 text-gray-600" /> Desktop / PC Header View (Top of Screen)
           </span>
-          <div className="rounded-xl border border-gray-200 overflow-hidden bg-gray-50 p-3 shadow-inner">
+          <div className="rounded-xl border border-black/5 overflow-hidden bg-[#FCFCFD] p-3 shadow-inner">
             {formData.is_active ? (
               <div 
                 style={{ backgroundColor: formData.bg_color, color: formData.text_color }}
@@ -155,7 +155,7 @@ export default function AdminAnnouncementPage() {
           <span className="text-[11px] font-bold uppercase text-gray-400 flex items-center gap-1.5">
             <Smartphone className="w-3.5 h-3.5 text-gray-600" /> Mobile View (Bottom Navigation Banner)
           </span>
-          <div className="rounded-xl border border-gray-200 overflow-hidden bg-gray-50 p-3 max-w-sm shadow-inner">
+          <div className="rounded-xl border border-black/5 overflow-hidden bg-[#FCFCFD] p-3 max-w-sm shadow-inner">
             {formData.is_active ? (
               <div 
                 style={{ backgroundColor: formData.bg_color, color: formData.text_color }}
@@ -179,10 +179,10 @@ export default function AdminAnnouncementPage() {
       </div>
 
       {/* Configuration Form */}
-      <form onSubmit={handleSubmit} className="bg-white p-6 md:p-8 rounded-2xl border border-gray-200/80 shadow-2xs space-y-8">
+      <form onSubmit={handleSubmit} className="bg-white p-6 md:p-8 rounded-[2rem] border border-black/5 shadow-2xs space-y-8">
         
         {/* Toggle Switch - Monochrome */}
-        <div className="flex items-center justify-between p-5 bg-gray-50 rounded-2xl border border-gray-200/80">
+        <div className="flex items-center justify-between p-5 bg-[#FCFCFD] rounded-[2rem] border border-black/5">
           <div>
             <span className="font-black text-gray-900 block text-base">Enable Announcement Bar</span>
             <span className="text-xs font-semibold text-gray-500">Turn this toggle on to broadcast your promotional banner across the entire online greenhouse.</span>
@@ -194,13 +194,13 @@ export default function AdminAnnouncementPage() {
               onChange={e => handleChange('is_active', e.target.checked)} 
               className="sr-only peer" 
             />
-            <div className="w-14 h-7 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-emerald-800"></div>
+            <div className="w-14 h-7 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-black"></div>
           </label>
         </div>
 
         {/* Text Messaging Section */}
         <div className="space-y-4">
-          <h3 className="text-sm font-black uppercase tracking-wide text-gray-900 flex items-center gap-2 border-b border-gray-200/80 pb-3">
+          <h3 className="text-sm font-black uppercase tracking-wide text-gray-900 flex items-center gap-2 border-b border-black/5 pb-3">
             <Globe className="w-4 h-4 text-gray-900" /> Promotional Message Content
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -214,7 +214,7 @@ export default function AdminAnnouncementPage() {
                 value={formData.text}
                 onChange={e => handleChange('text', e.target.value)}
                 placeholder="e.g. Free Shipping Every Day, Every Order Over ₹999"
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 font-semibold text-sm transition-all bg-white"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-black focus:ring-1 focus:ring-black font-semibold text-sm transition-all bg-white"
               />
               <span className="text-[11px] font-medium text-gray-400 mt-1.5 block">Full message displayed on PC & Desktop wide screens.</span>
             </div>
@@ -228,7 +228,7 @@ export default function AdminAnnouncementPage() {
                 value={formData.mobile_text}
                 onChange={e => handleChange('mobile_text', e.target.value)}
                 placeholder="e.g. Free Shipping Every Day Over ₹999"
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 font-semibold text-sm transition-all bg-white"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-black focus:ring-1 focus:ring-black font-semibold text-sm transition-all bg-white"
               />
               <span className="text-[11px] font-medium text-gray-400 mt-1.5 block">Slightly shorter wording optimized for narrow mobile screens.</span>
             </div>
@@ -237,7 +237,7 @@ export default function AdminAnnouncementPage() {
 
         {/* Link Button Controls */}
         <div className="space-y-4">
-          <h3 className="text-sm font-black uppercase tracking-wide text-gray-900 flex items-center gap-2 border-b border-gray-200/80 pb-3">
+          <h3 className="text-sm font-black uppercase tracking-wide text-gray-900 flex items-center gap-2 border-b border-black/5 pb-3">
             <ExternalLink className="w-4 h-4 text-gray-900" /> Action Link Button
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -250,7 +250,7 @@ export default function AdminAnnouncementPage() {
                 value={formData.link_text}
                 onChange={e => handleChange('link_text', e.target.value)}
                 placeholder="e.g. Shop Now, Explore Deals, View Collection"
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 font-semibold text-sm transition-all bg-white"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-black focus:ring-1 focus:ring-black font-semibold text-sm transition-all bg-white"
               />
             </div>
 
@@ -263,7 +263,7 @@ export default function AdminAnnouncementPage() {
                 value={formData.link_url}
                 onChange={e => handleChange('link_url', e.target.value)}
                 placeholder="e.g. /shop or /shop?category=Silk"
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 font-mono text-sm transition-all bg-white"
+                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-black focus:ring-1 focus:ring-black font-mono text-sm transition-all bg-white"
               />
             </div>
           </div>
@@ -271,7 +271,7 @@ export default function AdminAnnouncementPage() {
 
         {/* Color Palette Controls */}
         <div className="space-y-4">
-          <h3 className="text-sm font-black uppercase tracking-wide text-gray-900 flex items-center gap-2 border-b border-gray-200/80 pb-3">
+          <h3 className="text-sm font-black uppercase tracking-wide text-gray-900 flex items-center gap-2 border-b border-black/5 pb-3">
             <Palette className="w-4 h-4 text-gray-900" /> Color Theme Customization
           </h3>
 
@@ -284,7 +284,7 @@ export default function AdminAnnouncementPage() {
                   type="button"
                   onClick={() => handleApplySwatch(swatch.bg, swatch.text)}
                   style={{ backgroundColor: swatch.bg, color: swatch.text }}
-                  className={`py-2.5 px-3 rounded-xl font-bold text-xs shadow-2xs transition-all cursor-pointer border ${formData.bg_color === swatch.bg ? 'ring-2 ring-emerald-800 ring-offset-2 font-black scale-105' : 'border-gray-300 opacity-90 hover:opacity-100'}`}
+                  className={`py-2.5 px-3 rounded-xl font-bold text-xs shadow-2xs transition-all cursor-pointer border ${formData.bg_color === swatch.bg ? 'ring-2 ring-black ring-offset-2 font-black scale-105' : 'border-gray-300 opacity-90 hover:opacity-100'}`}
                 >
                   {swatch.label}
                 </button>
@@ -336,11 +336,11 @@ export default function AdminAnnouncementPage() {
         </div>
 
         {/* Submit Save Button - Solid Black */}
-        <div className="pt-4 border-t border-gray-200/80 flex justify-end">
+        <div className="pt-4 border-t border-black/5 flex justify-end">
           <button
             type="submit"
             disabled={isSaving}
-            className="px-8 py-3.5 bg-emerald-800 hover:bg-emerald-900 disabled:bg-gray-400 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-sm transition-all duration-200 flex items-center gap-2 cursor-pointer"
+            className="px-8 py-3.5 bg-black hover:bg-gray-900 disabled:bg-gray-400 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-200 flex items-center gap-2 cursor-pointer"
           >
             {isSaving ? 'Publishing Changes...' : 'Save & Publish Announcement Bar'}
           </button>

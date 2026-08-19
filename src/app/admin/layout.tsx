@@ -9,12 +9,13 @@ import { ADMIN_NAV_GROUPS, filterNavForRole, isNavActive, type AdminNavItem } fr
 import { useEffect, useState, useRef, type ComponentType } from 'react'
 import { supabase } from '@/lib/supabase'
 
-const NAV_ICONS: Record<string, ComponentType<{ className?: string }>> = {
+const NAV_ICONS: Record<string, ComponentType<{ className?: string, strokeWidth?: number }>> = {
   Sparkles, BarChart2, Bot, Package, Archive, ShoppingCart, LayoutGrid, Tag, Megaphone, Mail, Users, Settings,
 }
 
+// Light stroke variants for the custom SVG icons
 const PottedPlantIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M7 11v5a5 5 0 0 0 10 0v-5" />
     <path d="M5 7h14l-1 4H6Z" />
     <path d="M12 7V3" />
@@ -24,8 +25,11 @@ const PottedPlantIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
 )
 
 const DashboardGridIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M3 3h8v10H3V3zm10 0h8v6h-8V3zM3 15h8v6H3v-6zm10-4h8v10h-8V11z" />
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="7" height="9" rx="1" />
+    <rect x="14" y="3" width="7" height="5" rx="1" />
+    <rect x="14" y="12" width="7" height="9" rx="1" />
+    <rect x="3" y="16" width="7" height="5" rx="1" />
   </svg>
 )
 
@@ -137,18 +141,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (user && user.role !== 'admin' && user.role !== 'manager' && user.role !== 'editor') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 flex-col gap-4 font-sans">
-        <ShieldCheck className="w-16 h-16 text-gray-900" />
-        <h1 className="text-2xl font-bold text-gray-900">Access Denied</h1>
-        <p className="text-gray-500">You do not have administrator privileges.</p>
-        <Link href="/" className="text-gray-900 underline font-bold">Return Home</Link>
+      <div className="min-h-[100dvh] flex items-center justify-center bg-[#F7F7F8] flex-col gap-6 font-sans">
+        <div className="p-4 bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5">
+          <ShieldCheck className="w-12 h-12 text-gray-400" strokeWidth={1.5} />
+        </div>
+        <div className="text-center">
+          <h1 className="text-3xl font-black tracking-tighter text-gray-900 mb-2">Access Denied</h1>
+          <p className="text-gray-500 mb-6 font-medium">Administrator privileges required.</p>
+          <Link href="/" className="px-6 py-3 bg-black text-white rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform">
+            Return Home
+          </Link>
+        </div>
       </div>
     )
   }
 
   if (!isAdminUnlocked) {
     return (
-      <div className="flex flex-col min-h-screen font-sans">
+      <div className="flex flex-col min-h-[100dvh] font-sans bg-[#F7F7F8]">
         <AdminLockScreen />
       </div>
     )
@@ -160,253 +170,99 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="flex flex-col h-screen bg-[#F9FAFB] overflow-hidden font-sans text-gray-900">
+    <div className="flex flex-col h-[100dvh] bg-[#F7F7F8] font-sans text-gray-900 overflow-hidden md:p-3 transition-colors duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
       
-      {/* Mobile Bottom Nav */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-md border-t border-gray-200 pb-safe shadow-md">
-        <div className="flex items-center justify-around h-[70px] px-2 max-w-md mx-auto">
-          {[
-            { name: 'Dashboard', path: '/admin', icon: DashboardGridIcon, active: pathname === '/admin' },
-            { name: 'Orders', path: '/admin/orders', icon: ShoppingCart, active: pathname?.startsWith('/admin/orders') },
-            { name: 'Inventory', path: '/admin/inventory', icon: PottedPlantIcon, active: pathname?.startsWith('/admin/inventory') },
-            { name: 'Lock Panel', onClick: handleAdminLogout, icon: Lock, active: false },
-          ].map((tab) => {
-            const Icon = tab.icon;
-            const content = (
-              <>
-                <Icon className={`w-5 h-5 mb-0.5 ${tab.active ? 'text-gray-900' : 'text-gray-400'}`} />
-                <span className={`text-[11px] tracking-tight ${tab.active ? 'font-black text-gray-900' : 'font-semibold text-gray-500'}`}>
-                  {tab.name}
-                </span>
-              </>
-            );
+      {/* Outer Shell -> Inner Core (Double-Bezel Architecture) */}
+      <div className="flex flex-col md:flex-row flex-1 bg-white md:rounded-[2rem] md:shadow-[0_8px_40px_rgba(0,0,0,0.03)] md:border md:border-black/5 overflow-hidden relative">
 
-            if (tab.onClick) {
-              return (
-                <button
-                  key={tab.name}
-                  onClick={tab.onClick}
-                  className="flex flex-col items-center justify-center transition-all text-gray-500 hover:text-gray-900 py-1.5 px-3 font-medium min-w-[72px] cursor-pointer"
-                >
-                  {content}
-                </button>
-              );
-            }
+        {/* Mobile Bottom Nav - Floating Pill Style */}
+        <div className="md:hidden fixed bottom-6 left-4 right-4 z-50">
+          <div className="bg-white/90 backdrop-blur-xl border border-black/5 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-2">
+            <div className="flex items-center justify-between">
+              {[
+                { name: 'Dash', path: '/admin', icon: DashboardGridIcon, active: pathname === '/admin' },
+                { name: 'Orders', path: '/admin/orders', icon: ShoppingCart, active: pathname?.startsWith('/admin/orders') },
+                { name: 'Stock', path: '/admin/inventory', icon: PottedPlantIcon, active: pathname?.startsWith('/admin/inventory') },
+                { name: 'Lock', onClick: handleAdminLogout, icon: Lock, active: false },
+              ].map((tab) => {
+                const Icon = tab.icon;
+                const content = (
+                  <>
+                    <Icon className={`w-5 h-5 mb-1 ${tab.active ? 'text-black' : 'text-gray-400'}`} strokeWidth={1.5} />
+                    <span className={`text-[10px] tracking-wide ${tab.active ? 'font-bold text-black' : 'font-medium text-gray-400'}`}>
+                      {tab.name}
+                    </span>
+                  </>
+                );
 
-            return (
-              <Link 
-                key={tab.name}
-                href={tab.path!}
-                className={`flex flex-col items-center justify-center transition-all ${
-                  tab.active 
-                    ? 'bg-gray-100 text-gray-900 py-1.5 px-3 sm:px-4 rounded-xl font-bold min-w-[76px]' 
-                    : 'text-gray-500 hover:text-gray-900 py-1.5 px-3 font-medium min-w-[72px]'
-                }`}
-              >
-                {content}
-              </Link>
-            );
-          })}
-        </div>
-      </div>
+                if (tab.onClick) {
+                  return (
+                    <button
+                      key={tab.name}
+                      onClick={tab.onClick}
+                      className="flex flex-col items-center justify-center flex-1 py-2 rounded-full hover:bg-gray-50 transition-colors"
+                    >
+                      {content}
+                    </button>
+                  );
+                }
 
-      {/* Top Header Bar - Monochrome Minimalist Style */}
-      <header className="h-16 bg-white border-b border-gray-200/80 flex items-center justify-between px-4 md:px-6 z-20 shrink-0 shadow-2xs">
-        <div className="flex items-center gap-3">
-          <Link href="/admin" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-            <div className="w-8 h-8 rounded-lg bg-white border border-gray-200 shadow-2xs p-1 flex items-center justify-center shrink-0">
-              <img src="/logo.png" alt="Logo" className="w-full h-full object-contain mix-blend-multiply" />
-            </div>
-            <span className="font-sans font-black text-xl tracking-tight text-gray-900 flex items-center">
-              arogyavruksham <span className="ml-2 text-xs font-black px-2 py-0.5 bg-emerald-800 text-white rounded-md hidden sm:inline-block">Admin</span>
-            </span>
-          </Link>
-        </div>
-
-        {/* Clean Center */}
-        <div className="flex-1"></div>
-
-        {/* Right Side Tools & Icons */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="relative hidden sm:block" ref={appsRef}>
-            <button
-              onClick={() => setShowApps(!showApps)}
-              className="p-2.5 rounded-xl text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors flex items-center justify-center cursor-pointer"
-              title="All admin sections"
-            >
-              <LayoutGrid className="w-5 h-5" />
-            </button>
-            {showApps && (
-              <div className="absolute right-0 mt-3 w-[380px] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50">
-                <div className="p-4 border-b border-gray-100 bg-gray-50">
-                  <p className="text-xs font-black uppercase tracking-wider text-gray-500">All admin sections</p>
-                  <p className="text-sm font-bold text-gray-900 mt-0.5">Jump to any tool</p>
-                </div>
-                <div className="max-h-96 overflow-y-auto p-2 grid grid-cols-2 gap-1">
-                  {navItems.map((item) => {
-                    const Icon = NAV_ICONS[item.icon] || Package
-                    return (
-                      <Link
-                        key={item.path}
-                        href={item.path}
-                        onClick={() => setShowApps(false)}
-                        className={`rounded-xl p-3 hover:bg-gray-50 transition-colors ${isNavActive(pathname, item) ? 'bg-emerald-50' : ''}`}
-                      >
-                        <div className="flex items-center gap-2 mb-1">
-                          <Icon className="w-4 h-4 text-emerald-800" />
-                          <span className="text-xs font-black text-gray-900">{item.name}</span>
-                        </div>
-                        <p className="text-[11px] text-gray-500 leading-snug line-clamp-2">{item.description}</p>
-                      </Link>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-          
-          {/* Notifications Bell */}
-          <div className="relative" ref={notificationsRef}>
-            <button 
-              onClick={() => {
-                setShowNotifications(!showNotifications)
-                if (!showNotifications) setUnreadCount(0)
-              }}
-              className="p-2.5 rounded-xl text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors relative flex items-center justify-center cursor-pointer"
-              title="Order Notifications"
-            >
-              <Bell className="w-5 h-5" />
-              {unreadCount > 0 && (
-                <span className="absolute top-1 right-1 bg-emerald-800 text-white font-black text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-xs">
-                  {unreadCount > 99 ? '99+' : unreadCount}
-                </span>
-              )}
-            </button>
-
-            {showNotifications && (
-              <div className="absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200 text-left">
-                <div className="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <Bell className="w-4 h-4 text-gray-900" />
-                    <h4 className="font-bold text-gray-900 text-sm">New Order Notifications</h4>
-                  </div>
-                  <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-800 text-white px-2 py-0.5 rounded-full">
-                    Live Feed
-                  </span>
-                </div>
-
-                <div className="max-h-80 overflow-y-auto divide-y divide-gray-100">
-                  {notifications.length === 0 ? (
-                    <div className="p-6 text-center text-gray-400 text-xs italic">
-                      No recent orders received.
-                    </div>
-                  ) : (
-                    notifications.map((notif) => {
-                      const timeStr = notif.created_at 
-                        ? new Date(notif.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                        : '';
-                      const dateStr = notif.created_at 
-                        ? new Date(notif.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
-                        : '';
-                      return (
-                        <div 
-                          key={notif.id}
-                          onClick={() => {
-                            setShowNotifications(false);
-                            router.push('/admin/orders');
-                          }}
-                          className="p-3.5 hover:bg-gray-50 transition-colors cursor-pointer flex items-start gap-3 group"
-                        >
-                          <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
-                            notif.status === 'pending' ? 'bg-emerald-800 text-white' : 'bg-gray-100 text-gray-600'
-                          }`}>
-                            <ShoppingBag className="w-4 h-4" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex justify-between items-baseline gap-2">
-                              <p className="font-bold text-gray-900 text-xs truncate group-hover:underline transition-colors">
-                                Order #{notif.id.slice(0, 8).toUpperCase()}
-                              </p>
-                              <span className="text-[10px] text-gray-400 shrink-0 font-mono">{dateStr}, {timeStr}</span>
-                            </div>
-                            <p className="text-xs text-gray-600 truncate mt-0.5">
-                              By {notif.shipping_address?.name || notif.users?.full_name || 'Customer'}
-                            </p>
-                            <div className="flex justify-between items-center mt-2">
-                              <span className="font-black text-gray-900 text-xs">
-                                ₹{Number(notif.total_amount || 0).toLocaleString('en-IN')}
-                              </span>
-                              <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest bg-gray-100 text-gray-800">
-                                {notif.status}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
-
-                <div className="p-3 bg-gray-50 border-t border-gray-200 text-center">
+                return (
                   <Link 
-                    href="/admin/orders" 
-                    onClick={() => setShowNotifications(false)}
-                    className="text-xs font-bold text-gray-900 hover:underline flex items-center justify-center gap-1"
+                    key={tab.name}
+                    href={tab.path!}
+                    className={`flex flex-col items-center justify-center flex-1 py-2 rounded-full transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+                      tab.active 
+                        ? 'bg-black/5' 
+                        : 'hover:bg-gray-50'
+                    }`}
                   >
-                    View All Orders <ChevronRight className="w-3.5 h-3.5" />
+                    {content}
                   </Link>
-                </div>
-              </div>
-            )}
+                );
+              })}
+            </div>
           </div>
-
-          {/* User Profile Button */}
-          <Link href="/admin/settings" className="w-9 h-9 bg-emerald-800 text-white rounded-full shadow-xs flex items-center justify-center font-black text-sm hover:bg-emerald-900 transition-colors cursor-pointer" title="Settings">
-            {user?.email?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
-          </Link>
-          
-          {/* Mobile Hamburger Menu */}
-          <button 
-            className="md:hidden p-2 text-gray-600 hover:text-gray-900"
-            onClick={() => setIsMobileMenuOpen(true)}
-          >
-            <Menu className="w-6 h-6" />
-          </button>
         </div>
-      </header>
 
-      {/* Main Container below header */}
-      <div className="flex flex-1 overflow-hidden relative">
-        
-        {/* Left Sidebar - Monochrome white & black navigation */}
-        <aside className="w-64 bg-white border-r border-gray-200/80 hidden md:flex flex-col shrink-0 overflow-y-auto">
+        {/* Left Sidebar - Soft Structuralism */}
+        <aside className="w-72 bg-[#FCFCFD] border-r border-black/5 hidden md:flex flex-col shrink-0 overflow-hidden relative z-10">
           
-          {/* Sidebar Top Search Input Box */}
-          <div className="p-4 pb-3" ref={searchRef}>
-            <div className="relative w-full">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          {/* Brand & Search Area */}
+          <div className="p-6 pb-4">
+            <Link href="/admin" className="flex items-center gap-3 hover:opacity-80 transition-opacity mb-8 group">
+              <div className="w-10 h-10 rounded-xl bg-white border border-black/5 shadow-[0_2px_10px_rgb(0,0,0,0.02)] p-1.5 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+                <img src="/logo.png" alt="Logo" className="w-full h-full object-contain mix-blend-multiply" />
+              </div>
+              <span className="font-black text-xl tracking-tighter text-gray-900">
+                arogyavruksham <span className="block text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-0.5">Admin</span>
+              </span>
+            </Link>
+
+            <div className="relative w-full" ref={searchRef}>
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" strokeWidth={1.5} />
               <input 
                 type="text" 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => { if (searchQuery.trim()) setShowDropdown(true) }}
                 placeholder="Search..." 
-                className="w-full pl-9 pr-8 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 transition-all shadow-2xs"
+                className="w-full pl-10 pr-8 py-2.5 bg-white border border-black/5 rounded-[1rem] text-sm font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.01)]"
               />
               {isSearching && (
-                <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 animate-spin" />
+                <Loader2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 animate-spin" strokeWidth={1.5} />
               )}
               
               {/* Search Results Dropdown */}
               {showDropdown && searchQuery.trim() !== '' && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden z-50 py-2 max-h-[60vh] overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-black/5 overflow-hidden z-50 py-2 max-h-[60vh] overflow-y-auto">
                   {!isSearching && searchResults.products.length === 0 && searchResults.orders.length === 0 ? (
-                    <div className="px-4 py-3 text-xs text-gray-500 text-center">No results for "{searchQuery}"</div>
+                    <div className="px-4 py-6 text-sm text-gray-400 text-center font-medium">No results found.</div>
                   ) : (
                     <>
                       {searchResults.orders.length > 0 && (
                         <div className="mb-2">
-                          <div className="px-4 py-1.5 text-[11px] font-black text-gray-400 uppercase tracking-wider bg-gray-50">Orders</div>
+                          <div className="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Orders</div>
                           {searchResults.orders.map((order: any) => (
                             <Link 
                               key={order.id} 
@@ -415,12 +271,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                               className="flex items-center justify-between px-4 py-2 hover:bg-gray-50 transition-colors"
                             >
                               <div>
-                                <p className="text-xs font-bold text-gray-900">#{order.id.split('-')[0]}</p>
-                                <p className="text-[11px] text-gray-500">{order.users?.full_name || 'Guest'}</p>
+                                <p className="text-sm font-bold text-gray-900">#{order.id.split('-')[0]}</p>
+                                <p className="text-xs text-gray-500 font-medium">{order.users?.full_name || 'Guest'}</p>
                               </div>
                               <div className="text-right">
-                                <p className="text-xs font-bold text-gray-900">₹{order.total_amount}</p>
-                                <span className="text-[9px] font-bold text-gray-400 uppercase">{order.status}</span>
+                                <p className="text-sm font-bold text-gray-900">₹{order.total_amount}</p>
+                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">{order.status}</span>
                               </div>
                             </Link>
                           ))}
@@ -428,24 +284,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       )}
                       {searchResults.products.length > 0 && (
                         <div>
-                          <div className="px-4 py-1.5 text-[11px] font-black text-gray-400 uppercase tracking-wider bg-gray-50">Products</div>
+                          <div className="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Products</div>
                           {searchResults.products.map((product: any) => (
                             <Link 
                               key={product.id} 
                               href="/admin/products"
                               onClick={() => { setShowDropdown(false); setSearchQuery(''); }}
-                              className="flex items-center gap-2.5 px-4 py-2 hover:bg-gray-50 transition-colors"
+                              className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors"
                             >
-                              <div className="w-8 h-8 rounded bg-gray-100 shrink-0 overflow-hidden">
+                              <div className="w-10 h-10 rounded-xl bg-[#F7F7F8] shrink-0 overflow-hidden border border-black/5 p-1">
                                 {product.image_url ? (
-                                  <img src={product.image_url} alt={product.title} className="w-full h-full object-cover mix-blend-multiply" />
+                                  <img src={product.image_url} alt={product.title} className="w-full h-full object-cover mix-blend-multiply rounded-lg" />
                                 ) : (
-                                  <Package className="w-4 h-4 m-2 text-gray-400" />
+                                  <Package className="w-5 h-5 m-1.5 text-gray-300" strokeWidth={1.5} />
                                 )}
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-xs font-bold text-gray-900 truncate">{product.title}</p>
-                                <p className="text-[11px] text-gray-500">₹{product.price}</p>
+                                <p className="text-sm font-bold text-gray-900 truncate">{product.title}</p>
+                                <p className="text-xs text-gray-500 font-medium">₹{product.price}</p>
                               </div>
                             </Link>
                           ))}
@@ -458,14 +314,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
 
-          <nav className="flex-1 px-3 py-2 text-sm font-medium overflow-y-auto">
+          <nav className="flex-1 px-4 py-2 overflow-y-auto">
             {ADMIN_NAV_GROUPS.map((group) => {
               const items = navItems.filter((item) => item.group === group)
               if (items.length === 0) return null
               return (
-                <div key={group} className="mb-4">
-                  <p className="px-3.5 pb-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400">{group}</p>
-                  <div className="space-y-0.5">
+                <div key={group} className="mb-8">
+                  <p className="px-4 pb-3 text-[10px] font-bold uppercase tracking-widest text-gray-400">{group}</p>
+                  <div className="space-y-1">
                     {items.map((item: AdminNavItem) => {
                       const isActive = isNavActive(pathname, item)
                       const Icon = NAV_ICONS[item.icon] || Package
@@ -474,17 +330,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                           key={item.path}
                           href={item.path}
                           title={item.description}
-                          className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
+                          className={`group flex items-center justify-between px-4 py-3 rounded-[1rem] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
                             isActive
-                              ? 'bg-emerald-800 text-white font-bold shadow-xs'
-                              : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
+                              ? 'bg-white shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-black/5 text-gray-900 font-bold'
+                              : 'hover:bg-black/5 text-gray-500 hover:text-gray-900 font-medium border border-transparent'
                           }`}
                         >
-                          <div className="flex items-center gap-3 min-w-0">
-                            <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-gray-400'}`} />
-                            <span className="truncate">{item.name}</span>
+                          <div className="flex items-center gap-3.5 min-w-0">
+                            <Icon className={`w-4 h-4 shrink-0 transition-transform duration-500 group-hover:scale-110 ${isActive ? 'text-black' : 'text-gray-400'}`} strokeWidth={isActive ? 2 : 1.5} />
+                            <span className="truncate tracking-tight text-sm">{item.name}</span>
                           </div>
-                          {isActive ? <div className="w-1.5 h-1.5 rounded-full bg-white shrink-0" /> : null}
                         </Link>
                       )
                     })}
@@ -494,55 +349,190 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             })}
           </nav>
 
-          {/* Clean footer */}
-          <div className="p-3 border-t border-gray-100 mt-auto">
+          {/* User & Lock Panel */}
+          <div className="p-4 border-t border-black/5 bg-[#FCFCFD]">
             <button 
               onClick={handleAdminLogout} 
-              className="flex items-center gap-3 px-3.5 py-2.5 w-full rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors text-sm font-semibold cursor-pointer"
+              className="group flex items-center justify-between w-full p-4 rounded-[1rem] bg-white border border-black/5 hover:border-black/10 shadow-[0_2px_10px_rgb(0,0,0,0.02)] transition-all duration-500 cursor-pointer"
             >
-              <LogOut className="w-4 h-4 text-gray-400" />
-              <span>Lock Admin Panel</span>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-[#F7F7F8] flex items-center justify-center">
+                  <User className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
+                </div>
+                <div className="text-left">
+                  <p className="text-xs font-bold text-gray-900 leading-tight">Admin Session</p>
+                  <p className="text-[10px] text-gray-400 font-medium">Click to lock</p>
+                </div>
+              </div>
+              <LogOut className="w-4 h-4 text-gray-300 group-hover:text-gray-600 transition-colors" strokeWidth={1.5} />
             </button>
           </div>
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto bg-[#F9FAFB] p-4 md:p-8 pb-24 md:pb-12">
-          <div className="w-full max-w-7xl mx-auto">
-            {children}
-          </div>
-        </main>
+        <div className="flex-1 flex flex-col min-w-0 bg-white">
+          
+          {/* Top Header Bar (Mobile + Desktop Utilities) */}
+          <header className="h-20 bg-white/80 backdrop-blur-xl border-b border-black/5 flex items-center justify-between px-6 lg:px-12 z-20 shrink-0 sticky top-0">
+            <div className="flex items-center gap-4 md:hidden">
+              {/* Mobile Brand */}
+              <div className="w-8 h-8 rounded-lg bg-white border border-black/5 shadow-[0_2px_10px_rgb(0,0,0,0.02)] p-1 flex items-center justify-center shrink-0">
+                <img src="/logo.png" alt="Logo" className="w-full h-full object-contain mix-blend-multiply" />
+              </div>
+            </div>
+
+            <div className="flex-1" />
+
+            {/* Right Side Tools */}
+            <div className="flex items-center gap-2">
+              <div className="relative hidden sm:block" ref={appsRef}>
+                <button
+                  onClick={() => setShowApps(!showApps)}
+                  className="w-10 h-10 rounded-full text-gray-400 hover:bg-[#F7F7F8] hover:text-gray-900 transition-colors flex items-center justify-center cursor-pointer"
+                >
+                  <LayoutGrid className="w-5 h-5" strokeWidth={1.5} />
+                </button>
+                {showApps && (
+                  <div className="absolute right-0 mt-2 w-[400px] bg-white rounded-3xl shadow-[0_12px_40px_rgb(0,0,0,0.08)] border border-black/5 overflow-hidden z-50">
+                    <div className="p-6 border-b border-black/5">
+                      <p className="text-2xl font-black tracking-tighter text-gray-900">Modules</p>
+                    </div>
+                    <div className="p-4 grid grid-cols-2 gap-2">
+                      {navItems.map((item) => {
+                        const Icon = NAV_ICONS[item.icon] || Package
+                        return (
+                          <Link
+                            key={item.path}
+                            href={item.path}
+                            onClick={() => setShowApps(false)}
+                            className={`group rounded-2xl p-4 hover:bg-[#F7F7F8] transition-all duration-500 border border-transparent hover:border-black/5 ${isNavActive(pathname, item) ? 'bg-[#F7F7F8] border-black/5' : ''}`}
+                          >
+                            <div className="w-8 h-8 rounded-xl bg-white border border-black/5 shadow-[0_2px_8px_rgb(0,0,0,0.02)] flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]">
+                              <Icon className="w-4 h-4 text-gray-900" strokeWidth={1.5} />
+                            </div>
+                            <span className="block text-sm font-bold text-gray-900 mb-1 tracking-tight">{item.name}</span>
+                            <p className="text-xs text-gray-500 font-medium leading-relaxed line-clamp-2">{item.description}</p>
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              <div className="relative" ref={notificationsRef}>
+                <button 
+                  onClick={() => {
+                    setShowNotifications(!showNotifications)
+                    if (!showNotifications) setUnreadCount(0)
+                  }}
+                  className="w-10 h-10 rounded-full text-gray-400 hover:bg-[#F7F7F8] hover:text-gray-900 transition-colors relative flex items-center justify-center cursor-pointer"
+                >
+                  <Bell className="w-5 h-5" strokeWidth={1.5} />
+                  {unreadCount > 0 && (
+                    <span className="absolute top-2 right-2 bg-black text-white font-bold text-[9px] min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center shadow-xs">
+                      {unreadCount > 99 ? '99+' : unreadCount}
+                    </span>
+                  )}
+                </button>
+
+                {showNotifications && (
+                  <div className="absolute right-0 mt-2 w-80 sm:w-[400px] bg-white rounded-3xl shadow-[0_12px_40px_rgb(0,0,0,0.08)] border border-black/5 overflow-hidden z-50">
+                    <div className="p-6 border-b border-black/5 flex justify-between items-end">
+                      <div>
+                        <h4 className="text-2xl font-black tracking-tighter text-gray-900">Activity</h4>
+                        <p className="text-xs text-gray-400 font-medium mt-1">Live order feed</p>
+                      </div>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    </div>
+
+                    <div className="max-h-96 overflow-y-auto">
+                      {notifications.length === 0 ? (
+                        <div className="p-10 text-center text-gray-400 text-sm font-medium">
+                          It's quiet in here.
+                        </div>
+                      ) : (
+                        notifications.map((notif) => {
+                          const timeStr = notif.created_at 
+                            ? new Date(notif.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                            : '';
+                          return (
+                            <div 
+                              key={notif.id}
+                              onClick={() => {
+                                setShowNotifications(false);
+                                router.push('/admin/orders');
+                              }}
+                              className="p-4 hover:bg-[#F7F7F8] transition-colors cursor-pointer flex items-start gap-4 border-b border-black/5 last:border-0 group"
+                            >
+                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${
+                                notif.status === 'pending' ? 'bg-black text-white border-black' : 'bg-white text-gray-400 border-black/5 shadow-[0_2px_8px_rgb(0,0,0,0.02)]'
+                              }`}>
+                                <ShoppingBag className="w-4 h-4" strokeWidth={1.5} />
+                              </div>
+                              <div className="flex-1 min-w-0 pt-0.5">
+                                <div className="flex justify-between items-baseline gap-2">
+                                  <p className="font-bold text-gray-900 text-sm truncate group-hover:underline transition-colors tracking-tight">
+                                    Order #{notif.id.slice(0, 8)}
+                                  </p>
+                                  <span className="text-xs text-gray-400 shrink-0 font-medium">{timeStr}</span>
+                                </div>
+                                <p className="text-sm text-gray-500 truncate mt-0.5 font-medium">
+                                  {notif.shipping_address?.name || notif.users?.full_name || 'Customer'}
+                                </p>
+                                <div className="flex items-center gap-3 mt-2">
+                                  <span className="font-black text-gray-900 text-sm">
+                                    ₹{Number(notif.total_amount || 0).toLocaleString('en-IN')}
+                                  </span>
+                                  <span className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest bg-[#F7F7F8] border border-black/5 text-gray-600">
+                                    {notif.status}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Hamburger Menu */}
+              <button 
+                className="md:hidden w-10 h-10 rounded-full text-gray-400 hover:bg-[#F7F7F8] hover:text-gray-900 flex items-center justify-center"
+                onClick={() => setIsMobileMenuOpen(true)}
+              >
+                <Menu className="w-5 h-5" strokeWidth={1.5} />
+              </button>
+            </div>
+          </header>
+
+          {/* Page Content */}
+          <main className="flex-1 overflow-y-auto px-4 py-8 md:px-12 md:py-12 lg:px-16 pb-32">
+            <div className="w-full max-w-6xl mx-auto">
+              {children}
+            </div>
+          </main>
+        </div>
       </div>
 
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-[100] md:hidden">
           <div 
-            className="absolute inset-0 bg-black/50 backdrop-blur-xs" 
+            className="absolute inset-0 bg-white/80 backdrop-blur-xl" 
             onClick={() => setIsMobileMenuOpen(false)} 
           />
-          <div className="absolute right-0 top-0 bottom-0 w-64 bg-white shadow-2xl flex flex-col border-l border-gray-200 animate-in slide-in-from-right duration-200">
-            <div className="p-4 flex justify-between items-center border-b border-gray-100">
-              <span className="font-black text-lg text-gray-900">Admin Menu</span>
-              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-gray-500 hover:text-gray-800 bg-gray-100 rounded-full">
-                <X className="w-5 h-5" />
+          <div className="absolute right-0 top-0 bottom-0 w-[80vw] max-w-sm bg-white shadow-2xl flex flex-col border-l border-black/5 animate-in slide-in-from-right duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]">
+            <div className="p-6 flex justify-between items-center border-b border-black/5">
+              <span className="font-black text-2xl tracking-tighter text-gray-900">Menu</span>
+              <button onClick={() => setIsMobileMenuOpen(false)} className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-900 bg-[#F7F7F8] rounded-full">
+                <X className="w-5 h-5" strokeWidth={1.5} />
               </button>
             </div>
-            
-            <div className="p-3 border-b border-gray-100">
-              <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input 
-                  type="text" 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search orders or products..." 
-                  className="w-full pl-9 pr-4 py-2 bg-gray-50 rounded-xl text-xs text-gray-900 outline-none"
-                />
-              </div>
-            </div>
 
-            <nav className="flex-1 px-3 py-3 space-y-1 text-sm font-medium overflow-y-auto">
+            <nav className="flex-1 px-6 py-8 space-y-2 text-sm font-medium overflow-y-auto">
               {navItems.map((item) => {
                 const isActive = isNavActive(pathname, item)
                 const Icon = NAV_ICONS[item.icon] || Package
@@ -551,32 +541,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     key={item.path}
                     href={item.path}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex flex-col px-3.5 py-2.5 rounded-xl transition-all ${
+                    className={`flex flex-col p-4 rounded-2xl transition-all ${
                       isActive
-                        ? 'bg-emerald-800 text-white font-bold'
-                        : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
+                        ? 'bg-[#F7F7F8] border border-black/5'
+                        : 'hover:bg-gray-50'
                     }`}
                   >
-                    <span className="flex items-center gap-3">
-                      <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-400'}`} />
-                      <span>{item.name}</span>
-                    </span>
-                    <span className={`text-[11px] font-medium mt-1 ml-7 leading-snug ${isActive ? 'text-emerald-100' : 'text-gray-400'}`}>
-                      {item.description}
+                    <span className="flex items-center gap-4">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${isActive ? 'bg-white shadow-[0_2px_8px_rgb(0,0,0,0.02)]' : 'bg-transparent'}`}>
+                        <Icon className={`w-5 h-5 ${isActive ? 'text-black' : 'text-gray-400'}`} strokeWidth={1.5} />
+                      </div>
+                      <span className={`text-base tracking-tight ${isActive ? 'font-bold text-gray-900' : 'text-gray-600'}`}>{item.name}</span>
                     </span>
                   </Link>
                 )
               })}
             </nav>
-
-            <div className="p-4 border-t border-gray-100">
-              <button 
-                onClick={() => { setIsMobileMenuOpen(false); handleAdminLogout(); }} 
-                className="flex items-center gap-3 px-3.5 py-2.5 w-full rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors font-semibold text-sm"
-              >
-                <LogOut className="w-4 h-4 text-gray-400" /> Lock Panel
-              </button>
-            </div>
           </div>
         </div>
       )}

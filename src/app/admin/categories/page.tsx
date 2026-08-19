@@ -75,28 +75,28 @@ export default function CategoriesPage() {
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
               placeholder="Search categories..." 
-              className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-black/5 rounded-xl focus:border-black focus:ring-1 focus:ring-black outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
         </div>
         <button
           onClick={() => setIsAdding(!isAdding)}
-          className="flex items-center gap-2 px-4.5 py-2.5 bg-emerald-800 text-white rounded-xl text-sm font-bold hover:bg-emerald-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
+          className="flex items-center gap-2 px-4.5 py-2.5 bg-black text-white rounded-xl text-sm font-bold hover:bg-gray-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
         >
           <Plus className="w-4 h-4" /> {isAdding ? 'Close Creator' : 'Add New Category'}
         </button>
       </div>
 
       {successMsg && (
-        <div className="p-4 bg-white border border-emerald-800 text-gray-900 rounded-2xl shadow-2xs flex items-center gap-3 animate-in fade-in">
-          <div className="p-1 bg-emerald-800 text-white rounded-full"><Check className="w-3 h-3" /></div>
+        <div className="p-4 bg-white border border-black text-gray-900 rounded-[2rem] shadow-2xs flex items-center gap-3 animate-in fade-in">
+          <div className="p-1 bg-black text-white rounded-full"><Check className="w-3 h-3" /></div>
           <span className="font-bold text-sm">{successMsg}</span>
         </div>
       )}
 
       {/* Add Form Modal / Inline Box */}
       {isAdding && (
-        <div className="bg-white p-6 md:p-8 rounded-2xl border border-gray-200 shadow-xl animate-in slide-in-from-top-4">
+        <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-black/5 shadow-xl animate-in slide-in-from-top-4">
           <h2 className="text-lg font-black text-gray-900 mb-4 flex items-center gap-2">
             <Plus className="w-5 h-5 text-gray-900" /> New Category Specification
           </h2>
@@ -113,7 +113,7 @@ export default function CategoriesPage() {
                     setName(e.target.value)
                     if (!slug) setSlug(e.target.value)
                   }}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none font-bold text-gray-900 text-sm"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:border-black focus:ring-1 focus:ring-black outline-none font-bold text-gray-900 text-sm"
                 />
               </div>
 
@@ -124,7 +124,7 @@ export default function CategoriesPage() {
                   placeholder="e.g. Ficus"
                   value={slug}
                   onChange={e => setSlug(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none font-bold text-gray-900 text-sm"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:border-black focus:ring-1 focus:ring-black outline-none font-bold text-gray-900 text-sm"
                 />
                 <span className="text-[11px] font-medium text-gray-400 mt-1 block">URL param: /shop?category=...</span>
               </div>
@@ -136,15 +136,15 @@ export default function CategoriesPage() {
                   placeholder="https://images.unsplash.com/..."
                   value={image}
                   onChange={e => setImage(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none font-bold text-gray-900 text-sm"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:border-black focus:ring-1 focus:ring-black outline-none font-bold text-gray-900 text-sm"
                 />
                 <span className="text-[11px] font-medium text-gray-400 mt-1 block">Optional botanic thumbnail</span>
               </div>
             </div>
 
             {image && (
-              <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
-                <div className="w-16 h-16 rounded-xl overflow-hidden border border-gray-200 shadow-2xs">
+              <div className="flex items-center gap-4 p-4 bg-[#FCFCFD] rounded-xl border border-black/5">
+                <div className="w-16 h-16 rounded-xl overflow-hidden border border-black/5 shadow-2xs">
                   <img src={image} alt="Preview" className="w-full h-full object-cover" />
                 </div>
                 <div>
@@ -164,7 +164,7 @@ export default function CategoriesPage() {
               </button>
               <button
                 type="submit"
-                className="px-6 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-xs rounded-xl shadow-xs transition-all cursor-pointer"
+                className="px-6 py-2.5 bg-black hover:bg-gray-900 text-white font-extrabold text-xs rounded-xl shadow-xs transition-all cursor-pointer"
               >
                 Save Category
               </button>
@@ -174,12 +174,12 @@ export default function CategoriesPage() {
       )}
 
       {/* Categories Table - Universal Clean Screenshot Design */}
-      <div className="bg-white rounded-2xl border border-gray-200/80 shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-[2rem] border border-black/5 shadow-2xs overflow-hidden">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse whitespace-nowrap min-w-[700px]">
             <thead>
-              <tr className="bg-gray-50/50 border-b border-gray-200/80 text-xs uppercase tracking-wider text-gray-500 font-bold">
-                <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" /></th>
+              <tr className="bg-[#FCFCFD] border-b border-black/5 text-xs uppercase tracking-wider text-gray-500 font-bold">
+                <th className="p-4 pl-6 font-semibold w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-black cursor-pointer" /></th>
                 <th className="p-4 font-bold">CATEGORY NAME</th>
                 <th className="p-4 font-bold">URL SLUG</th>
                 <th className="p-4 font-bold">STORE LINK</th>
@@ -194,13 +194,13 @@ export default function CategoriesPage() {
                   </td>
                 </tr>
               ) : filteredCategories.map((cat, idx) => (
-                <tr key={idx} className="hover:bg-gray-50/80 transition-colors group">
+                <tr key={idx} className="hover:bg-[#FCFCFD]/80 transition-colors group">
                   <td className="p-4 pl-6">
-                    <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-emerald-800 cursor-pointer" />
+                    <input type="checkbox" className="rounded border-gray-300 text-gray-900 focus:ring-black cursor-pointer" />
                   </td>
                   <td className="p-4">
                     <div className="flex items-center gap-3.5">
-                      <div className="w-11 h-11 rounded-xl bg-gray-50 overflow-hidden shrink-0 border border-gray-100 p-0.5 flex items-center justify-center">
+                      <div className="w-11 h-11 rounded-xl bg-[#FCFCFD] overflow-hidden shrink-0 border border-gray-100 p-0.5 flex items-center justify-center">
                         {cat.image ? (
                           <img src={cat.image} alt={cat.name} className="w-full h-full object-cover rounded-lg" />
                         ) : (
@@ -222,7 +222,7 @@ export default function CategoriesPage() {
                     <Link
                       href={`/shop?category=${encodeURIComponent(cat.slug || cat.name)}`}
                       target="_blank"
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full border border-gray-200 transition-colors"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full border border-black/5 transition-colors"
                     >
                       Open in Store <ExternalLink className="w-3 h-3" />
                     </Link>
