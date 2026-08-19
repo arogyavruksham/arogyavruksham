@@ -141,14 +141,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (user && user.role !== 'admin' && user.role !== 'manager' && user.role !== 'editor') {
     return (
-      <div className="min-h-[100dvh] flex items-center justify-center bg-[#F7F7F8] flex-col gap-6 font-sans">
-        <div className="p-4 bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5">
-          <ShieldCheck className="w-12 h-12 text-gray-400" strokeWidth={1.5} />
+      <div className="min-h-[100dvh] flex items-center justify-center bg-[#F3F4F6] flex-col gap-6 font-sans">
+        <div className="p-4 bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB]">
+          <ShieldCheck className="w-12 h-12 text-[#9CA3AF]" strokeWidth={1.5} />
         </div>
         <div className="text-center">
-          <h1 className="text-2xl font-black tracking-tighter text-gray-900 mb-2">Access Denied</h1>
-          <p className="text-gray-500 mb-6 font-medium">Administrator privileges required.</p>
-          <Link href="/" className="px-4 py-2 bg-black text-white rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform">
+          <h1 className="text-2xl font-black tracking-tighter text-[#111827] mb-2">Access Denied</h1>
+          <p className="text-[#6B7280] mb-6 font-medium">Administrator privileges required.</p>
+          <Link href="/" className="px-4 py-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform">
             Return Home
           </Link>
         </div>
@@ -158,7 +158,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (!isAdminUnlocked) {
     return (
-      <div className="flex flex-col min-h-[100dvh] font-sans bg-[#F7F7F8]">
+      <div className="flex flex-col min-h-[100dvh] font-sans bg-[#F3F4F6]">
         <AdminLockScreen />
       </div>
     )
@@ -170,14 +170,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="flex flex-col h-[100dvh] bg-[#F7F7F8] font-sans text-gray-900 overflow-hidden md:p-3 transition-colors duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+    <div className="flex flex-col h-[100dvh] bg-[#F3F4F6] font-sans text-[#111827] overflow-hidden md:p-3 transition-colors duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
       
       {/* Outer Shell -> Inner Core (Double-Bezel Architecture) */}
-      <div className="flex flex-col md:flex-row flex-1 bg-white md:rounded-2xl md:shadow-[0_8px_40px_rgba(0,0,0,0.03)] md:border md:border-black/5 overflow-hidden relative">
+      <div className="flex flex-col md:flex-row flex-1 bg-white md:rounded-2xl md:shadow-[0_8px_40px_rgba(0,0,0,0.03)] md:border md:border-[#E5E7EB] overflow-hidden relative">
 
         {/* Mobile Bottom Nav - Floating Pill Style */}
         <div className="md:hidden fixed bottom-6 left-4 right-4 z-50">
-          <div className="bg-white/90 backdrop-blur-xl border border-black/5 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-2">
+          <div className="bg-white/90 backdrop-blur-xl border border-[#E5E7EB] rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-2">
             <div className="flex items-center justify-between">
               {[
                 { name: 'Dash', path: '/admin', icon: DashboardGridIcon, active: pathname === '/admin' },
@@ -188,8 +188,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 const Icon = tab.icon;
                 const content = (
                   <>
-                    <Icon className={`w-5 h-5 mb-1 ${tab.active ? 'text-black' : 'text-gray-400'}`} strokeWidth={1.5} />
-                    <span className={`text-[10px] tracking-wide ${tab.active ? 'font-bold text-black' : 'font-medium text-gray-400'}`}>
+                    <Icon className={`w-5 h-5 mb-1 ${tab.active ? 'text-[#059669]' : 'text-[#9CA3AF]'}`} strokeWidth={1.5} />
+                    <span className={`text-[10px] tracking-wide ${tab.active ? 'font-bold text-[#059669]' : 'font-medium text-[#9CA3AF]'}`}>
                       {tab.name}
                     </span>
                   </>
@@ -200,7 +200,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <button
                       key={tab.name}
                       onClick={tab.onClick}
-                      className="flex flex-col items-center justify-center flex-1 py-2 rounded-full hover:bg-gray-50 transition-colors"
+                      className="flex flex-col items-center justify-center flex-1 py-2 rounded-full hover:bg-[#F3F4F6] transition-colors"
                     >
                       {content}
                     </button>
@@ -213,8 +213,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     href={tab.path!}
                     className={`flex flex-col items-center justify-center flex-1 py-2 rounded-full transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
                       tab.active 
-                        ? 'bg-black/5' 
-                        : 'hover:bg-gray-50'
+                        ? 'bg-[#059669]/5' 
+                        : 'hover:bg-[#F3F4F6]'
                     }`}
                   >
                     {content}
@@ -226,57 +226,57 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* Left Sidebar - Soft Structuralism */}
-        <aside className="w-56 bg-[#FCFCFD] border-r border-black/5 hidden md:flex flex-col shrink-0 overflow-hidden relative z-10">
+        <aside className="w-56 bg-[#F9FAFB] border-r border-[#E5E7EB] hidden md:flex flex-col shrink-0 overflow-hidden relative z-10">
           
           {/* Brand & Search Area */}
           <div className="p-4 pb-3">
             <Link href="/admin" className="flex items-center gap-3 hover:opacity-80 transition-opacity mb-6 group">
-              <div className="w-8 h-8 rounded-xl bg-white border border-black/5 shadow-[0_2px_10px_rgb(0,0,0,0.02)] p-1.5 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+              <div className="w-8 h-8 rounded-xl bg-white border border-[#E5E7EB] shadow-[0_2px_10px_rgb(0,0,0,0.02)] p-1.5 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
                 <img src="/logo.png" alt="Logo" className="w-full h-full object-contain mix-blend-multiply" />
               </div>
-              <span className="font-black text-lg tracking-tighter text-gray-900">
-                arogyavruksham <span className="block text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-0.5">Admin</span>
+              <span className="font-black text-lg tracking-tighter text-[#111827]">
+                arogyavruksham <span className="block text-[10px] uppercase tracking-[0.2em] text-[#9CA3AF] font-bold mt-0.5">Admin</span>
               </span>
             </Link>
 
             <div className="relative w-full" ref={searchRef}>
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" strokeWidth={1.5} />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF]" strokeWidth={1.5} />
               <input 
                 type="text" 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => { if (searchQuery.trim()) setShowDropdown(true) }}
                 placeholder="Search..." 
-                className="w-full pl-9 pr-8 py-2 bg-white border border-black/5 rounded-[1rem] text-xs font-medium text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.01)]"
+                className="w-full pl-9 pr-8 py-2 bg-white border border-[#E5E7EB] rounded-[1rem] text-xs font-medium text-[#111827] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#059669]/5 transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.01)]"
               />
               {isSearching && (
-                <Loader2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 animate-spin" strokeWidth={1.5} />
+                <Loader2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF] animate-spin" strokeWidth={1.5} />
               )}
               
               {/* Search Results Dropdown */}
               {showDropdown && searchQuery.trim() !== '' && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-black/5 overflow-hidden z-50 py-2 max-h-[60vh] overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-[#E5E7EB] overflow-hidden z-50 py-2 max-h-[60vh] overflow-y-auto">
                   {!isSearching && searchResults.products.length === 0 && searchResults.orders.length === 0 ? (
-                    <div className="px-4 py-6 text-sm text-gray-400 text-center font-medium">No results found.</div>
+                    <div className="px-4 py-6 text-sm text-[#9CA3AF] text-center font-medium">No results found.</div>
                   ) : (
                     <>
                       {searchResults.orders.length > 0 && (
                         <div className="mb-2">
-                          <div className="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Orders</div>
+                          <div className="px-4 py-2 text-[10px] font-bold text-[#9CA3AF] uppercase tracking-widest">Orders</div>
                           {searchResults.orders.map((order: any) => (
                             <Link 
                               key={order.id} 
                               href="/admin/orders" 
                               onClick={() => { setShowDropdown(false); setSearchQuery(''); }}
-                              className="flex items-center justify-between px-4 py-2 hover:bg-gray-50 transition-colors"
+                              className="flex items-center justify-between px-4 py-2 hover:bg-[#F3F4F6] transition-colors"
                             >
                               <div>
-                                <p className="text-sm font-bold text-gray-900">#{order.id.split('-')[0]}</p>
-                                <p className="text-xs text-gray-500 font-medium">{order.users?.full_name || 'Guest'}</p>
+                                <p className="text-sm font-bold text-[#111827]">#{order.id.split('-')[0]}</p>
+                                <p className="text-xs text-[#6B7280] font-medium">{order.users?.full_name || 'Guest'}</p>
                               </div>
                               <div className="text-right">
-                                <p className="text-sm font-bold text-gray-900">₹{order.total_amount}</p>
-                                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">{order.status}</span>
+                                <p className="text-sm font-bold text-[#111827]">₹{order.total_amount}</p>
+                                <span className="text-[10px] font-bold text-[#9CA3AF] uppercase tracking-wide">{order.status}</span>
                               </div>
                             </Link>
                           ))}
@@ -284,15 +284,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       )}
                       {searchResults.products.length > 0 && (
                         <div>
-                          <div className="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Products</div>
+                          <div className="px-4 py-2 text-[10px] font-bold text-[#9CA3AF] uppercase tracking-widest">Products</div>
                           {searchResults.products.map((product: any) => (
                             <Link 
                               key={product.id} 
                               href="/admin/products"
                               onClick={() => { setShowDropdown(false); setSearchQuery(''); }}
-                              className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors"
+                              className="flex items-center gap-3 px-4 py-2 hover:bg-[#F3F4F6] transition-colors"
                             >
-                              <div className="w-10 h-10 rounded-xl bg-[#F7F7F8] shrink-0 overflow-hidden border border-black/5 p-1">
+                              <div className="w-10 h-10 rounded-xl bg-[#F3F4F6] shrink-0 overflow-hidden border border-[#E5E7EB] p-1">
                                 {product.image_url ? (
                                   <img src={product.image_url} alt={product.title} className="w-full h-full object-cover mix-blend-multiply rounded-lg" />
                                 ) : (
@@ -300,8 +300,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 )}
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-bold text-gray-900 truncate">{product.title}</p>
-                                <p className="text-xs text-gray-500 font-medium">₹{product.price}</p>
+                                <p className="text-sm font-bold text-[#111827] truncate">{product.title}</p>
+                                <p className="text-xs text-[#6B7280] font-medium">₹{product.price}</p>
                               </div>
                             </Link>
                           ))}
@@ -320,7 +320,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               if (items.length === 0) return null
               return (
                 <div key={group} className="mb-6">
-                  <p className="px-3 pb-2 text-[9px] font-bold uppercase tracking-widest text-gray-400">{group}</p>
+                  <p className="px-3 pb-2 text-[9px] font-bold uppercase tracking-widest text-[#9CA3AF]">{group}</p>
                   <div className="space-y-0.5">
                     {items.map((item: AdminNavItem) => {
                       const isActive = isNavActive(pathname, item)
@@ -332,12 +332,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                           title={item.description}
                           className={`group flex items-center justify-between px-3 py-2.5 rounded-[0.75rem] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
                             isActive
-                              ? 'bg-white shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-black/5 text-gray-900 font-bold'
-                              : 'hover:bg-black/5 text-gray-500 hover:text-gray-900 font-medium border border-transparent'
+                              ? 'bg-white shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-[#E5E7EB] text-[#111827] font-bold'
+                              : 'hover:bg-[#059669]/5 text-[#6B7280] hover:text-[#111827] font-medium border border-transparent'
                           }`}
                         >
                           <div className="flex items-center gap-3 min-w-0">
-                            <Icon className={`w-4 h-4 shrink-0 transition-transform duration-500 group-hover:scale-110 ${isActive ? 'text-black' : 'text-gray-400'}`} strokeWidth={isActive ? 2 : 1.5} />
+                            <Icon className={`w-4 h-4 shrink-0 transition-transform duration-500 group-hover:scale-110 ${isActive ? 'text-[#059669]' : 'text-[#9CA3AF]'}`} strokeWidth={isActive ? 2 : 1.5} />
                             <span className="truncate tracking-tight text-xs">{item.name}</span>
                           </div>
                         </Link>
@@ -350,21 +350,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </nav>
 
           {/* User & Lock Panel */}
-          <div className="p-4 border-t border-black/5 bg-[#FCFCFD]">
+          <div className="p-4 border-t border-[#E5E7EB] bg-[#F9FAFB]">
             <button 
               onClick={handleAdminLogout} 
-              className="group flex items-center justify-between w-full p-4 rounded-[1rem] bg-white border border-black/5 hover:border-black/10 shadow-[0_2px_10px_rgb(0,0,0,0.02)] transition-all duration-500 cursor-pointer"
+              className="group flex items-center justify-between w-full p-4 rounded-[1rem] bg-white border border-[#E5E7EB] hover:border-[#D1D5DB] shadow-[0_2px_10px_rgb(0,0,0,0.02)] transition-all duration-500 cursor-pointer"
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#F7F7F8] flex items-center justify-center">
-                  <User className="w-4 h-4 text-gray-400" strokeWidth={1.5} />
+                <div className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center">
+                  <User className="w-4 h-4 text-[#9CA3AF]" strokeWidth={1.5} />
                 </div>
                 <div className="text-left">
-                  <p className="text-xs font-bold text-gray-900 leading-tight">Admin Session</p>
-                  <p className="text-[10px] text-gray-400 font-medium">Click to lock</p>
+                  <p className="text-xs font-bold text-[#111827] leading-tight">Admin Session</p>
+                  <p className="text-[10px] text-[#9CA3AF] font-medium">Click to lock</p>
                 </div>
               </div>
-              <LogOut className="w-4 h-4 text-gray-300 group-hover:text-gray-600 transition-colors" strokeWidth={1.5} />
+              <LogOut className="w-4 h-4 text-gray-300 group-hover:text-[#4B5563] transition-colors" strokeWidth={1.5} />
             </button>
           </div>
         </aside>
@@ -373,10 +373,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="flex-1 flex flex-col min-w-0 bg-white">
           
           {/* Top Header Bar (Mobile + Desktop Utilities) */}
-          <header className="h-16 bg-white/80 backdrop-blur-xl border-b border-black/5 flex items-center justify-between px-6 lg:px-8 z-20 shrink-0 sticky top-0">
+          <header className="h-16 bg-white/80 backdrop-blur-xl border-b border-[#E5E7EB] flex items-center justify-between px-6 lg:px-8 z-20 shrink-0 sticky top-0">
             <div className="flex items-center gap-4 md:hidden">
               {/* Mobile Brand */}
-              <div className="w-8 h-8 rounded-lg bg-white border border-black/5 shadow-[0_2px_10px_rgb(0,0,0,0.02)] p-1 flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-white border border-[#E5E7EB] shadow-[0_2px_10px_rgb(0,0,0,0.02)] p-1 flex items-center justify-center shrink-0">
                 <img src="/logo.png" alt="Logo" className="w-full h-full object-contain mix-blend-multiply" />
               </div>
             </div>
@@ -388,14 +388,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="relative hidden sm:block" ref={appsRef}>
                 <button
                   onClick={() => setShowApps(!showApps)}
-                  className="w-10 h-10 rounded-full text-gray-400 hover:bg-[#F7F7F8] hover:text-gray-900 transition-colors flex items-center justify-center cursor-pointer"
+                  className="w-10 h-10 rounded-full text-[#9CA3AF] hover:bg-[#F3F4F6] hover:text-[#111827] transition-colors flex items-center justify-center cursor-pointer"
                 >
                   <LayoutGrid className="w-5 h-5" strokeWidth={1.5} />
                 </button>
                 {showApps && (
-                  <div className="absolute right-0 mt-2 w-[400px] bg-white rounded-3xl shadow-[0_12px_40px_rgb(0,0,0,0.08)] border border-black/5 overflow-hidden z-50">
-                    <div className="p-6 border-b border-black/5">
-                      <p className="text-2xl font-black tracking-tighter text-gray-900">Modules</p>
+                  <div className="absolute right-0 mt-2 w-[400px] bg-white rounded-3xl shadow-[0_12px_40px_rgb(0,0,0,0.08)] border border-[#E5E7EB] overflow-hidden z-50">
+                    <div className="p-6 border-b border-[#E5E7EB]">
+                      <p className="text-2xl font-black tracking-tighter text-[#111827]">Modules</p>
                     </div>
                     <div className="p-4 grid grid-cols-2 gap-2">
                       {navItems.map((item) => {
@@ -405,13 +405,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             key={item.path}
                             href={item.path}
                             onClick={() => setShowApps(false)}
-                            className={`group rounded-2xl p-4 hover:bg-[#F7F7F8] transition-all duration-500 border border-transparent hover:border-black/5 ${isNavActive(pathname, item) ? 'bg-[#F7F7F8] border-black/5' : ''}`}
+                            className={`group rounded-2xl p-4 hover:bg-[#F3F4F6] transition-all duration-500 border border-transparent hover:border-[#E5E7EB] ${isNavActive(pathname, item) ? 'bg-[#F3F4F6] border-[#E5E7EB]' : ''}`}
                           >
-                            <div className="w-8 h-8 rounded-xl bg-white border border-black/5 shadow-[0_2px_8px_rgb(0,0,0,0.02)] flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]">
-                              <Icon className="w-4 h-4 text-gray-900" strokeWidth={1.5} />
+                            <div className="w-8 h-8 rounded-xl bg-white border border-[#E5E7EB] shadow-[0_2px_8px_rgb(0,0,0,0.02)] flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]">
+                              <Icon className="w-4 h-4 text-[#111827]" strokeWidth={1.5} />
                             </div>
-                            <span className="block text-sm font-bold text-gray-900 mb-1 tracking-tight">{item.name}</span>
-                            <p className="text-xs text-gray-500 font-medium leading-relaxed line-clamp-2">{item.description}</p>
+                            <span className="block text-sm font-bold text-[#111827] mb-1 tracking-tight">{item.name}</span>
+                            <p className="text-xs text-[#6B7280] font-medium leading-relaxed line-clamp-2">{item.description}</p>
                           </Link>
                         )
                       })}
@@ -426,29 +426,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     setShowNotifications(!showNotifications)
                     if (!showNotifications) setUnreadCount(0)
                   }}
-                  className="w-10 h-10 rounded-full text-gray-400 hover:bg-[#F7F7F8] hover:text-gray-900 transition-colors relative flex items-center justify-center cursor-pointer"
+                  className="w-10 h-10 rounded-full text-[#9CA3AF] hover:bg-[#F3F4F6] hover:text-[#111827] transition-colors relative flex items-center justify-center cursor-pointer"
                 >
                   <Bell className="w-5 h-5" strokeWidth={1.5} />
                   {unreadCount > 0 && (
-                    <span className="absolute top-2 right-2 bg-black text-white font-bold text-[9px] min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center shadow-xs">
+                    <span className="absolute top-2 right-2 bg-amber-50 text-amber-700 border border-amber-200 font-bold text-[9px] min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center shadow-xs">
                       {unreadCount > 99 ? '99+' : unreadCount}
                     </span>
                   )}
                 </button>
 
                 {showNotifications && (
-                  <div className="absolute right-0 mt-2 w-80 sm:w-[400px] bg-white rounded-3xl shadow-[0_12px_40px_rgb(0,0,0,0.08)] border border-black/5 overflow-hidden z-50">
-                    <div className="p-6 border-b border-black/5 flex justify-between items-end">
+                  <div className="absolute right-0 mt-2 w-80 sm:w-[400px] bg-white rounded-3xl shadow-[0_12px_40px_rgb(0,0,0,0.08)] border border-[#E5E7EB] overflow-hidden z-50">
+                    <div className="p-6 border-b border-[#E5E7EB] flex justify-between items-end">
                       <div>
-                        <h4 className="text-2xl font-black tracking-tighter text-gray-900">Activity</h4>
-                        <p className="text-xs text-gray-400 font-medium mt-1">Live order feed</p>
+                        <h4 className="text-2xl font-black tracking-tighter text-[#111827]">Activity</h4>
+                        <p className="text-xs text-[#9CA3AF] font-medium mt-1">Live order feed</p>
                       </div>
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     </div>
 
                     <div className="max-h-96 overflow-y-auto">
                       {notifications.length === 0 ? (
-                        <div className="p-10 text-center text-gray-400 text-sm font-medium">
+                        <div className="p-10 text-center text-[#9CA3AF] text-sm font-medium">
                           It's quiet in here.
                         </div>
                       ) : (
@@ -463,28 +463,28 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                 setShowNotifications(false);
                                 router.push('/admin/orders');
                               }}
-                              className="p-4 hover:bg-[#F7F7F8] transition-colors cursor-pointer flex items-start gap-4 border-b border-black/5 last:border-0 group"
+                              className="p-4 hover:bg-[#F3F4F6] transition-colors cursor-pointer flex items-start gap-4 border-b border-[#E5E7EB] last:border-0 group"
                             >
                               <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${
-                                notif.status === 'pending' ? 'bg-black text-white border-black' : 'bg-white text-gray-400 border-black/5 shadow-[0_2px_8px_rgb(0,0,0,0.02)]'
+                                notif.status === 'pending' ? 'bg-amber-50 text-amber-700 border border-amber-200 border-[#059669]' : 'bg-white text-[#9CA3AF] border-[#E5E7EB] shadow-[0_2px_8px_rgb(0,0,0,0.02)]'
                               }`}>
                                 <ShoppingBag className="w-4 h-4" strokeWidth={1.5} />
                               </div>
                               <div className="flex-1 min-w-0 pt-0.5">
                                 <div className="flex justify-between items-baseline gap-2">
-                                  <p className="font-bold text-gray-900 text-sm truncate group-hover:underline transition-colors tracking-tight">
+                                  <p className="font-bold text-[#111827] text-sm truncate group-hover:underline transition-colors tracking-tight">
                                     Order #{notif.id.slice(0, 8)}
                                   </p>
-                                  <span className="text-xs text-gray-400 shrink-0 font-medium">{timeStr}</span>
+                                  <span className="text-xs text-[#9CA3AF] shrink-0 font-medium">{timeStr}</span>
                                 </div>
-                                <p className="text-sm text-gray-500 truncate mt-0.5 font-medium">
+                                <p className="text-sm text-[#6B7280] truncate mt-0.5 font-medium">
                                   {notif.shipping_address?.name || notif.users?.full_name || 'Customer'}
                                 </p>
                                 <div className="flex items-center gap-3 mt-2">
-                                  <span className="font-black text-gray-900 text-sm">
+                                  <span className="font-black text-[#111827] text-sm">
                                     ₹{Number(notif.total_amount || 0).toLocaleString('en-IN')}
                                   </span>
-                                  <span className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest bg-[#F7F7F8] border border-black/5 text-gray-600">
+                                  <span className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest bg-[#F3F4F6] border border-[#E5E7EB] text-[#4B5563]">
                                     {notif.status}
                                   </span>
                                 </div>
@@ -500,7 +500,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
               {/* Mobile Hamburger Menu */}
               <button 
-                className="md:hidden w-10 h-10 rounded-full text-gray-400 hover:bg-[#F7F7F8] hover:text-gray-900 flex items-center justify-center"
+                className="md:hidden w-10 h-10 rounded-full text-[#9CA3AF] hover:bg-[#F3F4F6] hover:text-[#111827] flex items-center justify-center"
                 onClick={() => setIsMobileMenuOpen(true)}
               >
                 <Menu className="w-5 h-5" strokeWidth={1.5} />
@@ -524,10 +524,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             className="absolute inset-0 bg-white/80 backdrop-blur-xl" 
             onClick={() => setIsMobileMenuOpen(false)} 
           />
-          <div className="absolute right-0 top-0 bottom-0 w-[80vw] max-w-sm bg-white shadow-2xl flex flex-col border-l border-black/5 animate-in slide-in-from-right duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]">
-            <div className="p-6 flex justify-between items-center border-b border-black/5">
-              <span className="font-black text-2xl tracking-tighter text-gray-900">Menu</span>
-              <button onClick={() => setIsMobileMenuOpen(false)} className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-900 bg-[#F7F7F8] rounded-full">
+          <div className="absolute right-0 top-0 bottom-0 w-[80vw] max-w-sm bg-white shadow-2xl flex flex-col border-l border-[#E5E7EB] animate-in slide-in-from-right duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]">
+            <div className="p-6 flex justify-between items-center border-b border-[#E5E7EB]">
+              <span className="font-black text-2xl tracking-tighter text-[#111827]">Menu</span>
+              <button onClick={() => setIsMobileMenuOpen(false)} className="w-10 h-10 flex items-center justify-center text-[#9CA3AF] hover:text-[#111827] bg-[#F3F4F6] rounded-full">
                 <X className="w-5 h-5" strokeWidth={1.5} />
               </button>
             </div>
@@ -543,15 +543,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`flex flex-col p-4 rounded-2xl transition-all ${
                       isActive
-                        ? 'bg-[#F7F7F8] border border-black/5'
-                        : 'hover:bg-gray-50'
+                        ? 'bg-[#F3F4F6] border border-[#E5E7EB]'
+                        : 'hover:bg-[#F3F4F6]'
                     }`}
                   >
                     <span className="flex items-center gap-4">
                       <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${isActive ? 'bg-white shadow-[0_2px_8px_rgb(0,0,0,0.02)]' : 'bg-transparent'}`}>
-                        <Icon className={`w-5 h-5 ${isActive ? 'text-black' : 'text-gray-400'}`} strokeWidth={1.5} />
+                        <Icon className={`w-5 h-5 ${isActive ? 'text-[#059669]' : 'text-[#9CA3AF]'}`} strokeWidth={1.5} />
                       </div>
-                      <span className={`text-base tracking-tight ${isActive ? 'font-bold text-gray-900' : 'text-gray-600'}`}>{item.name}</span>
+                      <span className={`text-base tracking-tight ${isActive ? 'font-bold text-[#111827]' : 'text-[#4B5563]'}`}>{item.name}</span>
                     </span>
                   </Link>
                 )
