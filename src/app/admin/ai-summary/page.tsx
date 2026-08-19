@@ -95,16 +95,16 @@ export default function AISummaryPage() {
   }
 
   return (
-    <div className="space-y-6 text-[#111827] font-sans pb-12">
+    <div className="space-y-6 text-gray-900 font-sans pb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-black text-[#111827] tracking-tight flex items-center gap-2">
-            <Bot className="w-8 h-8 text-[#111827]" />
+          <h1 className="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
+            <Bot className="w-8 h-8 text-gray-900" />
             Autonomous Agent Insights
           </h1>
-          <p className="text-sm font-semibold text-[#6B7280] mt-1">Live monitoring and intelligent alerts for your store.</p>
+          <p className="text-sm font-semibold text-gray-500 mt-1">Live monitoring and intelligent alerts for your store.</p>
         </div>
-        <div className="flex items-center gap-2 bg-[#F9FAFB] text-[#059669] px-4 py-2 border border-emerald-200 rounded-lg shadow-xs">
+        <div className="flex items-center gap-2 bg-[#FCFCFD] text-black px-4 py-2 border border-emerald-200 rounded-xl shadow-xs">
           <Activity className="w-4 h-4 animate-pulse" />
           <span className="text-sm font-bold">Agent Active</span>
         </div>
@@ -113,17 +113,17 @@ export default function AISummaryPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Stats & Logs */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xs p-6 space-y-4 relative overflow-hidden">
+          <div className="bg-white rounded-2xl border border-black/5 shadow-2xs p-6 space-y-4 relative overflow-hidden">
             {summaryLoading && (
               <div className="absolute top-0 left-0 w-full h-1 bg-emerald-100 overflow-hidden">
-                <div className="h-full bg-[#059669] shadow-sm border-0 animate-[progress_1.5s_ease-in-out_infinite] w-1/2 rounded-full"></div>
+                <div className="h-full bg-black animate-[progress_1.5s_ease-in-out_infinite] w-1/2 rounded-full"></div>
               </div>
             )}
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-bold text-[#111827]">Today's Traffic</h3>
+              <h3 className="font-bold text-gray-900">Today's Traffic</h3>
             </div>
             {loading ? (
-              <div className="flex justify-center p-4"><Loader2 className="w-6 h-6 animate-spin text-[#9CA3AF]" /></div>
+              <div className="flex justify-center p-4"><Loader2 className="w-6 h-6 animate-spin text-gray-400" /></div>
             ) : (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -140,13 +140,13 @@ export default function AISummaryPage() {
                 </div>
               </div>
             )}
-            <div className="pt-4 mt-4 border-t border-gray-100 flex items-center justify-between text-xs text-[#6B7280] font-medium">
+            <div className="pt-4 mt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500 font-medium">
               <span>Auto-refreshing every 60s</span>
               <span>Last checked: {lastChecked.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
             </div>
           </div>
 
-          <div className="bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] p-3 rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+          <div className="bg-black text-white p-3 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
             <h4 className="font-bold mb-2 flex items-center gap-2"><Bot className="w-4 h-4"/> Agent Status</h4>
             <p className="text-sm text-emerald-100 leading-relaxed">
               I am actively monitoring the store. If stock drops low or new orders arrive, I will instantly re-analyze and update the insights on the right.
@@ -156,21 +156,21 @@ export default function AISummaryPage() {
 
         {/* Right Column: AI Summary Result */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xs p-6 min-h-[400px] flex flex-col">
+          <div className="bg-white rounded-2xl border border-black/5 shadow-2xs p-6 min-h-[400px] flex flex-col">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="font-bold text-[#111827] flex items-center gap-2">
-                <AlertCircle className="w-5 h-5 text-[#111827]" />
+              <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-gray-900" />
                 Live Agent Report
               </h3>
-              {summaryLoading && <span className="text-xs font-bold text-[#111827] animate-pulse bg-[#F9FAFB] px-3 py-1 rounded-full">Analyzing...</span>}
+              {summaryLoading && <span className="text-xs font-bold text-gray-900 animate-pulse bg-[#FCFCFD] px-3 py-1 rounded-full">Analyzing...</span>}
             </div>
             
             {error ? (
-              <div className="bg-red-50 text-red-600 p-4 rounded-lg text-sm font-semibold">{error}</div>
+              <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm font-semibold">{error}</div>
             ) : summary ? (
-              <div className="prose prose-sm max-w-none text-[#374151] space-y-4">
+              <div className="prose prose-sm max-w-none text-gray-700 space-y-4">
                 {summary.split('\n').map((line, i) => {
-                  if (line.startsWith('## ')) return <h2 key={i} className="text-lg font-black text-[#111827] mt-4 mb-2">{line.replace('## ', '')}</h2>
+                  if (line.startsWith('## ')) return <h2 key={i} className="text-lg font-black text-gray-900 mt-4 mb-2">{line.replace('## ', '')}</h2>
                   if (line.startsWith('### ')) return <h3 key={i} className="text-base font-bold text-gray-800 mt-3 mb-1">{line.replace('### ', '')}</h3>
                   if (line.startsWith('- ')) return <li key={i} className="ml-4 list-disc">{line.substring(2)}</li>
                   if (line.startsWith('**')) {
@@ -182,7 +182,7 @@ export default function AISummaryPage() {
                 })}
               </div>
             ) : (
-              <div className="flex-1 flex flex-col items-center justify-center text-[#9CA3AF]">
+              <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
                 <Loader2 className="w-12 h-12 text-emerald-200 mb-4 animate-spin" />
                 <p className="text-sm font-medium text-center">Initializing autonomous analysis...</p>
               </div>
