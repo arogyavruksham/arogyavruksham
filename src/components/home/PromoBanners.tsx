@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 
@@ -27,7 +28,7 @@ export function PromoBanners() {
               <h3 className="font-serif text-[19px] font-bold text-[#1E4631] leading-tight mb-1">Spring Store Sale</h3>
               <p className="text-[10px] font-extrabold text-[#235839] uppercase tracking-widest">UP TO 50% OFF</p>
             </div>
-            <img src="/images/promo/leaf_bg.png" alt="Sale" className="absolute -bottom-6 -right-6 w-32 h-32 object-contain opacity-25 mix-blend-multiply pointer-events-none" />
+            <Image src="/images/promo/leaf_bg.png" alt="Sale" fill className="absolute object-contain opacity-25 mix-blend-multiply pointer-events-none translate-x-[60%] translate-y-[60%]" />
           </Link>
 
           {/* Banner 2 */}
@@ -36,7 +37,7 @@ export function PromoBanners() {
               <h3 className="font-serif text-[19px] font-bold text-[#1E4631] leading-tight mb-1">House Plants</h3>
               <p className="text-[10px] font-extrabold text-[#235839] uppercase tracking-widest">BRING NATURE INDOORS</p>
             </div>
-            <img src="/images/promo/house_plant.png" alt="Plants" className="absolute -bottom-4 -right-4 w-28 h-28 object-contain opacity-35 mix-blend-multiply pointer-events-none" />
+            <Image src="/images/promo/house_plant.png" alt="Plants" fill className="absolute object-contain opacity-35 mix-blend-multiply pointer-events-none translate-x-[40%] translate-y-[40%]" />
           </Link>
 
           {/* Banner 3 */}
@@ -45,7 +46,7 @@ export function PromoBanners() {
               <h3 className="font-serif text-[19px] font-bold text-[#1E4631] leading-tight mb-1">Potted In Home</h3>
               <p className="text-[10px] font-extrabold text-[#235839] uppercase tracking-widest">FLORA COLLECTION</p>
             </div>
-            <img src="/images/promo/cactus.png" alt="Cactus" className="absolute -bottom-4 -right-4 w-28 h-28 object-contain opacity-35 mix-blend-multiply pointer-events-none" />
+            <Image src="/images/promo/cactus.png" alt="Cactus" fill className="absolute object-contain opacity-35 mix-blend-multiply pointer-events-none translate-x-[40%] translate-y-[40%]" />
           </Link>
         </div>
       </div>
@@ -63,7 +64,7 @@ export function PromoBanners() {
                   <p className="text-[#666] text-sm uppercase tracking-widest mb-2">SPRING STORE</p>
                   <p className="font-serif text-5xl font-light text-[#888] tracking-widest"><span className="text-[32px] align-top relative top-1 mr-1">50%</span>OFF</p>
                 </div>
-                <img src="/images/promo/leaf_bg.png" alt="Leaf Background" className="absolute -bottom-10 -left-10 w-[120%] h-[120%] object-cover opacity-90 mix-blend-multiply pointer-events-none group-hover:scale-105 transition-transform duration-700" />
+                <Image src="/images/promo/leaf_bg.png" alt="Leaf Background" fill className="absolute object-cover opacity-90 mix-blend-multiply pointer-events-none group-hover:scale-105 transition-transform duration-700 translate-x-[-10%] translate-y-[10%]" />
               </Link>
             </motion.div>
 
@@ -74,7 +75,7 @@ export function PromoBanners() {
                   <h3 className="font-serif text-3xl font-bold text-[#333] mb-2 tracking-wide">House Plants</h3>
                   <p className="text-[#888] text-lg font-serif italic">New Trending 2024</p>
                 </div>
-                <img src="/images/promo/house_plant.png" alt="House Plant" className="absolute bottom-0 right-0 h-[85%] object-contain mix-blend-multiply group-hover:-translate-y-2 transition-transform duration-700 origin-bottom" />
+                <Image src="/images/promo/house_plant.png" alt="House Plant" fill className="absolute object-contain mix-blend-multiply group-hover:-translate-y-2 transition-transform duration-700 origin-bottom translate-x-[20%] translate-y-[10%]" />
               </Link>
             </motion.div>
 
@@ -88,7 +89,7 @@ export function PromoBanners() {
                     <span className="font-serif text-[40px] font-light text-[#888] leading-none tracking-widest">OFF</span>
                   </div>
                 </div>
-                <img src="/images/promo/cactus.png" alt="Cactus" className="absolute bottom-0 right-0 h-[90%] object-contain mix-blend-multiply group-hover:-translate-y-2 transition-transform duration-700 origin-bottom" />
+                <Image src="/images/promo/cactus.png" alt="Cactus" fill className="absolute object-contain mix-blend-multiply group-hover:-translate-y-2 transition-transform duration-700 origin-bottom translate-x-[20%] translate-y-[10%]" />
               </Link>
             </motion.div>
 

@@ -6,7 +6,7 @@ import { NewArrivalsSlider } from "@/components/home/NewArrivalsSlider";
 import { LatestFromBlog } from "@/components/home/LatestFromBlog";
 import { FooterFeatures } from "@/components/home/FooterFeatures";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Cache for 1 hour to massively boost performance
 
 export default function Home() {
   return (

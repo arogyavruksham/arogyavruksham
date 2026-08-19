@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { MobileHomeHeader } from './MobileHomeHeader'
@@ -82,10 +83,12 @@ export function DualHeroBanners() {
         <MobileHomeHeader />
         <div className="relative w-full h-[480px] rounded-[28px] overflow-hidden shadow-md flex flex-col justify-end p-6 text-white border border-gray-100">
           {/* Background Succulent Image */}
-          <img 
+          <Image 
             src="https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&q=80&w=800" 
-            alt="Desert Beauties" 
-            className="absolute inset-0 w-full h-full object-cover z-0" 
+            alt="Desert Beauties"
+            fill
+            priority
+            className="absolute inset-0 object-cover z-0" 
           />
           {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 z-10" />
@@ -114,7 +117,7 @@ export function DualHeroBanners() {
         <AnimatePresence mode="sync">
           <motion.div key={slide.id} variants={imageVariants} initial="enter" animate="center" exit="exit"
             className="absolute inset-0 z-0">
-            <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
+            <Image src={slide.image} alt={slide.title} fill priority className="object-cover" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
           </motion.div>

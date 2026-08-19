@@ -5,6 +5,14 @@ const nextConfig: NextConfig = {
     position: 'bottom-right',
   },
   serverExternalPackages: ['pdfkit'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
+  },
   poweredByHeader: false,
   async headers() {
     return [
