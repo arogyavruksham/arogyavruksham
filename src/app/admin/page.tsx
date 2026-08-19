@@ -254,7 +254,7 @@ export default function AdminDashboard() {
         <select 
           value={globalDateFilter}
           onChange={(e) => setGlobalDateFilter(e.target.value)}
-          className="bg-[#F9FAFB] border border-[#E5E7EB] text-[#111827] text-sm font-bold rounded-2xl px-3 py-2 outline-none hover:bg-[#059669]/5 transition-colors cursor-pointer"
+          className="bg-[#F3F4F6] border-0 shadow-sm text-[#374151] text-[#111827] text-sm font-bold rounded-lg px-3 py-2 outline-none hover:bg-[#059669] shadow-sm border-0/5 transition-colors cursor-pointer"
         >
           <option value="Last 7 Days">Last 7 Days</option>
           <option value="Last 30 Days">Last 30 Days</option>
@@ -266,10 +266,10 @@ export default function AdminDashboard() {
       {/* Metric Cards - Soft Structuralism */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Revenue */}
-        <div className="bg-white p-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
+        <div className="bg-white p-5 rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
           <div className="flex justify-between items-start">
             <span className="text-[11px] font-bold uppercase tracking-widest text-[#9CA3AF]">Total Revenue</span>
-            <div className="w-10 h-10 bg-[#F3F4F6] rounded-xl flex items-center justify-center text-[#059669] border border-[#E5E7EB] group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+            <div className="w-10 h-10 bg-[#F3F4F6] rounded-lg flex items-center justify-center text-[#059669] border border-[#E5E7EB] group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
               <TrendingUp className="w-5 h-5" strokeWidth={1.5} />
             </div>
           </div>
@@ -282,10 +282,10 @@ export default function AdminDashboard() {
         </div>
 
         {/* Total Orders */}
-        <div className="bg-white p-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
+        <div className="bg-white p-5 rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
           <div className="flex justify-between items-start">
             <span className="text-[11px] font-bold uppercase tracking-widest text-[#9CA3AF]">Total Orders</span>
-            <div className="w-10 h-10 bg-[#F3F4F6] rounded-xl flex items-center justify-center text-[#059669] border border-[#E5E7EB] group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+            <div className="w-10 h-10 bg-[#F3F4F6] rounded-lg flex items-center justify-center text-[#059669] border border-[#E5E7EB] group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
               <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
             </div>
           </div>
@@ -298,10 +298,10 @@ export default function AdminDashboard() {
         </div>
 
         {/* Total Customers */}
-        <div className="bg-white p-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
+        <div className="bg-white p-5 rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
           <div className="flex justify-between items-start">
             <span className="text-[11px] font-bold uppercase tracking-widest text-[#9CA3AF]">Unique Users</span>
-            <div className="w-10 h-10 bg-[#F3F4F6] rounded-xl flex items-center justify-center text-[#059669] border border-[#E5E7EB] group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+            <div className="w-10 h-10 bg-[#F3F4F6] rounded-lg flex items-center justify-center text-[#059669] border border-[#E5E7EB] group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
               <Users className="w-5 h-5" strokeWidth={1.5} />
             </div>
           </div>
@@ -314,10 +314,10 @@ export default function AdminDashboard() {
         </div>
 
         {/* Pending Delivery */}
-        <div className="bg-white p-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
+        <div className="bg-white p-5 rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] flex flex-col justify-between h-48 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group">
           <div className="flex justify-between items-start">
             <span className="text-[11px] font-bold uppercase tracking-widest text-[#9CA3AF]">Fulfillment</span>
-            <div className="w-10 h-10 bg-[#F3F4F6] rounded-xl flex items-center justify-center text-[#059669] border border-[#E5E7EB] group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+            <div className="w-10 h-10 bg-[#F3F4F6] rounded-lg flex items-center justify-center text-[#059669] border border-[#E5E7EB] group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
               <Package className="w-5 h-5" strokeWidth={1.5} />
             </div>
           </div>
@@ -334,13 +334,13 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         
         {/* Sales Analytic Chart */}
-        <div className="bg-white p-5 md:p-10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] lg:col-span-2 flex flex-col">
+        <div className="bg-white p-5 md:p-10 rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] lg:col-span-2 flex flex-col">
           <div className="flex justify-between items-center mb-5">
             <h2 className="text-2xl font-black tracking-tighter text-[#111827]">Revenue Velocity</h2>
             <select 
               value={salesMonthFilter}
               onChange={(e) => setSalesMonthFilter(e.target.value)}
-              className="bg-[#F9FAFB] border border-[#E5E7EB] text-[#111827] font-bold text-sm rounded-xl px-4 py-2 outline-none cursor-pointer hover:bg-[#059669]/5 transition-colors"
+              className="bg-[#F3F4F6] border-0 shadow-sm text-[#374151] text-[#111827] font-bold text-sm rounded-lg px-4 py-2 outline-none cursor-pointer hover:bg-[#059669] shadow-sm border-0/5 transition-colors"
             >
               {availableMonths.map(m => (
                 <option key={m} value={m}>{m}</option>
@@ -398,7 +398,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Sales Target Donut */}
-        <div className="bg-white p-5 md:p-10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] flex flex-col">
+        <div className="bg-white p-5 md:p-10 rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] flex flex-col">
           <h2 className="text-2xl font-black tracking-tighter text-[#111827] mb-5">Target Quota</h2>
           
           <div className="flex-1 flex flex-col justify-center items-center relative">
@@ -425,7 +425,7 @@ export default function AdminDashboard() {
               </ResponsiveContainer>
             </div>
             
-            <div className="w-full mt-8 space-y-5 bg-[#F9FAFB] p-6 rounded-2xl border border-[#E5E7EB]">
+            <div className="w-full mt-8 space-y-5 bg-[#F9FAFB] p-6 rounded-lg border border-[#E5E7EB]">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full bg-gray-200"></div>
@@ -437,7 +437,7 @@ export default function AdminDashboard() {
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-[#059669]"></div>
+                  <div className="w-2 h-2 rounded-full bg-[#059669] shadow-sm border-0"></div>
                   <span className="text-[11px] font-bold uppercase tracking-widest text-[#111827]">Monthly</span>
                 </div>
                 <div className="flex items-center gap-1 font-black text-[#111827] text-base">
@@ -453,19 +453,19 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         
         {/* Top Selling Products - Bento Style */}
-        <div className="bg-white p-5 md:p-10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] lg:col-span-2">
+        <div className="bg-white p-5 md:p-10 rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] lg:col-span-2">
           <div className="flex justify-between items-center mb-5">
             <h2 className="text-2xl font-black tracking-tighter text-[#111827]">Top Performing</h2>
             <div className="flex gap-2">
-              <button className="w-10 h-10 rounded-full flex items-center justify-center bg-[#F9FAFB] border border-[#E5E7EB] text-[#9CA3AF] hover:text-[#059669] transition-colors">&larr;</button>
-              <button className="w-10 h-10 rounded-full flex items-center justify-center bg-[#F9FAFB] border border-[#E5E7EB] text-[#9CA3AF] hover:text-[#059669] transition-colors">&rarr;</button>
+              <button className="w-10 h-10 rounded-full flex items-center justify-center bg-[#F3F4F6] border-0 shadow-sm text-[#374151] text-[#9CA3AF] hover:text-[#059669] transition-colors">&larr;</button>
+              <button className="w-10 h-10 rounded-full flex items-center justify-center bg-[#F3F4F6] border-0 shadow-sm text-[#374151] text-[#9CA3AF] hover:text-[#059669] transition-colors">&rarr;</button>
             </div>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {topProducts.map((product) => (
-              <div key={product.id} className="group flex flex-col p-4 bg-[#F9FAFB] border border-[#E5E7EB] rounded-2xl hover:bg-[#059669]/5 transition-colors cursor-pointer">
-                <div className="bg-white rounded-xl aspect-square mb-4 p-4 flex items-center justify-center overflow-hidden border border-[#E5E7EB] shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
+              <div key={product.id} className="group flex flex-col p-4 bg-[#F3F4F6] border-0 shadow-sm text-[#374151] rounded-lg hover:bg-[#059669] shadow-sm border-0/5 transition-colors cursor-pointer">
+                <div className="bg-white rounded-lg aspect-square mb-4 p-4 flex items-center justify-center overflow-hidden border border-[#E5E7EB] shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
                   {product.image_url ? (
                     <img src={product.image_url} alt={product.title} className="object-contain w-full h-full mix-blend-multiply group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]" />
                   ) : (
@@ -483,10 +483,10 @@ export default function AdminDashboard() {
         </div>
 
         {/* Current Offer */}
-        <div className="bg-white p-5 md:p-10 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB]">
+        <div className="bg-white p-5 md:p-10 rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB]">
           <div className="flex justify-between items-center mb-5">
             <h2 className="text-2xl font-black tracking-tighter text-[#111827]">Campaigns</h2>
-            <a href="/admin/offers" className="w-10 h-10 rounded-full flex items-center justify-center bg-[#F9FAFB] border border-[#E5E7EB] hover:bg-[#059669]/5 transition-colors">
+            <a href="/admin/offers" className="w-10 h-10 rounded-full flex items-center justify-center bg-[#F3F4F6] border-0 shadow-sm text-[#374151] hover:bg-[#059669] shadow-sm border-0/5 transition-colors">
               <ChevronRight className="w-5 h-5 text-[#4B5563]" strokeWidth={1.5} />
             </a>
           </div>
@@ -510,7 +510,7 @@ export default function AdminDashboard() {
               const isExpired = now > end;
 
               return (
-                <div key={coupon.id} className="p-3 bg-[#F9FAFB] rounded-2xl border border-[#E5E7EB]">
+                <div key={coupon.id} className="p-3 bg-[#F9FAFB] rounded-lg border border-[#E5E7EB]">
                   <div className="flex justify-between items-center text-sm mb-4">
                     <div className="flex items-center gap-3">
                       <span className="font-bold text-[#111827]">{coupon.title}</span>
@@ -522,7 +522,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-1 overflow-hidden">
                     <div 
-                      className={`h-1 rounded-full ${isUpcoming ? 'bg-gray-400' : (isExpired ? 'bg-gray-300' : 'bg-[#059669]')}`} 
+                      className={`h-1 rounded-full ${isUpcoming ? 'bg-gray-400' : (isExpired ? 'bg-gray-300' : 'bg-[#059669] shadow-sm border-0')}`} 
                       style={{ width: `${progress}%` }}
                     ></div>
                   </div>
@@ -534,13 +534,13 @@ export default function AdminDashboard() {
       </div>
 
       {/* Detailed Orders Table - Minimalist Data Grid */}
-      <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] overflow-hidden">
+      <div className="bg-white rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] overflow-hidden">
         <div className="p-5 md:p-10 border-b border-[#E5E7EB] flex justify-between items-center bg-[#F9FAFB]">
           <div>
             <h2 className="text-2xl font-black tracking-tighter text-[#111827]">Recent Transactions</h2>
             <p className="text-sm text-[#6B7280] mt-1 font-medium">Live fulfillment feed across all gateways</p>
           </div>
-          <a href="/admin/orders" className="px-4 py-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
+          <a href="/admin/orders" className="px-4 py-2 bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform shadow-[0_4px_14px_rgba(0,0,0,0.25)]">
             View All
           </a>
         </div>
@@ -569,7 +569,7 @@ export default function AdminDashboard() {
                 const avatarLetter = customerName.charAt(0).toUpperCase()
                 
                 return (
-                  <tr key={order.id} className="group hover:bg-[#F3F4F6] transition-colors rounded-2xl">
+                  <tr key={order.id} className="group hover:bg-[#F3F4F6] transition-colors rounded-lg">
                     <td className="p-4 pl-6 align-middle rounded-l-2xl">
                       <p className="font-bold text-[#111827]">#{order.id.split('-')[0].toUpperCase()}</p>
                       <p className="text-xs text-[#9CA3AF] mt-1 font-medium">{new Date(order.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
@@ -610,8 +610,8 @@ export default function AdminDashboard() {
                     <td className="p-4 pr-6 align-middle rounded-r-2xl text-right">
                       <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest ${
                         order.status === 'delivered' ? 'bg-white border border-[#E5E7EB] text-[#111827]' :
-                        order.status === 'cancelled' ? 'bg-[#F9FAFB] text-[#9CA3AF] line-through border border-transparent' :
-                        'bg-amber-50 text-amber-700 border border-amber-200 shadow-xs'
+                        order.status === 'cancelled' ? 'bg-[#F9FAFB] text-[#9CA3AF] line-through border-0' :
+                        'bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] shadow-xs'
                       }`}>
                         {order.status}
                       </span>

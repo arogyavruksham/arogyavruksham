@@ -73,13 +73,13 @@ export default function CustomersPage() {
               placeholder="Search customers..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-white border border-[#E5E7EB] rounded-xl focus:border-[#059669] focus:ring-1 focus:ring-[#059669] outline-none text-sm font-semibold text-[#111827] placeholder-gray-400 shadow-2xs transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-[#E5E7EB] rounded-lg focus:border-[#059669] focus:ring-1 focus:ring-[#059669] outline-none text-sm font-semibold text-[#111827] placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="px-4 py-2 bg-white border border-[#E5E7EB] rounded-xl text-sm font-semibold text-[#374151] shadow-2xs outline-none"
+            className="px-4 py-2 bg-white border border-[#E5E7EB] rounded-lg text-sm font-semibold text-[#374151] shadow-2xs outline-none"
           >
             <option value="all">All roles</option>
             <option value="user">User</option>
@@ -89,14 +89,14 @@ export default function CustomersPage() {
           </select>
         </div>
 
-        <div className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E5E7EB] rounded-xl text-xs font-black uppercase tracking-wider text-[#374151] shadow-2xs">
+        <div className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E5E7EB] rounded-lg text-xs font-black uppercase tracking-wider text-[#374151] shadow-2xs">
           <UsersIcon className="w-4 h-4 text-[#111827]" />
           {users.length} Total Users Registered
         </div>
       </div>
 
       {/* Customers Table - Universal Clean Screenshot Design */}
-      <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xs overflow-hidden">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse whitespace-nowrap min-w-[700px]">
             <thead>
@@ -130,7 +130,7 @@ export default function CustomersPage() {
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-3.5">
-                        <div className="w-10 h-10 rounded-xl bg-[#E5E7EB] text-[#111827] border border-[#E5E7EB] flex items-center justify-center font-black text-sm shrink-0 shadow-2xs">
+                        <div className="w-10 h-10 rounded-lg bg-[#E5E7EB] text-[#111827] border border-[#E5E7EB] flex items-center justify-center font-black text-sm shrink-0 shadow-2xs">
                           {user.full_name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
                         </div>
                         <div>
@@ -143,7 +143,7 @@ export default function CustomersPage() {
                     </td>
                     <td className="p-4">
                       <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold capitalize border ${
-                        user.role === 'admin' ? 'bg-amber-50 text-amber-700 border border-amber-200 border-[#059669]' :
+                        user.role === 'admin' ? 'bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] border-[#059669]' :
                         user.role === 'manager' || user.role === 'editor' ? 'bg-[#E5E7EB] text-[#111827] border-[#D1D5DB]' :
                         'bg-[#F9FAFB] text-[#4B5563] border-[#E5E7EB]'
                       }`}>
@@ -161,7 +161,7 @@ export default function CustomersPage() {
                         <select 
                           value={user.role || 'user'}
                           onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                          className="bg-white border border-[#E5E7EB] text-[#111827] text-xs font-bold rounded-xl focus:ring-1 focus:ring-[#059669] focus:border-[#059669] py-1.5 px-3 outline-none shadow-2xs cursor-pointer ml-auto transition-all hover:border-[#059669]"
+                          className="bg-white border border-[#E5E7EB] text-[#111827] text-xs font-bold rounded-lg focus:ring-1 focus:ring-[#059669] focus:border-[#059669] py-1.5 px-3 outline-none shadow-2xs cursor-pointer ml-auto transition-all hover:border-[#059669]"
                         >
                           <option value="user">User</option>
                           <option value="editor">Editor</option>

@@ -132,28 +132,28 @@ export default function NewsletterPage() {
         title="Newsletter"
         description="Emails collected from the store footer and anyone you add here. Export the list anytime."
         actions={
-          <button onClick={exportCsv} className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E5E7EB] rounded-xl text-sm font-semibold text-[#374151] hover:bg-[#F9FAFB] shadow-2xs">
+          <button onClick={exportCsv} className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E5E7EB] rounded-lg text-sm font-semibold text-[#374151] hover:bg-[#F9FAFB] shadow-2xs">
             <Download className="w-4 h-4" /> Export CSV
           </button>
         }
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white border border-[#E5E7EB] rounded-xl p-3">
+        <div className="bg-white border border-[#E5E7EB] rounded-lg p-3">
           <p className="text-xs font-bold text-[#6B7280] uppercase">Total subscribers</p>
           <p className="text-2xl font-black text-[#111827] mt-2">{subscribers.length}</p>
         </div>
-        <div className="bg-white border border-[#E5E7EB] rounded-xl p-3">
+        <div className="bg-white border border-[#E5E7EB] rounded-lg p-3">
           <p className="text-xs font-bold text-[#6B7280] uppercase">New this month</p>
           <p className="text-2xl font-black text-[#111827] mt-2">{thisMonth}</p>
         </div>
-        <div className="bg-white border border-[#E5E7EB] rounded-xl p-3">
+        <div className="bg-white border border-[#E5E7EB] rounded-lg p-3">
           <p className="text-xs font-bold text-[#6B7280] uppercase">Signup source</p>
           <p className="text-sm font-semibold text-[#374151] mt-3">Store footer + admin add</p>
         </div>
       </div>
 
-      <form onSubmit={handleAdd} className="bg-white border border-[#E5E7EB] rounded-2xl p-3 flex flex-col sm:flex-row gap-3">
+      <form onSubmit={handleAdd} className="bg-white border border-[#E5E7EB] rounded-lg p-3 flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF]" />
           <input
@@ -162,10 +162,10 @@ export default function NewsletterPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Add a subscriber email"
-            className="w-full pl-10 pr-4 py-2.5 border border-[#E5E7EB] rounded-xl text-sm font-semibold outline-none focus:border-[#059669]"
+            className="w-full pl-10 pr-4 py-2.5 border border-[#E5E7EB] rounded-lg text-sm font-semibold outline-none focus:border-[#059669]"
           />
         </div>
-        <button type="submit" disabled={saving} className="flex items-center justify-center gap-2 px-5 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl text-sm font-bold hover:bg-gray-900 disabled:opacity-50">
+        <button type="submit" disabled={saving} className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] rounded-lg text-sm font-bold hover:bg-gray-900 disabled:opacity-50">
           {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
           Add email
         </button>
@@ -179,7 +179,7 @@ export default function NewsletterPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search emails..."
-            className="w-full pl-10 pr-4 py-2 bg-white border border-[#E5E7EB] rounded-xl text-sm font-semibold outline-none focus:border-[#059669]"
+            className="w-full pl-10 pr-4 py-2 bg-white border border-[#E5E7EB] rounded-lg text-sm font-semibold outline-none focus:border-[#059669]"
           />
         </div>
         <span className="text-xs font-bold text-[#6B7280] flex items-center gap-1">
@@ -187,7 +187,7 @@ export default function NewsletterPage() {
         </span>
       </div>
 
-      <div className="bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden">
+      <div className="bg-white rounded-lg border border-[#E5E7EB] overflow-hidden">
         <table className="w-full text-left min-w-[640px]">
           <thead>
             <tr className="bg-[#F9FAFB] border-b border-[#E5E7EB] text-xs uppercase tracking-wider text-[#6B7280] font-bold">
@@ -222,7 +222,7 @@ export default function NewsletterPage() {
                     {new Date(item.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </td>
                   <td className="p-4 pr-6 text-right">
-                    <button onClick={() => handleDelete(item)} className="p-2 text-[#9CA3AF] hover:text-red-600 hover:bg-red-50 rounded-xl">
+                    <button onClick={() => handleDelete(item)} className="p-2 text-[#9CA3AF] hover:text-red-600 hover:bg-red-50 rounded-lg">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </td>

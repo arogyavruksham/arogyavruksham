@@ -179,20 +179,20 @@ export default function OffersPage() {
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
               placeholder="Search offers & codes..." 
-              className="w-full pl-10 pr-4 py-2 bg-white border border-[#E5E7EB] rounded-xl focus:border-[#059669] focus:ring-1 focus:ring-[#059669] outline-none text-sm font-semibold text-[#111827] placeholder-gray-400 shadow-2xs transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-[#E5E7EB] rounded-lg focus:border-[#059669] focus:ring-1 focus:ring-[#059669] outline-none text-sm font-semibold text-[#111827] placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
         </div>
         <button 
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 px-4.5 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl text-sm font-bold hover:bg-gray-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
+          className="flex items-center gap-2 px-4.5 py-2.5 bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] rounded-lg text-sm font-bold hover:bg-gray-900 transition-all w-full sm:w-auto justify-center shadow-xs cursor-pointer"
         >
           <Plus className="w-4 h-4" /> Add Coupon
         </button>
       </div>
 
       {/* Offers Table - Universal Clean Screenshot Design */}
-      <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xs overflow-hidden">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse whitespace-nowrap min-w-[750px]">
             <thead>
@@ -259,10 +259,10 @@ export default function OffersPage() {
                     </td>
                     <td className="p-4 pr-6 text-right">
                       <div className="flex justify-end gap-2">
-                        <button onClick={() => handleOpenModal(coupon)} className="p-2 text-[#9CA3AF] hover:text-[#111827] hover:bg-[#E5E7EB] rounded-xl transition-colors cursor-pointer" title="Edit Coupon">
+                        <button onClick={() => handleOpenModal(coupon)} className="p-2 text-[#9CA3AF] hover:text-[#111827] hover:bg-[#E5E7EB] rounded-lg transition-colors cursor-pointer" title="Edit Coupon">
                           <Edit2 className="w-4 h-4" />
                         </button>
-                        <button onClick={() => handleDelete(coupon.id)} className="p-2 text-[#9CA3AF] hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer" title="Delete Coupon">
+                        <button onClick={() => handleDelete(coupon.id)} className="p-2 text-[#9CA3AF] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer" title="Delete Coupon">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -277,8 +277,8 @@ export default function OffersPage() {
 
       {/* Add / Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-[#059669]/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-[#E5E7EB]">
+        <div className="fixed inset-0 bg-[#059669] shadow-sm border-0/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-md overflow-hidden border border-[#E5E7EB]">
             <div className="px-6 py-5 border-b border-[#E5E7EB] flex justify-between items-center bg-[#F9FAFB]">
               <h2 className="text-lg font-black text-[#111827] flex items-center gap-2">
                 <Tag className="w-5 h-5 text-[#111827]" /> {editingId ? 'Modify Coupon Offer' : 'Create New Coupon'}
@@ -288,40 +288,40 @@ export default function OffersPage() {
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
                 <label className="block text-xs font-black text-[#374151] uppercase tracking-wide mb-1.5">Coupon Promo Code</label>
-                <input required type="text" placeholder="e.g. MONSOON30" value={formData.code} onChange={e => setFormData({...formData, code: e.target.value.toUpperCase()})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-xl outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-mono font-bold uppercase text-sm" />
+                <input required type="text" placeholder="e.g. MONSOON30" value={formData.code} onChange={e => setFormData({...formData, code: e.target.value.toUpperCase()})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-lg outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-mono font-bold uppercase text-sm" />
               </div>
 
               <div>
                 <label className="block text-xs font-black text-[#374151] uppercase tracking-wide mb-1.5">Offer Title</label>
-                <input required type="text" placeholder="e.g. Monsoon Special 30% Discount" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-xl outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-semibold text-sm" />
+                <input required type="text" placeholder="e.g. Monsoon Special 30% Discount" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-lg outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-semibold text-sm" />
               </div>
 
               <div className="flex gap-4">
                 <div className="flex-1">
                   <label className="block text-xs font-black text-[#374151] uppercase tracking-wide mb-1.5">Type</label>
-                  <select value={formData.discount_type} onChange={e => setFormData({...formData, discount_type: e.target.value as 'percentage' | 'fixed'})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-xl outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-semibold text-sm cursor-pointer">
+                  <select value={formData.discount_type} onChange={e => setFormData({...formData, discount_type: e.target.value as 'percentage' | 'fixed'})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-lg outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-semibold text-sm cursor-pointer">
                     <option value="percentage">Percentage (%)</option>
                     <option value="fixed">Fixed Amount (₹)</option>
                   </select>
                 </div>
                 <div className="flex-1">
                   <label className="block text-xs font-black text-[#374151] uppercase tracking-wide mb-1.5">Value</label>
-                  <input required type="number" min="1" step="0.01" placeholder="30" value={formData.discount_value} onChange={e => setFormData({...formData, discount_value: e.target.value})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-xl outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-bold text-sm" />
+                  <input required type="number" min="1" step="0.01" placeholder="30" value={formData.discount_value} onChange={e => setFormData({...formData, discount_value: e.target.value})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-lg outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-bold text-sm" />
                 </div>
               </div>
 
               <div className="flex flex-col gap-4">
                 <div>
                   <label className="block text-xs font-black text-[#374151] uppercase tracking-wide mb-1.5">Usage Limit</label>
-                  <input type="number" min="1" placeholder="Unlimited if left empty" value={formData.usage_limit} onChange={e => setFormData({...formData, usage_limit: e.target.value})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-xl outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-bold text-sm" />
+                  <input type="number" min="1" placeholder="Unlimited if left empty" value={formData.usage_limit} onChange={e => setFormData({...formData, usage_limit: e.target.value})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-lg outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-bold text-sm" />
                 </div>
                 <div>
                   <label className="block text-xs font-black text-[#374151] uppercase tracking-wide mb-1.5">Start Timestamp</label>
-                  <input required type="datetime-local" value={formData.start_date} onChange={e => setFormData({...formData, start_date: e.target.value})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-xl outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-semibold text-xs font-mono" />
+                  <input required type="datetime-local" value={formData.start_date} onChange={e => setFormData({...formData, start_date: e.target.value})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-lg outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-semibold text-xs font-mono" />
                 </div>
                 <div>
                   <label className="block text-xs font-black text-[#374151] uppercase tracking-wide mb-1.5">Expiry Timestamp</label>
-                  <input required type="datetime-local" value={formData.expiry_date} onChange={e => setFormData({...formData, expiry_date: e.target.value})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-xl outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-semibold text-xs font-mono" />
+                  <input required type="datetime-local" value={formData.expiry_date} onChange={e => setFormData({...formData, expiry_date: e.target.value})} className="w-full px-4 py-2 bg-white border border-[#D1D5DB] rounded-lg outline-none focus:ring-1 focus:ring-[#059669] focus:border-[#059669] text-[#111827] font-semibold text-xs font-mono" />
                 </div>
               </div>
 
@@ -331,10 +331,10 @@ export default function OffersPage() {
               </div>
 
               <div className="flex gap-3 pt-4 border-t border-gray-100">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 px-4 py-2.5 text-xs font-bold text-[#374151] bg-[#E5E7EB] hover:bg-gray-200 rounded-xl transition-colors cursor-pointer">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 px-4 py-2.5 text-xs font-bold text-[#374151] bg-[#E5E7EB] hover:bg-gray-200 rounded-lg transition-colors cursor-pointer">
                   Cancel
                 </button>
-                <button type="submit" disabled={isProcessing} className="flex-1 px-4 py-2.5 text-xs font-bold text-white bg-[#059669] hover:bg-gray-900 rounded-xl transition-all shadow-xs disabled:opacity-50 cursor-pointer">
+                <button type="submit" disabled={isProcessing} className="flex-1 px-4 py-2.5 text-xs font-bold text-white bg-[#059669] hover:bg-gray-900 rounded-lg transition-all shadow-xs disabled:opacity-50 cursor-pointer">
                   {isProcessing ? 'Saving...' : 'Save Coupon'}
                 </button>
               </div>
@@ -345,8 +345,8 @@ export default function OffersPage() {
 
       {/* Delete Confirmation Modal */}
       {deletingId && (
-        <div className="fixed inset-0 bg-[#059669]/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden p-6 text-center border border-[#E5E7EB]">
+        <div className="fixed inset-0 bg-[#059669] shadow-sm border-0/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-sm overflow-hidden p-6 text-center border border-[#E5E7EB]">
             <div className="w-10 h-10 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-100">
               <Trash2 className="w-7 h-7" />
             </div>
@@ -355,14 +355,14 @@ export default function OffersPage() {
             <div className="flex gap-3">
               <button 
                 onClick={() => setDeletingId(null)} 
-                className="flex-1 px-4 py-2.5 text-xs text-[#374151] bg-[#E5E7EB] hover:bg-gray-200 rounded-xl font-bold transition-colors cursor-pointer"
+                className="flex-1 px-4 py-2.5 text-xs text-[#374151] bg-[#E5E7EB] hover:bg-gray-200 rounded-lg font-bold transition-colors cursor-pointer"
               >
                 Cancel
               </button>
               <button 
                 onClick={confirmDelete} 
                 disabled={isProcessing}
-                className="flex-1 px-4 py-2.5 text-xs text-white bg-red-600 hover:bg-red-700 rounded-xl font-bold transition-colors disabled:opacity-50 shadow-xs cursor-pointer"
+                className="flex-1 px-4 py-2.5 text-xs text-white bg-red-600 hover:bg-red-700 rounded-lg font-bold transition-colors disabled:opacity-50 shadow-xs cursor-pointer"
               >
                 {isProcessing ? 'Deleting...' : 'Delete'}
               </button>

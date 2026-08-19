@@ -88,30 +88,30 @@ export default function InventoryPage() {
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
               placeholder="Search stock catalog..." 
-              className="w-full pl-10 pr-4 py-2 bg-white border border-[#E5E7EB] rounded-xl focus:border-[#059669] focus:ring-1 focus:ring-[#059669] outline-none text-sm font-semibold text-[#111827] placeholder-gray-400 shadow-2xs transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-[#E5E7EB] rounded-lg focus:border-[#059669] focus:ring-1 focus:ring-[#059669] outline-none text-sm font-semibold text-[#111827] placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
         </div>
 
         {/* Monochrome Header Tabs */}
-        <div className="flex bg-white border border-[#E5E7EB] p-1 rounded-xl shadow-2xs w-full sm:w-auto overflow-x-auto">
+        <div className="flex bg-white border border-[#E5E7EB] p-1 rounded-lg shadow-2xs w-full sm:w-auto overflow-x-auto">
           <button 
             onClick={() => setActiveTab('LOW_STOCK')}
-            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'LOW_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200 shadow-2xs' : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'}`}
+            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'LOW_STOCK' ? 'bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] shadow-2xs' : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'}`}
           >
             <AlertTriangle className="w-4 h-4" /> 
             Low Stock ({lowStock.length})
           </button>
           <button 
             onClick={() => setActiveTab('OUT_OF_STOCK')}
-            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'OUT_OF_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200 shadow-2xs' : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'}`}
+            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'OUT_OF_STOCK' ? 'bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] shadow-2xs' : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'}`}
           >
             <PackageX className="w-4 h-4" /> 
             Out of Stock ({outOfStock.length})
           </button>
           <button 
             onClick={() => setActiveTab('FULL_STOCK')}
-            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'FULL_STOCK' ? 'bg-amber-50 text-amber-700 border border-amber-200 shadow-2xs' : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'}`}
+            className={`px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all flex items-center gap-2 cursor-pointer ${activeTab === 'FULL_STOCK' ? 'bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] shadow-2xs' : 'text-[#4B5563] hover:text-[#111827] hover:bg-[#F9FAFB]'}`}
           >
             <CheckCircle className="w-4 h-4" /> 
             Full Stock ({fullStock.length})
@@ -120,7 +120,7 @@ export default function InventoryPage() {
       </div>
 
       {/* Inventory Table - Clean Monochrome Reference Style */}
-      <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xs overflow-hidden">
         {loading ? (
           <div className="flex flex-col items-center justify-center p-14 gap-2 text-[#6B7280]">
             <Loader2 className="w-8 h-8 animate-spin text-[#111827]" />
@@ -151,7 +151,7 @@ export default function InventoryPage() {
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-3.5">
-                        <div className="w-11 h-11 rounded-xl bg-[#F9FAFB] overflow-hidden shrink-0 border border-gray-100 p-1 flex items-center justify-center">
+                        <div className="w-11 h-11 rounded-lg bg-[#F9FAFB] overflow-hidden shrink-0 border border-gray-100 p-1 flex items-center justify-center">
                           {product.image_url ? (
                             <img src={product.image_url} alt={product.title} className="w-full h-full object-contain mix-blend-multiply" />
                           ) : (
@@ -171,14 +171,14 @@ export default function InventoryPage() {
                         min="0"
                         value={draftStock[product.id] ?? product.stock_count}
                         onChange={(e) => setDraftStock({ ...draftStock, [product.id]: e.target.value })}
-                        className="w-24 px-3 py-1.5 border border-[#E5E7EB] rounded-xl font-black text-[#111827] text-sm outline-none focus:border-[#059669]"
+                        className="w-24 px-3 py-1.5 border border-[#E5E7EB] rounded-lg font-black text-[#111827] text-sm outline-none focus:border-[#059669]"
                       />
                     </td>
                     <td className="p-4">
                       <button
                         onClick={() => saveStock(product.id)}
                         disabled={savingId === product.id || Number(draftStock[product.id]) === Number(product.stock_count)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 disabled:opacity-40"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] disabled:opacity-40"
                       >
                         {savingId === product.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
                         Save
@@ -187,7 +187,7 @@ export default function InventoryPage() {
                     <td className="p-4 pr-6">
                       <span className={`inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold ${
                         product.stock_count === 0 ? 'bg-red-50 text-red-700 border border-red-200/60' : 
-                        product.stock_count <= threshold ? 'bg-amber-50 text-amber-700 border border-amber-200/60' : 
+                        product.stock_count <= threshold ? 'bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857]/60' : 
                         'bg-green-50 text-green-700 border border-green-200/60'
                       }`}>
                         {product.stock_count === 0 ? 'Out of Stock' : product.stock_count <= threshold ? 'Low Stock' : 'In Stock'}

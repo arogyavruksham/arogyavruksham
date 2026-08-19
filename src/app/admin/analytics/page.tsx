@@ -275,7 +275,7 @@ export default function AnalyticsPage() {
         title="Analytics"
         description="Filter by date and tab to inspect profit, customers, order times, and coupon usage."
         actions={
-          <div className="flex items-center gap-2 bg-white border border-[#D1D5DB] rounded-xl px-3 py-2 shadow-2xs">
+          <div className="flex items-center gap-2 bg-white border border-[#D1D5DB] rounded-lg px-3 py-2 shadow-2xs">
             <input type="date" value={rangeStart} onChange={(e) => setRangeStart(e.target.value)} className="text-sm font-bold text-[#111827] outline-none bg-transparent" />
             <span className="text-[#9CA3AF]">—</span>
             <input type="date" value={rangeEnd} onChange={(e) => setRangeEnd(e.target.value)} className="text-sm font-bold text-[#111827] outline-none bg-transparent" />
@@ -300,7 +300,7 @@ export default function AnalyticsPage() {
             className={`pb-3 font-bold whitespace-nowrap transition-all border-b-2 cursor-pointer ${
               activeTab === tab 
                 ? 'text-[#059669] border-[#059669] font-black' 
-                : 'text-[#9CA3AF] border-transparent hover:text-[#374151] hover:border-[#D1D5DB]'
+                : 'text-[#9CA3AF] border-transparent hover:text-[#374151] hover:bg-[#E5E7EB] hover:text-[#111827]'
             }`}
           >
             {tab}
@@ -314,7 +314,7 @@ export default function AnalyticsPage() {
           <select 
             value={filterOption}
             onChange={(e) => setFilterOption(e.target.value)}
-            className="appearance-none bg-white border border-[#D1D5DB] text-[#111827] text-sm font-semibold rounded-xl pl-4 pr-10 py-2 shadow-2xs outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] cursor-pointer"
+            className="appearance-none bg-white border border-[#D1D5DB] text-[#111827] text-sm font-semibold rounded-lg pl-4 pr-10 py-2 shadow-2xs outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] cursor-pointer"
           >
             <option value="All orders & sales">All orders & sales</option>
             <option value="Completed only">Completed only</option>
@@ -328,15 +328,15 @@ export default function AnalyticsPage() {
 
       {activeTab === 'Customers & Users' && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white rounded-xl p-3 border border-[#E5E7EB]">
+          <div className="bg-white rounded-lg p-3 border border-[#E5E7EB]">
             <p className="text-sm font-semibold text-[#6B7280]">Unique customers</p>
             <p className="text-2xl font-black mt-2">{uniqueCustomers}</p>
           </div>
-          <div className="bg-white rounded-xl p-3 border border-[#E5E7EB]">
+          <div className="bg-white rounded-lg p-3 border border-[#E5E7EB]">
             <p className="text-sm font-semibold text-[#6B7280]">Orders in range</p>
             <p className="text-2xl font-black mt-2">{rangeOrders.length}</p>
           </div>
-          <div className="bg-white rounded-xl p-3 border border-[#E5E7EB]">
+          <div className="bg-white rounded-lg p-3 border border-[#E5E7EB]">
             <p className="text-sm font-semibold text-[#6B7280]">Avg. order value</p>
             <p className="text-2xl font-black mt-2">
               ₹{rangeOrders.length ? Math.round(rangeOrders.reduce((s, o) => s + Number(o.total_amount || 0), 0) / rangeOrders.length).toLocaleString('en-IN') : 0}
@@ -347,11 +347,11 @@ export default function AnalyticsPage() {
 
       {activeTab === 'Offers & Coupons' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="bg-white rounded-xl p-3 border border-[#E5E7EB]">
+          <div className="bg-white rounded-lg p-3 border border-[#E5E7EB]">
             <p className="text-sm font-semibold text-[#6B7280]">Orders with a coupon</p>
             <p className="text-2xl font-black mt-2">{couponOrders.length}</p>
           </div>
-          <div className="bg-white rounded-xl p-3 border border-[#E5E7EB]">
+          <div className="bg-white rounded-lg p-3 border border-[#E5E7EB]">
             <p className="text-sm font-semibold text-[#6B7280]">Coupon usage rate</p>
             <p className="text-2xl font-black mt-2">
               {rangeOrders.length ? Math.round((couponOrders.length / rangeOrders.length) * 100) : 0}%
@@ -364,7 +364,7 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Card 1: Net Profit */}
-        <div className="bg-white rounded-xl p-3 border border-[#E5E7EB] shadow-2xs flex flex-col justify-between hover:border-[#059669] transition-colors">
+        <div className="bg-white rounded-lg p-3 border border-[#E5E7EB] shadow-2xs flex flex-col justify-between hover:border-[#059669] transition-colors">
           <div className="flex items-center justify-between text-[#6B7280] text-sm font-semibold">
             <span>Total Net Profit</span>
             <span title="Calculated revenue minus total product acquisition cost" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#F9FAFB] p-1 rounded-full">
@@ -380,7 +380,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Card 2: Completed Orders */}
-        <div className="bg-white rounded-xl p-3 border border-[#E5E7EB] shadow-2xs flex flex-col justify-between hover:border-[#059669] transition-colors">
+        <div className="bg-white rounded-lg p-3 border border-[#E5E7EB] shadow-2xs flex flex-col justify-between hover:border-[#059669] transition-colors">
           <div className="flex items-center justify-between text-[#6B7280] text-sm font-semibold">
             <span>Completed Orders</span>
             <span title="Orders successfully delivered to customer" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#F9FAFB] p-1 rounded-full">
@@ -396,7 +396,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Card 3: Delivering (Shipped) */}
-        <div className="bg-white rounded-xl p-3 border border-[#E5E7EB] shadow-2xs flex flex-col justify-between hover:border-[#059669] transition-colors">
+        <div className="bg-white rounded-lg p-3 border border-[#E5E7EB] shadow-2xs flex flex-col justify-between hover:border-[#059669] transition-colors">
           <div className="flex items-center justify-between text-[#6B7280] text-sm font-semibold">
             <span>In Delivery / Shipped</span>
             <span title="Orders currently dispatched and in transit" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#F9FAFB] p-1 rounded-full">
@@ -412,7 +412,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Card 4: Coupons Used */}
-        <div className="bg-white rounded-xl p-3 border border-[#E5E7EB] shadow-2xs flex flex-col justify-between hover:border-[#059669] transition-colors">
+        <div className="bg-white rounded-lg p-3 border border-[#E5E7EB] shadow-2xs flex flex-col justify-between hover:border-[#059669] transition-colors">
           <div className="flex items-center justify-between text-[#6B7280] text-sm font-semibold">
             <span>Coupons Applied</span>
             <span title="Total transactions utilizing promotional discount vouchers" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#F9FAFB] p-1 rounded-full">
@@ -430,13 +430,13 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Info Notice Banner */}
-      <div className="bg-emerald-100 border border-emerald-200 rounded-xl p-3 px-4 text-xs font-semibold text-emerald-900 flex items-center gap-2.5 shadow-2xs">
+      <div className="bg-emerald-100 border border-emerald-200 rounded-lg p-3 px-4 text-xs font-semibold text-emerald-900 flex items-center gap-2.5 shadow-2xs">
         <Info className="w-4 h-4 text-emerald-700 shrink-0" />
         <span>Visibility is limited to data generated on or after <strong className="font-black text-emerald-950 underline">November 22, 2023</strong>.</span>
       </div>
 
       {(activeTab === 'Overview' || activeTab === 'Order Times') && (
-      <div className="bg-white p-6 rounded-xl shadow-2xs border border-[#E5E7EB] mt-6">
+      <div className="bg-white p-6 rounded-lg shadow-2xs border border-[#E5E7EB] mt-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
           <div>
             <h2 className="text-lg font-black text-[#111827] flex items-center gap-2">
@@ -444,7 +444,7 @@ export default function AnalyticsPage() {
             </h2>
             <p className="text-xs text-[#6B7280] mt-0.5">Analyses order placement times across the entire store history</p>
           </div>
-          <span className="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold rounded-full">24-Hour Breakdown</span>
+          <span className="px-3 py-1 bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] text-xs font-bold rounded-full">24-Hour Breakdown</span>
         </div>
 
         <div className="h-72 w-full min-h-[280px]">
@@ -481,7 +481,7 @@ export default function AnalyticsPage() {
       )}
 
       {(activeTab === 'Overview' || activeTab === 'Daily Performance' || activeTab === 'Transactions & Orders') && (
-      <div className="bg-white rounded-xl shadow-2xs border border-[#E5E7EB] overflow-hidden">
+      <div className="bg-white rounded-lg shadow-2xs border border-[#E5E7EB] overflow-hidden">
         <div className="p-6 border-b border-[#E5E7EB] flex justify-between items-center bg-[#F9FAFB]">
           <div>
             <h2 className="text-lg font-black text-[#111827] flex items-center gap-2">
@@ -543,7 +543,7 @@ export default function AnalyticsPage() {
                   <td className="p-4 text-right pr-6">
                     <button 
                       onClick={(e) => { e.stopPropagation(); setSelectedDateStr(day.dateStr); }}
-                      className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-200 hover:bg-gray-900 font-bold text-xs transition-all shadow-xs"
+                      className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-lg bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] hover:bg-gray-900 font-bold text-xs transition-all shadow-xs"
                     >
                       Inspect Date <ChevronRight className="w-3.5 h-3.5" />
                     </button>
@@ -558,7 +558,7 @@ export default function AnalyticsPage() {
 
       {/* Date Deep-Dive Modal */}
       {selectedDayData && (
-        <div className="fixed inset-0 bg-[#059669]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
+        <div className="fixed inset-0 bg-[#059669] shadow-sm border-0/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col border border-[#E5E7EB]">
             
             <div className="p-6 px-8 border-b border-[#E5E7EB] flex justify-between items-center bg-[#F9FAFB]/80 sticky top-0 z-10">
@@ -579,23 +579,23 @@ export default function AnalyticsPage() {
             <div className="p-5 overflow-y-auto space-y-5 flex-1">
               
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div className="bg-[#F9FAFB] p-4 rounded-xl border border-[#E5E7EB]">
+                <div className="bg-[#F9FAFB] p-4 rounded-lg border border-[#E5E7EB]">
                   <p className="text-xs font-bold text-[#6B7280] uppercase">Total Orders</p>
                   <p className="text-2xl font-black text-[#111827] mt-1">{selectedDayData.totalOrders}</p>
                 </div>
-                <div className="bg-[#F9FAFB] p-4 rounded-xl border border-[#E5E7EB]">
+                <div className="bg-[#F9FAFB] p-4 rounded-lg border border-[#E5E7EB]">
                   <p className="text-xs font-bold text-[#6B7280] uppercase">Delivered</p>
                   <p className="text-2xl font-black text-[#111827] mt-1">{selectedDayData.deliveredOrders}</p>
                 </div>
-                <div className="bg-[#F9FAFB] p-4 rounded-xl border border-[#E5E7EB]">
+                <div className="bg-[#F9FAFB] p-4 rounded-lg border border-[#E5E7EB]">
                   <p className="text-xs font-bold text-[#6B7280] uppercase">Not Delivered</p>
                   <p className="text-2xl font-black text-[#111827] mt-1">{selectedDayData.totalOrders - selectedDayData.deliveredOrders}</p>
                 </div>
-                <div className="bg-[#F9FAFB] p-4 rounded-xl border border-[#E5E7EB]">
+                <div className="bg-[#F9FAFB] p-4 rounded-lg border border-[#E5E7EB]">
                   <p className="text-xs font-bold text-[#6B7280] uppercase">Day Revenue</p>
                   <p className="text-2xl font-black text-[#111827] mt-1">₹{selectedDayData.revenue.toLocaleString('en-IN')}</p>
                 </div>
-                <div className="bg-amber-50 text-amber-700 border border-amber-200 p-4 rounded-xl">
+                <div className="bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] p-4 rounded-lg">
                   <p className="text-xs font-black text-gray-300 uppercase">Net Day Profit</p>
                   <p className="text-2xl font-black text-white mt-1">₹{selectedDayData.profit.toLocaleString('en-IN')}</p>
                 </div>
@@ -603,7 +603,7 @@ export default function AnalyticsPage() {
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
-                <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-[#E5E7EB] shadow-2xs flex flex-col">
+                <div className="lg:col-span-2 bg-white p-6 rounded-lg border border-[#E5E7EB] shadow-2xs flex flex-col">
                   <h4 className="font-bold text-[#111827] mb-1 flex items-center gap-2">
                     <Clock className="w-4 h-4 text-[#111827]" /> Order Time Graph ({selectedDayData.formattedDate})
                   </h4>
@@ -626,7 +626,7 @@ export default function AnalyticsPage() {
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-xl border border-[#E5E7EB] shadow-2xs flex flex-col">
+                <div className="bg-white p-6 rounded-lg border border-[#E5E7EB] shadow-2xs flex flex-col">
                   <h4 className="font-bold text-[#111827] mb-1">Status Breakdown</h4>
                   <p className="text-xs text-[#6B7280] mb-6">Proportion of order fulfillment</p>
                   
@@ -659,7 +659,7 @@ export default function AnalyticsPage() {
 
               </div>
 
-              <div className="bg-white rounded-xl border border-[#E5E7EB] overflow-hidden shadow-2xs">
+              <div className="bg-white rounded-lg border border-[#E5E7EB] overflow-hidden shadow-2xs">
                 <div className="p-3 bg-[#F9FAFB]/60 border-b border-[#E5E7EB] flex justify-between items-center">
                   <div>
                     <h4 className="font-bold text-[#111827] flex items-center gap-2 text-sm">
@@ -724,7 +724,7 @@ export default function AnalyticsPage() {
             <div className="p-4 px-8 border-t border-[#E5E7EB] bg-[#F9FAFB] flex justify-end">
               <button 
                 onClick={() => setSelectedDateStr(null)}
-                className="px-6 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 font-bold text-sm rounded-xl hover:bg-gray-900 transition-colors shadow-xs cursor-pointer"
+                className="px-6 py-2.5 bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] font-bold text-sm rounded-lg hover:bg-gray-900 transition-colors shadow-xs cursor-pointer"
               >
                 Close Deep-Dive
               </button>
@@ -736,7 +736,7 @@ export default function AnalyticsPage() {
 
       {/* Order Details Sidebar Overlay */}
       {selectedOrder && (
-        <div className="fixed inset-0 z-[100] bg-[#059669]/40 backdrop-blur-xs flex justify-end animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[100] bg-[#059669] shadow-sm border-0/40 backdrop-blur-xs flex justify-end animate-in fade-in duration-200">
           <div className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right overflow-hidden border-l border-[#E5E7EB]">
             <div className="flex items-center justify-between p-6 border-b border-[#E5E7EB] bg-[#F9FAFB]">
               <div>
@@ -759,7 +759,7 @@ export default function AnalyticsPage() {
                 <h3 className="text-xs font-bold text-[#9CA3AF] flex items-center gap-2 uppercase tracking-wider">
                   <User className="w-4 h-4 text-[#111827]" /> Customer Information
                 </h3>
-                <div className="pl-6 space-y-1.5 text-sm text-[#4B5563] bg-[#F9FAFB]/60 p-4 rounded-xl border border-[#E5E7EB]">
+                <div className="pl-6 space-y-1.5 text-sm text-[#4B5563] bg-[#F9FAFB]/60 p-4 rounded-lg border border-[#E5E7EB]">
                   <p className="font-bold text-[#111827] text-base">{selectedOrder.shipping_address?.name || selectedOrder.users?.full_name || 'Customer'}</p>
                   <p className="font-mono text-xs text-[#6B7280]">{selectedOrder.shipping_address?.phone || '-'}</p>
                   {selectedOrder.shipping_address?.fullAddress && (
@@ -777,13 +777,13 @@ export default function AnalyticsPage() {
                 </h3>
                 <div className="space-y-3">
                   {selectedOrder.order_items?.map((item: any, idx: number) => (
-                    <div key={idx} className="flex gap-4 p-3 bg-[#F9FAFB]/60 rounded-xl border border-[#E5E7EB] items-center">
+                    <div key={idx} className="flex gap-4 p-3 bg-[#F9FAFB]/60 rounded-lg border border-[#E5E7EB] items-center">
                       {item.products?.image_url ? (
-                        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center border border-[#E5E7EB] shrink-0 overflow-hidden shadow-2xs">
+                        <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center border border-[#E5E7EB] shrink-0 overflow-hidden shadow-2xs">
                           <img src={item.products.image_url} alt={item.products.title} className="w-full h-full object-contain mix-blend-multiply p-1" />
                         </div>
                       ) : (
-                        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center border border-[#E5E7EB] shrink-0 shadow-2xs">
+                        <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center border border-[#E5E7EB] shrink-0 shadow-2xs">
                           <Package className="w-6 h-6 text-gray-300" />
                         </div>
                       )}
@@ -803,14 +803,14 @@ export default function AnalyticsPage() {
                 <h3 className="text-xs font-bold text-[#9CA3AF] flex items-center gap-2 uppercase tracking-wider">
                   <CreditCard className="w-4 h-4 text-[#111827]" /> Payment Information
                 </h3>
-                <div className="bg-[#F9FAFB]/60 p-4 rounded-xl border border-[#E5E7EB] space-y-3 text-sm">
+                <div className="bg-[#F9FAFB]/60 p-4 rounded-lg border border-[#E5E7EB] space-y-3 text-sm">
                   <div className="flex justify-between items-center text-[#4B5563]">
                     <span>Payment Method</span>
                     <span className="font-bold text-[#111827]">{selectedOrder.payment_method || 'Online Payment'}</span>
                   </div>
                   <div className="flex justify-between items-center text-[#4B5563]">
                     <span>Payment Status</span>
-                    <span className="font-bold px-2 py-0.5 rounded uppercase text-[10px] tracking-widest border bg-amber-50 text-amber-700 border border-amber-200 border-[#059669]">
+                    <span className="font-bold px-2 py-0.5 rounded uppercase text-[10px] tracking-widest border bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] border-[#059669]">
                       {selectedOrder.payment_method === 'Cash on Delivery' && selectedOrder.status !== 'delivered' ? 'Pending' : 'Paid'}
                     </span>
                   </div>
@@ -825,7 +825,7 @@ export default function AnalyticsPage() {
                 <h3 className="text-xs font-bold text-[#9CA3AF] flex items-center gap-2 uppercase tracking-wider">
                   <Truck className="w-4 h-4 text-[#111827]" /> Shipping Status
                 </h3>
-                <div className="pl-6 space-y-6 relative mt-4 bg-[#F9FAFB]/60 p-3 rounded-xl border border-[#E5E7EB]">
+                <div className="pl-6 space-y-6 relative mt-4 bg-[#F9FAFB]/60 p-3 rounded-lg border border-[#E5E7EB]">
                   <div className="absolute left-7 top-7 bottom-7 w-0.5 bg-gray-200"></div>
                   
                   {[
@@ -842,7 +842,7 @@ export default function AnalyticsPage() {
                     return (
                       <div key={status.id} className="relative z-10 flex gap-4 items-start">
                         <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 border-2 bg-white ${isCompleted ? 'border-[#059669]' : 'border-[#D1D5DB]'}`}>
-                          {isCompleted ? <div className="w-2.5 h-2.5 bg-[#059669] rounded-full"></div> : null}
+                          {isCompleted ? <div className="w-2.5 h-2.5 bg-[#059669] shadow-sm border-0 rounded-full"></div> : null}
                         </div>
                         <div>
                           <p className={`text-sm font-bold leading-none ${isCompleted ? 'text-[#111827]' : 'text-[#9CA3AF]'}`}>{status.label}</p>
@@ -859,7 +859,7 @@ export default function AnalyticsPage() {
             <div className="p-4 px-6 border-t border-[#E5E7EB] bg-[#F9FAFB] flex justify-end">
               <button 
                 onClick={() => setSelectedOrder(null)}
-                className="px-6 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 font-bold text-sm rounded-xl hover:bg-gray-900 transition-colors shadow-xs w-full cursor-pointer"
+                className="px-6 py-2.5 bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] font-bold text-sm rounded-lg hover:bg-gray-900 transition-colors shadow-xs w-full cursor-pointer"
               >
                 Close Order Inspection
               </button>

@@ -148,7 +148,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="text-center">
           <h1 className="text-2xl font-black tracking-tighter text-[#111827] mb-2">Access Denied</h1>
           <p className="text-[#6B7280] mb-6 font-medium">Administrator privileges required.</p>
-          <Link href="/" className="px-4 py-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform">
+          <Link href="/" className="px-4 py-2 bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] rounded-full font-bold text-sm tracking-wide hover:scale-[0.98] transition-transform">
             Return Home
           </Link>
         </div>
@@ -173,7 +173,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="flex flex-col h-[100dvh] bg-[#F3F4F6] font-sans text-[#111827] overflow-hidden md:p-3 transition-colors duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
       
       {/* Outer Shell -> Inner Core (Double-Bezel Architecture) */}
-      <div className="flex flex-col md:flex-row flex-1 bg-white md:rounded-2xl md:shadow-[0_8px_40px_rgba(0,0,0,0.03)] md:border md:border-[#E5E7EB] overflow-hidden relative">
+      <div className="flex flex-col md:flex-row flex-1 bg-white md:rounded-lg md:shadow-[0_8px_40px_rgba(0,0,0,0.03)] md:border md:border-[#E5E7EB] overflow-hidden relative">
 
         {/* Mobile Bottom Nav - Floating Pill Style */}
         <div className="md:hidden fixed bottom-6 left-4 right-4 z-50">
@@ -213,7 +213,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     href={tab.path!}
                     className={`flex flex-col items-center justify-center flex-1 py-2 rounded-full transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
                       tab.active 
-                        ? 'bg-[#059669]/5' 
+                        ? 'bg-[#059669] shadow-sm border-0/5' 
                         : 'hover:bg-[#F3F4F6]'
                     }`}
                   >
@@ -231,7 +231,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* Brand & Search Area */}
           <div className="p-4 pb-3">
             <Link href="/admin" className="flex items-center gap-3 hover:opacity-80 transition-opacity mb-6 group">
-              <div className="w-8 h-8 rounded-xl bg-white border border-[#E5E7EB] shadow-[0_2px_10px_rgb(0,0,0,0.02)] p-1.5 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+              <div className="w-8 h-8 rounded-lg bg-white border border-[#E5E7EB] shadow-[0_2px_10px_rgb(0,0,0,0.02)] p-1.5 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
                 <img src="/logo.png" alt="Logo" className="w-full h-full object-contain mix-blend-multiply" />
               </div>
               <span className="font-black text-lg tracking-tighter text-[#111827]">
@@ -247,7 +247,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => { if (searchQuery.trim()) setShowDropdown(true) }}
                 placeholder="Search..." 
-                className="w-full pl-9 pr-8 py-2 bg-white border border-[#E5E7EB] rounded-[1rem] text-xs font-medium text-[#111827] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#059669]/5 transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.01)]"
+                className="w-full pl-9 pr-8 py-2 bg-white border border-[#E5E7EB] rounded-lg text-xs font-medium text-[#111827] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#059669]/5 transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.01)]"
               />
               {isSearching && (
                 <Loader2 className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF] animate-spin" strokeWidth={1.5} />
@@ -255,7 +255,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               
               {/* Search Results Dropdown */}
               {showDropdown && searchQuery.trim() !== '' && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-[#E5E7EB] overflow-hidden z-50 py-2 max-h-[60vh] overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-[#E5E7EB] overflow-hidden z-50 py-2 max-h-[60vh] overflow-y-auto">
                   {!isSearching && searchResults.products.length === 0 && searchResults.orders.length === 0 ? (
                     <div className="px-4 py-6 text-sm text-[#9CA3AF] text-center font-medium">No results found.</div>
                   ) : (
@@ -292,7 +292,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                               onClick={() => { setShowDropdown(false); setSearchQuery(''); }}
                               className="flex items-center gap-3 px-4 py-2 hover:bg-[#F3F4F6] transition-colors"
                             >
-                              <div className="w-10 h-10 rounded-xl bg-[#F3F4F6] shrink-0 overflow-hidden border border-[#E5E7EB] p-1">
+                              <div className="w-10 h-10 rounded-lg bg-[#F3F4F6] shrink-0 overflow-hidden border border-[#E5E7EB] p-1">
                                 {product.image_url ? (
                                   <img src={product.image_url} alt={product.title} className="w-full h-full object-cover mix-blend-multiply rounded-lg" />
                                 ) : (
@@ -333,7 +333,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                           className={`group flex items-center justify-between px-3 py-2.5 rounded-[0.75rem] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
                             isActive
                               ? 'bg-white shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-[#E5E7EB] text-[#111827] font-bold'
-                              : 'hover:bg-[#059669]/5 text-[#6B7280] hover:text-[#111827] font-medium border border-transparent'
+                              : 'hover:bg-[#059669] shadow-sm border-0/5 text-[#6B7280] hover:text-[#111827] font-medium border-0'
                           }`}
                         >
                           <div className="flex items-center gap-3 min-w-0">
@@ -353,7 +353,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="p-4 border-t border-[#E5E7EB] bg-[#F9FAFB]">
             <button 
               onClick={handleAdminLogout} 
-              className="group flex items-center justify-between w-full p-4 rounded-[1rem] bg-white border border-[#E5E7EB] hover:border-[#D1D5DB] shadow-[0_2px_10px_rgb(0,0,0,0.02)] transition-all duration-500 cursor-pointer"
+              className="group flex items-center justify-between w-full p-4 rounded-lg bg-white border border-[#E5E7EB] hover:bg-[#E5E7EB] hover:text-[#111827] shadow-[0_2px_10px_rgb(0,0,0,0.02)] transition-all duration-500 cursor-pointer"
             >
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center">
@@ -405,9 +405,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             key={item.path}
                             href={item.path}
                             onClick={() => setShowApps(false)}
-                            className={`group rounded-2xl p-4 hover:bg-[#F3F4F6] transition-all duration-500 border border-transparent hover:border-[#E5E7EB] ${isNavActive(pathname, item) ? 'bg-[#F3F4F6] border-[#E5E7EB]' : ''}`}
+                            className={`group rounded-lg p-4 hover:bg-[#F3F4F6] transition-all duration-500 border-0 hover:border-[#E5E7EB] ${isNavActive(pathname, item) ? 'bg-[#F3F4F6] border-[#E5E7EB]' : ''}`}
                           >
-                            <div className="w-8 h-8 rounded-xl bg-white border border-[#E5E7EB] shadow-[0_2px_8px_rgb(0,0,0,0.02)] flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]">
+                            <div className="w-8 h-8 rounded-lg bg-white border border-[#E5E7EB] shadow-[0_2px_8px_rgb(0,0,0,0.02)] flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]">
                               <Icon className="w-4 h-4 text-[#111827]" strokeWidth={1.5} />
                             </div>
                             <span className="block text-sm font-bold text-[#111827] mb-1 tracking-tight">{item.name}</span>
@@ -430,7 +430,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 >
                   <Bell className="w-5 h-5" strokeWidth={1.5} />
                   {unreadCount > 0 && (
-                    <span className="absolute top-2 right-2 bg-amber-50 text-amber-700 border border-amber-200 font-bold text-[9px] min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center shadow-xs">
+                    <span className="absolute top-2 right-2 bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] font-bold text-[9px] min-w-[16px] h-[16px] px-1 rounded-full flex items-center justify-center shadow-xs">
                       {unreadCount > 99 ? '99+' : unreadCount}
                     </span>
                   )}
@@ -465,8 +465,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                               }}
                               className="p-4 hover:bg-[#F3F4F6] transition-colors cursor-pointer flex items-start gap-4 border-b border-[#E5E7EB] last:border-0 group"
                             >
-                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${
-                                notif.status === 'pending' ? 'bg-amber-50 text-amber-700 border border-amber-200 border-[#059669]' : 'bg-white text-[#9CA3AF] border-[#E5E7EB] shadow-[0_2px_8px_rgb(0,0,0,0.02)]'
+                              <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border ${
+                                notif.status === 'pending' ? 'bg-[#059669] text-white shadow-sm border-0 hover:bg-[#047857] border-[#059669]' : 'bg-white text-[#9CA3AF] border-[#E5E7EB] shadow-[0_2px_8px_rgb(0,0,0,0.02)]'
                               }`}>
                                 <ShoppingBag className="w-4 h-4" strokeWidth={1.5} />
                               </div>
@@ -541,14 +541,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     key={item.path}
                     href={item.path}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex flex-col p-4 rounded-2xl transition-all ${
+                    className={`flex flex-col p-4 rounded-lg transition-all ${
                       isActive
                         ? 'bg-[#F3F4F6] border border-[#E5E7EB]'
                         : 'hover:bg-[#F3F4F6]'
                     }`}
                   >
                     <span className="flex items-center gap-4">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${isActive ? 'bg-white shadow-[0_2px_8px_rgb(0,0,0,0.02)]' : 'bg-transparent'}`}>
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${isActive ? 'bg-white shadow-[0_2px_8px_rgb(0,0,0,0.02)]' : 'bg-transparent'}`}>
                         <Icon className={`w-5 h-5 ${isActive ? 'text-[#059669]' : 'text-[#9CA3AF]'}`} strokeWidth={1.5} />
                       </div>
                       <span className={`text-base tracking-tight ${isActive ? 'font-bold text-[#111827]' : 'text-[#4B5563]'}`}>{item.name}</span>
