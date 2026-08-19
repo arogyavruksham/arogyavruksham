@@ -132,37 +132,37 @@ export default function NewsletterPage() {
         title="Newsletter"
         description="Emails collected from the store footer and anyone you add here. Export the list anytime."
         actions={
-          <button onClick={exportCsv} className="flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-xl text-sm font-semibold text-stone-700 hover:bg-[#F9F9F8] shadow-2xs">
+          <button onClick={exportCsv} className="flex items-center gap-2 px-4 py-2 bg-white border border-[#EBE3D5] rounded-xl text-sm font-semibold text-[#5C4D43] hover:bg-[#FCF8F5] shadow-2xs">
             <Download className="w-4 h-4" /> Export CSV
           </button>
         }
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white border border-stone-200 rounded-xl p-3">
-          <p className="text-xs font-bold text-stone-500 uppercase">Total subscribers</p>
-          <p className="text-2xl font-black text-stone-800 mt-2">{subscribers.length}</p>
+        <div className="bg-white border border-[#EBE3D5] rounded-xl p-3">
+          <p className="text-xs font-bold text-[#96887E] uppercase">Total subscribers</p>
+          <p className="text-2xl font-black text-[#4A3B32] mt-2">{subscribers.length}</p>
         </div>
-        <div className="bg-white border border-stone-200 rounded-xl p-3">
-          <p className="text-xs font-bold text-stone-500 uppercase">New this month</p>
-          <p className="text-2xl font-black text-stone-800 mt-2">{thisMonth}</p>
+        <div className="bg-white border border-[#EBE3D5] rounded-xl p-3">
+          <p className="text-xs font-bold text-[#96887E] uppercase">New this month</p>
+          <p className="text-2xl font-black text-[#4A3B32] mt-2">{thisMonth}</p>
         </div>
-        <div className="bg-white border border-stone-200 rounded-xl p-3">
-          <p className="text-xs font-bold text-stone-500 uppercase">Signup source</p>
-          <p className="text-sm font-semibold text-stone-700 mt-3">Store footer + admin add</p>
+        <div className="bg-white border border-[#EBE3D5] rounded-xl p-3">
+          <p className="text-xs font-bold text-[#96887E] uppercase">Signup source</p>
+          <p className="text-sm font-semibold text-[#5C4D43] mt-3">Store footer + admin add</p>
         </div>
       </div>
 
-      <form onSubmit={handleAdd} className="bg-white border border-stone-200 rounded-2xl p-3 flex flex-col sm:flex-row gap-3">
+      <form onSubmit={handleAdd} className="bg-white border border-[#EBE3D5] rounded-2xl p-3 flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+          <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#B8ACA3]" />
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Add a subscriber email"
-            className="w-full pl-10 pr-4 py-2.5 border border-stone-200 rounded-xl text-sm font-semibold outline-none focus:border-[#1B4332]"
+            className="w-full pl-10 pr-4 py-2.5 border border-[#EBE3D5] rounded-xl text-sm font-semibold outline-none focus:border-[#C25934]"
           />
         </div>
         <button type="submit" disabled={saving} className="flex items-center justify-center gap-2 px-5 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-xl text-sm font-bold hover:bg-gray-900 disabled:opacity-50">
@@ -170,27 +170,27 @@ export default function NewsletterPage() {
           Add email
         </button>
       </form>
-      {message && <p className="text-sm font-semibold text-[#1B4332] -mt-3">{message}</p>}
+      {message && <p className="text-sm font-semibold text-[#C25934] -mt-3">{message}</p>}
 
       <div className="flex items-center gap-3">
         <div className="relative flex-1 sm:max-w-xs">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#B8ACA3]" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search emails..."
-            className="w-full pl-10 pr-4 py-2 bg-white border border-stone-200 rounded-xl text-sm font-semibold outline-none focus:border-[#1B4332]"
+            className="w-full pl-10 pr-4 py-2 bg-white border border-[#EBE3D5] rounded-xl text-sm font-semibold outline-none focus:border-[#C25934]"
           />
         </div>
-        <span className="text-xs font-bold text-stone-500 flex items-center gap-1">
+        <span className="text-xs font-bold text-[#96887E] flex items-center gap-1">
           <Users className="w-4 h-4" /> {filtered.length} shown
         </span>
       </div>
 
-      <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#EBE3D5] overflow-hidden">
         <table className="w-full text-left min-w-[640px]">
           <thead>
-            <tr className="bg-[#F9F9F8] border-b border-stone-200 text-xs uppercase tracking-wider text-stone-500 font-bold">
+            <tr className="bg-[#FCF8F5] border-b border-[#EBE3D5] text-xs uppercase tracking-wider text-[#96887E] font-bold">
               <th className="p-4 pl-6">Email</th>
               <th className="p-4">Source</th>
               <th className="p-4">Subscribed</th>
@@ -200,29 +200,29 @@ export default function NewsletterPage() {
           <tbody className="divide-y divide-gray-100 text-sm">
             {loading ? (
               <tr>
-                <td colSpan={4} className="p-12 text-center text-stone-500">
+                <td colSpan={4} className="p-12 text-center text-[#96887E]">
                   <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2" />
                   Loading subscribers...
                 </td>
               </tr>
             ) : filtered.length === 0 ? (
               <tr>
-                <td colSpan={4} className="p-12 text-center text-stone-400 italic">
+                <td colSpan={4} className="p-12 text-center text-[#B8ACA3] italic">
                   No subscribers yet. Signups from the store footer will appear here.
                 </td>
               </tr>
             ) : (
               filtered.map((item) => (
-                <tr key={item.email} className="hover:bg-[#F9F9F8]/80">
-                  <td className="p-4 pl-6 font-bold text-stone-800">{item.email}</td>
+                <tr key={item.email} className="hover:bg-[#FCF8F5]/80">
+                  <td className="p-4 pl-6 font-bold text-[#4A3B32]">{item.email}</td>
                   <td className="p-4">
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-stone-100 text-stone-700 capitalize">{item.source}</span>
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#F0EAE1] text-[#5C4D43] capitalize">{item.source}</span>
                   </td>
-                  <td className="p-4 font-mono text-xs text-stone-600">
+                  <td className="p-4 font-mono text-xs text-[#7A6B61]">
                     {new Date(item.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </td>
                   <td className="p-4 pr-6 text-right">
-                    <button onClick={() => handleDelete(item)} className="p-2 text-stone-400 hover:text-red-600 hover:bg-red-50 rounded-xl">
+                    <button onClick={() => handleDelete(item)} className="p-2 text-[#B8ACA3] hover:text-red-600 hover:bg-red-50 rounded-xl">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </td>

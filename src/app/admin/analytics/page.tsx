@@ -262,30 +262,30 @@ export default function AnalyticsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-stone-800" />
+        <Loader2 className="w-8 h-8 animate-spin text-[#4A3B32]" />
       </div>
     )
   }
 
   return (
-    <div className="space-y-6 max-w-full text-stone-800 pb-16 font-sans">
+    <div className="space-y-6 max-w-full text-[#4A3B32] pb-16 font-sans">
       
       <AdminPageHeader
         eyebrow="Overview"
         title="Analytics"
         description="Filter by date and tab to inspect profit, customers, order times, and coupon usage."
         actions={
-          <div className="flex items-center gap-2 bg-white border border-stone-300 rounded-xl px-3 py-2 shadow-2xs">
-            <input type="date" value={rangeStart} onChange={(e) => setRangeStart(e.target.value)} className="text-sm font-bold text-stone-800 outline-none bg-transparent" />
-            <span className="text-stone-400">—</span>
-            <input type="date" value={rangeEnd} onChange={(e) => setRangeEnd(e.target.value)} className="text-sm font-bold text-stone-800 outline-none bg-transparent" />
-            <Calendar className="w-4 h-4 text-stone-500" />
+          <div className="flex items-center gap-2 bg-white border border-[#E0D5C1] rounded-xl px-3 py-2 shadow-2xs">
+            <input type="date" value={rangeStart} onChange={(e) => setRangeStart(e.target.value)} className="text-sm font-bold text-[#4A3B32] outline-none bg-transparent" />
+            <span className="text-[#B8ACA3]">—</span>
+            <input type="date" value={rangeEnd} onChange={(e) => setRangeEnd(e.target.value)} className="text-sm font-bold text-[#4A3B32] outline-none bg-transparent" />
+            <Calendar className="w-4 h-4 text-[#96887E]" />
           </div>
         }
       />
 
       {/* Horizontal Sub-Navigation Tabs */}
-      <div className="flex items-center gap-6 border-b border-stone-200 overflow-x-auto text-sm no-scrollbar">
+      <div className="flex items-center gap-6 border-b border-[#EBE3D5] overflow-x-auto text-sm no-scrollbar">
         {[
           'Overview', 
           'Transactions & Orders', 
@@ -299,8 +299,8 @@ export default function AnalyticsPage() {
             onClick={() => setActiveTab(tab)}
             className={`pb-3 font-bold whitespace-nowrap transition-all border-b-2 cursor-pointer ${
               activeTab === tab 
-                ? 'text-[#1B4332] border-[#1B4332] font-black' 
-                : 'text-stone-400 border-transparent hover:text-stone-700 hover:border-stone-300'
+                ? 'text-[#C25934] border-[#C25934] font-black' 
+                : 'text-[#B8ACA3] border-transparent hover:text-[#5C4D43] hover:border-[#E0D5C1]'
             }`}
           >
             {tab}
@@ -314,30 +314,30 @@ export default function AnalyticsPage() {
           <select 
             value={filterOption}
             onChange={(e) => setFilterOption(e.target.value)}
-            className="appearance-none bg-white border border-stone-300 text-stone-800 text-sm font-semibold rounded-xl pl-4 pr-10 py-2 shadow-2xs outline-none focus:border-[#1B4332] focus:ring-1 focus:ring-[#1B4332] cursor-pointer"
+            className="appearance-none bg-white border border-[#E0D5C1] text-[#4A3B32] text-sm font-semibold rounded-xl pl-4 pr-10 py-2 shadow-2xs outline-none focus:border-[#C25934] focus:ring-1 focus:ring-[#C25934] cursor-pointer"
           >
             <option value="All orders & sales">All orders & sales</option>
             <option value="Completed only">Completed only</option>
             <option value="Pending deliveries">Pending deliveries</option>
             <option value="Discounts applied">Discounts applied</option>
           </select>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500 pointer-events-none" />
+          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#96887E] pointer-events-none" />
         </div>
-        <span className="ml-3 text-xs font-semibold text-stone-500">{rangeOrders.length} orders in range</span>
+        <span className="ml-3 text-xs font-semibold text-[#96887E]">{rangeOrders.length} orders in range</span>
       </div>
 
       {activeTab === 'Customers & Users' && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white rounded-xl p-3 border border-stone-200">
-            <p className="text-sm font-semibold text-stone-500">Unique customers</p>
+          <div className="bg-white rounded-xl p-3 border border-[#EBE3D5]">
+            <p className="text-sm font-semibold text-[#96887E]">Unique customers</p>
             <p className="text-2xl font-black mt-2">{uniqueCustomers}</p>
           </div>
-          <div className="bg-white rounded-xl p-3 border border-stone-200">
-            <p className="text-sm font-semibold text-stone-500">Orders in range</p>
+          <div className="bg-white rounded-xl p-3 border border-[#EBE3D5]">
+            <p className="text-sm font-semibold text-[#96887E]">Orders in range</p>
             <p className="text-2xl font-black mt-2">{rangeOrders.length}</p>
           </div>
-          <div className="bg-white rounded-xl p-3 border border-stone-200">
-            <p className="text-sm font-semibold text-stone-500">Avg. order value</p>
+          <div className="bg-white rounded-xl p-3 border border-[#EBE3D5]">
+            <p className="text-sm font-semibold text-[#96887E]">Avg. order value</p>
             <p className="text-2xl font-black mt-2">
               ₹{rangeOrders.length ? Math.round(rangeOrders.reduce((s, o) => s + Number(o.total_amount || 0), 0) / rangeOrders.length).toLocaleString('en-IN') : 0}
             </p>
@@ -347,12 +347,12 @@ export default function AnalyticsPage() {
 
       {activeTab === 'Offers & Coupons' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="bg-white rounded-xl p-3 border border-stone-200">
-            <p className="text-sm font-semibold text-stone-500">Orders with a coupon</p>
+          <div className="bg-white rounded-xl p-3 border border-[#EBE3D5]">
+            <p className="text-sm font-semibold text-[#96887E]">Orders with a coupon</p>
             <p className="text-2xl font-black mt-2">{couponOrders.length}</p>
           </div>
-          <div className="bg-white rounded-xl p-3 border border-stone-200">
-            <p className="text-sm font-semibold text-stone-500">Coupon usage rate</p>
+          <div className="bg-white rounded-xl p-3 border border-[#EBE3D5]">
+            <p className="text-sm font-semibold text-[#96887E]">Coupon usage rate</p>
             <p className="text-2xl font-black mt-2">
               {rangeOrders.length ? Math.round((couponOrders.length / rangeOrders.length) * 100) : 0}%
             </p>
@@ -364,66 +364,66 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Card 1: Net Profit */}
-        <div className="bg-white rounded-xl p-3 border border-stone-200 shadow-2xs flex flex-col justify-between hover:border-[#1B4332] transition-colors">
-          <div className="flex items-center justify-between text-stone-500 text-sm font-semibold">
+        <div className="bg-white rounded-xl p-3 border border-[#EBE3D5] shadow-2xs flex flex-col justify-between hover:border-[#C25934] transition-colors">
+          <div className="flex items-center justify-between text-[#96887E] text-sm font-semibold">
             <span>Total Net Profit</span>
-            <span title="Calculated revenue minus total product acquisition cost" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#F9F9F8] p-1 rounded-full">
+            <span title="Calculated revenue minus total product acquisition cost" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#FCF8F5] p-1 rounded-full">
               <DollarSign className="w-4 h-4" />
             </span>
           </div>
           <div className="mt-4">
-            <h3 className="text-2xl md:text-2xl font-black text-stone-800">
+            <h3 className="text-2xl md:text-2xl font-black text-[#4A3B32]">
               ₹{stats.totalProfit.toLocaleString('en-IN')}
             </h3>
-            <span className="text-xs text-stone-500 font-semibold mt-1 block">Live profit tracking</span>
+            <span className="text-xs text-[#96887E] font-semibold mt-1 block">Live profit tracking</span>
           </div>
         </div>
 
         {/* Card 2: Completed Orders */}
-        <div className="bg-white rounded-xl p-3 border border-stone-200 shadow-2xs flex flex-col justify-between hover:border-[#1B4332] transition-colors">
-          <div className="flex items-center justify-between text-stone-500 text-sm font-semibold">
+        <div className="bg-white rounded-xl p-3 border border-[#EBE3D5] shadow-2xs flex flex-col justify-between hover:border-[#C25934] transition-colors">
+          <div className="flex items-center justify-between text-[#96887E] text-sm font-semibold">
             <span>Completed Orders</span>
-            <span title="Orders successfully delivered to customer" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#F9F9F8] p-1 rounded-full">
+            <span title="Orders successfully delivered to customer" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#FCF8F5] p-1 rounded-full">
               <PackageCheck className="w-4 h-4" />
             </span>
           </div>
           <div className="mt-4">
-            <h3 className="text-2xl md:text-2xl font-black text-stone-800">
+            <h3 className="text-2xl md:text-2xl font-black text-[#4A3B32]">
               {stats.completedOrders}
             </h3>
-            <span className="text-xs text-stone-500 font-semibold mt-1 block">Fully delivered</span>
+            <span className="text-xs text-[#96887E] font-semibold mt-1 block">Fully delivered</span>
           </div>
         </div>
 
         {/* Card 3: Delivering (Shipped) */}
-        <div className="bg-white rounded-xl p-3 border border-stone-200 shadow-2xs flex flex-col justify-between hover:border-[#1B4332] transition-colors">
-          <div className="flex items-center justify-between text-stone-500 text-sm font-semibold">
+        <div className="bg-white rounded-xl p-3 border border-[#EBE3D5] shadow-2xs flex flex-col justify-between hover:border-[#C25934] transition-colors">
+          <div className="flex items-center justify-between text-[#96887E] text-sm font-semibold">
             <span>In Delivery / Shipped</span>
-            <span title="Orders currently dispatched and in transit" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#F9F9F8] p-1 rounded-full">
+            <span title="Orders currently dispatched and in transit" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#FCF8F5] p-1 rounded-full">
               <Truck className="w-4 h-4" />
             </span>
           </div>
           <div className="mt-4">
-            <h3 className="text-2xl md:text-2xl font-black text-stone-800">
+            <h3 className="text-2xl md:text-2xl font-black text-[#4A3B32]">
               {stats.deliveringOrders}
             </h3>
-            <span className="text-xs text-stone-500 font-semibold mt-1 block">In active transit</span>
+            <span className="text-xs text-[#96887E] font-semibold mt-1 block">In active transit</span>
           </div>
         </div>
 
         {/* Card 4: Coupons Used */}
-        <div className="bg-white rounded-xl p-3 border border-stone-200 shadow-2xs flex flex-col justify-between hover:border-[#1B4332] transition-colors">
-          <div className="flex items-center justify-between text-stone-500 text-sm font-semibold">
+        <div className="bg-white rounded-xl p-3 border border-[#EBE3D5] shadow-2xs flex flex-col justify-between hover:border-[#C25934] transition-colors">
+          <div className="flex items-center justify-between text-[#96887E] text-sm font-semibold">
             <span>Coupons Applied</span>
-            <span title="Total transactions utilizing promotional discount vouchers" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#F9F9F8] p-1 rounded-full">
+            <span title="Total transactions utilizing promotional discount vouchers" className="cursor-help text-emerald-500 hover:text-emerald-700 bg-[#FCF8F5] p-1 rounded-full">
               <Tag className="w-4 h-4" />
             </span>
           </div>
           <div className="mt-4">
-            <h3 className="text-2xl md:text-2xl font-black text-stone-800">
+            <h3 className="text-2xl md:text-2xl font-black text-[#4A3B32]">
               {stats.couponsUsed}
             </h3>
-            <span className="text-xs text-stone-500 font-semibold mt-1 block">Promotions active</span>
+            <span className="text-xs text-[#96887E] font-semibold mt-1 block">Promotions active</span>
           </div>
         </div>
 
@@ -436,13 +436,13 @@ export default function AnalyticsPage() {
       </div>
 
       {(activeTab === 'Overview' || activeTab === 'Order Times') && (
-      <div className="bg-white p-6 rounded-xl shadow-2xs border border-stone-200 mt-6">
+      <div className="bg-white p-6 rounded-xl shadow-2xs border border-[#EBE3D5] mt-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
           <div>
-            <h2 className="text-lg font-black text-stone-800 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-stone-800" /> Overall Order Time Analysis
+            <h2 className="text-lg font-black text-[#4A3B32] flex items-center gap-2">
+              <Clock className="w-5 h-5 text-[#4A3B32]" /> Overall Order Time Analysis
             </h2>
-            <p className="text-xs text-stone-500 mt-0.5">Analyses order placement times across the entire store history</p>
+            <p className="text-xs text-[#96887E] mt-0.5">Analyses order placement times across the entire store history</p>
           </div>
           <span className="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold rounded-full">24-Hour Breakdown</span>
         </div>
@@ -481,20 +481,20 @@ export default function AnalyticsPage() {
       )}
 
       {(activeTab === 'Overview' || activeTab === 'Daily Performance' || activeTab === 'Transactions & Orders') && (
-      <div className="bg-white rounded-xl shadow-2xs border border-stone-200 overflow-hidden">
-        <div className="p-6 border-b border-stone-200 flex justify-between items-center bg-[#F9F9F8]">
+      <div className="bg-white rounded-xl shadow-2xs border border-[#EBE3D5] overflow-hidden">
+        <div className="p-6 border-b border-[#EBE3D5] flex justify-between items-center bg-[#FCF8F5]">
           <div>
-            <h2 className="text-lg font-black text-stone-800 flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-stone-800" /> Daily Analytics & Performance
+            <h2 className="text-lg font-black text-[#4A3B32] flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-[#4A3B32]" /> Daily Analytics & Performance
             </h2>
-            <p className="text-xs text-stone-500 mt-0.5">Click on any date to inspect deep insights, graphs, and complete order logs for that day</p>
+            <p className="text-xs text-[#96887E] mt-0.5">Click on any date to inspect deep insights, graphs, and complete order logs for that day</p>
           </div>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse whitespace-nowrap">
             <thead>
-              <tr className="bg-[#F9F9F8] border-b border-stone-200 text-xs uppercase tracking-wider text-stone-500 font-semibold">
+              <tr className="bg-[#FCF8F5] border-b border-[#EBE3D5] text-xs uppercase tracking-wider text-[#96887E] font-semibold">
                 <th className="p-4 pl-6">Date</th>
                 <th className="p-4">Total Orders</th>
                 <th className="p-4">Delivers (Delivered)</th>
@@ -507,37 +507,37 @@ export default function AnalyticsPage() {
             <tbody className="divide-y divide-gray-100 text-sm font-medium">
               {filteredDailyStats.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="p-5 text-center text-stone-400 italic">No daily order data recorded yet.</td>
+                  <td colSpan={7} className="p-5 text-center text-[#B8ACA3] italic">No daily order data recorded yet.</td>
                 </tr>
               ) : filteredDailyStats.map(day => (
                 <tr 
                   key={day.dateStr} 
                   onClick={() => setSelectedDateStr(day.dateStr)}
-                  className="hover:bg-[#F9F9F8]/80 cursor-pointer transition-colors group"
+                  className="hover:bg-[#FCF8F5]/80 cursor-pointer transition-colors group"
                 >
-                  <td className="p-4 pl-6 font-bold text-stone-800 flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-stone-500 group-hover:text-stone-800 transition-colors" />
+                  <td className="p-4 pl-6 font-bold text-[#4A3B32] flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-[#96887E] group-hover:text-[#4A3B32] transition-colors" />
                     {day.formattedDate}
                   </td>
                   <td className="p-4">
-                    <span className="px-2.5 py-1 bg-stone-100 text-stone-800 rounded-lg font-bold text-xs">
+                    <span className="px-2.5 py-1 bg-[#F0EAE1] text-[#4A3B32] rounded-lg font-bold text-xs">
                       {day.totalOrders}
                     </span>
                   </td>
                   <td className="p-4">
-                    <span className="px-2.5 py-1 bg-stone-100 text-stone-800 border border-stone-200 rounded-lg font-semibold text-xs flex items-center gap-1 w-fit">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-stone-700" /> {day.deliveredOrders}
+                    <span className="px-2.5 py-1 bg-[#F0EAE1] text-[#4A3B32] border border-[#EBE3D5] rounded-lg font-semibold text-xs flex items-center gap-1 w-fit">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#5C4D43]" /> {day.deliveredOrders}
                     </span>
                   </td>
                   <td className="p-4">
-                    <span className="px-2.5 py-1 bg-stone-100 text-stone-600 border border-stone-200 rounded-lg font-semibold text-xs flex items-center gap-1 w-fit">
-                      <Clock className="w-3.5 h-3.5 text-stone-400" /> {day.totalOrders - day.deliveredOrders}
+                    <span className="px-2.5 py-1 bg-[#F0EAE1] text-[#7A6B61] border border-[#EBE3D5] rounded-lg font-semibold text-xs flex items-center gap-1 w-fit">
+                      <Clock className="w-3.5 h-3.5 text-[#B8ACA3]" /> {day.totalOrders - day.deliveredOrders}
                     </span>
                   </td>
-                  <td className="p-4 font-bold text-stone-800">
+                  <td className="p-4 font-bold text-[#4A3B32]">
                     ₹{day.revenue.toLocaleString('en-IN')}
                   </td>
-                  <td className="p-4 font-black text-stone-800">
+                  <td className="p-4 font-black text-[#4A3B32]">
                     ₹{day.profit.toLocaleString('en-IN')}
                   </td>
                   <td className="p-4 text-right pr-6">
@@ -558,19 +558,19 @@ export default function AnalyticsPage() {
 
       {/* Date Deep-Dive Modal */}
       {selectedDayData && (
-        <div className="fixed inset-0 bg-[#1B4332]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col border border-stone-200">
+        <div className="fixed inset-0 bg-[#C25934]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col border border-[#EBE3D5]">
             
-            <div className="p-6 px-8 border-b border-stone-200 flex justify-between items-center bg-[#F9F9F8]/80 sticky top-0 z-10">
+            <div className="p-6 px-8 border-b border-[#EBE3D5] flex justify-between items-center bg-[#FCF8F5]/80 sticky top-0 z-10">
               <div>
-                <span className="text-xs font-black uppercase tracking-wider text-stone-800 block mb-1">Daily Deep-Dive Analytics</span>
-                <h3 className="text-2xl font-black text-stone-800 flex items-center gap-2">
-                  <Calendar className="w-6 h-6 text-stone-800" /> {selectedDayData.formattedDate}
+                <span className="text-xs font-black uppercase tracking-wider text-[#4A3B32] block mb-1">Daily Deep-Dive Analytics</span>
+                <h3 className="text-2xl font-black text-[#4A3B32] flex items-center gap-2">
+                  <Calendar className="w-6 h-6 text-[#4A3B32]" /> {selectedDayData.formattedDate}
                 </h3>
               </div>
               <button 
                 onClick={() => setSelectedDateStr(null)}
-                className="p-2 text-stone-400 hover:text-stone-800 hover:bg-gray-200/60 rounded-full transition-colors"
+                className="p-2 text-[#B8ACA3] hover:text-[#4A3B32] hover:bg-gray-200/60 rounded-full transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -579,21 +579,21 @@ export default function AnalyticsPage() {
             <div className="p-5 overflow-y-auto space-y-5 flex-1">
               
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div className="bg-[#F9F9F8] p-4 rounded-xl border border-stone-200">
-                  <p className="text-xs font-bold text-stone-500 uppercase">Total Orders</p>
-                  <p className="text-2xl font-black text-stone-800 mt-1">{selectedDayData.totalOrders}</p>
+                <div className="bg-[#FCF8F5] p-4 rounded-xl border border-[#EBE3D5]">
+                  <p className="text-xs font-bold text-[#96887E] uppercase">Total Orders</p>
+                  <p className="text-2xl font-black text-[#4A3B32] mt-1">{selectedDayData.totalOrders}</p>
                 </div>
-                <div className="bg-[#F9F9F8] p-4 rounded-xl border border-stone-200">
-                  <p className="text-xs font-bold text-stone-500 uppercase">Delivered</p>
-                  <p className="text-2xl font-black text-stone-800 mt-1">{selectedDayData.deliveredOrders}</p>
+                <div className="bg-[#FCF8F5] p-4 rounded-xl border border-[#EBE3D5]">
+                  <p className="text-xs font-bold text-[#96887E] uppercase">Delivered</p>
+                  <p className="text-2xl font-black text-[#4A3B32] mt-1">{selectedDayData.deliveredOrders}</p>
                 </div>
-                <div className="bg-[#F9F9F8] p-4 rounded-xl border border-stone-200">
-                  <p className="text-xs font-bold text-stone-500 uppercase">Not Delivered</p>
-                  <p className="text-2xl font-black text-stone-800 mt-1">{selectedDayData.totalOrders - selectedDayData.deliveredOrders}</p>
+                <div className="bg-[#FCF8F5] p-4 rounded-xl border border-[#EBE3D5]">
+                  <p className="text-xs font-bold text-[#96887E] uppercase">Not Delivered</p>
+                  <p className="text-2xl font-black text-[#4A3B32] mt-1">{selectedDayData.totalOrders - selectedDayData.deliveredOrders}</p>
                 </div>
-                <div className="bg-[#F9F9F8] p-4 rounded-xl border border-stone-200">
-                  <p className="text-xs font-bold text-stone-500 uppercase">Day Revenue</p>
-                  <p className="text-2xl font-black text-stone-800 mt-1">₹{selectedDayData.revenue.toLocaleString('en-IN')}</p>
+                <div className="bg-[#FCF8F5] p-4 rounded-xl border border-[#EBE3D5]">
+                  <p className="text-xs font-bold text-[#96887E] uppercase">Day Revenue</p>
+                  <p className="text-2xl font-black text-[#4A3B32] mt-1">₹{selectedDayData.revenue.toLocaleString('en-IN')}</p>
                 </div>
                 <div className="bg-amber-50 text-amber-700 border border-amber-200 p-4 rounded-xl">
                   <p className="text-xs font-black text-gray-300 uppercase">Net Day Profit</p>
@@ -603,11 +603,11 @@ export default function AnalyticsPage() {
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
-                <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-stone-200 shadow-2xs flex flex-col">
-                  <h4 className="font-bold text-stone-800 mb-1 flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-stone-800" /> Order Time Graph ({selectedDayData.formattedDate})
+                <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-[#EBE3D5] shadow-2xs flex flex-col">
+                  <h4 className="font-bold text-[#4A3B32] mb-1 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-[#4A3B32]" /> Order Time Graph ({selectedDayData.formattedDate})
                   </h4>
-                  <p className="text-xs text-stone-500 mb-6">Analyses exact order placement times across the 24 hours of this day</p>
+                  <p className="text-xs text-[#96887E] mb-6">Analyses exact order placement times across the 24 hours of this day</p>
                   
                   <div className="h-60 w-full min-h-[240px] flex-1">
                     <ResponsiveContainer width="100%" height="100%">
@@ -626,13 +626,13 @@ export default function AnalyticsPage() {
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-2xs flex flex-col">
-                  <h4 className="font-bold text-stone-800 mb-1">Status Breakdown</h4>
-                  <p className="text-xs text-stone-500 mb-6">Proportion of order fulfillment</p>
+                <div className="bg-white p-6 rounded-xl border border-[#EBE3D5] shadow-2xs flex flex-col">
+                  <h4 className="font-bold text-[#4A3B32] mb-1">Status Breakdown</h4>
+                  <p className="text-xs text-[#96887E] mb-6">Proportion of order fulfillment</p>
                   
                   <div className="h-60 w-full min-h-[240px] flex-1 flex items-center justify-center">
                     {selectedDayStatusStats.length === 0 ? (
-                      <p className="text-xs text-stone-400 italic">No order status data</p>
+                      <p className="text-xs text-[#B8ACA3] italic">No order status data</p>
                     ) : (
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
@@ -659,15 +659,15 @@ export default function AnalyticsPage() {
 
               </div>
 
-              <div className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-2xs">
-                <div className="p-3 bg-[#F9F9F8]/60 border-b border-stone-200 flex justify-between items-center">
+              <div className="bg-white rounded-xl border border-[#EBE3D5] overflow-hidden shadow-2xs">
+                <div className="p-3 bg-[#FCF8F5]/60 border-b border-[#EBE3D5] flex justify-between items-center">
                   <div>
-                    <h4 className="font-bold text-stone-800 flex items-center gap-2 text-sm">
-                      <ShoppingBag className="w-4 h-4 text-stone-800" /> All Order Logs for {selectedDayData.formattedDate}
+                    <h4 className="font-bold text-[#4A3B32] flex items-center gap-2 text-sm">
+                      <ShoppingBag className="w-4 h-4 text-[#4A3B32]" /> All Order Logs for {selectedDayData.formattedDate}
                     </h4>
-                    <p className="text-[11px] text-stone-500 mt-0.5">Click any row below to view full customer, product & payment info</p>
+                    <p className="text-[11px] text-[#96887E] mt-0.5">Click any row below to view full customer, product & payment info</p>
                   </div>
-                  <span className="text-xs font-bold text-stone-700 bg-white px-2.5 py-1 rounded-full border border-stone-200">
+                  <span className="text-xs font-bold text-[#5C4D43] bg-white px-2.5 py-1 rounded-full border border-[#EBE3D5]">
                     {selectedDayData.orders.length} Records
                   </span>
                 </div>
@@ -675,7 +675,7 @@ export default function AnalyticsPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse whitespace-nowrap text-xs">
                     <thead>
-                      <tr className="bg-[#F9F9F8] border-b border-stone-200 text-stone-500 uppercase font-semibold tracking-wider">
+                      <tr className="bg-[#FCF8F5] border-b border-[#EBE3D5] text-[#96887E] uppercase font-semibold tracking-wider">
                         <th className="p-3.5 pl-5">Time</th>
                         <th className="p-3.5">Order ID</th>
                         <th className="p-3.5">Customer Name</th>
@@ -692,22 +692,22 @@ export default function AnalyticsPage() {
                           <tr 
                             key={order.id} 
                             onClick={() => setSelectedOrder(order)}
-                            className="hover:bg-[#F9F9F8] cursor-pointer transition-colors group"
+                            className="hover:bg-[#FCF8F5] cursor-pointer transition-colors group"
                           >
-                            <td className="p-3.5 pl-5 text-stone-500 font-mono">{timeStr}</td>
-                            <td className="p-3.5 font-bold font-mono text-stone-800">#{order.id.slice(0, 8).toUpperCase()}</td>
-                            <td className="p-3.5 font-bold text-stone-800">{order.shipping_address?.name || order.users?.full_name || 'Customer'}</td>
-                            <td className="p-3.5 text-stone-600">{order.payment_method || 'Online'}</td>
+                            <td className="p-3.5 pl-5 text-[#96887E] font-mono">{timeStr}</td>
+                            <td className="p-3.5 font-bold font-mono text-[#4A3B32]">#{order.id.slice(0, 8).toUpperCase()}</td>
+                            <td className="p-3.5 font-bold text-[#4A3B32]">{order.shipping_address?.name || order.users?.full_name || 'Customer'}</td>
+                            <td className="p-3.5 text-[#7A6B61]">{order.payment_method || 'Online'}</td>
                             <td className="p-3.5">
-                              <span className="px-2 py-0.5 rounded-full font-bold uppercase tracking-wider text-[10px] bg-stone-100 text-stone-800 border border-stone-200">
+                              <span className="px-2 py-0.5 rounded-full font-bold uppercase tracking-wider text-[10px] bg-[#F0EAE1] text-[#4A3B32] border border-[#EBE3D5]">
                                 {order.status}
                               </span>
                             </td>
-                            <td className="p-3.5 font-black text-stone-800">
+                            <td className="p-3.5 font-black text-[#4A3B32]">
                               ₹{Number(order.total_amount || 0).toLocaleString('en-IN')}
                             </td>
                             <td className="p-3.5 text-right pr-5">
-                              <span className="inline-flex items-center gap-1 text-stone-800 font-bold group-hover:underline">
+                              <span className="inline-flex items-center gap-1 text-[#4A3B32] font-bold group-hover:underline">
                                 <Eye className="w-4 h-4" /> View
                               </span>
                             </td>
@@ -721,7 +721,7 @@ export default function AnalyticsPage() {
 
             </div>
 
-            <div className="p-4 px-8 border-t border-stone-200 bg-[#F9F9F8] flex justify-end">
+            <div className="p-4 px-8 border-t border-[#EBE3D5] bg-[#FCF8F5] flex justify-end">
               <button 
                 onClick={() => setSelectedDateStr(null)}
                 className="px-6 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 font-bold text-sm rounded-xl hover:bg-gray-900 transition-colors shadow-xs cursor-pointer"
@@ -736,35 +736,35 @@ export default function AnalyticsPage() {
 
       {/* Order Details Sidebar Overlay */}
       {selectedOrder && (
-        <div className="fixed inset-0 z-[100] bg-[#1B4332]/40 backdrop-blur-xs flex justify-end animate-in fade-in duration-200">
-          <div className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right overflow-hidden border-l border-stone-200">
-            <div className="flex items-center justify-between p-6 border-b border-stone-200 bg-[#F9F9F8]">
+        <div className="fixed inset-0 z-[100] bg-[#C25934]/40 backdrop-blur-xs flex justify-end animate-in fade-in duration-200">
+          <div className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right overflow-hidden border-l border-[#EBE3D5]">
+            <div className="flex items-center justify-between p-6 border-b border-[#EBE3D5] bg-[#FCF8F5]">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-stone-800 block">Order Inspection</span>
-                <h2 className="text-xl font-black text-stone-800">Order Details</h2>
+                <span className="text-[10px] font-black uppercase tracking-wider text-[#4A3B32] block">Order Inspection</span>
+                <h2 className="text-xl font-black text-[#4A3B32]">Order Details</h2>
               </div>
-              <button onClick={() => setSelectedOrder(null)} className="p-2 text-stone-400 hover:text-stone-800 rounded-full hover:bg-gray-200/60 transition-colors cursor-pointer">
+              <button onClick={() => setSelectedOrder(null)} className="p-2 text-[#B8ACA3] hover:text-[#4A3B32] rounded-full hover:bg-gray-200/60 transition-colors cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
             
             <div className="flex-1 overflow-y-auto p-6 space-y-5">
               
-              <div className="flex justify-between items-center pb-4 border-b border-stone-200">
-                <span className="text-stone-500 font-medium text-sm">Order ID</span>
-                <span className="font-bold font-mono text-stone-800 text-lg">#{selectedOrder.id.split('-')[0].toUpperCase()}</span>
+              <div className="flex justify-between items-center pb-4 border-b border-[#EBE3D5]">
+                <span className="text-[#96887E] font-medium text-sm">Order ID</span>
+                <span className="font-bold font-mono text-[#4A3B32] text-lg">#{selectedOrder.id.split('-')[0].toUpperCase()}</span>
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-xs font-bold text-stone-400 flex items-center gap-2 uppercase tracking-wider">
-                  <User className="w-4 h-4 text-stone-800" /> Customer Information
+                <h3 className="text-xs font-bold text-[#B8ACA3] flex items-center gap-2 uppercase tracking-wider">
+                  <User className="w-4 h-4 text-[#4A3B32]" /> Customer Information
                 </h3>
-                <div className="pl-6 space-y-1.5 text-sm text-stone-600 bg-[#F9F9F8]/60 p-4 rounded-xl border border-stone-200">
-                  <p className="font-bold text-stone-800 text-base">{selectedOrder.shipping_address?.name || selectedOrder.users?.full_name || 'Customer'}</p>
-                  <p className="font-mono text-xs text-stone-500">{selectedOrder.shipping_address?.phone || '-'}</p>
+                <div className="pl-6 space-y-1.5 text-sm text-[#7A6B61] bg-[#FCF8F5]/60 p-4 rounded-xl border border-[#EBE3D5]">
+                  <p className="font-bold text-[#4A3B32] text-base">{selectedOrder.shipping_address?.name || selectedOrder.users?.full_name || 'Customer'}</p>
+                  <p className="font-mono text-xs text-[#96887E]">{selectedOrder.shipping_address?.phone || '-'}</p>
                   {selectedOrder.shipping_address?.fullAddress && (
-                    <div className="flex gap-2 pt-2 border-t border-stone-200 mt-2 text-xs">
-                      <MapPin className="w-4 h-4 mt-0.5 text-stone-500 shrink-0" />
+                    <div className="flex gap-2 pt-2 border-t border-[#EBE3D5] mt-2 text-xs">
+                      <MapPin className="w-4 h-4 mt-0.5 text-[#96887E] shrink-0" />
                       <p>{selectedOrder.shipping_address.fullAddress},<br/>{selectedOrder.shipping_address.city}, {selectedOrder.shipping_address.state} - {selectedOrder.shipping_address.pincode}</p>
                     </div>
                   )}
@@ -772,26 +772,26 @@ export default function AnalyticsPage() {
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-xs font-bold text-stone-400 flex items-center gap-2 uppercase tracking-wider">
-                  <Package className="w-4 h-4 text-stone-800" /> Product Information
+                <h3 className="text-xs font-bold text-[#B8ACA3] flex items-center gap-2 uppercase tracking-wider">
+                  <Package className="w-4 h-4 text-[#4A3B32]" /> Product Information
                 </h3>
                 <div className="space-y-3">
                   {selectedOrder.order_items?.map((item: any, idx: number) => (
-                    <div key={idx} className="flex gap-4 p-3 bg-[#F9F9F8]/60 rounded-xl border border-stone-200 items-center">
+                    <div key={idx} className="flex gap-4 p-3 bg-[#FCF8F5]/60 rounded-xl border border-[#EBE3D5] items-center">
                       {item.products?.image_url ? (
-                        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center border border-stone-200 shrink-0 overflow-hidden shadow-2xs">
+                        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center border border-[#EBE3D5] shrink-0 overflow-hidden shadow-2xs">
                           <img src={item.products.image_url} alt={item.products.title} className="w-full h-full object-contain mix-blend-multiply p-1" />
                         </div>
                       ) : (
-                        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center border border-stone-200 shrink-0 shadow-2xs">
+                        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center border border-[#EBE3D5] shrink-0 shadow-2xs">
                           <Package className="w-6 h-6 text-gray-300" />
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="font-bold text-stone-800 text-sm leading-tight truncate">{item.products?.title || 'Product'}</p>
-                        <p className="text-xs text-stone-500 mt-1 font-medium">Qty: {item.quantity}</p>
+                        <p className="font-bold text-[#4A3B32] text-sm leading-tight truncate">{item.products?.title || 'Product'}</p>
+                        <p className="text-xs text-[#96887E] mt-1 font-medium">Qty: {item.quantity}</p>
                       </div>
-                      <div className="font-black text-stone-800 shrink-0 text-sm">
+                      <div className="font-black text-[#4A3B32] shrink-0 text-sm">
                         ₹{Number(item.price_at_time || item.price || item.products?.price || item.products?.actual_price || (selectedOrder.total_amount ? Math.round(selectedOrder.total_amount / (item.quantity || 1)) : 0)).toLocaleString('en-IN')}
                       </div>
                     </div>
@@ -800,32 +800,32 @@ export default function AnalyticsPage() {
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-xs font-bold text-stone-400 flex items-center gap-2 uppercase tracking-wider">
-                  <CreditCard className="w-4 h-4 text-stone-800" /> Payment Information
+                <h3 className="text-xs font-bold text-[#B8ACA3] flex items-center gap-2 uppercase tracking-wider">
+                  <CreditCard className="w-4 h-4 text-[#4A3B32]" /> Payment Information
                 </h3>
-                <div className="bg-[#F9F9F8]/60 p-4 rounded-xl border border-stone-200 space-y-3 text-sm">
-                  <div className="flex justify-between items-center text-stone-600">
+                <div className="bg-[#FCF8F5]/60 p-4 rounded-xl border border-[#EBE3D5] space-y-3 text-sm">
+                  <div className="flex justify-between items-center text-[#7A6B61]">
                     <span>Payment Method</span>
-                    <span className="font-bold text-stone-800">{selectedOrder.payment_method || 'Online Payment'}</span>
+                    <span className="font-bold text-[#4A3B32]">{selectedOrder.payment_method || 'Online Payment'}</span>
                   </div>
-                  <div className="flex justify-between items-center text-stone-600">
+                  <div className="flex justify-between items-center text-[#7A6B61]">
                     <span>Payment Status</span>
-                    <span className="font-bold px-2 py-0.5 rounded uppercase text-[10px] tracking-widest border bg-amber-50 text-amber-700 border border-amber-200 border-[#1B4332]">
+                    <span className="font-bold px-2 py-0.5 rounded uppercase text-[10px] tracking-widest border bg-amber-50 text-amber-700 border border-amber-200 border-[#C25934]">
                       {selectedOrder.payment_method === 'Cash on Delivery' && selectedOrder.status !== 'delivered' ? 'Pending' : 'Paid'}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center text-stone-800 font-black border-t border-stone-200 pt-3 text-base">
+                  <div className="flex justify-between items-center text-[#4A3B32] font-black border-t border-[#EBE3D5] pt-3 text-base">
                     <span>Total Amount</span>
-                    <span className="text-lg text-stone-800">₹{Number(selectedOrder.total_amount || 0).toLocaleString('en-IN')}</span>
+                    <span className="text-lg text-[#4A3B32]">₹{Number(selectedOrder.total_amount || 0).toLocaleString('en-IN')}</span>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-3 pb-8">
-                <h3 className="text-xs font-bold text-stone-400 flex items-center gap-2 uppercase tracking-wider">
-                  <Truck className="w-4 h-4 text-stone-800" /> Shipping Status
+                <h3 className="text-xs font-bold text-[#B8ACA3] flex items-center gap-2 uppercase tracking-wider">
+                  <Truck className="w-4 h-4 text-[#4A3B32]" /> Shipping Status
                 </h3>
-                <div className="pl-6 space-y-6 relative mt-4 bg-[#F9F9F8]/60 p-3 rounded-xl border border-stone-200">
+                <div className="pl-6 space-y-6 relative mt-4 bg-[#FCF8F5]/60 p-3 rounded-xl border border-[#EBE3D5]">
                   <div className="absolute left-7 top-7 bottom-7 w-0.5 bg-gray-200"></div>
                   
                   {[
@@ -841,12 +841,12 @@ export default function AnalyticsPage() {
 
                     return (
                       <div key={status.id} className="relative z-10 flex gap-4 items-start">
-                        <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 border-2 bg-white ${isCompleted ? 'border-[#1B4332]' : 'border-stone-300'}`}>
-                          {isCompleted ? <div className="w-2.5 h-2.5 bg-[#1B4332] rounded-full"></div> : null}
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 border-2 bg-white ${isCompleted ? 'border-[#C25934]' : 'border-[#E0D5C1]'}`}>
+                          {isCompleted ? <div className="w-2.5 h-2.5 bg-[#C25934] rounded-full"></div> : null}
                         </div>
                         <div>
-                          <p className={`text-sm font-bold leading-none ${isCompleted ? 'text-stone-800' : 'text-stone-400'}`}>{status.label}</p>
-                          <p className={`text-xs mt-1 ${isCompleted ? 'text-stone-500' : 'text-stone-400'}`}>{status.desc}</p>
+                          <p className={`text-sm font-bold leading-none ${isCompleted ? 'text-[#4A3B32]' : 'text-[#B8ACA3]'}`}>{status.label}</p>
+                          <p className={`text-xs mt-1 ${isCompleted ? 'text-[#96887E]' : 'text-[#B8ACA3]'}`}>{status.desc}</p>
                         </div>
                       </div>
                     )
@@ -856,7 +856,7 @@ export default function AnalyticsPage() {
               
             </div>
 
-            <div className="p-4 px-6 border-t border-stone-200 bg-[#F9F9F8] flex justify-end">
+            <div className="p-4 px-6 border-t border-[#EBE3D5] bg-[#FCF8F5] flex justify-end">
               <button 
                 onClick={() => setSelectedOrder(null)}
                 className="px-6 py-2.5 bg-amber-50 text-amber-700 border border-amber-200 font-bold text-sm rounded-xl hover:bg-gray-900 transition-colors shadow-xs w-full cursor-pointer"
