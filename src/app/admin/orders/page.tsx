@@ -375,15 +375,15 @@ export default function AdminOrdersPage() {
             <table className="w-full text-left border-collapse whitespace-nowrap min-w-[800px]">
               <thead>
                 <tr className="bg-[#FCFCFD] border-b border-black/5 text-[10px] uppercase tracking-widest text-gray-400 font-bold">
-                  <th className="p-3 pl-4 w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 cursor-pointer" /></th>
-                  <th className="p-3">Order ID</th>
-                  <th className="p-3">Customer</th>
-                  <th className="p-3">Date</th>
-                  <th className="p-3">Summary</th>
-                  <th className="p-3">Destination</th>
-                  <th className="p-3">Amount</th>
-                  <th className="p-3">State</th>
-                  <th className="p-3 pr-4 text-right">Actions</th>
+                  <th className="p-2 pl-4 w-12"><input type="checkbox" className="rounded border-gray-300 text-gray-900 cursor-pointer" /></th>
+                  <th className="p-2">Order ID</th>
+                  <th className="p-2">Customer</th>
+                  <th className="p-2">Date</th>
+                  <th className="p-2">Summary</th>
+                  <th className="p-2">Destination</th>
+                  <th className="p-2">Amount</th>
+                  <th className="p-2">State</th>
+                  <th className="p-2 pr-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="text-sm divide-y divide-black/5 font-medium">
@@ -407,38 +407,38 @@ export default function AdminOrdersPage() {
                   
                   return (
                     <tr key={order.id} className="hover:bg-[#F7F7F8] transition-colors group">
-                      <td className="p-3 pl-4 align-top">
+                      <td className="p-1.5 pl-4 align-top">
                         <input type="checkbox" className="rounded border-gray-300 text-gray-900 cursor-pointer" />
                       </td>
-                      <td className="p-3 align-top">
-                        <span className="font-bold font-mono text-gray-900 cursor-pointer hover:underline" onClick={() => setSelectedOrder(order)}>
+                      <td className="p-1.5 align-top">
+                        <span className="font-bold font-mono text-gray-900 cursor-pointer hover:underline text-[11px]" onClick={() => setSelectedOrder(order)}>
                           #{order.id.split('-')[0].toUpperCase()}
                         </span>
                       </td>
-                      <td className="p-3 align-top">
-                        <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-white border border-black/5 flex items-center justify-center font-black text-xs text-gray-900 shrink-0 shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
+                      <td className="p-1.5 align-top">
+                        <div className="flex items-start gap-2">
+                          <div className="w-8 h-8 rounded-lg bg-white border border-black/5 flex items-center justify-center font-black text-[10px] text-gray-900 shrink-0 shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
                             {avatarLetter}
                           </div>
                           <div>
-                            <p className="font-bold text-gray-900">{customerName}</p>
-                            <p className="text-xs text-gray-500 mt-0.5">{customerEmail}</p>
+                            <p className="font-bold text-gray-900 text-xs">{customerName}</p>
+                            <p className="text-[10px] text-gray-500 mt-0.5 leading-none">{customerEmail}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="p-3 align-top text-gray-600 font-bold text-xs">
+                      <td className="p-1.5 align-top text-gray-600 font-bold text-[11px]">
                         {new Date(order.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </td>
-                      <td className="p-3 align-top text-gray-600">
-                        <div className="flex flex-col gap-3 max-w-[220px]">
+                      <td className="p-1.5 align-top text-gray-600">
+                        <div className="flex flex-col gap-1.5 max-w-[220px]">
                           {order.order_items?.map((item: any, idx: number) => (
-                            <div key={idx} className="flex items-center gap-3">
+                            <div key={idx} className="flex items-center gap-2">
                               {item.products?.image_url && (
-                                <div className="w-10 h-10 rounded-xl bg-white border border-black/5 p-1 shrink-0 overflow-hidden flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
+                                <div className="w-8 h-8 rounded-lg bg-white border border-black/5 p-1 shrink-0 overflow-hidden flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
                                   <img src={item.products.image_url} alt={item.products.title} className="w-full h-full object-contain mix-blend-multiply" />
                                 </div>
                               )}
-                              <div className="text-xs min-w-0">
+                              <div className="text-[11px] min-w-0 leading-tight">
                                 <p className="font-bold text-gray-900 truncate" title={item.products?.title}>{item.products?.title}</p>
                                 <p className="text-gray-400 font-bold mt-0.5">Qty: {item.quantity}</p>
                               </div>
@@ -446,20 +446,20 @@ export default function AdminOrdersPage() {
                           ))}
                         </div>
                       </td>
-                      <td className="p-3 align-top">
+                      <td className="p-1.5 align-top">
                         {order.shipping_address ? (
-                          <div className="text-xs text-gray-600 min-w-[180px] max-w-[240px] whitespace-normal">
-                            <span className="font-bold text-gray-900 block mb-1">{order.shipping_address.name}</span>
-                            <p className="leading-relaxed text-gray-500">{order.shipping_address.city}, {order.shipping_address.state}</p>
+                          <div className="text-[11px] text-gray-600 min-w-[150px] max-w-[200px] whitespace-normal leading-tight">
+                            <span className="font-bold text-gray-900 block mb-0.5">{order.shipping_address.name}</span>
+                            <p className="text-gray-500">{order.shipping_address.city}, {order.shipping_address.state}</p>
                           </div>
                         ) : (
-                          <span className="text-xs text-gray-400 italic font-bold">Digital</span>
+                          <span className="text-[11px] text-gray-400 italic font-bold">Digital</span>
                         )}
                       </td>
-                      <td className="p-3 align-top font-black tracking-tight text-gray-900 text-base">₹{Number(order.total_amount).toLocaleString('en-IN')}</td>
-                      <td className="p-3 align-top">
-                        <div className="flex flex-col items-start gap-2">
-                          <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest ${
+                      <td className="p-1.5 align-top font-black tracking-tight text-gray-900 text-sm">₹{Number(order.total_amount).toLocaleString('en-IN')}</td>
+                      <td className="p-1.5 align-top">
+                        <div className="flex flex-col items-start gap-1">
+                          <span className={`inline-flex items-center px-2 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest ${
                             order.status === 'delivered' ? 'bg-[#FCFCFD] text-gray-900 border border-black/5' : 
                             order.status === 'cancelled' ? 'bg-gray-50 text-gray-400 line-through' : 
                             'bg-black text-white shadow-xs'
@@ -468,9 +468,9 @@ export default function AdminOrdersPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="p-3 pr-4 text-right align-top">
-                        <button onClick={() => setSelectedOrder(order)} className="p-2.5 text-gray-400 hover:text-black bg-[#FCFCFD] border border-black/5 rounded-xl transition-all cursor-pointer shadow-xs">
-                          <Eye className="w-4 h-4" strokeWidth={1.5} />
+                      <td className="p-1.5 pr-4 text-right align-top">
+                        <button onClick={() => setSelectedOrder(order)} className="p-1.5 text-gray-400 hover:text-black bg-[#FCFCFD] border border-black/5 rounded-lg transition-all cursor-pointer shadow-xs">
+                          <Eye className="w-3.5 h-3.5" strokeWidth={1.5} />
                         </button>
                       </td>
                     </tr>
