@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ChevronsUp } from 'lucide-react'
+import { NewsletterSubscribeForm } from '@/components/admin/NewsletterSubscribeForm'
 
 export function Footer() {
   const pathname = usePathname()
@@ -110,20 +111,7 @@ export function Footer() {
                 Sign up for 10% off your first purchase and free shipping. Updates information on Sales and Offers.
               </p>
               
-              <form className="flex mb-6" onSubmit={(e) => e.preventDefault()}>
-                <input 
-                  type="email" 
-                  placeholder="Enter your email..." 
-                  className="flex-1 border border-gray-300 border-r-0 px-4 py-3 text-[13px] focus:outline-none focus:border-black"
-                  required
-                />
-                <button 
-                  type="submit" 
-                  className="bg-black text-white px-8 py-3 text-[13px] font-bold hover:bg-gray-800 transition-colors"
-                >
-                  Sign Up
-                </button>
-              </form>
+              <NewsletterSubscribeForm source="footer" />
 
               <p className="text-[12px] text-gray-500 leading-relaxed">
                 ***By entering the e-mail you accept the <a href="/policies/terms" className="font-bold text-black hover:underline">terms and conditions</a> and the <a href="/policies/privacy" className="font-bold text-black hover:underline">privacy policy</a>.

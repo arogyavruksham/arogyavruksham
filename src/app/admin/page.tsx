@@ -1,9 +1,18 @@
 'use client'
 
-import { TrendingUp, Users, Package, ShoppingBag, ArrowUpRight, ArrowDownRight, MoreVertical, Loader2, MapPin, Info } from 'lucide-react'
+import { TrendingUp, Users, Package, ShoppingBag, ArrowUpRight, Loader2, MapPin, Info, Sparkles, BarChart2, Bot, Archive, ShoppingCart, LayoutGrid, Tag, Megaphone, Mail, Settings, ChevronRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { adminDbProxy } from '@/lib/admin-proxy'
+import { filterNavForRole } from '@/lib/admin-nav'
+import { getLocalSubscribers } from '@/lib/newsletter'
+import { getStoreSettings } from '@/lib/store-settings'
+import { useAuthStore } from '@/store/authStore'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+
+const SECTION_ICONS: Record<string, any> = {
+  Sparkles, BarChart2, Bot, Package, Archive, ShoppingCart, LayoutGrid, Tag, Megaphone, Mail, Users, Settings,
+}
 
 const PIE_COLORS = ['#059669', '#E2E8F0'];
 
@@ -29,6 +38,9 @@ export default function AdminDashboard() {
   
   const [allDailyData, setAllDailyData] = useState<any[]>([])
   const [allValidOrders, setAllValidOrders] = useState<any[]>([])
+  const [monthlyTarget, setMonthlyTarget] = useState(145000)
+  const [sectionCounts, setSectionCounts] = useState<Record<string, string>>({})
+  const { user } = useAuthStore()
 
   useEffect(() => {
     async function fetchDashboardData() {
@@ -134,6 +146,31 @@ export default function AdminDashboard() {
         setActiveCoupons(couponsData.slice(0, 3));
       }
 
+      const { data: usersData } = await adminDbProxy({ action: 'select', table: 'users' }).catch(() => ({ data: [] }))
+      const { data: allProducts } = await adminDbProxy({ action: 'select', table: 'products' }).catch(() => ({ data: [] }))
+      const settings = getStoreSettings()
+      setMonthlyTarget(settings.monthlyTarget || 145000)
+      const productCount = (allProducts || topProducts || []).length
+      const lowStock = (allProducts || []).filter((p: any) => Number(p.stock_count) <= (settings.lowStockThreshold || 10)).length
+      const subscriberCount = getLocalSubscribers().length
+      const orderCount = (ordersData || []).length
+      const pendingCount = (ordersData || []).filter((o: any) => o.status !== 'delivered' && o.status !== 'cancelled').length
+
+      setSectionCounts({
+        '/admin': `${orderCount} orders`,
+        '/admin/analytics': 'Live reports',
+        '/admin/ai-summary': 'Today’s insights',
+        '/admin/products': `${productCount} products`,
+        '/admin/inventory': `${lowStock} need restock`,
+        '/admin/orders': `${pendingCount} open`,
+        '/admin/categories': 'Shop filters',
+        '/admin/offers': `${(couponsData || []).length} coupons`,
+        '/admin/announcement': 'Store banner',
+        '/admin/newsletter': `${subscriberCount} subscribers`,
+        '/admin/customers': `${(usersData || []).length} users`,
+        '/admin/settings': 'Store setup',
+      })
+
       setLoading(false)
     }
 
@@ -188,13 +225,12 @@ export default function AdminDashboard() {
       balance: totalIncome - totalExpenses
     });
 
-    const monthlyTarget = 145000;
     const remaining = Math.max(0, monthlyTarget - totalIncome);
     setTargetData([
       { name: 'Achieved', value: totalIncome > 0 ? totalIncome : 1 },
       { name: 'Remaining', value: remaining }
     ]);
-  }, [salesMonthFilter, allDailyData])
+  }, [salesMonthFilter, allDailyData, monthlyTarget])
 
   if (loading) {
     return (
@@ -210,9 +246,9 @@ export default function AdminDashboard() {
       {/* Header & Global Filter */}
       <div className="flex justify-between items-center border-b border-gray-200/80 pb-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-black text-emerald-900 tracking-tight">Dashboard Overview</h1>
-          <p className="text-xs text-gray-500 mt-1">
-            Comprehensive snapshot of store revenue, customer acquisition, and fulfillment rates.
+          <h1 className="text-2xl md:text-3xl font-black text-emerald-900 tracking-tight">Admin Overview</h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Every store tool in one place — revenue, catalog, fulfillment, and marketing.
           </p>
         </div>
         <select 
@@ -292,6 +328,42 @@ export default function AdminDashboard() {
               Requires immediate action
             </span>
           </div>
+        </div>
+      </div>
+
+      {/* All admin sections */}
+      <div>
+        <div className="flex items-end justify-between mb-3">
+          <div>
+            <h2 className="text-lg font-black text-emerald-900">All admin sections</h2>
+            <p className="text-xs text-gray-500">Open any module — each page is live and connected to your store data.</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
+          {filterNavForRole(user?.role).map((item) => {
+            const Icon = SECTION_ICONS[item.icon] || Package
+            return (
+              <Link
+                key={item.path}
+                href={item.path}
+                className="group bg-white border border-gray-200/80 rounded-xl p-4 hover:border-emerald-800 hover:shadow-sm transition-all"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-100 flex items-center justify-center">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-1 rounded-full">
+                    {sectionCounts[item.path] || item.group}
+                  </span>
+                </div>
+                <h3 className="mt-3 font-black text-gray-900 group-hover:text-emerald-800">{item.name}</h3>
+                <p className="text-xs text-gray-500 mt-1 leading-relaxed">{item.description}</p>
+                <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-800 mt-3">
+                  Open <ChevronRight className="w-3.5 h-3.5" />
+                </span>
+              </Link>
+            )
+          })}
         </div>
       </div>
       
@@ -410,7 +482,7 @@ export default function AdminDashboard() {
                   <span className="text-xs text-emerald-900 font-black uppercase">Monthly Goal</span>
                 </div>
                 <div className="flex items-center gap-1 font-black text-emerald-900 text-base">
-                  <ArrowUpRight className="w-4 h-4 text-emerald-900" /> ₹145,000
+                  <ArrowUpRight className="w-4 h-4 text-emerald-900" /> ₹{monthlyTarget.toLocaleString('en-IN')}
                 </div>
               </div>
             </div>

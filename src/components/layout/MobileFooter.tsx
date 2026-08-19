@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { ChevronDown, ChevronRight, Mail, Phone, Clock } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { NewsletterSubscribeForm } from '@/components/admin/NewsletterSubscribeForm'
 
 export function MobileFooter() {
   const pathname = usePathname()
@@ -148,16 +149,7 @@ export function MobileFooter() {
               <p className="text-[9px] text-gray-500">Get updates on new collections, offers & more</p>
             </div>
           </div>
-          <div className="flex gap-2">
-            <input 
-              type="email" 
-              placeholder="Enter your email address" 
-              className="flex-1 border border-gray-200 rounded-md px-3 py-2 text-[10px] focus:outline-none focus:border-[#1A73E8]"
-            />
-            <button className="bg-[#1A73E8] text-white px-4 py-2 rounded-md text-[10px] font-medium hover:bg-blue-700 transition-colors">
-              Subscribe
-            </button>
-          </div>
+          <NewsletterSubscribeForm compact source="mobile-footer" />
         </div>
 
         {/* Contact & Follow Us */}

@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
-import { Search, Filter, MoreHorizontal, Eye, Truck, CheckCircle, Loader2, X, User, MapPin, Package, CreditCard, ChevronDown, ChevronRight, Download, Calendar, ArrowUpRight } from 'lucide-react'
+import { Search, Filter, Download, Loader2, X, User, MapPin, Package, CreditCard, ChevronDown, ChevronRight, Eye, Truck, CheckCircle } from 'lucide-react'
+import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
 import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/store/authStore'
 
@@ -161,6 +162,13 @@ export default function AdminOrdersPage() {
 
   return (
     <div className="space-y-6 pb-28 md:pb-8 text-gray-900 font-sans">
+      <div className="hidden md:block">
+        <AdminPageHeader
+          eyebrow="Commerce"
+          title="Orders & Sales"
+          description="Search, filter, update fulfillment status, and export every order."
+        />
+      </div>
       
       {/* MOBILE VIEW */}
       <div className="md:hidden space-y-4 -mt-2">

@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import { useCategories, saveStoredCategories, CategoryItem } from '@/lib/categories'
-import { Plus, Trash2, Sparkles, ExternalLink, Check, Search, Filter } from 'lucide-react'
+import { Plus, Trash2, ExternalLink, Check, Search } from 'lucide-react'
 import Link from 'next/link'
+import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
 
 export default function CategoriesPage() {
   const categories = useCategories()
@@ -58,6 +59,11 @@ export default function CategoriesPage() {
 
   return (
     <div className="space-y-6 text-gray-900 font-sans pb-12">
+      <AdminPageHeader
+        eyebrow="Commerce"
+        title="Categories"
+        description="These collections power shop filters and homepage category tiles."
+      />
       
       {/* Top Controls - Exact Screenshot Style */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -72,9 +78,6 @@ export default function CategoriesPage() {
               className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shrink-0 shadow-2xs cursor-pointer">
-            <Filter className="w-4 h-4 text-gray-600" /> Filter
-          </button>
         </div>
         <button
           onClick={() => setIsAdding(!isAdding)}

@@ -1,17 +1,23 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Loader2, AlertTriangle, CheckCircle, PackageX, Search, Filter } from 'lucide-react'
+import { Loader2, AlertTriangle, CheckCircle, PackageX, Search, Save } from 'lucide-react'
 import { adminDbProxy } from '@/lib/admin-proxy'
 import { normalizeProducts } from '@/lib/product-helper'
+import { getStoreSettings } from '@/lib/store-settings'
+import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
 
 export default function InventoryPage() {
   const [products, setProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'LOW_STOCK' | 'OUT_OF_STOCK' | 'FULL_STOCK'>('LOW_STOCK')
   const [searchFilter, setSearchFilter] = useState('')
+  const [threshold, setThreshold] = useState(10)
+  const [draftStock, setDraftStock] = useState<Record<string, string>>({})
+  const [savingId, setSavingId] = useState<string | null>(null)
 
   useEffect(() => {
+    setThreshold(getStoreSettings().lowStockThreshold || 10)
     async function fetchInventory() {
       try {
         const { data, error } = await adminDbProxy({
@@ -19,7 +25,13 @@ export default function InventoryPage() {
           table: 'products',
           order: { column: 'stock_count', ascending: true }
         })
-        if (data) setProducts(normalizeProducts(data))
+        if (data) {
+          const list = normalizeProducts(data)
+          setProducts(list)
+          const drafts: Record<string, string> = {}
+          list.forEach((p: any) => { drafts[p.id] = String(p.stock_count ?? 0) })
+          setDraftStock(drafts)
+        }
       } catch (err) {
         console.error(err)
       }
@@ -28,9 +40,27 @@ export default function InventoryPage() {
     fetchInventory()
   }, [])
 
-  const lowStock = products.filter(p => p.stock_count > 0 && p.stock_count <= 10)
+  const lowStock = products.filter(p => p.stock_count > 0 && p.stock_count <= threshold)
   const outOfStock = products.filter(p => p.stock_count === 0)
-  const fullStock = products.filter(p => p.stock_count > 10)
+  const fullStock = products.filter(p => p.stock_count > threshold)
+
+  const saveStock = async (id: string) => {
+    const value = Math.max(0, Number(draftStock[id] ?? 0))
+    setSavingId(id)
+    try {
+      await adminDbProxy({
+        action: 'update',
+        table: 'products',
+        data: { stock_count: value },
+        match: { id },
+      })
+      setProducts(products.map((p) => (p.id === id ? { ...p, stock_count: value } : p)))
+    } catch (err) {
+      console.error(err)
+      alert('Could not update stock. Try again.')
+    }
+    setSavingId(null)
+  }
 
   const getActiveList = () => {
     let list = activeTab === 'LOW_STOCK' ? lowStock : activeTab === 'OUT_OF_STOCK' ? outOfStock : fullStock;
@@ -42,6 +72,11 @@ export default function InventoryPage() {
 
   return (
     <div className="space-y-6 text-gray-900 font-sans">
+      <AdminPageHeader
+        eyebrow="Commerce"
+        title="Inventory"
+        description={`Update stock counts in place. Low stock is anything at or below ${threshold} units (change this in Settings).`}
+      />
       
       {/* Top Bar with Search & Filter - Exact Screenshot Style */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -104,6 +139,7 @@ export default function InventoryPage() {
                   <th className="p-4 font-bold">PRODUCT</th>
                   <th className="p-4 font-bold">CATEGORY</th>
                   <th className="p-4 font-bold">STOCK COUNT</th>
+                  <th className="p-4 font-bold">UPDATE</th>
                   <th className="p-4 pr-6 font-bold">STATUS</th>
                 </tr>
               </thead>
@@ -130,17 +166,31 @@ export default function InventoryPage() {
                     </td>
                     <td className="p-4 text-gray-600 font-semibold">{product.category}</td>
                     <td className="p-4">
-                      <span className="font-black text-base text-gray-900">
-                        {product.stock_count} units
-                      </span>
+                      <input
+                        type="number"
+                        min="0"
+                        value={draftStock[product.id] ?? product.stock_count}
+                        onChange={(e) => setDraftStock({ ...draftStock, [product.id]: e.target.value })}
+                        className="w-24 px-3 py-1.5 border border-gray-200 rounded-xl font-black text-gray-900 text-sm outline-none focus:border-emerald-800"
+                      />
+                    </td>
+                    <td className="p-4">
+                      <button
+                        onClick={() => saveStock(product.id)}
+                        disabled={savingId === product.id || Number(draftStock[product.id]) === Number(product.stock_count)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-800 text-white disabled:opacity-40"
+                      >
+                        {savingId === product.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                        Save
+                      </button>
                     </td>
                     <td className="p-4 pr-6">
                       <span className={`inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold ${
                         product.stock_count === 0 ? 'bg-red-50 text-red-700 border border-red-200/60' : 
-                        product.stock_count <= 10 ? 'bg-amber-50 text-amber-700 border border-amber-200/60' : 
+                        product.stock_count <= threshold ? 'bg-amber-50 text-amber-700 border border-amber-200/60' : 
                         'bg-green-50 text-green-700 border border-green-200/60'
                       }`}>
-                        {product.stock_count === 0 ? 'Out of Stock' : product.stock_count <= 10 ? 'Low Stock' : 'In Stock'}
+                        {product.stock_count === 0 ? 'Out of Stock' : product.stock_count <= threshold ? 'Low Stock' : 'In Stock'}
                       </span>
                     </td>
                   </tr>

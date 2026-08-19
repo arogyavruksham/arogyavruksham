@@ -7,6 +7,7 @@ import {
   Users, Truck, ArrowUpRight, User, MapPin, Package, CreditCard, Info, ChevronDown
 } from 'lucide-react'
 import { adminDbProxy } from '@/lib/admin-proxy'
+import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
 import { 
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, 
   Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend 
@@ -63,6 +64,8 @@ export default function AnalyticsPage() {
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null)
   const [activeTab, setActiveTab] = useState('Overview')
   const [filterOption, setFilterOption] = useState('All orders & sales')
+  const [rangeStart, setRangeStart] = useState('')
+  const [rangeEnd, setRangeEnd] = useState('')
 
   useEffect(() => {
     async function fetchAnalytics() {
@@ -198,6 +201,10 @@ export default function AnalyticsPage() {
 
         setDailyStats(dailyArray)
         setOverallTimeStats(timeMap)
+        if (dailyArray.length) {
+          setRangeStart(dailyArray[dailyArray.length - 1].dateStr)
+          setRangeEnd(dailyArray[0].dateStr)
+        }
 
       } catch (e) {
         console.error("Error fetching analytics:", e)
@@ -233,6 +240,25 @@ export default function AnalyticsPage() {
     { name: 'Cancelled', value: selectedDayData.orders.filter(o => o.status === 'cancelled').length, color: '#f1f5f9' }
   ].filter(s => s.value > 0) : []
 
+  const filteredDailyStats = dailyStats.filter((day) => {
+    if (rangeStart && day.dateStr < rangeStart) return false
+    if (rangeEnd && day.dateStr > rangeEnd) return false
+    return true
+  })
+
+  const rangeOrders = filteredDailyStats.flatMap((d) => d.orders).filter((order) => {
+    if (filterOption === 'Completed only') return order.status === 'delivered'
+    if (filterOption === 'Pending deliveries') return order.status !== 'delivered' && order.status !== 'cancelled'
+    if (filterOption === 'Discounts applied') return Boolean(order.coupon_code)
+    return true
+  })
+
+  const uniqueCustomers = new Set(
+    rangeOrders.map((o) => o.user_id || o.shipping_address?.phone || o.users?.email || o.id)
+  ).size
+
+  const couponOrders = rangeOrders.filter((o) => o.coupon_code)
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
@@ -244,23 +270,19 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-6 max-w-full text-gray-900 pb-16 font-sans">
       
-      {/* Page Header with Title & Date Range Button */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-200/80 pb-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight">Analytics</h1>
-          <p className="text-xs text-gray-500 mt-1">
-            *This is early preview access to the analytics page. Some features may not work as expected.
-          </p>
-        </div>
-        
-        {/* Date Range Selector */}
-        <button className="flex items-center gap-3 px-4 py-2 bg-white border border-gray-300 rounded-xl shadow-2xs text-sm font-semibold hover:border-emerald-800 transition-colors shrink-0 cursor-pointer text-gray-900">
-          <span className="text-gray-900 font-bold">2026-07-29</span>
-          <span className="text-gray-400">&mdash;</span>
-          <span className="text-gray-900 font-bold">2026-08-05</span>
-          <Calendar className="w-4 h-4 text-gray-500 ml-1" />
-        </button>
-      </div>
+      <AdminPageHeader
+        eyebrow="Overview"
+        title="Analytics"
+        description="Filter by date and tab to inspect profit, customers, order times, and coupon usage."
+        actions={
+          <div className="flex items-center gap-2 bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-2xs">
+            <input type="date" value={rangeStart} onChange={(e) => setRangeStart(e.target.value)} className="text-sm font-bold text-gray-900 outline-none bg-transparent" />
+            <span className="text-gray-400">—</span>
+            <input type="date" value={rangeEnd} onChange={(e) => setRangeEnd(e.target.value)} className="text-sm font-bold text-gray-900 outline-none bg-transparent" />
+            <Calendar className="w-4 h-4 text-gray-500" />
+          </div>
+        }
+      />
 
       {/* Horizontal Sub-Navigation Tabs */}
       <div className="flex items-center gap-6 border-b border-gray-200 overflow-x-auto text-sm no-scrollbar">
@@ -301,7 +323,42 @@ export default function AnalyticsPage() {
           </select>
           <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
         </div>
+        <span className="ml-3 text-xs font-semibold text-gray-500">{rangeOrders.length} orders in range</span>
       </div>
+
+      {activeTab === 'Customers & Users' && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-white rounded-xl p-5 border border-gray-200/80">
+            <p className="text-sm font-semibold text-gray-500">Unique customers</p>
+            <p className="text-3xl font-black mt-2">{uniqueCustomers}</p>
+          </div>
+          <div className="bg-white rounded-xl p-5 border border-gray-200/80">
+            <p className="text-sm font-semibold text-gray-500">Orders in range</p>
+            <p className="text-3xl font-black mt-2">{rangeOrders.length}</p>
+          </div>
+          <div className="bg-white rounded-xl p-5 border border-gray-200/80">
+            <p className="text-sm font-semibold text-gray-500">Avg. order value</p>
+            <p className="text-3xl font-black mt-2">
+              ₹{rangeOrders.length ? Math.round(rangeOrders.reduce((s, o) => s + Number(o.total_amount || 0), 0) / rangeOrders.length).toLocaleString('en-IN') : 0}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'Offers & Coupons' && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-white rounded-xl p-5 border border-gray-200/80">
+            <p className="text-sm font-semibold text-gray-500">Orders with a coupon</p>
+            <p className="text-3xl font-black mt-2">{couponOrders.length}</p>
+          </div>
+          <div className="bg-white rounded-xl p-5 border border-gray-200/80">
+            <p className="text-sm font-semibold text-gray-500">Coupon usage rate</p>
+            <p className="text-3xl font-black mt-2">
+              {rangeOrders.length ? Math.round((couponOrders.length / rangeOrders.length) * 100) : 0}%
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Metric Cards - Monochrome White & Black */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -378,7 +435,7 @@ export default function AnalyticsPage() {
         <span>Visibility is limited to data generated on or after <strong className="font-black text-emerald-950 underline">November 22, 2023</strong>.</span>
       </div>
 
-      {/* Global Peak Order Times Graph - Monochrome */}
+      {(activeTab === 'Overview' || activeTab === 'Order Times') && (
       <div className="bg-white p-6 rounded-xl shadow-2xs border border-gray-200/80 mt-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
           <div>
@@ -421,8 +478,9 @@ export default function AnalyticsPage() {
           </ResponsiveContainer>
         </div>
       </div>
+      )}
 
-      {/* Daily Analytics Section */}
+      {(activeTab === 'Overview' || activeTab === 'Daily Performance' || activeTab === 'Transactions & Orders') && (
       <div className="bg-white rounded-xl shadow-2xs border border-gray-200/80 overflow-hidden">
         <div className="p-6 border-b border-gray-200/80 flex justify-between items-center bg-gray-50/50">
           <div>
@@ -447,11 +505,11 @@ export default function AnalyticsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 text-sm font-medium">
-              {dailyStats.length === 0 ? (
+              {filteredDailyStats.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="p-8 text-center text-gray-400 italic">No daily order data recorded yet.</td>
                 </tr>
-              ) : dailyStats.map(day => (
+              ) : filteredDailyStats.map(day => (
                 <tr 
                   key={day.dateStr} 
                   onClick={() => setSelectedDateStr(day.dateStr)}
@@ -496,6 +554,7 @@ export default function AnalyticsPage() {
           </table>
         </div>
       </div>
+      )}
 
       {/* Date Deep-Dive Modal */}
       {selectedDayData && (

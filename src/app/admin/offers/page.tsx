@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { adminDbProxy } from '@/lib/admin-proxy'
-import { Plus, Edit2, Trash2, Tag, Loader2, Search, Filter } from 'lucide-react'
+import { Plus, Search, Edit2, Trash2, Tag, Loader2 } from 'lucide-react'
+import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
 
 type Coupon = {
   id: string
@@ -162,6 +163,11 @@ export default function OffersPage() {
 
   return (
     <div className="space-y-6 text-gray-900 font-sans pb-12">
+      <AdminPageHeader
+        eyebrow="Marketing"
+        title="Offers & Coupons"
+        description="Create promo codes, set discount windows, and track how often each coupon is used."
+      />
       
       {/* Top Controls - Exact Screenshot Style */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -176,9 +182,6 @@ export default function OffersPage() {
               className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shrink-0 shadow-2xs cursor-pointer">
-            <Filter className="w-4 h-4 text-gray-600" /> Filter
-          </button>
         </div>
         <button 
           onClick={() => handleOpenModal()}

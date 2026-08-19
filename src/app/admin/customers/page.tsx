@@ -1,13 +1,15 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
-import { Search, Users as UsersIcon, Shield, ShieldCheck, Mail, Calendar, Loader2, Filter } from 'lucide-react'
+import { Search, Users as UsersIcon, ShieldCheck, Mail, Loader2 } from 'lucide-react'
+import { adminDbProxy } from '@/lib/admin-proxy'
+import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
 
 export default function CustomersPage() {
   const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const [roleFilter, setRoleFilter] = useState('all')
   const [updatingId, setUpdatingId] = useState<string | null>(null)
 
   useEffect(() => {
@@ -16,41 +18,50 @@ export default function CustomersPage() {
 
   const fetchUsers = async () => {
     setLoading(true)
-    const { data, error } = await supabase
-      .from('users')
-      .select('*')
-      .order('created_at', { ascending: false })
-    
-    if (error) {
-      console.error('Error fetching users:', error)
-    } else {
+    try {
+      const { data } = await adminDbProxy({
+        action: 'select',
+        table: 'users',
+        order: { column: 'created_at', ascending: false },
+      })
       setUsers(data || [])
+    } catch (error) {
+      console.error('Error fetching users:', error)
     }
     setLoading(false)
   }
 
   const handleRoleChange = async (userId: string, newRole: string) => {
     setUpdatingId(userId)
-    const { error } = await supabase
-      .from('users')
-      .update({ role: newRole })
-      .eq('id', userId)
-
-    if (error) {
-      alert('Error updating role: ' + error.message)
-    } else {
+    try {
+      await adminDbProxy({
+        action: 'update',
+        table: 'users',
+        data: { role: newRole },
+        match: { id: userId },
+      })
       setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u))
+    } catch (error: any) {
+      alert('Error updating role: ' + error.message)
     }
     setUpdatingId(null)
   }
 
-  const filteredUsers = users.filter(user => 
-    user.email?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    user.full_name?.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredUsers = users.filter(user => {
+    const matchesSearch =
+      user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.full_name?.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesRole = roleFilter === 'all' || (user.role || 'user') === roleFilter
+    return matchesSearch && matchesRole
+  })
 
   return (
     <div className="space-y-6 text-gray-900 font-sans pb-12">
+      <AdminPageHeader
+        eyebrow="People"
+        title="Customers"
+        description="Registered accounts, contact details, and staff roles for the admin panel."
+      />
       
       {/* Header Controls - Exact Screenshot Style */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -65,9 +76,17 @@ export default function CustomersPage() {
               className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-sm font-semibold text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shrink-0 shadow-2xs cursor-pointer">
-            <Filter className="w-4 h-4 text-gray-600" /> Filter Roles
-          </button>
+          <select
+            value={roleFilter}
+            onChange={(e) => setRoleFilter(e.target.value)}
+            className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 shadow-2xs outline-none"
+          >
+            <option value="all">All roles</option>
+            <option value="user">User</option>
+            <option value="editor">Editor</option>
+            <option value="manager">Manager</option>
+            <option value="admin">Admin</option>
+          </select>
         </div>
 
         <div className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs font-black uppercase tracking-wider text-gray-700 shadow-2xs">

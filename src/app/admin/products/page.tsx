@@ -1,17 +1,21 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Plus, Search, Filter, MoreHorizontal, Edit, Trash2, Loader2, X, Upload, AlertTriangle } from 'lucide-react'
+import { Plus, Search, MoreHorizontal, Edit, Trash2, Loader2, X, Upload, AlertTriangle } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
 import { adminDbProxy } from '@/lib/admin-proxy'
 import { useCategories, normalizeProducts, DB_ALLOWED_CATEGORIES } from '@/lib/categories'
+import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
+import { getStoreSettings } from '@/lib/store-settings'
 
 export default function AdminProductsPage() {
   const categoriesList = useCategories()
   const [products, setProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [searchFilter, setSearchFilter] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState('All')
+  const [stockThreshold, setStockThreshold] = useState(10)
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -46,6 +50,7 @@ export default function AdminProductsPage() {
   }
 
   useEffect(() => {
+    setStockThreshold(getStoreSettings().lowStockThreshold || 10)
     fetchProducts()
   }, [])
 
@@ -183,12 +188,18 @@ export default function AdminProductsPage() {
   }
 
   const filteredProducts = products.filter(p => {
-    if (!searchFilter.trim()) return true;
-    return p.title?.toLowerCase().includes(searchFilter.toLowerCase()) || p.category?.toLowerCase().includes(searchFilter.toLowerCase());
+    const matchesSearch = !searchFilter.trim() || p.title?.toLowerCase().includes(searchFilter.toLowerCase()) || p.category?.toLowerCase().includes(searchFilter.toLowerCase())
+    const matchesCategory = categoryFilter === 'All' || p.category === categoryFilter
+    return matchesSearch && matchesCategory
   })
 
   return (
     <div className="space-y-6 relative pb-24 md:pb-8 text-gray-900 font-sans">
+      <AdminPageHeader
+        eyebrow="Commerce"
+        title="Products"
+        description="Create catalog items, set selling vs cost price, and keep stock in sync with inventory."
+      />
       {/* Header Controls - Exact Reference Style with Monochrome Palette */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -202,9 +213,16 @@ export default function AdminProductsPage() {
               className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-emerald-800 focus:ring-1 focus:ring-emerald-800 outline-none text-sm font-medium text-gray-900 placeholder-gray-400 shadow-2xs transition-all"
             />
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shrink-0 shadow-2xs cursor-pointer">
-            <Filter className="w-4 h-4 text-gray-600" /> Filter
-          </button>
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 shrink-0 shadow-2xs cursor-pointer outline-none"
+          >
+            <option value="All">All categories</option>
+            {categoriesList.map((cat) => (
+              <option key={cat.name} value={cat.name}>{cat.name}</option>
+            ))}
+          </select>
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
@@ -247,7 +265,7 @@ export default function AdminProductsPage() {
                   </td>
                 </tr>
               ) : filteredProducts.map((product) => {
-                const status = product.stock_count > 10 ? 'In Stock' : product.stock_count > 0 ? 'Low Stock' : 'Out of Stock';
+                const status = product.stock_count > stockThreshold ? 'In Stock' : product.stock_count > 0 ? 'Low Stock' : 'Out of Stock';
                 return (
                   <tr key={product.id} className="hover:bg-gray-50/80 transition-colors group">
                     <td className="p-4 pl-6">

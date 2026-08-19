@@ -2,11 +2,16 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Package, Settings, LogOut, ShoppingCart, Users, ShieldCheck, Menu, X, BarChart2, Tag, Archive, TrendingUp, Mail, Calendar, Bell, Search, ChevronRight, Loader2, ShoppingBag, Megaphone, Lock, LayoutGrid, User, ChevronDown, Sparkles, Bot } from 'lucide-react'
+import { Package, Settings, LogOut, ShoppingCart, Users, ShieldCheck, Menu, X, BarChart2, Tag, Archive, Mail, Bell, Search, ChevronRight, Loader2, ShoppingBag, Megaphone, Lock, LayoutGrid, User, Sparkles, Bot } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { AdminLockScreen } from '@/components/admin/AdminLockScreen'
-import { useEffect, useState, useRef } from 'react'
+import { ADMIN_NAV_GROUPS, filterNavForRole, isNavActive, type AdminNavItem } from '@/lib/admin-nav'
+import { useEffect, useState, useRef, type ComponentType } from 'react'
 import { supabase } from '@/lib/supabase'
+
+const NAV_ICONS: Record<string, ComponentType<{ className?: string }>> = {
+  Sparkles, BarChart2, Bot, Package, Archive, ShoppingCart, LayoutGrid, Tag, Megaphone, Mail, Users, Settings,
+}
 
 const PottedPlantIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -36,9 +41,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [notifications, setNotifications] = useState<any[]>([])
   const [showNotifications, setShowNotifications] = useState(false)
+  const [showApps, setShowApps] = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
   const searchRef = useRef<HTMLDivElement>(null)
   const notificationsRef = useRef<HTMLDivElement>(null)
+  const appsRef = useRef<HTMLDivElement>(null)
+  const navItems = filterNavForRole(user?.role)
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -48,10 +56,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) {
         setShowNotifications(false)
       }
+      if (appsRef.current && !appsRef.current.contains(event.target as Node)) {
+        setShowApps(false)
+      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [searchRef, notificationsRef])
+  }, [])
 
   useEffect(() => {
     if (!isAdminUnlocked) return;
@@ -217,9 +228,42 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Right Side Tools & Icons */}
         <div className="flex items-center gap-2 sm:gap-3">
-          <button className="p-2.5 rounded-xl text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors hidden sm:flex items-center justify-center cursor-pointer" title="Apps & Shortcuts">
-            <LayoutGrid className="w-5 h-5" />
-          </button>
+          <div className="relative hidden sm:block" ref={appsRef}>
+            <button
+              onClick={() => setShowApps(!showApps)}
+              className="p-2.5 rounded-xl text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors flex items-center justify-center cursor-pointer"
+              title="All admin sections"
+            >
+              <LayoutGrid className="w-5 h-5" />
+            </button>
+            {showApps && (
+              <div className="absolute right-0 mt-3 w-[380px] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50">
+                <div className="p-4 border-b border-gray-100 bg-gray-50">
+                  <p className="text-xs font-black uppercase tracking-wider text-gray-500">All admin sections</p>
+                  <p className="text-sm font-bold text-gray-900 mt-0.5">Jump to any tool</p>
+                </div>
+                <div className="max-h-96 overflow-y-auto p-2 grid grid-cols-2 gap-1">
+                  {navItems.map((item) => {
+                    const Icon = NAV_ICONS[item.icon] || Package
+                    return (
+                      <Link
+                        key={item.path}
+                        href={item.path}
+                        onClick={() => setShowApps(false)}
+                        className={`rounded-xl p-3 hover:bg-gray-50 transition-colors ${isNavActive(pathname, item) ? 'bg-emerald-50' : ''}`}
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <Icon className="w-4 h-4 text-emerald-800" />
+                          <span className="text-xs font-black text-gray-900">{item.name}</span>
+                        </div>
+                        <p className="text-[11px] text-gray-500 leading-snug line-clamp-2">{item.description}</p>
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
           
           {/* Notifications Bell */}
           <div className="relative" ref={notificationsRef}>
@@ -317,9 +361,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           {/* User Profile Button */}
-          <button className="w-9 h-9 bg-emerald-800 text-white rounded-full shadow-xs flex items-center justify-center font-black text-sm hover:bg-emerald-900 transition-colors cursor-pointer" title="Account">
+          <Link href="/admin/settings" className="w-9 h-9 bg-emerald-800 text-white rounded-full shadow-xs flex items-center justify-center font-black text-sm hover:bg-emerald-900 transition-colors cursor-pointer" title="Settings">
             {user?.email?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
-          </button>
+          </Link>
           
           {/* Mobile Hamburger Menu */}
           <button 
@@ -414,47 +458,38 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
 
-          {/* Navigation Items */}
-          <nav className="flex-1 px-3 py-2 space-y-1 text-sm font-medium overflow-y-auto">
-            {[
-              { name: 'Get Started', path: '/admin', icon: Sparkles },
-              { name: 'Analytics', path: '/admin/analytics', icon: BarChart2 },
-              { name: 'AI Summaries', path: '/admin/ai-summary', icon: Bot },
-              { name: 'Products', path: '/admin/products', icon: Package, chevron: true },
-              { name: 'Orders & Sales', path: '/admin/orders', icon: ShoppingCart, chevron: true },
-              { name: 'Offers & Coupons', path: '/admin/offers', icon: Tag },
-              { name: 'Inventory', path: '/admin/inventory', icon: Archive },
-              { name: 'Categories', path: '/admin/categories', icon: ShoppingBag },
-              { name: 'Customers', path: '/admin/customers', icon: Users },
-              { name: 'Announcement', path: '/admin/announcement', icon: Megaphone },
-              { name: 'Newsletter', path: '/admin/newsletter', icon: Mail },
-              { name: 'Settings', path: '/admin/settings', icon: Settings },
-            ].filter(item => {
-              if (user?.role === 'editor') return ['Products', 'Inventory'].includes(item.name);
-              if (user?.role === 'manager') return item.name !== 'Analytics';
-              return true;
-            }).map((item) => {
-              const isActive = pathname === item.path
+          <nav className="flex-1 px-3 py-2 text-sm font-medium overflow-y-auto">
+            {ADMIN_NAV_GROUPS.map((group) => {
+              const items = navItems.filter((item) => item.group === group)
+              if (items.length === 0) return null
               return (
-                <Link 
-                  key={item.name}
-                  href={item.path} 
-                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
-                    isActive 
-                      ? 'bg-emerald-800 text-white font-bold shadow-xs' 
-                      : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <item.icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-400'}`} />
-                    <span>{item.name}</span>
+                <div key={group} className="mb-4">
+                  <p className="px-3.5 pb-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400">{group}</p>
+                  <div className="space-y-0.5">
+                    {items.map((item: AdminNavItem) => {
+                      const isActive = isNavActive(pathname, item)
+                      const Icon = NAV_ICONS[item.icon] || Package
+                      return (
+                        <Link
+                          key={item.path}
+                          href={item.path}
+                          title={item.description}
+                          className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
+                            isActive
+                              ? 'bg-emerald-800 text-white font-bold shadow-xs'
+                              : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3 min-w-0">
+                            <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-gray-400'}`} />
+                            <span className="truncate">{item.name}</span>
+                          </div>
+                          {isActive ? <div className="w-1.5 h-1.5 rounded-full bg-white shrink-0" /> : null}
+                        </Link>
+                      )
+                    })}
                   </div>
-                  {item.chevron ? (
-                    <ChevronDown className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-gray-400'}`} />
-                  ) : isActive ? (
-                    <div className="w-1.5 h-1.5 rounded-full bg-white" />
-                  ) : null}
-                </Link>
+                </div>
               )
             })}
           </nav>
@@ -508,33 +543,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
 
             <nav className="flex-1 px-3 py-3 space-y-1 text-sm font-medium overflow-y-auto">
-              {[
-                { name: 'Get Started', path: '/admin', icon: Sparkles },
-                { name: 'Analytics', path: '/admin/analytics', icon: BarChart2 },
-                { name: 'Products', path: '/admin/products', icon: Package },
-                { name: 'Orders & Sales', path: '/admin/orders', icon: ShoppingCart },
-                { name: 'Offers & Coupons', path: '/admin/offers', icon: Tag },
-                { name: 'Inventory', path: '/admin/inventory', icon: Archive },
-                { name: 'Categories', path: '/admin/categories', icon: ShoppingBag },
-                { name: 'Customers', path: '/admin/customers', icon: Users },
-                { name: 'Announcement', path: '/admin/announcement', icon: Megaphone },
-                { name: 'Newsletter', path: '/admin/newsletter', icon: Mail },
-                { name: 'Settings', path: '/admin/settings', icon: Settings },
-              ].map((item) => {
-                const isActive = pathname === item.path
+              {navItems.map((item) => {
+                const isActive = isNavActive(pathname, item)
+                const Icon = NAV_ICONS[item.icon] || Package
                 return (
-                  <Link 
-                    key={item.name}
-                    href={item.path} 
+                  <Link
+                    key={item.path}
+                    href={item.path}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all ${
-                      isActive 
-                        ? 'bg-emerald-800 text-white font-bold' 
+                    className={`flex flex-col px-3.5 py-2.5 rounded-xl transition-all ${
+                      isActive
+                        ? 'bg-emerald-800 text-white font-bold'
                         : 'hover:bg-gray-50 text-gray-600 hover:text-gray-900'
                     }`}
                   >
-                    <item.icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-400'}`} /> 
-                    <span>{item.name}</span>
+                    <span className="flex items-center gap-3">
+                      <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-gray-400'}`} />
+                      <span>{item.name}</span>
+                    </span>
+                    <span className={`text-[11px] font-medium mt-1 ml-7 leading-snug ${isActive ? 'text-emerald-100' : 'text-gray-400'}`}>
+                      {item.description}
+                    </span>
                   </Link>
                 )
               })}
