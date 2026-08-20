@@ -5,7 +5,7 @@ import { useAuthStore } from '@/store/authStore'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useCartStore } from '@/store/cartStore'
-import { Home, Search, Clock, User, Heart, Settings, Bell, Package, CheckCircle, Truck, Info, LogOut, Loader2, ArrowLeft, Star, Edit2, ChevronRight, Droplet, LayoutDashboard, ShoppingBag } from 'lucide-react'
+import { Home, Search, Clock, User, Heart, Settings, Bell, Package, CheckCircle, Truck, Info, LogOut, Loader2, ArrowLeft, Star, Edit2, ChevronRight, Droplet, LayoutDashboard, ShoppingBag, X, MapPin, RotateCcw, Eye, Ban } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 
@@ -22,6 +22,10 @@ export default function ProfilePage() {
   const [loadingOrders, setLoadingOrders] = useState(true)
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null)
   const [orderFilter, setOrderFilter] = useState<'all' | 'transit' | 'delivered'>('all')
+  const [cancelModal, setCancelModal] = useState<{ open: boolean; orderId: string; loading: boolean }>({ open: false, orderId: '', loading: false })
+  const [trackModal, setTrackModal] = useState<{ open: boolean; order: any | null }>({ open: false, order: null })
+  const [viewModal, setViewModal] = useState<{ open: boolean; order: any | null }>({ open: false, order: null })
+  const [successToast, setSuccessToast] = useState('')
 
   useEffect(() => {
     setMounted(true)
@@ -81,15 +85,16 @@ export default function ProfilePage() {
     return true;
   });
 
-  const handleCancelOrder = async (orderId: string) => {
-    if (window.confirm('Are you sure you want to cancel this order?')) {
-      const { error } = await supabase.from('orders').update({ status: 'cancelled' }).eq('id', orderId);
-      if (!error) {
-        setOrders(orders.map(o => o.id === orderId ? { ...o, status: 'cancelled' } : o));
-        alert('Order cancelled successfully.');
-      } else {
-        alert('Failed to cancel order.');
-      }
+  const handleCancelOrder = async () => {
+    setCancelModal(m => ({ ...m, loading: true }));
+    const { error } = await supabase.from('orders').update({ status: 'cancelled' }).eq('id', cancelModal.orderId);
+    if (!error) {
+      setOrders(orders.map(o => o.id === cancelModal.orderId ? { ...o, status: 'cancelled' } : o));
+      setCancelModal({ open: false, orderId: '', loading: false });
+      setSuccessToast('Order cancelled successfully');
+      setTimeout(() => setSuccessToast(''), 3000);
+    } else {
+      setCancelModal(m => ({ ...m, loading: false }));
     }
   };
 
@@ -325,17 +330,17 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="px-5 py-4 bg-gray-50/50 border-t border-gray-100 flex flex-wrap items-center justify-end gap-3 md:flex-col md:justify-center md:border-t-0 md:border-l md:w-48">
-                  <button onClick={() => alert('Items: ' + (order.order_items?.map((item:any) => `${item.products?.title} (x${item.quantity})`).join(', ') || 'No details available'))} className="px-4 py-2 border border-gray-200 rounded-full text-xs font-bold text-gray-600 hover:bg-gray-100 transition-colors flex-1 md:flex-none md:w-full">
-                    View More
+                  <button onClick={() => setViewModal({ open: true, order })} className="px-4 py-2 border border-gray-200 rounded-full text-xs font-bold text-gray-600 hover:bg-gray-100 transition-colors flex-1 md:flex-none md:w-full flex items-center justify-center gap-1.5">
+                    <Eye className="w-3.5 h-3.5" /> View More
                   </button>
                   {order.status !== 'cancelled' && !isDelivered && (
-                    <button onClick={() => handleCancelOrder(order.id)} className="px-4 py-2 border border-red-200 text-red-600 rounded-full text-xs font-bold hover:bg-red-50 transition-colors flex-1 md:flex-none md:w-full">
-                      Cancel
+                    <button onClick={() => setCancelModal({ open: true, orderId: order.id, loading: false })} className="px-4 py-2 border border-red-200 text-red-600 rounded-full text-xs font-bold hover:bg-red-50 transition-colors flex-1 md:flex-none md:w-full flex items-center justify-center gap-1.5">
+                      <Ban className="w-3.5 h-3.5" /> Cancel
                     </button>
                   )}
                   {order.status !== 'cancelled' && (
-                    <button onClick={() => isDelivered ? handleReorder(order) : alert('Tracking status: ' + order.status.toUpperCase() + '\n\nEstimated delivery: In a few days.')} className="px-4 py-2 bg-[#11311F] text-white rounded-full text-xs font-bold shadow-md hover:bg-black transition-colors flex-1 md:flex-none md:w-full flex items-center justify-center gap-2">
-                      {isDelivered ? 'Order Again' : 'Track Order'} <ChevronRight className="w-3.5 h-3.5" />
+                    <button onClick={() => isDelivered ? handleReorder(order) : setTrackModal({ open: true, order })} className="px-4 py-2 bg-[#11311F] text-white rounded-full text-xs font-bold shadow-md hover:bg-black transition-colors flex-1 md:flex-none md:w-full flex items-center justify-center gap-1.5">
+                      {isDelivered ? <><RotateCcw className="w-3.5 h-3.5" /> Order Again</> : <><MapPin className="w-3.5 h-3.5" /> Track Order</>}
                     </button>
                   )}
                 </div>
@@ -459,6 +464,157 @@ export default function ProfilePage() {
           )
         })}
       </div>
+
+      {/* ═══ SUCCESS TOAST ═══ */}
+      {successToast && (
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[60] animate-in slide-in-from-top-4 fade-in duration-300">
+          <div className="bg-[#11311F] text-white px-6 py-3 rounded-2xl shadow-xl flex items-center gap-3 text-sm font-bold">
+            <CheckCircle className="w-4 h-4 text-[#A4E4BA]" /> {successToast}
+          </div>
+        </div>
+      )}
+
+      {/* ═══ CANCEL ORDER MODAL ═══ */}
+      {cancelModal.open && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4" onClick={() => !cancelModal.loading && setCancelModal({ open: false, orderId: '', loading: false })}>
+          <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl text-center" onClick={e => e.stopPropagation()}>
+            <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-5">
+              <Ban className="w-7 h-7 text-red-500" />
+            </div>
+            <h3 className="text-xl font-bold text-[#11311F] mb-2">Cancel Order?</h3>
+            <p className="text-gray-500 text-sm mb-8">This action cannot be undone. Your order will be cancelled and any payment will be refunded.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setCancelModal({ open: false, orderId: '', loading: false })}
+                disabled={cancelModal.loading}
+                className="flex-1 py-3 bg-gray-100 text-gray-700 rounded-2xl font-bold text-sm hover:bg-gray-200 transition-colors disabled:opacity-50"
+              >
+                Keep Order
+              </button>
+              <button
+                onClick={handleCancelOrder}
+                disabled={cancelModal.loading}
+                className="flex-1 py-3 bg-red-500 text-white rounded-2xl font-bold text-sm hover:bg-red-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {cancelModal.loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Ban className="w-4 h-4" />}
+                {cancelModal.loading ? 'Cancelling...' : 'Cancel Order'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ═══ TRACK ORDER MODAL ═══ */}
+      {trackModal.open && trackModal.order && (() => {
+        const o = trackModal.order;
+        const steps = [
+          { key: 'pending', label: 'Order Placed', desc: 'Your order has been confirmed' },
+          { key: 'packed', label: 'Packed', desc: 'Items are being packed' },
+          { key: 'shipped', label: 'Shipped', desc: 'On the way to your city' },
+          { key: 'out_for_delivery', label: 'Out for Delivery', desc: 'Will arrive today' },
+          { key: 'delivered', label: 'Delivered', desc: 'Successfully delivered' },
+        ];
+        const currentIdx = steps.findIndex(s => s.key === o.status);
+        return (
+          <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => setTrackModal({ open: false, order: null })}>
+            <div className="bg-white rounded-t-3xl md:rounded-3xl p-8 w-full md:max-w-md shadow-2xl max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+              <div className="flex justify-between items-center mb-8">
+                <h3 className="text-xl font-bold text-[#11311F]">Track Order</h3>
+                <button onClick={() => setTrackModal({ open: false, order: null })} className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="bg-[#F6F9F7] rounded-2xl p-5 mb-8 flex items-center gap-4">
+                <div className="w-16 h-16 rounded-xl bg-white border border-[#E9F3ED] overflow-hidden flex items-center justify-center p-2 shrink-0">
+                  {o.order_items?.[0]?.products?.image_url ? (
+                    <img src={o.order_items[0].products.image_url} className="w-full h-full object-contain mix-blend-multiply" />
+                  ) : <Package className="w-6 h-6 text-gray-300" />}
+                </div>
+                <div className="min-w-0">
+                  <p className="font-bold text-[#11311F] text-sm truncate">{o.order_items?.[0]?.products?.title || 'Order'}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">Order #{o.id.split('-')[0].toUpperCase()}</p>
+                  <p className="text-sm font-bold text-[#11311F] mt-1">₹{o.total_amount?.toLocaleString('en-IN')}</p>
+                </div>
+              </div>
+              {/* Steps */}
+              <div className="space-y-0">
+                {steps.map((step, i) => {
+                  const done = i <= currentIdx;
+                  const isCurrent = i === currentIdx;
+                  return (
+                    <div key={step.key} className="flex gap-4">
+                      <div className="flex flex-col items-center">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${done ? 'bg-[#11311F] text-white' : 'bg-gray-100 text-gray-400'} ${isCurrent ? 'ring-4 ring-[#E9F3ED]' : ''}`}>
+                          {done ? <CheckCircle className="w-4 h-4" /> : <div className="w-2 h-2 rounded-full bg-gray-300" />}
+                        </div>
+                        {i < steps.length - 1 && <div className={`w-0.5 h-10 ${done ? 'bg-[#11311F]' : 'bg-gray-200'}`} />}
+                      </div>
+                      <div className={`pb-8 ${i === steps.length - 1 ? 'pb-0' : ''}`}>
+                        <p className={`font-bold text-sm ${done ? 'text-[#11311F]' : 'text-gray-400'}`}>{step.label}</p>
+                        <p className="text-xs text-gray-500 mt-0.5">{step.desc}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ═══ VIEW MORE MODAL ═══ */}
+      {viewModal.open && viewModal.order && (() => {
+        const o = viewModal.order;
+        const dateStr = new Date(o.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        return (
+          <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => setViewModal({ open: false, order: null })}>
+            <div className="bg-white rounded-t-3xl md:rounded-3xl p-8 w-full md:max-w-md shadow-2xl max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-bold text-[#11311F]">Order Details</h3>
+                <button onClick={() => setViewModal({ open: false, order: null })} className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="flex items-center justify-between mb-6 pb-6 border-b border-gray-100">
+                <div>
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Order ID</p>
+                  <p className="font-bold text-[#11311F] text-sm mt-0.5">#{o.id.split('-')[0].toUpperCase()}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Placed On</p>
+                  <p className="font-bold text-[#11311F] text-sm mt-0.5">{dateStr}</p>
+                </div>
+              </div>
+              <div className="space-y-4 mb-6">
+                {o.order_items?.map((item: any, idx: number) => (
+                  <div key={idx} className="flex gap-4 items-center">
+                    <div className="w-16 h-16 rounded-xl bg-[#F6F9F7] border border-[#E9F3ED] overflow-hidden flex items-center justify-center p-2 shrink-0">
+                      {item.products?.image_url ? (
+                        <img src={item.products.image_url} className="w-full h-full object-contain mix-blend-multiply" />
+                      ) : <Package className="w-5 h-5 text-gray-300" />}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-[#11311F] text-sm truncate">{item.products?.title || 'Item'}</p>
+                      <p className="text-xs text-gray-500 mt-0.5">Qty: {item.quantity}</p>
+                    </div>
+                    <p className="font-bold text-[#11311F] text-sm shrink-0">₹{(item.price * item.quantity).toLocaleString('en-IN')}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-[#F6F9F7] rounded-2xl p-5 space-y-3">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Status</span>
+                  <span className={`font-bold capitalize ${o.status === 'delivered' ? 'text-[#11311F]' : o.status === 'cancelled' ? 'text-red-500' : 'text-amber-600'}`}>{o.status.replace(/_/g, ' ')}</span>
+                </div>
+                <div className="flex justify-between text-sm border-t border-gray-200/50 pt-3">
+                  <span className="font-bold text-[#11311F]">Total</span>
+                  <span className="font-black text-[#11311F] text-lg">₹{o.total_amount?.toLocaleString('en-IN')}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
       
     </div>
   )

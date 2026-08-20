@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react'
+import { X, Send, Loader2, Sparkles, ArrowUp } from 'lucide-react'
 import { useChat } from '@ai-sdk/react'
 import { useAuthStore } from '@/store/authStore'
 import ReactMarkdown from 'react-markdown'
@@ -15,7 +15,7 @@ export function Chatbot() {
   const user = useAuthStore((state) => state.user)
   const { messages, sendMessage, status, error } = useChat({
     messages: [
-      { id: '1', role: 'assistant', parts: [{ type: 'text', text: 'Hi there! I am your Arogyavruksham assistant. How can I help you today?' }] }
+      { id: '1', role: 'assistant', parts: [{ type: 'text', text: 'Hello! I\'m your plant care assistant. How can I help you today?' }] }
     ] as any
   })
   const isLoading = status === 'streaming' || status === 'submitted'
@@ -24,7 +24,6 @@ export function Chatbot() {
     e.preventDefault()
     if (!input.trim() || isLoading) return
     
-    // Encode the user Email into the message ID so the backend can read it without needing 'body' or 'api' SDK options
     const messageId = user?.email ? `useremail_${encodeURIComponent(user.email)}_${Date.now()}` : `msg_${Date.now()}`
     
     sendMessage({ id: messageId, role: 'user', parts: [{ type: 'text', text: input.trim() }] } as any)
@@ -41,69 +40,79 @@ export function Chatbot() {
 
   return (
     <>
-      {/* Floating Button Container */}
-      <div className={`fixed bottom-40 md:bottom-24 right-6 z-40 flex items-center gap-4 transition-all ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-        
-        {/* Help Tooltip */}
-        <div className="relative bg-white px-3 py-2 rounded-lg shadow-md border border-gray-100 text-sm font-medium text-gray-700 animate-pulse">
-          Need help?
-          <div className="absolute top-1/2 -right-2 -translate-y-1/2 border-[5px] border-transparent border-l-white"></div>
+      {/* Floating Button — bottom-left, away from WhatsApp on right */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className={`fixed bottom-24 md:bottom-6 left-5 z-40 transition-all duration-300 ${isOpen ? 'opacity-0 pointer-events-none scale-75' : 'opacity-100 scale-100'}`}
+        aria-label="Open Chat"
+      >
+        <div className="relative group">
+          <div className="w-14 h-14 bg-[#11311F] text-white rounded-2xl flex items-center justify-center shadow-xl shadow-[#11311F]/20 hover:shadow-2xl hover:shadow-[#11311F]/30 hover:scale-105 active:scale-95 transition-all">
+            <Sparkles className="w-6 h-6" />
+          </div>
+          {/* Ping dot */}
+          <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-[#A4E4BA] rounded-full border-2 border-white" />
         </div>
+      </button>
 
-        {/* Button */}
-        <button
-          onClick={() => setIsOpen(true)}
-          className="w-14 h-14 bg-green-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-green-700 hover:scale-110 transition-all"
-          aria-label="Open Chat"
-        >
-          <Bot className="w-6 h-6" />
-        </button>
-      </div>
-
-      {/* Chat Window */}
-      <div className={`fixed bottom-40 md:bottom-24 right-6 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 transform origin-bottom-right z-50 border border-gray-200 ${isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'}`} style={{ height: '500px', maxHeight: 'calc(100vh - 100px)' }}>
+      {/* Chat Panel */}
+      <div className={`fixed inset-0 md:inset-auto md:bottom-6 md:left-5 md:w-[400px] md:h-[600px] md:max-h-[calc(100vh-48px)] bg-white md:rounded-3xl md:shadow-2xl md:border md:border-gray-200/80 flex flex-col overflow-hidden transition-all duration-300 transform origin-bottom-left z-50 ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'}`}>
         
         {/* Header */}
-        <div className="bg-green-600 text-white p-4 flex justify-between items-center shrink-0">
-          <div className="flex items-center gap-2">
-            <Bot className="w-5 h-5" />
-            <h3 className="font-bold">Arogyavruksham Support</h3>
+        <div className="bg-[#11311F] text-white px-6 py-5 flex justify-between items-center shrink-0 relative overflow-hidden">
+          {/* Subtle pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
           </div>
-          <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white transition-colors">
-            <X className="w-5 h-5" />
+          <div className="relative z-10 flex items-center gap-3">
+            <div className="w-9 h-9 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <Sparkles className="w-4.5 h-4.5 text-[#A4E4BA]" />
+            </div>
+            <div>
+              <h3 className="font-bold text-[15px] leading-tight">Plant Assistant</h3>
+              <p className="text-[11px] text-white/60 font-medium">Ask me anything about plants</p>
+            </div>
+          </div>
+          <button onClick={() => setIsOpen(false)} className="relative z-10 w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all">
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50">
+        <div className="flex-1 overflow-y-auto px-4 py-5 space-y-4 bg-[#FAFBFA]">
           {messages.map(msg => (
             <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm ${
+              {msg.role === 'assistant' && (
+                <div className="w-7 h-7 rounded-lg bg-[#E9F3ED] flex items-center justify-center shrink-0 mr-2 mt-0.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#235839]" />
+                </div>
+              )}
+              <div className={`max-w-[80%] text-[14px] leading-relaxed ${
                 msg.role === 'user' 
-                  ? 'bg-green-600 text-white rounded-tr-sm' 
-                  : 'bg-white border border-gray-200 text-gray-800 rounded-tl-sm shadow-sm'
+                  ? 'bg-[#11311F] text-white rounded-2xl rounded-br-lg px-4 py-3' 
+                  : 'bg-white border border-gray-100 text-gray-800 rounded-2xl rounded-bl-lg px-4 py-3 shadow-sm'
               }`}>
                 {msg.role === 'user' ? (
                   msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')
                 ) : (
-                  <div className="space-y-2 overflow-x-auto">
+                  <div className="space-y-2 overflow-x-auto prose-sm">
                     <ReactMarkdown 
                       remarkPlugins={[remarkGfm]}
                       components={{
                         p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
-                        ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2" {...props} />,
-                        ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2" {...props} />,
-                        li: ({node, ...props}) => <li className="mb-1" {...props} />,
-                        strong: ({node, ...props}) => <strong className="font-semibold" {...props} />,
+                        ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2 space-y-0.5" {...props} />,
+                        ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2 space-y-0.5" {...props} />,
+                        li: ({node, ...props}) => <li className="text-[13px]" {...props} />,
+                        strong: ({node, ...props}) => <strong className="font-semibold text-[#11311F]" {...props} />,
                         table: ({node, ...props}) => (
-                          <div className="overflow-x-auto my-2">
-                            <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg" {...props} />
+                          <div className="overflow-x-auto my-2 rounded-lg border border-gray-100">
+                            <table className="min-w-full text-[12px]" {...props} />
                           </div>
                         ),
-                        thead: ({node, ...props}) => <thead className="bg-gray-50" {...props} />,
-                        th: ({node, ...props}) => <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b" {...props} />,
-                        tbody: ({node, ...props}) => <tbody className="bg-white divide-y divide-gray-200" {...props} />,
-                        td: ({node, ...props}) => <td className="px-3 py-2 text-sm text-gray-700 whitespace-nowrap" {...props} />
+                        thead: ({node, ...props}) => <thead className="bg-[#F6F9F7]" {...props} />,
+                        th: ({node, ...props}) => <th className="px-3 py-2 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider" {...props} />,
+                        tbody: ({node, ...props}) => <tbody className="bg-white divide-y divide-gray-50" {...props} />,
+                        td: ({node, ...props}) => <td className="px-3 py-2 text-[12px] text-gray-700" {...props} />
                       }}
                     >
                       {msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')}
@@ -115,16 +124,19 @@ export function Chatbot() {
           ))}
           {isLoading && (
             <div className="flex justify-start">
-              <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1 shadow-sm h-[40px]">
-                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              <div className="w-7 h-7 rounded-lg bg-[#E9F3ED] flex items-center justify-center shrink-0 mr-2 mt-0.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#235839]" />
+              </div>
+              <div className="bg-white border border-gray-100 rounded-2xl rounded-bl-lg px-4 py-3 flex items-center gap-1.5 shadow-sm">
+                <div className="w-1.5 h-1.5 bg-[#235839]/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <div className="w-1.5 h-1.5 bg-[#235839]/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <div className="w-1.5 h-1.5 bg-[#235839]/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
               </div>
             </div>
           )}
           {error && (
             <div className="flex justify-center">
-              <div className="bg-red-50 text-red-500 rounded-lg px-4 py-2 text-sm border border-red-100">
+              <div className="bg-red-50 text-red-500 rounded-xl px-4 py-2 text-[13px] font-medium border border-red-100">
                 Connection error. Please try again.
               </div>
             </div>
@@ -133,21 +145,21 @@ export function Chatbot() {
         </div>
 
         {/* Input */}
-        <form onSubmit={handleSubmit} className="p-4 border-t border-gray-100 bg-white shrink-0">
-          <div className="flex items-center gap-2 relative">
+        <form onSubmit={handleSubmit} className="px-4 py-4 border-t border-gray-100 bg-white shrink-0">
+          <div className="flex items-center gap-2 bg-[#F6F9F7] rounded-2xl pl-4 pr-1.5 py-1.5 border border-gray-100 focus-within:border-[#235839]/30 focus-within:bg-white transition-all">
             <input
               type="text"
               value={input}
               onChange={e => setInput(e.target.value)}
-              placeholder="Type your message..."
-              className="flex-1 bg-gray-100 border-transparent focus:bg-white focus:border-green-500 focus:ring-1 focus:ring-green-500 rounded-full px-4 py-2.5 text-sm outline-none transition-all pr-12"
+              placeholder="Ask about plant care..."
+              className="flex-1 bg-transparent text-[14px] outline-none text-gray-800 placeholder:text-gray-400"
             />
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="absolute right-1 w-8 h-8 flex items-center justify-center bg-green-600 text-white rounded-full hover:bg-green-700 disabled:opacity-50 disabled:hover:bg-green-600 transition-colors"
+              className="w-9 h-9 flex items-center justify-center bg-[#11311F] text-white rounded-xl hover:bg-black disabled:opacity-30 disabled:hover:bg-[#11311F] transition-all active:scale-90 shrink-0"
             >
-              <Send className="w-4 h-4 -ml-0.5" />
+              <ArrowUp className="w-4 h-4" />
             </button>
           </div>
         </form>
