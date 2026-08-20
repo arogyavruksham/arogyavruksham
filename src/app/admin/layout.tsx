@@ -370,7 +370,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </aside>
 
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0 bg-white">
+        <div className="flex-1 flex flex-col min-w-0 min-h-0 bg-white">
           
           {/* Top Header Bar (Mobile + Desktop Utilities) */}
           <header className="h-16 bg-white/80 backdrop-blur-xl border-b border-[#E5E7EB] flex items-center justify-between px-6 lg:px-8 z-20 shrink-0 sticky top-0">
@@ -509,8 +509,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </header>
 
           {/* Page Content */}
-          <main className="flex-1 overflow-y-auto">
-            <div className="w-full max-w-[1600px] mx-auto px-4 py-6 md:px-8 md:py-8 lg:px-10 pb-36 md:pb-10">
+          <main className="flex-1 overflow-y-auto min-h-0">
+            <div className="w-full max-w-[1600px] mx-auto px-4 py-6 md:px-8 md:py-8 lg:px-10 pb-40 md:pb-10">
               {children}
             </div>
           </main>
