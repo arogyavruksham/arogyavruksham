@@ -10,7 +10,7 @@ const SLIDES = [
     id: 1,
     badge: "50%",
     badgeLabel: "OFF",
-    badgeColor: "bg-[#2D6A4F]",
+    badgeColor: "bg-[#ffb156]",
     subtitle: "Trending Plant 2026",
     title: "Elegant and tolerant plant",
     description: "We are only beginning to understand the impact indoor air quality has on our mental health and work performance, but so far, the introduction of indoor plants to improve indoor air and reduce pollution points to positive outcomes.\n\nIt's true when we say plants make people happy.",
@@ -21,7 +21,7 @@ const SLIDES = [
     id: 2,
     badge: "35%",
     badgeLabel: "SALE",
-    badgeColor: "bg-[#E07A5F]",
+    badgeColor: "bg-[#689f38]",
     subtitle: "Indoor Sanctuary 2026",
     title: "Vibrant tropical air purifier",
     description: "Infuse your home and workspace with deep green calmness and active tropical air purification. Thriving effortlessly with minimal irrigation, these magnificent foliage specimens promote mindfulness and productivity.\n\nTransform your everyday room into an authentic living sanctuary.",
@@ -32,7 +32,7 @@ const SLIDES = [
     id: 3,
     badge: "40%",
     badgeLabel: "OFF",
-    badgeColor: "bg-[#11311F]",
+    badgeColor: "bg-[#235839]",
     subtitle: "Desert Minimalism",
     title: "Architectural desert flora",
     description: "Featuring bold architectural geometry and virtually zero maintenance irrigation demands, our sculptural desert botanicals represent modern interior serenity at its absolute peak.\n\nCustom crafted for modern offices, living rooms, and sunlit windowsills.",
@@ -49,7 +49,7 @@ export function TrendingBanner() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % SLIDES.length)
-    }, 6000)
+    }, 3000)
     return () => clearInterval(timer)
   }, [])
 
@@ -64,72 +64,90 @@ export function TrendingBanner() {
   const slide = SLIDES[currentSlide]
 
   return (
-    <section className="py-24 bg-[#FCFBF8] overflow-hidden" ref={ref}>
-      <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24">
-        <div className="relative flex flex-col md:flex-row items-center bg-[#F6F4ED] rounded-[2rem] overflow-hidden">
+    <section className="py-24 bg-white overflow-hidden" ref={ref}>
+      <div className="container mx-auto px-4 lg:px-8 max-w-[1400px]">
+        <div className="relative flex flex-col md:flex-row items-center h-auto md:h-[500px]">
           
+          {/* Background Split */}
+          <div className="absolute inset-0 flex">
+            <div className="w-[55%] h-full bg-[#f8f9fb]"></div>
+            <div className="w-[45%] h-full bg-white"></div>
+          </div>
+
           <AnimatePresence mode="wait">
             <motion.div
               key={`image-${slide.id}`}
-              initial={{ opacity: 0, scale: 0.95 }} 
-              animate={inView ? { opacity: 1, scale: 1 } : {}} 
-              exit={{ opacity: 0, scale: 1.05 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full md:w-1/2 h-[450px] md:h-[650px] flex items-center justify-center shrink-0"
+              initial={{ opacity: 0, x: -30 }} 
+              animate={inView ? { opacity: 1, x: 0 } : {}} 
+              exit={{ opacity: 0, x: 30 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="relative z-10 w-full md:w-[50%] h-[400px] md:h-[600px] flex items-end justify-center md:justify-end pr-0 md:pr-12 pt-12 md:pt-0 shrink-0"
             >
-              <div className="absolute inset-0 bg-[#E3E8E1]/50 rounded-[2rem] md:rounded-r-none md:rounded-l-[2rem] m-4 md:m-0 md:mr-8 overflow-hidden">
-                {/* Discount Badge */}
-                <div className={`absolute top-8 left-8 ${slide.badgeColor} text-white rounded-full p-4 flex flex-col items-center justify-center w-20 h-20 shadow-lg z-20 transition-colors duration-500`}>
-                  <span className="font-serif text-2xl font-light leading-none">{slide.badge}</span>
-                  <span className="font-sans text-[9px] font-bold tracking-widest leading-none mt-1">{slide.badgeLabel}</span>
-                </div>
-                <img 
-                  src={slide.image} 
-                  alt={slide.title}
-                  onError={(e) => { e.currentTarget.src = slide.fallback; }}
-                  className="w-full h-full object-cover mix-blend-multiply opacity-90 transition-transform duration-1000 hover:scale-105"
-                />
+              {/* Discount Badge */}
+              <div className={`absolute top-20 left-20 md:left-32 ${slide.badgeColor} text-white rounded-xl p-4 flex flex-col items-center justify-center w-24 h-24 shadow-sm z-20 transition-colors duration-500`}>
+                <span className="font-serif text-2xl font-light leading-none">{slide.badge}</span>
+                <span className="font-serif text-xl font-light tracking-widest leading-none mt-1">{slide.badgeLabel}</span>
               </div>
+
+              <img 
+                src={slide.image} 
+                alt={slide.title}
+                onError={(e) => { e.currentTarget.src = slide.fallback; }}
+                className="w-auto h-[120%] max-h-[700px] object-contain mix-blend-multiply origin-bottom transform translate-y-12 drop-shadow-sm"
+              />
             </motion.div>
           </AnimatePresence>
 
           <AnimatePresence mode="wait">
             <motion.div
               key={`text-${slide.id}`}
-              initial={{ opacity: 0, y: 30 }} 
+              initial={{ opacity: 0, y: 25 }} 
               animate={inView ? { opacity: 1, y: 0 } : {}} 
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 w-full md:w-1/2 p-10 md:p-16 lg:p-20 flex-1 flex flex-col justify-center"
+              exit={{ opacity: 0, y: -25 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="relative z-10 w-full md:w-[50%] pl-8 md:pl-16 pr-8 pt-12 md:pt-0 flex-1 pb-16 md:pb-0"
             >
-              <h2 className="font-serif font-medium text-4xl lg:text-5xl text-[#11311F] leading-[1.1] mb-6 tracking-tight">
+              <p className="font-serif italic text-[#78b144] text-[15px] mb-2">{slide.subtitle}</p>
+              <h2 className="font-sans font-bold text-[36px] md:text-[42px] text-[#111] leading-[1.1] mb-6">
                 {slide.title}
               </h2>
-              <p className="text-gray-600 text-[15px] leading-[1.8] max-w-lg mb-10 whitespace-pre-line">
+              <p className="text-[#666] text-[14px] leading-[1.8] max-w-xl mb-8 whitespace-pre-line">
                 {slide.description}
               </p>
-              <Link href="/shop" className="inline-flex w-fit items-center text-[12px] font-bold tracking-widest uppercase text-[#11311F] pb-2 border-b border-[#11311F]/30 hover:border-[#11311F] transition-all">
-                Shop Collection
+              <Link href="/shop" className="text-[#78b144] text-[13px] font-bold tracking-widest uppercase hover:text-[#5b8a30] transition-colors">
+                SHOP NOW
               </Link>
             </motion.div>
           </AnimatePresence>
 
-          {/* Navigation Arrows */}
-          <div className="absolute bottom-8 right-8 z-30 flex gap-2">
-            <button 
-              onClick={prevSlide}
-              aria-label="Previous slide"
-              className="w-12 h-12 bg-white/80 backdrop-blur-md rounded-full text-[#11311F] flex items-center justify-center hover:bg-[#11311F] hover:text-white transition-all shadow-sm"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button 
-              onClick={nextSlide}
-              aria-label="Next slide"
-              className="w-12 h-12 bg-white/80 backdrop-blur-md rounded-full text-[#11311F] flex items-center justify-center hover:bg-[#11311F] hover:text-white transition-all shadow-sm"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
+          {/* Navigation Arrows & Indicators */}
+          <div className="absolute bottom-4 md:-bottom-24 right-8 z-30 flex items-center gap-6">
+            <div className="flex gap-2">
+              {SLIDES.map((s, idx) => (
+                <button 
+                  key={idx} 
+                  onClick={() => setCurrentSlide(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${currentSlide === idx ? 'bg-[#78b144] w-6' : 'bg-gray-300 hover:bg-gray-400'}`}
+                />
+              ))}
+            </div>
+            <div className="flex shadow-sm">
+              <button 
+                onClick={prevSlide}
+                aria-label="Previous slide"
+                className="w-14 h-14 bg-black text-white flex items-center justify-center hover:bg-[#689f38] active:scale-95 transition-all"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button 
+                onClick={nextSlide}
+                aria-label="Next slide"
+                className="w-14 h-14 bg-black text-white border-l border-white/20 flex items-center justify-center hover:bg-[#689f38] active:scale-95 transition-all"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
         </div>
