@@ -69,9 +69,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${inter.variable} h-full antialiased`}
+      className={`${playfair.variable} ${inter.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans bg-background text-foreground pb-16 md:pb-0">
+      <body className="min-h-screen flex flex-col font-sans bg-background text-foreground pb-16 md:pb-0">
         <AuthProvider>
           <Navbar />
           <main className="flex-1">{children}</main>

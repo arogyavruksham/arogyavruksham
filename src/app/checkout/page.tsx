@@ -230,7 +230,7 @@ export default function CheckoutPage() {
       setPaymentSuccess(true)
       
       setTimeout(() => {
-        router.push('/profile')
+        router.push('/profile?tab=orders')
       }, 4000)
       
     } catch (error: any) {

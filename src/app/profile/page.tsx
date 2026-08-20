@@ -4,6 +4,7 @@
 import { useAuthStore } from '@/store/authStore'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useCartStore } from '@/store/cartStore'
 import { Home, Search, Clock, User, Heart, Settings, Bell, Package, CheckCircle, Truck, Info, LogOut, Loader2, ArrowLeft, Star, Edit2, ChevronRight, Droplet, LayoutDashboard, ShoppingBag } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
@@ -12,6 +13,7 @@ type TabType = 'dashboard' | 'orders' | 'settings' | 'wishlist' | 'reviews';
 
 export default function ProfilePage() {
   const { user, isAuthenticated, logout, login } = useAuthStore()
+  const { addItem } = useCartStore()
   const router = useRouter()
   const searchParams = useSearchParams()
   const [mounted, setMounted] = useState(false)
@@ -78,6 +80,35 @@ export default function ProfilePage() {
     if (orderFilter === 'delivered') return o.status === 'delivered';
     return true;
   });
+
+  const handleCancelOrder = async (orderId: string) => {
+    if (window.confirm('Are you sure you want to cancel this order?')) {
+      const { error } = await supabase.from('orders').update({ status: 'cancelled' }).eq('id', orderId);
+      if (!error) {
+        setOrders(orders.map(o => o.id === orderId ? { ...o, status: 'cancelled' } : o));
+        alert('Order cancelled successfully.');
+      } else {
+        alert('Failed to cancel order.');
+      }
+    }
+  };
+
+  const handleReorder = (order: any) => {
+    if (order.order_items) {
+      order.order_items.forEach((item: any) => {
+        if (item.products) {
+          addItem({
+            id: item.products.id,
+            title: item.products.title,
+            price: item.products.price || item.price,
+            imageUrl: item.products.image_url,
+            quantity: item.quantity,
+          });
+        }
+      });
+      router.push('/checkout');
+    }
+  };
 
   const renderDashboard = () => (
     <div className="space-y-6 animate-in fade-in duration-300">
@@ -241,9 +272,9 @@ export default function ProfilePage() {
                 {/* Header (Mobile Only) */}
                 <div className="md:hidden px-5 pt-5 pb-3 flex justify-between items-center border-b border-gray-50">
                   <div className="flex items-center gap-2">
-                    {isDelivered ? <CheckCircle className="w-4 h-4 text-[#11311F]" /> : <Truck className="w-4 h-4 text-gray-400" />}
-                    <span className={`text-[11px] font-black uppercase tracking-wider ${isDelivered ? 'text-[#11311F]' : 'text-gray-500'}`}>
-                      {isDelivered ? 'Delivered' : 'In Transit'}
+                    {isDelivered ? <CheckCircle className="w-4 h-4 text-[#11311F]" /> : order.status === 'cancelled' ? <Info className="w-4 h-4 text-red-500" /> : <Truck className="w-4 h-4 text-gray-400" />}
+                    <span className={`text-[11px] font-black uppercase tracking-wider ${isDelivered ? 'text-[#11311F]' : order.status === 'cancelled' ? 'text-red-500' : 'text-gray-500'}`}>
+                      {isDelivered ? 'Delivered' : order.status === 'cancelled' ? 'Cancelled' : 'In Transit'}
                     </span>
                   </div>
                   <span className="text-[11px] font-bold text-gray-400">{dateStr}</span>
@@ -279,6 +310,10 @@ export default function ProfilePage() {
                           <div className="flex items-center gap-2 text-xs font-bold text-gray-400">
                             <CheckCircle className="w-4 h-4" /> Delivered on {dateStr}
                           </div>
+                        ) : order.status === 'cancelled' ? (
+                          <div className="flex items-center gap-2 text-xs font-bold text-red-500 bg-red-50 px-3 py-1.5 rounded-full">
+                            <Info className="w-4 h-4" /> Cancelled
+                          </div>
                         ) : (
                           <div className="flex items-center gap-2 text-xs font-bold text-[#235839] bg-[#E9F3ED] px-3 py-1.5 rounded-full">
                             <Truck className="w-4 h-4" /> Arriving Soon
@@ -289,13 +324,20 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <div className="px-5 py-4 bg-gray-50/50 border-t border-gray-100 flex items-center justify-end gap-3 md:flex-col md:justify-center md:border-t-0 md:border-l md:w-48">
-                  <button className="px-4 py-2 border border-gray-200 rounded-full text-xs font-bold text-gray-600 hover:bg-gray-100 transition-colors flex-1 md:flex-none md:w-full">
-                    View Details
+                <div className="px-5 py-4 bg-gray-50/50 border-t border-gray-100 flex flex-wrap items-center justify-end gap-3 md:flex-col md:justify-center md:border-t-0 md:border-l md:w-48">
+                  <button onClick={() => alert('Items: ' + (order.order_items?.map((item:any) => `${item.products?.title} (x${item.quantity})`).join(', ') || 'No details available'))} className="px-4 py-2 border border-gray-200 rounded-full text-xs font-bold text-gray-600 hover:bg-gray-100 transition-colors flex-1 md:flex-none md:w-full">
+                    View More
                   </button>
-                  <button className="px-4 py-2 bg-[#11311F] text-white rounded-full text-xs font-bold shadow-md hover:bg-black transition-colors flex-1 md:flex-none md:w-full flex items-center justify-center gap-2">
-                    {isDelivered ? 'Reorder' : 'Track'} <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
+                  {order.status !== 'cancelled' && !isDelivered && (
+                    <button onClick={() => handleCancelOrder(order.id)} className="px-4 py-2 border border-red-200 text-red-600 rounded-full text-xs font-bold hover:bg-red-50 transition-colors flex-1 md:flex-none md:w-full">
+                      Cancel
+                    </button>
+                  )}
+                  {order.status !== 'cancelled' && (
+                    <button onClick={() => isDelivered ? handleReorder(order) : alert('Tracking status: ' + order.status.toUpperCase() + '\n\nEstimated delivery: In a few days.')} className="px-4 py-2 bg-[#11311F] text-white rounded-full text-xs font-bold shadow-md hover:bg-black transition-colors flex-1 md:flex-none md:w-full flex items-center justify-center gap-2">
+                      {isDelivered ? 'Order Again' : 'Track Order'} <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
                 
               </div>
@@ -341,7 +383,7 @@ export default function ProfilePage() {
         
         <nav className="flex-1 px-4 space-y-1.5 mt-2">
           {[
-            { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+            { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, onClick: () => router.push('/') },
             ...(user?.role === 'admin' || user?.role === 'manager' || user?.role === 'editor' ? [{ id: 'admin', label: 'Admin Panel', icon: Settings, onClick: () => router.push('/admin') }] : []),
             { id: 'orders', label: 'Order History', icon: Clock },
             { id: 'settings', label: 'Settings', icon: Settings },
@@ -351,7 +393,7 @@ export default function ProfilePage() {
             return (
               <button 
                 key={item.id} 
-                onClick={() => setActiveTab(item.id as any)}
+                onClick={item.onClick || (() => setActiveTab(item.id as any))}
                 className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all cursor-pointer ${
                   isActive ? 'bg-[#E9F3ED] text-[#11311F]' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
                 }`}
@@ -390,7 +432,7 @@ export default function ProfilePage() {
       {/* Mobile Profile Bottom Nav */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-md border-t border-gray-100 flex items-center justify-around h-[72px] pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
         {[
-          { id: 'dashboard', label: 'Dashboard', icon: Home },
+          { id: 'dashboard', label: 'Dashboard', icon: Home, onClick: () => router.push('/') },
           ...(user?.role === 'admin' || user?.role === 'manager' || user?.role === 'editor' ? [{ id: 'admin', label: 'Admin', icon: LayoutDashboard, onClick: () => router.push('/admin') }] : []),
           { id: 'orders', label: 'Orders', icon: Clock },
           { id: 'shop', label: 'Shop', icon: Search, onClick: () => router.push('/shop') }
