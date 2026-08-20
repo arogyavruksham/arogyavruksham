@@ -170,7 +170,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="flex flex-col h-[100dvh] bg-[#F3F4F6] font-sans text-[#111827] overflow-hidden md:p-3 transition-colors duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+    <div className="flex flex-col fixed inset-0 md:relative md:h-[100dvh] bg-[#F3F4F6] font-sans text-[#111827] overflow-hidden md:p-3 transition-colors duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
       
       {/* Outer Shell -> Inner Core (Double-Bezel Architecture) */}
       <div className="flex flex-col md:flex-row flex-1 bg-white md:rounded-2xl md:shadow-[0_8px_40px_rgba(0,0,0,0.03)] md:border md:border-[#E5E7EB] overflow-hidden relative">
