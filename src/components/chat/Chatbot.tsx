@@ -1,13 +1,15 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { X, Send, Loader2, Sparkles, ArrowUp } from 'lucide-react'
+import { X, Send, Loader2, Sparkles, ArrowUp, Bot } from 'lucide-react'
 import { useChat } from '@ai-sdk/react'
+import { usePathname } from 'next/navigation'
 import { useAuthStore } from '@/store/authStore'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
 export function Chatbot() {
+  const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -38,25 +40,29 @@ export function Chatbot() {
     scrollToBottom()
   }, [messages])
 
+  if (pathname !== '/') {
+    return null
+  }
+
   return (
     <>
       {/* Floating Button — bottom-left, away from WhatsApp on right */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-24 md:bottom-6 left-5 z-40 transition-all duration-300 ${isOpen ? 'opacity-0 pointer-events-none scale-75' : 'opacity-100 scale-100'}`}
+        className={`fixed bottom-[110px] sm:bottom-24 md:bottom-6 left-6 z-[90] transition-all duration-300 ${isOpen ? 'opacity-0 pointer-events-none scale-75' : 'opacity-100 scale-100'}`}
         aria-label="Open Chat"
       >
         <div className="relative group">
-          <div className="w-14 h-14 bg-[#11311F] text-white rounded-2xl flex items-center justify-center shadow-xl shadow-[#11311F]/20 hover:shadow-2xl hover:shadow-[#11311F]/30 hover:scale-105 active:scale-95 transition-all">
-            <Sparkles className="w-6 h-6" />
+          <div className="w-14 h-14 bg-[#11311F] text-white rounded-full flex items-center justify-center shadow-xl shadow-[#11311F]/30 hover:shadow-2xl hover:scale-105 active:scale-95 transition-all">
+            <Bot className="w-7 h-7" />
           </div>
           {/* Ping dot */}
-          <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-[#A4E4BA] rounded-full border-2 border-white" />
+          <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-[#A4E4BA] rounded-full border-2 border-white" />
         </div>
       </button>
 
       {/* Chat Panel */}
-      <div className={`fixed inset-0 md:inset-auto md:bottom-6 md:left-5 md:w-[400px] md:h-[600px] md:max-h-[calc(100vh-48px)] bg-white md:rounded-3xl md:shadow-2xl md:border md:border-gray-200/80 flex flex-col overflow-hidden transition-all duration-300 transform origin-bottom-left z-50 ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'}`}>
+      <div className={`fixed inset-0 md:inset-auto md:bottom-6 md:left-6 md:w-[400px] md:h-[600px] md:max-h-[calc(100vh-48px)] bg-white md:rounded-3xl md:shadow-2xl md:border md:border-gray-200/80 flex flex-col overflow-hidden transition-all duration-300 transform origin-bottom-left z-[9999] ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'}`}>
         
         {/* Header */}
         <div className="bg-[#11311F] text-white px-6 py-5 flex justify-between items-center shrink-0 relative overflow-hidden">
@@ -65,8 +71,8 @@ export function Chatbot() {
             <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
           </div>
           <div className="relative z-10 flex items-center gap-3">
-            <div className="w-9 h-9 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
-              <Sparkles className="w-4.5 h-4.5 text-[#A4E4BA]" />
+            <div className="w-9 h-9 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
+              <Bot className="w-5 h-5 text-[#A4E4BA]" />
             </div>
             <div>
               <h3 className="font-bold text-[15px] leading-tight">Plant Assistant</h3>
@@ -83,8 +89,8 @@ export function Chatbot() {
           {messages.map(msg => (
             <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               {msg.role === 'assistant' && (
-                <div className="w-7 h-7 rounded-lg bg-[#E9F3ED] flex items-center justify-center shrink-0 mr-2 mt-0.5">
-                  <Sparkles className="w-3.5 h-3.5 text-[#235839]" />
+                <div className="w-7 h-7 rounded-full bg-[#E9F3ED] flex items-center justify-center shrink-0 mr-2 mt-0.5">
+                  <Bot className="w-4 h-4 text-[#235839]" />
                 </div>
               )}
               <div className={`max-w-[80%] text-[14px] leading-relaxed ${
@@ -124,8 +130,8 @@ export function Chatbot() {
           ))}
           {isLoading && (
             <div className="flex justify-start">
-              <div className="w-7 h-7 rounded-lg bg-[#E9F3ED] flex items-center justify-center shrink-0 mr-2 mt-0.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#235839]" />
+              <div className="w-7 h-7 rounded-full bg-[#E9F3ED] flex items-center justify-center shrink-0 mr-2 mt-0.5">
+                <Bot className="w-4 h-4 text-[#235839]" />
               </div>
               <div className="bg-white border border-gray-100 rounded-2xl rounded-bl-lg px-4 py-3 flex items-center gap-1.5 shadow-sm">
                 <div className="w-1.5 h-1.5 bg-[#235839]/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
