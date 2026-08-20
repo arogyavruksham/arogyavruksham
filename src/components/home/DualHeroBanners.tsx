@@ -1,181 +1,103 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { MobileHomeHeader } from './MobileHomeHeader'
 
-const slides = [
-  {
-    id: 1,
-    tag: 'INDOOR COLLECTION',
-    title: 'Breathe Life Into',
-    titleAccent: 'Your Space',
-    description: 'Handpicked indoor plants for every room in your house. Delivered fresh to your doorstep.',
-    buttonText: 'Shop Indoor Plants',
-    buttonLink: '/shop?category=Indoor%20Plants',
-    image: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&q=80&w=1920',
-    tagColor: 'text-accent',
-  },
-  {
-    id: 2,
-    tag: 'RARE SUCCULENTS',
-    title: 'Desert Beauties,',
-    titleAccent: 'Zero Effort',
-    description: 'Exquisite and low-maintenance succulents for your desk, windowsill, or living room.',
-    buttonText: 'Explore Succulents',
-    buttonLink: '/shop?category=Succulents',
-    image: 'https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&q=80&w=1920',
-    tagColor: 'text-secondary',
-  },
-  {
-    id: 3,
-    tag: 'NEW ARRIVALS',
-    title: 'Nature Meets',
-    titleAccent: 'Modern Living',
-    description: 'Discover our newest collection of resilient, beautiful greenery for modern homes.',
-    buttonText: 'View New Arrivals',
-    buttonLink: '/shop?sort=new',
-    image: 'https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&q=80&w=1920',
-    tagColor: 'text-green-400',
-  },
-]
-
-const textVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { delay: i * 0.12, duration: 0.6, ease: 'easeOut' as const }
-  }),
-  exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
-}
-
-const imageVariants = {
-  enter: { scale: 1.08, opacity: 0 },
-  center: { scale: 1, opacity: 1, transition: { duration: 0.9, ease: 'easeOut' as const } },
-  exit: { scale: 1.02, opacity: 0, transition: { duration: 0.5 } }
-}
-
 export function DualHeroBanners() {
-  const [current, setCurrent] = useState(0)
-  const [direction, setDirection] = useState(1)
-
-  const go = (index: number) => {
-    setDirection(index > current ? 1 : -1)
-    setCurrent(index)
-  }
-  const prev = () => go((current - 1 + slides.length) % slides.length)
-  const next = () => go((current + 1) % slides.length)
-
-  useEffect(() => {
-    const timer = setInterval(next, 5000)
-    return () => clearInterval(timer)
-  }, [current])
-
-  const slide = slides[current]
-
   return (
     <>
-      {/* ─── MOBILE VIEW ONLY ─── */}
-      <div className="block md:hidden bg-[#FCFBF8] p-4 pt-4 pb-3">
-        <MobileHomeHeader />
-        <div className="relative w-full h-[480px] rounded-[28px] overflow-hidden shadow-md flex flex-col justify-end p-6 text-white border border-gray-100">
-          {/* Background Succulent Image */}
+      <div className="block md:hidden bg-[#FCFBF8]">
+        <div className="p-4 pt-4 pb-3">
+          <MobileHomeHeader />
+        </div>
+        <div className="relative w-full h-[85vh] min-h-[600px] flex flex-col justify-end p-6 pb-12 overflow-hidden">
           <Image 
-            src="https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&q=80&w=800" 
-            alt="Desert Beauties"
+            src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&q=80&w=1200" 
+            alt="Premium Indoor Plants"
             fill
             priority
             className="absolute inset-0 object-cover z-0" 
           />
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A1A10]/90 via-[#0A1A10]/40 to-transparent z-10" />
           
-          {/* Content */}
           <div className="relative z-20 flex flex-col items-start w-full">
-            <h1 className="text-[32px] font-serif font-bold text-white leading-[1.1] mb-2.5 tracking-tight">
-              Desert Beauties,<br />Zero Effort
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#A4E4BA] mb-3">Indoor Collection</p>
+            <h1 className="text-4xl font-serif font-bold text-white leading-[1.1] mb-4 tracking-tight">
+              Breathe Life Into <br/><span className="italic font-light">Your Space</span>
             </h1>
-            <p className="text-[13px] font-medium text-white/90 leading-relaxed mb-6 max-w-[280px]">
-              Discover our curated collection of low-maintenance succulents perfect for any modern space.
+            <p className="text-sm text-white/80 leading-relaxed mb-8 max-w-[280px]">
+              Handpicked indoor plants for every room in your house. Delivered fresh to your doorstep.
             </p>
             <Link 
-              href="/shop?category=Succulents"
-              className="w-full bg-[#235839] hover:bg-[#1C462D] text-[#A4E4BA] font-extrabold text-[12px] tracking-wider uppercase py-4 rounded-[20px] text-center shadow-lg transition-transform active:scale-98"
+              href="/shop?category=Indoor%20Plants"
+              className="bg-white hover:bg-gray-100 text-[#11311F] font-bold text-xs tracking-wider uppercase px-8 py-4 rounded-full text-center transition-transform active:scale-95"
             >
-              EXPLORE SUCCULENTS
+              Shop Collection
             </Link>
           </div>
         </div>
       </div>
 
-      {/* ─── DESKTOP VIEW ─── */}
-      <section className="hidden md:block relative w-full h-[100vh] overflow-hidden bg-gray-100">
-        {/* Background Image */}
-        <AnimatePresence mode="sync">
-          <motion.div key={slide.id} variants={imageVariants} initial="enter" animate="center" exit="exit"
-            className="absolute inset-0 z-0">
-            <Image src={slide.image} alt={slide.title} fill priority className="object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Content */}
-        <div className="relative z-10 h-full flex items-center">
-          <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24">
-            <div className="max-w-xl">
-              <AnimatePresence mode="wait">
-                <motion.div key={slide.id} className="space-y-4 md:space-y-5">
-                  {/* Tag */}
-                  <motion.p custom={0} variants={textVariants} initial="hidden" animate="visible" exit="exit"
-                    className={`text-xs md:text-sm font-bold tracking-[0.25em] uppercase ${slide.tagColor}`}>
-                    {slide.tag}
-                  </motion.p>
-                  {/* Headline */}
-                  <motion.h1 custom={1} variants={textVariants} initial="hidden" animate="visible" exit="exit"
-                    className="text-4xl md:text-5xl lg:text-[54px] xl:text-[58px] font-serif font-bold text-white leading-[1.1]">
-                    {slide.title}<br />
-                    <span className="text-accent italic">{slide.titleAccent}</span>
-                  </motion.h1>
-                  {/* Description */}
-                  <motion.p custom={2} variants={textVariants} initial="hidden" animate="visible" exit="exit"
-                    className="text-white/80 text-sm md:text-base leading-relaxed max-w-sm md:max-w-md">
-                    {slide.description}
-                  </motion.p>
-                  {/* CTA */}
-                  <motion.div custom={3} variants={textVariants} initial="hidden" animate="visible" exit="exit" className="pt-1">
-                    <Link href={slide.buttonLink}
-                      className="inline-block bg-primary text-white font-bold text-xs md:text-sm px-7 py-3 rounded-sm hover:bg-primary-light transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/30">
-                      {slide.buttonText}
-                    </Link>
-                  </motion.div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
+      <section className="hidden md:flex relative w-full h-screen min-h-[700px] bg-[#FCFBF8] items-center">
+        <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24 flex items-center h-full pt-16">
+          <div className="w-1/2 pr-12 lg:pr-24 z-10 relative">
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#11311F]/60 mb-6"
+            >
+              Indoor Collection
+            </motion.p>
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-6xl lg:text-[80px] font-serif text-[#11311F] leading-[1.05] tracking-tight mb-8"
+            >
+              Breathe Life <br/>Into <span className="italic font-light text-[#2D6A4F]">Your Space</span>
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-lg text-gray-600 leading-relaxed max-w-[26rem] mb-12"
+            >
+              Handpicked indoor plants for every room in your house. Delivered fresh to your doorstep.
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <Link 
+                href="/shop?category=Indoor%20Plants"
+                className="inline-flex items-center justify-center bg-[#11311F] hover:bg-black text-white font-bold text-[13px] tracking-widest uppercase px-12 py-5 rounded-full transition-transform active:scale-95 shadow-xl shadow-[#11311F]/10"
+              >
+                Shop Collection
+              </Link>
+            </motion.div>
           </div>
-        </div>
-
-        {/* Slide Dots */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-          {slides.map((_, i) => (
-            <button key={i} onClick={() => go(i)} className={`transition-all duration-400 rounded-full ${i === current ? 'bg-white w-8 h-2' : 'bg-white/40 w-2 h-2'}`} />
-          ))}
-        </div>
-
-        {/* Arrows */}
-        <button onClick={prev} className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/25 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white transition-all">
-          <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
-        </button>
-        <button onClick={next} className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/25 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white transition-all">
-          <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-        </button>
-
-        {/* Slide counter */}
-        <div className="absolute bottom-8 right-8 z-20 text-white/60 text-sm font-mono">
-          {String(current + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
+          
+          <div className="absolute right-0 top-0 bottom-0 w-[50%] h-full">
+            <motion.div 
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full h-full overflow-hidden"
+            >
+              <Image 
+                src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&q=80&w=1600" 
+                alt="Premium Indoor Plants"
+                fill
+                priority
+                className="object-cover object-[70%_50%]" 
+              />
+              <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#FCFBF8] to-transparent z-10" />
+            </motion.div>
+          </div>
         </div>
       </section>
     </>

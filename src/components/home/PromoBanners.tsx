@@ -4,12 +4,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { ArrowRight } from 'lucide-react'
 
 export function PromoBanners() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
-  const slideUp: any = {
+  const slideUp = {
     hidden: { opacity: 0, y: 30 },
     visible: (i: number) => ({
       opacity: 1, y: 0,
@@ -20,79 +21,84 @@ export function PromoBanners() {
   return (
     <>
       {/* ─── MOBILE VIEW ─── */}
-      <div className="block md:hidden bg-[#FCFBF8] px-4 py-2 overflow-hidden">
-        <div className="flex gap-3.5 overflow-x-auto pb-4 pt-1 scrollbar-hide">
+      <div className="block md:hidden bg-[#FCFBF8] px-4 py-8 overflow-hidden">
+        <div className="flex gap-4 overflow-x-auto pb-4 pt-1 scrollbar-hide snap-x">
           {/* Banner 1 */}
-          <Link href="/shop?sale=true" className="group shrink-0 w-[240px] h-[115px] rounded-[22px] bg-[#EBE6DD] border border-[#D9D1C2] p-4 relative overflow-hidden shadow-2xs flex flex-col justify-center items-center text-center">
+          <Link href="/shop?sale=true" className="group snap-start shrink-0 w-[280px] h-[320px] rounded-3xl bg-[#E3E8E1] p-6 relative overflow-hidden flex flex-col justify-between">
             <div className="relative z-10">
-              <h3 className="font-serif text-[19px] font-bold text-[#1E4631] leading-tight mb-1">Spring Store Sale</h3>
-              <p className="text-[10px] font-extrabold text-[#235839] uppercase tracking-widest">UP TO 50% OFF</p>
+              <span className="bg-white/60 backdrop-blur-md rounded-full px-3 py-1.5 font-bold text-[#11311F] text-[10px] tracking-widest uppercase mb-3 inline-block">Up to 50% Off</span>
+              <h2 className="font-serif text-3xl font-medium text-[#11311F] leading-none mb-2">Spring<br/><span className="italic text-[#2D6A4F]">Sale</span></h2>
             </div>
-            <Image src="/images/promo/leaf_bg.png" alt="Sale" fill className="absolute object-contain opacity-25 mix-blend-multiply pointer-events-none translate-x-[60%] translate-y-[60%]" />
+            <Image src="/images/promo/leaf_bg.png" alt="Sale" fill className="absolute object-cover opacity-80 mix-blend-multiply pointer-events-none translate-x-[20%] translate-y-[20%] object-bottom right-0 bottom-0 w-auto h-[70%]" />
           </Link>
 
           {/* Banner 2 */}
-          <Link href="/shop?category=Indoor%20Plants" className="group shrink-0 w-[240px] h-[115px] rounded-[22px] bg-[#DCE5DA] border border-[#C2CFBC] p-4 relative overflow-hidden shadow-2xs flex flex-col justify-center items-center text-center">
+          <Link href="/shop?category=Indoor%20Plants" className="group snap-start shrink-0 w-[240px] h-[320px] rounded-3xl bg-[#F6F4ED] p-6 relative overflow-hidden flex flex-col justify-between">
             <div className="relative z-10">
-              <h3 className="font-serif text-[19px] font-bold text-[#1E4631] leading-tight mb-1">House Plants</h3>
-              <p className="text-[10px] font-extrabold text-[#235839] uppercase tracking-widest">BRING NATURE INDOORS</p>
+              <h3 className="font-serif text-2xl font-medium text-[#11311F] leading-tight mb-1">Indoor<br/>Plants</h3>
+              <p className="text-[#11311F]/60 text-[11px] font-bold uppercase tracking-wider">Breathe Easy</p>
             </div>
-            <Image src="/images/promo/house_plant.png" alt="Plants" fill className="absolute object-contain opacity-35 mix-blend-multiply pointer-events-none translate-x-[40%] translate-y-[40%]" />
+            <Image src="/images/promo/house_plant.png" alt="Plants" fill className="absolute object-contain opacity-90 mix-blend-multiply pointer-events-none translate-x-[20%] translate-y-[30%] w-auto h-[60%] right-0 bottom-0" />
           </Link>
 
           {/* Banner 3 */}
-          <Link href="/shop?category=Pots" className="group shrink-0 w-[240px] h-[115px] rounded-[22px] bg-[#E4E6DF] border border-[#C6CABC] p-4 relative overflow-hidden shadow-2xs flex flex-col justify-center items-center text-center">
+          <Link href="/shop?category=Pots" className="group snap-start shrink-0 w-[240px] h-[320px] rounded-3xl bg-[#E9E4DB] p-6 relative overflow-hidden flex flex-col justify-between">
             <div className="relative z-10">
-              <h3 className="font-serif text-[19px] font-bold text-[#1E4631] leading-tight mb-1">Potted In Home</h3>
-              <p className="text-[10px] font-extrabold text-[#235839] uppercase tracking-widest">FLORA COLLECTION</p>
+              <h3 className="font-serif text-2xl font-medium text-[#11311F] leading-tight mb-1">Premium<br/>Pots</h3>
+              <p className="text-[#11311F]/60 text-[11px] font-bold uppercase tracking-wider">Artisan Crafted</p>
             </div>
-            <Image src="/images/promo/cactus.png" alt="Cactus" fill className="absolute object-contain opacity-35 mix-blend-multiply pointer-events-none translate-x-[40%] translate-y-[40%]" />
+            <Image src="/images/promo/cactus.png" alt="Cactus" fill className="absolute object-contain opacity-90 mix-blend-multiply pointer-events-none translate-x-[20%] translate-y-[30%] w-auto h-[60%] right-0 bottom-0" />
           </Link>
         </div>
       </div>
 
-      {/* ─── DESKTOP VIEW ─── */}
-      <section className="hidden md:block pt-12 pb-8 bg-white overflow-hidden">
-        <div className="container mx-auto px-4 lg:px-8 max-w-[1400px]">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6" ref={ref}>
+      {/* ─── DESKTOP VIEW (BENTO GRID) ─── */}
+      <section className="hidden md:block pt-24 pb-16 bg-[#FCFBF8] overflow-hidden">
+        <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24">
+          <div className="flex flex-col md:flex-row gap-6 h-auto md:h-[550px]" ref={ref}>
             
-            {/* Banner 1: SALE */}
-            <motion.div custom={0} initial="hidden" animate={inView ? "visible" : "hidden"} variants={slideUp}>
-              <Link href="/shop?sale=true" className="group relative flex overflow-hidden border border-[#e5dec5] bg-white h-[260px] md:h-[300px] hover:shadow-xl transition-shadow duration-500">
-                <div className="relative z-10 p-8 flex flex-col justify-center items-center w-full text-center mt-4">
-                  <h2 className="font-serif text-[42px] font-normal tracking-wide text-[#222] leading-none mb-2">S A L E</h2>
-                  <p className="text-[#666] text-sm uppercase tracking-widest mb-2">SPRING STORE</p>
-                  <p className="font-serif text-5xl font-light text-[#888] tracking-widest"><span className="text-[32px] align-top relative top-1 mr-1">50%</span>OFF</p>
-                </div>
-                <Image src="/images/promo/leaf_bg.png" alt="Leaf Background" fill className="absolute object-cover opacity-90 mix-blend-multiply pointer-events-none group-hover:scale-105 transition-transform duration-700 translate-x-[-10%] translate-y-[10%]" />
-              </Link>
-            </motion.div>
-
-            {/* Banner 2: House Plants */}
-            <motion.div custom={1} initial="hidden" animate={inView ? "visible" : "hidden"} variants={slideUp}>
-              <Link href="/shop?category=Indoor%20Plants" className="group relative flex overflow-hidden border border-[#c1d1a6] bg-white h-[260px] md:h-[300px] hover:shadow-xl transition-shadow duration-500">
-                <div className="relative z-10 p-8 flex flex-col pt-10">
-                  <h3 className="font-serif text-3xl font-bold text-[#333] mb-2 tracking-wide">House Plants</h3>
-                  <p className="text-[#888] text-lg font-serif italic">New Trending 2024</p>
-                </div>
-                <Image src="/images/promo/house_plant.png" alt="House Plant" fill className="absolute object-contain mix-blend-multiply group-hover:-translate-y-2 transition-transform duration-700 origin-bottom translate-x-[20%] translate-y-[10%]" />
-              </Link>
-            </motion.div>
-
-            {/* Banner 3: Potted In Home */}
-            <motion.div custom={2} initial="hidden" animate={inView ? "visible" : "hidden"} variants={slideUp}>
-              <Link href="/shop?category=Pots" className="group relative flex overflow-hidden border border-[#c1d1a6] bg-[#f8f9f6] h-[260px] md:h-[300px] hover:shadow-xl transition-shadow duration-500">
-                <div className="relative z-10 p-8 pt-12 flex flex-col w-[60%]">
-                  <p className="text-[#444] text-xs font-bold uppercase tracking-widest mb-4 leading-relaxed">POTTED IN HOME</p>
-                  <div className="flex flex-col">
-                    <span className="font-serif text-5xl font-light text-[#555] leading-none mb-2"><span className="text-3xl align-top mr-1">50%</span></span>
-                    <span className="font-serif text-[40px] font-light text-[#888] leading-none tracking-widest">OFF</span>
+            {/* Banner 1: SALE (Large) */}
+            <motion.div custom={0} initial="hidden" animate={inView ? "visible" : "hidden"} variants={slideUp} className="flex-[55%] h-[350px] md:h-full">
+              <Link href="/shop?sale=true" className="group relative flex flex-col justify-between overflow-hidden rounded-[2rem] bg-[#E3E8E1] h-full hover:shadow-2xl transition-all duration-500 p-12 lg:p-16">
+                <div className="relative z-10 w-full flex justify-between items-start">
+                  <div>
+                    <h2 className="font-serif text-5xl lg:text-7xl font-medium text-[#11311F] leading-[1.1] mb-4 tracking-tight">Spring<br/><span className="italic font-light text-[#2D6A4F]">Sale</span></h2>
+                    <p className="font-sans text-[#11311F]/70 text-lg max-w-[220px]">Bring nature indoors with exclusive discounts on premium plants.</p>
+                  </div>
+                  <div className="bg-white/60 backdrop-blur-md rounded-full px-5 py-2">
+                    <span className="font-bold text-[#11311F] text-[11px] tracking-widest uppercase">Up to 50% Off</span>
                   </div>
                 </div>
-                <Image src="/images/promo/cactus.png" alt="Cactus" fill className="absolute object-contain mix-blend-multiply group-hover:-translate-y-2 transition-transform duration-700 origin-bottom translate-x-[20%] translate-y-[10%]" />
+                <div className="relative z-10 mt-auto">
+                   <span className="inline-flex items-center text-[13px] font-bold tracking-widest uppercase text-[#11311F] group-hover:pl-2 transition-all">Shop Sale <ArrowRight className="w-4 h-4 ml-2" /></span>
+                </div>
+                <Image src="/images/promo/leaf_bg.png" alt="Leaf Background" fill className="absolute object-cover opacity-80 mix-blend-multiply pointer-events-none group-hover:scale-105 transition-transform duration-1000 ease-out translate-x-[15%] translate-y-[15%] object-bottom right-0 bottom-0 w-auto h-[80%]" />
               </Link>
             </motion.div>
 
+            <div className="flex flex-col flex-[45%] gap-6 h-full">
+              {/* Banner 2: House Plants */}
+              <motion.div custom={1} initial="hidden" animate={inView ? "visible" : "hidden"} variants={slideUp} className="flex-1 h-[250px] md:h-auto">
+                <Link href="/shop?category=Indoor%20Plants" className="group relative flex flex-col justify-center overflow-hidden rounded-[2rem] bg-[#F6F4ED] h-full hover:shadow-2xl transition-all duration-500 p-10">
+                  <div className="relative z-10 max-w-[60%]">
+                    <h3 className="font-serif text-3xl lg:text-4xl font-medium text-[#11311F] mb-3 tracking-tight">Indoor Plants</h3>
+                    <p className="text-[#11311F]/60 text-[11px] font-bold tracking-widest uppercase">Breathe easy at home</p>
+                  </div>
+                  <Image src="/images/promo/house_plant.png" alt="House Plant" fill className="absolute object-contain mix-blend-multiply group-hover:-translate-y-2 transition-transform duration-1000 ease-out origin-bottom translate-x-[30%] translate-y-[20%] right-0 bottom-0 w-[55%] h-[85%]" />
+                </Link>
+              </motion.div>
+
+              {/* Banner 3: Potted In Home */}
+              <motion.div custom={2} initial="hidden" animate={inView ? "visible" : "hidden"} variants={slideUp} className="flex-1 h-[250px] md:h-auto">
+                <Link href="/shop?category=Pots" className="group relative flex flex-col justify-center overflow-hidden rounded-[2rem] bg-[#E9E4DB] h-full hover:shadow-2xl transition-all duration-500 p-10">
+                  <div className="relative z-10 max-w-[60%]">
+                    <h3 className="font-serif text-3xl lg:text-4xl font-medium text-[#11311F] mb-3 tracking-tight">Premium Pots</h3>
+                    <p className="text-[#11311F]/60 text-[11px] font-bold tracking-widest uppercase">Artisan crafted vessels</p>
+                  </div>
+                  <Image src="/images/promo/cactus.png" alt="Cactus" fill className="absolute object-contain mix-blend-multiply group-hover:-translate-y-2 transition-transform duration-1000 ease-out origin-bottom translate-x-[30%] translate-y-[15%] right-0 bottom-0 w-[55%] h-[90%]" />
+                </Link>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
