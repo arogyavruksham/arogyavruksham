@@ -597,7 +597,7 @@ export default function ProfilePage() {
                       <p className="font-bold text-[#11311F] text-sm truncate">{item.products?.title || 'Item'}</p>
                       <p className="text-xs text-gray-500 mt-0.5">Qty: {item.quantity}</p>
                     </div>
-                    <p className="font-bold text-[#11311F] text-sm shrink-0">₹{(item.price * item.quantity).toLocaleString('en-IN')}</p>
+                    <p className="font-bold text-[#11311F] text-sm shrink-0">₹{((item.price_at_time || 0) * item.quantity).toLocaleString('en-IN')}</p>
                   </div>
                 ))}
               </div>

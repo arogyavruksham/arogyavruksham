@@ -4,10 +4,12 @@ import { useCartStore } from '@/store/cartStore'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Minus, Plus, Trash2 } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useHardwareBack } from '@/hooks/useHardwareBack'
 
 export function CartDrawer() {
+  const router = useRouter()
   const { items, isOpen, setCartOpen, removeItem, updateQuantity } = useCartStore()
   const [mounted, setMounted] = useState(false)
   
@@ -276,7 +278,7 @@ export function CartDrawer() {
                     <button
                       onClick={() => {
                         setCartOpen(false)
-                        window.location.href = '/checkout'
+                        router.push('/checkout')
                       }}
                       className="w-full py-4 bg-[#11311F] hover:bg-black text-white text-center font-sans font-bold text-[15px] rounded-xl shadow-xl shadow-[#11311F]/20 transition-transform duration-200 active:scale-95 block"
                     >

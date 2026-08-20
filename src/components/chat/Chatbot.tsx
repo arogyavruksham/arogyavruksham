@@ -62,7 +62,7 @@ export function Chatbot() {
       </button>
 
       {/* Chat Panel */}
-      <div className={`fixed inset-0 md:inset-auto md:bottom-6 md:left-6 md:w-[400px] md:h-[600px] md:max-h-[calc(100vh-48px)] bg-white md:rounded-3xl md:shadow-2xl md:border md:border-gray-200/80 flex flex-col overflow-hidden transition-all duration-300 transform origin-bottom-left z-[9999] ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'}`}>
+      <div className={`fixed inset-0 md:inset-auto md:bottom-24 md:left-6 md:w-[380px] md:h-[650px] md:max-h-[calc(100vh-120px)] bg-white md:rounded-2xl md:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.15)] md:border md:border-gray-100 flex flex-col overflow-hidden transition-all duration-300 transform origin-bottom-left z-[9999] ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'}`}>
         
         {/* Header */}
         <div className="bg-[#11311F] text-white px-6 py-5 flex justify-between items-center shrink-0 relative overflow-hidden">
@@ -86,57 +86,71 @@ export function Chatbot() {
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto px-4 py-5 space-y-4 bg-[#FAFBFA]">
-          {messages.map(msg => (
-            <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              {msg.role === 'assistant' && (
-                <div className="w-7 h-7 rounded-full bg-[#E9F3ED] flex items-center justify-center shrink-0 mr-2 mt-0.5">
-                  <Bot className="w-4 h-4 text-[#235839]" />
-                </div>
-              )}
-              <div className={`max-w-[80%] text-[14px] leading-relaxed ${
-                msg.role === 'user' 
-                  ? 'bg-[#11311F] text-white rounded-2xl rounded-br-lg px-4 py-3' 
-                  : 'bg-white border border-gray-100 text-gray-800 rounded-2xl rounded-bl-lg px-4 py-3 shadow-sm'
-              }`}>
-                {msg.role === 'user' ? (
-                  msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')
-                ) : (
-                  <div className="space-y-2 overflow-x-auto prose-sm">
-                    <ReactMarkdown 
-                      remarkPlugins={[remarkGfm]}
-                      components={{
-                        p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
-                        ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2 space-y-0.5" {...props} />,
-                        ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2 space-y-0.5" {...props} />,
-                        li: ({node, ...props}) => <li className="text-[13px]" {...props} />,
-                        strong: ({node, ...props}) => <strong className="font-semibold text-[#11311F]" {...props} />,
-                        table: ({node, ...props}) => (
-                          <div className="overflow-x-auto my-2 rounded-lg border border-gray-100">
-                            <table className="min-w-full text-[12px]" {...props} />
-                          </div>
-                        ),
-                        thead: ({node, ...props}) => <thead className="bg-[#F6F9F7]" {...props} />,
-                        th: ({node, ...props}) => <th className="px-3 py-2 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider" {...props} />,
-                        tbody: ({node, ...props}) => <tbody className="bg-white divide-y divide-gray-50" {...props} />,
-                        td: ({node, ...props}) => <td className="px-3 py-2 text-[12px] text-gray-700" {...props} />
-                      }}
-                    >
-                      {msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')}
-                    </ReactMarkdown>
+          {messages.map(msg => {
+            const isUser = msg.role === 'user';
+            const textContent = msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('').trim();
+            const isAssistantEmpty = !isUser && textContent === '';
+            
+            return (
+              <div key={msg.id} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+                {!isUser && (
+                  <div className="w-7 h-7 rounded-full bg-[#E9F3ED] flex items-center justify-center shrink-0 mr-2 mt-0.5">
+                    <Bot className="w-4 h-4 text-[#235839]" />
                   </div>
                 )}
+                <div className={`max-w-[80%] text-[14px] leading-relaxed ${
+                  isUser 
+                    ? 'bg-[#11311F] text-white rounded-2xl rounded-br-lg px-4 py-3' 
+                    : 'bg-white border border-gray-100 text-gray-800 rounded-2xl rounded-bl-lg px-4 py-3 shadow-sm'
+                }`}>
+                  {isUser ? (
+                    textContent
+                  ) : isAssistantEmpty && isLoading ? (
+                    <div className="flex items-center gap-1.5 h-5 px-1">
+                      <div className="w-1.5 h-1.5 bg-[#235839]/60 rounded-full animate-pulse" style={{ animationDelay: '0ms' }} />
+                      <div className="w-1.5 h-1.5 bg-[#235839]/60 rounded-full animate-pulse" style={{ animationDelay: '150ms' }} />
+                      <div className="w-1.5 h-1.5 bg-[#235839]/60 rounded-full animate-pulse" style={{ animationDelay: '300ms' }} />
+                    </div>
+                  ) : (
+                    <div className="space-y-2 overflow-x-auto prose-sm">
+                      <ReactMarkdown 
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                          ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2 space-y-0.5" {...props} />,
+                          ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2 space-y-0.5" {...props} />,
+                          li: ({node, ...props}) => <li className="text-[13px]" {...props} />,
+                          strong: ({node, ...props}) => <strong className="font-semibold text-[#11311F]" {...props} />,
+                          table: ({node, ...props}) => (
+                            <div className="overflow-x-auto my-2 rounded-lg border border-gray-100">
+                              <table className="min-w-full text-[12px]" {...props} />
+                            </div>
+                          ),
+                          thead: ({node, ...props}) => <thead className="bg-[#F6F9F7]" {...props} />,
+                          th: ({node, ...props}) => <th className="px-3 py-2 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider" {...props} />,
+                          tbody: ({node, ...props}) => <tbody className="bg-white divide-y divide-gray-50" {...props} />,
+                          td: ({node, ...props}) => <td className="px-3 py-2 text-[12px] text-gray-700" {...props} />
+                        }}
+                      >
+                        {msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('')}
+                      </ReactMarkdown>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
-          {isLoading && (
+            )
+          })}
+          {isLoading && messages.length > 0 && messages[messages.length - 1].role !== 'assistant' && (
             <div className="flex justify-start">
               <div className="w-7 h-7 rounded-full bg-[#E9F3ED] flex items-center justify-center shrink-0 mr-2 mt-0.5">
                 <Bot className="w-4 h-4 text-[#235839]" />
               </div>
-              <div className="bg-white border border-gray-100 rounded-2xl rounded-bl-lg px-4 py-3 flex items-center gap-1.5 shadow-sm">
-                <div className="w-1.5 h-1.5 bg-[#235839]/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <div className="w-1.5 h-1.5 bg-[#235839]/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <div className="w-1.5 h-1.5 bg-[#235839]/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+              <div className="bg-white border border-gray-100 rounded-2xl rounded-bl-lg px-4 py-3 flex items-center shadow-sm">
+                <div className="flex items-center gap-1.5 h-5 px-1">
+                  <div className="w-1.5 h-1.5 bg-[#235839]/60 rounded-full animate-pulse" style={{ animationDelay: '0ms' }} />
+                  <div className="w-1.5 h-1.5 bg-[#235839]/60 rounded-full animate-pulse" style={{ animationDelay: '150ms' }} />
+                  <div className="w-1.5 h-1.5 bg-[#235839]/60 rounded-full animate-pulse" style={{ animationDelay: '300ms' }} />
+                </div>
               </div>
             </div>
           )}
