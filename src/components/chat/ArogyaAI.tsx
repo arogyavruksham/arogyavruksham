@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { X, Send, ArrowUp } from 'lucide-react'
+import { X, Send, ArrowUp, Leaf } from 'lucide-react'
 import { useChat } from '@ai-sdk/react'
 import { useAuthStore } from '@/store/authStore'
 import { useUIStore } from '@/store/uiStore'
@@ -164,8 +164,14 @@ export function ArogyaAI() {
                         ease: EASE_OUT as any,
                         delay: Math.min(i * 0.03, 0.12),
                       }}
-                      className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}
+                      className={`flex w-full ${isUser ? 'justify-end' : 'justify-start items-start gap-3'}`}
                     >
+                      {!isUser && (
+                        <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-100 shadow-sm mt-0.5">
+                          <Leaf className="w-4 h-4 text-emerald-600" />
+                        </div>
+                      )}
+
                       {isUser ? (
                         <div className="max-w-[82%] px-4 py-2.5 rounded-[20px] rounded-br-[6px] text-[14.5px] leading-[1.6] text-white font-[450]"
                           style={{
@@ -178,7 +184,7 @@ export function ArogyaAI() {
                       ) : isEmpty && isAnalyzing ? (
                         <ThinkingState />
                       ) : (
-                        <div className="max-w-[92%] text-[14.5px] leading-[1.65] text-gray-700">
+                        <div className="max-w-[85%] text-[14.5px] leading-[1.65] text-gray-700">
                           <ReactMarkdown
                             remarkPlugins={[remarkGfm]}
                             components={{
@@ -216,8 +222,11 @@ export function ArogyaAI() {
                       animate={{ opacity: 1, transform: 'translateY(0px)' }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.2, ease: EASE_OUT as any }}
-                      className="flex justify-start"
+                      className="flex justify-start items-start gap-3 w-full"
                     >
+                      <div className="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 border border-emerald-100 shadow-sm mt-0.5">
+                        <Leaf className="w-4 h-4 text-emerald-600" />
+                      </div>
                       <ThinkingState />
                     </motion.div>
                   )}
@@ -285,49 +294,26 @@ export function ArogyaAI() {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   THINKING STATE — CSS-only shimmer loader
-   Runs off the main thread (CSS animation).
-   No `linear` easing, no Framer Motion overhead.
+   THINKING STATE — Classic Bouncing Dots
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function ThinkingState() {
   return (
-    <div className="flex flex-col gap-2.5 w-[260px]">
-      {/* Shimmer skeleton lines — three staggered widths */}
-      {[100, 85, 60].map((w, i) => (
-        <div
-          key={i}
-          className="h-[14px] rounded-full overflow-hidden"
-          style={{
-            width: `${w}%`,
-            animationDelay: `${i * 80}ms`,
-          }}
-        >
-          <div
-            className="w-full h-full rounded-full"
-            style={{
-              background: `linear-gradient(
-                90deg,
-                #e8ebe9 0%,
-                #d4ddd7 20%,
-                #c2d4c8 40%,
-                #d4ddd7 60%,
-                #e8ebe9 80%,
-                #e8ebe9 100%
-              )`,
-              backgroundSize: '200% 100%',
-              animation: `shimmer 1.8s cubic-bezier(0.23, 1, 0.32, 1) infinite`,
-              animationDelay: `${i * 120}ms`,
-            }}
-          />
-        </div>
-      ))}
-
-      <style>{`
-        @keyframes shimmer {
-          0% { background-position: 200% 0; }
-          100% { background-position: -200% 0; }
-        }
-      `}</style>
+    <div className="flex items-center gap-1.5 h-[36px] px-3 py-2 bg-gray-100/50 rounded-2xl rounded-tl-sm w-fit">
+      <motion.div
+        animate={{ y: [0, -4, 0] }}
+        transition={{ duration: 0.6, repeat: Infinity, ease: 'easeInOut' }}
+        className="w-1.5 h-1.5 bg-[#40916C] rounded-full"
+      />
+      <motion.div
+        animate={{ y: [0, -4, 0] }}
+        transition={{ duration: 0.6, repeat: Infinity, ease: 'easeInOut', delay: 0.15 }}
+        className="w-1.5 h-1.5 bg-[#40916C] rounded-full"
+      />
+      <motion.div
+        animate={{ y: [0, -4, 0] }}
+        transition={{ duration: 0.6, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
+        className="w-1.5 h-1.5 bg-[#40916C] rounded-full"
+      />
     </div>
   )
 }
