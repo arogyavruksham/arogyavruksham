@@ -144,11 +144,37 @@ IMPORTANT RULES:
       apiKey: process.env.OPENROUTER_API_KEY || '',
     })
 
-    const { text } = await generateText({
-      model: openrouter('z-ai/glm-5.2:free'),
-      system: systemPrompt,
-      prompt: 'Analyze the data and generate the comprehensive business intelligence JSON report now.',
-    });
+    // Try multiple free models with fallback chain
+    const FREE_MODELS = [
+      'z-ai/glm-5.2:free',
+      'google/gemma-4-26b-a4b-it:free',
+      'nvidia/nemotron-3-nano-30b-a3b:free',
+    ]
+
+    let text = ''
+    let modelUsed = ''
+    let lastError: any = null
+
+    for (const modelId of FREE_MODELS) {
+      try {
+        const result = await generateText({
+          model: openrouter(modelId),
+          system: systemPrompt,
+          prompt: 'Analyze the data and generate the comprehensive business intelligence JSON report now.',
+        })
+        text = result.text
+        modelUsed = modelId
+        break
+      } catch (err: any) {
+        lastError = err
+        console.warn(`Model ${modelId} failed, trying next...`, err.message)
+        continue
+      }
+    }
+
+    if (!text && lastError) {
+      throw new Error(`All models failed. Last error: ${lastError.message}`)
+    }
 
     // Try to parse as JSON, fallback to raw text
     let parsed = null
@@ -203,7 +229,8 @@ IMPORTANT RULES:
     return NextResponse.json({ 
       summary: text, 
       structured: parsed,
-      stats: rawStats
+      stats: rawStats,
+      modelUsed
     })
 
   } catch (error: any) {

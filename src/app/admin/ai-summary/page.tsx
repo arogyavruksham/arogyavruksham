@@ -162,6 +162,7 @@ export default function CommandCenterPage() {
   const [error, setError] = useState<string | null>(null)
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
   const [activeSection, setActiveSection] = useState<string>('all')
+  const [modelUsed, setModelUsed] = useState<string>('')
 
   const generateReport = useCallback(async () => {
     setGenerating(true)
@@ -184,6 +185,9 @@ export default function CommandCenterPage() {
         }
         if (data.stats) {
           setRawStats(data.stats)
+        }
+        if (data.modelUsed) {
+          setModelUsed(data.modelUsed)
         }
         setLastUpdated(new Date())
       } else {
@@ -235,7 +239,7 @@ export default function CommandCenterPage() {
         <div className="flex items-center gap-3 ml-[52px] sm:ml-0">
           <div className="flex items-center gap-2 bg-emerald-50 text-[#059669] px-3 py-1.5 border border-emerald-200 rounded-xl text-xs font-bold">
             <div className="w-2 h-2 bg-[#059669] rounded-full animate-pulse" />
-            GLM 5.2 Active
+            {modelUsed ? modelUsed.split('/').pop()?.replace(':free', '') || 'AI' : 'AI'} Active
           </div>
           <button
             onClick={generateReport}
