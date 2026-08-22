@@ -28,11 +28,11 @@ export const ADMIN_NAV: AdminNavItem[] = [
     roles: ['admin'],
   },
   {
-    name: 'AI Summaries',
+    name: 'Command Center',
     path: '/admin/ai-summary',
     icon: 'Bot',
     group: 'Overview',
-    description: 'Daily traffic, chat insights, and automated alerts',
+    description: 'AI-powered business intelligence, alerts, and improvement suggestions',
   },
   {
     name: 'Products',
