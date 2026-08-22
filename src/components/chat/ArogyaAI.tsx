@@ -1,34 +1,36 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { X, Sparkles, Send, Loader2, Search } from 'lucide-react'
+import { X, Sparkles, Send, Loader2, Search, Zap, Leaf } from 'lucide-react'
 import { useChat } from '@ai-sdk/react'
 import { useAuthStore } from '@/store/authStore'
 import { useUIStore } from '@/store/uiStore'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { motion, AnimatePresence, Transition } from 'framer-motion'
-import { usePathname } from 'next/navigation'
 
-const springConfig: Transition = { type: 'spring', bounce: 0.15, duration: 0.5 }
+const springConfig: Transition = { type: 'spring', bounce: 0, duration: 0.4 }
 const springTap: Transition = { type: 'spring', stiffness: 400, damping: 25 }
 
 export function ArogyaAI() {
   const { isAIOpen, setAIOpen } = useUIStore()
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const pathname = usePathname()
 
   const [input, setInput] = useState('')
   const user = useAuthStore((state) => state.user)
   const { messages, sendMessage, status, error } = useChat({
     messages: [
-      { id: '1', role: 'assistant', parts: [{ type: 'text', text: 'Hi! I am Arogya AI, your premium plant care concierge. How can I assist you today?' }] }
+      { id: '1', role: 'assistant', parts: [{ type: 'text', text: 'Hi! I am Arogya AI, your botanical concierge. How can I assist you with your garden today?' }] }
     ] as any
   })
-  const isLoading = status === 'streaming' || status === 'submitted'
+  
+  // Dynamic loading states
+  const isAnalyzing = status === 'submitted'
+  const isTyping = status === 'streaming'
+  const isLoading = isAnalyzing || isTyping
 
-  // Global hotkey (Cmd+K or Ctrl+K)
+  // Global hotkey
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -43,17 +45,16 @@ export function ArogyaAI() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isAIOpen, setAIOpen])
 
-  // Focus input on open
+  // Focus input
   useEffect(() => {
     if (isAIOpen) {
       setTimeout(() => inputRef.current?.focus(), 100)
     }
   }, [isAIOpen])
 
-  // Scroll to bottom on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages, isAIOpen])
+  }, [messages, isAIOpen, status])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -68,42 +69,45 @@ export function ArogyaAI() {
   return (
     <AnimatePresence>
       {isAIOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 md:p-12 overflow-hidden">
-          {/* Backdrop Blur */}
+        <div className="fixed inset-0 z-[9999] flex justify-end overflow-hidden">
+          {/* Subtle backdrop dim (not full blur, allows viewing main site) */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             onClick={() => setAIOpen(false)}
-            className="absolute inset-0 bg-black/40 backdrop-blur-xl"
+            className="absolute inset-0 bg-black/10 backdrop-blur-[2px]"
           />
 
-          {/* Modal Container */}
+          {/* Drawer Container */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ x: '100%', opacity: 0.5 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: '100%', opacity: 0.5 }}
             transition={springConfig}
-            className="relative w-full max-w-[800px] h-[85vh] sm:h-[80vh] bg-white/95 backdrop-blur-2xl rounded-[32px] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.3)] border border-white/20 flex flex-col overflow-hidden"
+            className="relative w-full sm:w-[450px] md:w-[500px] h-[100dvh] bg-[#FDFBF7] shadow-[-20px_0_40px_rgba(0,0,0,0.08)] border-l border-white/40 flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-black/5 shrink-0 bg-white/50">
+            <div className="flex items-center justify-between px-6 pt-8 pb-4 bg-[#FDFBF7]/90 backdrop-blur-xl shrink-0 z-10 border-b border-gray-100">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#11311F] to-[#235839] flex items-center justify-center shadow-inner">
-                  <Sparkles className="w-5 h-5 text-[#A4E4BA]" />
+                <div className="relative flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-[#11311F] to-[#235839] rounded-xl blur-[8px] opacity-40" />
+                  <div className="relative w-11 h-11 rounded-xl bg-gradient-to-tr from-[#11311F] to-[#235839] flex items-center justify-center shadow-inner border border-white/10">
+                    <Sparkles className="w-5 h-5 text-[#A4E4BA]" />
+                  </div>
                 </div>
                 <div>
-                  <h2 className="font-semibold text-gray-900 tracking-tight text-[16px]">Arogya AI</h2>
-                  <p className="text-gray-500 text-[12px] font-medium tracking-wide">Premium Plant Concierge</p>
+                  <h2 className="font-semibold text-gray-900 tracking-tight text-[17px]">Arogya AI</h2>
+                  <p className="text-gray-500 text-[12px] font-medium tracking-wide">Botanical Concierge</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 rounded-lg text-gray-500 text-[11px] font-medium tracking-wider">
-                  <kbd className="font-sans">⌘</kbd> <kbd className="font-sans">K</kbd>
+              <div className="flex items-center gap-3">
+                <div className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 bg-gray-100/80 rounded-md text-gray-400 text-[10px] font-bold tracking-widest border border-gray-200">
+                  <kbd className="font-sans uppercase">Cmd</kbd> <kbd className="font-sans uppercase">K</kbd>
                 </div>
                 <motion.button
-                  whileHover={{ scale: 1.05, backgroundColor: 'rgba(0,0,0,0.05)' }}
+                  whileHover={{ scale: 1.05, backgroundColor: 'rgba(0,0,0,0.04)' }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setAIOpen(false)}
                   className="w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors"
@@ -113,8 +117,8 @@ export function ArogyaAI() {
               </div>
             </div>
 
-            {/* Conversational UI (Editorial Layout) */}
-            <div className="flex-1 overflow-y-auto px-6 py-8 space-y-8">
+            {/* Chat Area */}
+            <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
               {messages.map((msg, index) => {
                 const isUser = msg.role === 'user';
                 const textContent = msg.parts?.map((p: any) => p.type === 'text' ? p.text : '').join('').trim();
@@ -123,45 +127,45 @@ export function ArogyaAI() {
                 return (
                   <motion.div
                     key={msg.id}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ type: 'spring', bounce: 0, duration: 0.5, delay: Math.min(index * 0.02, 0.1) }}
-                    className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} max-w-3xl mx-auto w-full`}
+                    initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ type: 'spring', bounce: 0, duration: 0.4, delay: Math.min(index * 0.02, 0.1) }}
+                    className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} w-full`}
                   >
                     {!isUser && (
-                      <div className="flex items-center gap-2 mb-2 ml-1 text-gray-400">
-                        <Sparkles className="w-4 h-4 text-[#235839]" />
-                        <span className="text-[12px] font-semibold tracking-wide uppercase">Arogya AI</span>
+                      <div className="flex items-center gap-2 mb-2 ml-1">
+                        <Leaf className="w-3.5 h-3.5 text-[#235839]/60" />
+                        <span className="text-[11px] font-bold tracking-widest uppercase text-gray-400">Arogya</span>
                       </div>
                     )}
                     
-                    <div className={`text-[15px] leading-[1.7] tracking-[-0.01em] w-full ${
+                    <div className={`text-[15px] leading-[1.65] tracking-[-0.01em] w-full ${
                       isUser 
-                        ? 'bg-[#F6F9F7] text-gray-900 rounded-3xl rounded-tr-sm px-6 py-4 max-w-[85%] border border-gray-100/50' 
+                        ? 'bg-gradient-to-b from-[#11311F] to-[#1a442a] text-white rounded-3xl rounded-tr-sm px-6 py-3.5 max-w-[85%] shadow-sm' 
                         : 'text-gray-800'
                     }`}>
                       {isUser ? (
                         textContent
-                      ) : isAssistantEmpty && isLoading ? (
-                        <ThinkingAnimation />
+                      ) : isAssistantEmpty && isAnalyzing ? (
+                        <div className="hidden" /> // Animation handled below map
                       ) : (
                         <div className="prose prose-p:my-2 prose-ul:my-2 prose-ol:my-2 max-w-none">
                           <ReactMarkdown 
                             remarkPlugins={[remarkGfm]}
                             components={{
-                              p: ({node, ...props}) => <p className="mb-4 last:mb-0 text-gray-700" {...props} />,
-                              ul: ({node, ...props}) => <ul className="list-disc list-inside mb-4 space-y-1 ml-1 text-gray-700" {...props} />,
-                              ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-4 space-y-1 ml-1 text-gray-700" {...props} />,
-                              li: ({node, ...props}) => <li className="text-[15px]" {...props} />,
+                              p: ({node, ...props}) => <p className="mb-4 last:mb-0 text-gray-700 font-medium" {...props} />,
+                              ul: ({node, ...props}) => <ul className="list-disc list-outside mb-4 space-y-1.5 ml-4 text-gray-700" {...props} />,
+                              ol: ({node, ...props}) => <ol className="list-decimal list-outside mb-4 space-y-1.5 ml-4 text-gray-700" {...props} />,
+                              li: ({node, ...props}) => <li className="text-[14.5px] pl-1" {...props} />,
                               strong: ({node, ...props}) => <strong className="font-semibold text-gray-900" {...props} />,
                               table: ({node, ...props}) => (
-                                <div className="overflow-x-auto my-6 rounded-2xl border border-gray-200 shadow-sm">
-                                  <table className="min-w-full text-[14px]" {...props} />
+                                <div className="overflow-x-auto my-5 rounded-xl border border-gray-200/60 shadow-sm bg-white">
+                                  <table className="min-w-full text-[13px]" {...props} />
                                 </div>
                               ),
-                              thead: ({node, ...props}) => <thead className="bg-[#F6F9F7]" {...props} />,
-                              th: ({node, ...props}) => <th className="px-4 py-3 text-left text-[12px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200" {...props} />,
-                              tbody: ({node, ...props}) => <tbody className="bg-white divide-y divide-gray-100" {...props} />,
+                              thead: ({node, ...props}) => <thead className="bg-gray-50/50" {...props} />,
+                              th: ({node, ...props}) => <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100" {...props} />,
+                              tbody: ({node, ...props}) => <tbody className="bg-white divide-y divide-gray-50" {...props} />,
                               td: ({node, ...props}) => <td className="px-4 py-3 text-[14px] text-gray-700" {...props} />
                             }}
                           >
@@ -174,47 +178,44 @@ export function ArogyaAI() {
                 )
               })}
 
-              {/* Loading Indicator for new streaming messages */}
-              <AnimatePresence>
-                {isLoading && messages.length > 0 && messages[messages.length - 1].role !== 'assistant' && (
+              {/* Dynamic Loading State */}
+              <AnimatePresence mode="wait">
+                {isAnalyzing && (
                   <motion.div 
-                    initial={{ opacity: 0, y: 15 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    className="flex flex-col items-start max-w-3xl mx-auto w-full"
+                    exit={{ opacity: 0, filter: "blur(4px)" }}
+                    className="flex flex-col items-start w-full mt-4"
                   >
-                    <div className="flex items-center gap-2 mb-2 ml-1 text-gray-400">
-                      <Sparkles className="w-4 h-4 text-[#235839]" />
-                      <span className="text-[12px] font-semibold tracking-wide uppercase">Arogya AI</span>
+                    <div className="flex items-center gap-2 mb-2 ml-1">
+                      <Leaf className="w-3.5 h-3.5 text-[#235839]/60" />
+                      <span className="text-[11px] font-bold tracking-widest uppercase text-gray-400">Arogya</span>
                     </div>
-                    <ThinkingAnimation />
+                    <EyeCatchingLoader />
                   </motion.div>
                 )}
               </AnimatePresence>
 
               {error && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-center mt-6">
-                  <div className="bg-red-50 text-red-600 rounded-2xl px-6 py-3 text-[14px] font-medium border border-red-100">
-                    Connection error. Please try again.
+                  <div className="bg-red-50 text-red-600 rounded-xl px-5 py-3 text-[13px] font-semibold border border-red-100">
+                    Connection interrupted. Please try again.
                   </div>
                 </motion.div>
               )}
               <div ref={messagesEndRef} className="h-4" />
             </div>
 
-            {/* Input Form */}
-            <div className="px-6 py-5 bg-white/80 backdrop-blur-md border-t border-black/5 shrink-0 z-10">
-              <form onSubmit={handleSubmit} className="relative flex items-center max-w-3xl mx-auto">
-                <div className="absolute left-4 text-gray-400">
-                  <Search className="w-5 h-5" />
-                </div>
+            {/* Input Area */}
+            <div className="p-6 bg-gradient-to-t from-[#FDFBF7] via-[#FDFBF7] to-transparent shrink-0">
+              <form onSubmit={handleSubmit} className="relative flex items-center group">
                 <input
                   ref={inputRef}
                   type="text"
                   value={input}
                   onChange={e => setInput(e.target.value)}
-                  placeholder="Ask anything about plants, care, or orders..."
-                  className="w-full bg-[#F6F9F7] text-[15px] outline-none text-gray-900 placeholder:text-gray-400 rounded-full pl-12 pr-14 py-4 border border-gray-200/60 focus:border-[#235839]/40 focus:bg-white focus:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all duration-300"
+                  placeholder="Message Arogya AI..."
+                  className="w-full bg-white text-[15px] outline-none text-gray-900 placeholder:text-gray-400 font-medium rounded-[24px] pl-6 pr-14 py-4 border border-gray-200/80 focus:border-[#235839]/30 focus:shadow-[0_8px_30px_rgb(0,0,0,0.04)] shadow-sm transition-all duration-300"
                 />
                 <AnimatePresence>
                   {input.trim() && !isLoading && (
@@ -226,16 +227,16 @@ export function ArogyaAI() {
                       whileTap={{ scale: 0.9 }}
                       transition={springTap}
                       type="submit"
-                      className="absolute right-2 w-10 h-10 flex items-center justify-center bg-[#11311F] text-white rounded-full shadow-lg"
+                      className="absolute right-2.5 w-[38px] h-[38px] flex items-center justify-center bg-[#11311F] text-white rounded-full shadow-md"
                     >
                       <Send className="w-4 h-4 ml-0.5" />
                     </motion.button>
                   )}
                 </AnimatePresence>
               </form>
-              <div className="text-center mt-3">
-                <span className="text-[11px] text-gray-400 font-medium tracking-wide">
-                  Arogya AI can make mistakes. Verify critical plant care advice.
+              <div className="text-center mt-4">
+                <span className="text-[10px] text-gray-400 font-semibold tracking-wide uppercase">
+                  AI can make mistakes. Verify critical advice.
                 </span>
               </div>
             </div>
@@ -246,26 +247,35 @@ export function ArogyaAI() {
   )
 }
 
-// Beautiful Premium Glowing Loading Animation
-function ThinkingAnimation() {
+// ── NEW: Eye Catching Dynamic Loader ──
+function EyeCatchingLoader() {
   return (
-    <div className="flex items-center gap-3 h-10 w-32 px-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl border border-gray-200/50 shadow-inner">
-      <motion.div
-        animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1, 0.8] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0 }}
-        className="w-2 h-2 rounded-full bg-[#235839]"
+    <div className="flex items-center gap-4 bg-white px-5 py-4 rounded-2xl rounded-tl-sm border border-gray-100 shadow-sm overflow-hidden relative w-[220px]">
+      {/* Animated glowing background sweep */}
+      <motion.div 
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-[#A4E4BA]/10 to-transparent skew-x-12"
+        animate={{ x: ['-100%', '200%'] }}
+        transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
       />
-      <motion.div
-        animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1, 0.8] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-        className="w-2 h-2 rounded-full bg-[#235839]"
-      />
-      <motion.div
-        animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1, 0.8] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-        className="w-2 h-2 rounded-full bg-[#235839]"
-      />
-      <span className="text-[12px] font-medium text-gray-500 tracking-wide ml-1">Thinking</span>
+      
+      {/* Rotating geometric element */}
+      <div className="relative w-6 h-6 flex items-center justify-center shrink-0">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 rounded-full border-2 border-dashed border-[#235839]/30"
+        />
+        <motion.div
+          animate={{ scale: [0.8, 1.2, 0.8], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-2.5 h-2.5 bg-[#235839] rounded-sm rotate-45"
+        />
+      </div>
+
+      <div className="flex flex-col relative z-10">
+        <span className="text-[13px] font-bold text-gray-800 tracking-tight">Analyzing</span>
+        <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Please wait</span>
+      </div>
     </div>
   )
 }
