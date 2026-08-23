@@ -84,9 +84,27 @@ export function ArogyaAI() {
   }
 
   return (
-    <AnimatePresence>
-      {isAIOpen && (
-        <div className="fixed inset-0 z-[9999] flex justify-end">
+    <>
+      {/* ── Mobile Floating Button ── */}
+      <AnimatePresence>
+        {!isAIOpen && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 10 }}
+            transition={{ duration: 0.25, ease: EASE_OUT as any }}
+            onClick={() => setAIOpen(true)}
+            className="md:hidden fixed bottom-24 left-5 z-[90] flex items-center justify-center w-[52px] h-[52px] bg-gradient-to-br from-[#11311F] to-[#235839] text-white rounded-[18px] shadow-[0_8px_20px_rgba(35,88,57,0.35)] border border-[#2D6A4F] active:scale-95 transition-all group"
+            aria-label="Open Arogya AI"
+          >
+            <Sparkles className="w-6 h-6 text-[#A4E4BA] group-hover:rotate-12 transition-transform" />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isAIOpen && (
+          <div className="fixed inset-0 z-[9999] flex justify-end">
           {/* ── Scrim ── */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -289,7 +307,8 @@ export function ArogyaAI() {
           </motion.div>
         </div>
       )}
-    </AnimatePresence>
+      </AnimatePresence>
+    </>
   )
 }
 
