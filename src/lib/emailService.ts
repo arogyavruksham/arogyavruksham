@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 import React from 'react'
-import { renderToStaticMarkup } from 'react-dom/server'
+import { render } from '@react-email/render'
 import { OrderConfirmation } from './email/templates/OrderConfirmation'
 import { OrderStatusUpdate } from './email/templates/OrderStatusUpdate'
 import { ProductLaunch } from './email/templates/ProductLaunch'
@@ -14,9 +14,7 @@ const rawAppPassword = (process.env.EMAIL_APP_PASSWORD && process.env.EMAIL_APP_
   ? process.env.EMAIL_APP_PASSWORD 
   : 'hkvkbqftvtljbacy'
 
-// Remove any whitespace from Gmail App Passwords to prevent SMTP authentication syntax issues
 const EMAIL_APP_PASSWORD = rawAppPassword.replace(/\s+/g, '')
-
 const EMAIL_FROM = process.env.EMAIL_FROM || `Arogyavruksham <${EMAIL_USER}>`
 
 const getTransporter = () => {
@@ -40,16 +38,16 @@ export async function sendOrderConfirmationEmail(
   const transporter = getTransporter()
   const shortOrderId = orderId.split('-')[0].toUpperCase()
 
-  const htmlContent = renderToStaticMarkup(
-    <OrderConfirmation 
-      order={{
+  const htmlContent = await render(
+    React.createElement(OrderConfirmation, {
+      order: {
         id: orderId,
         customerName,
         customerEmail: toEmail,
         items,
         totalAmount
-      }} 
-    />
+      }
+    })
   )
 
   try {
@@ -82,20 +80,19 @@ export async function sendShippingUpdateEmail(
   const transporter = getTransporter()
   const shortOrderId = orderId.split('-')[0].toUpperCase()
 
-  // We only send emails for these specific states
   if (!['packed', 'shipped', 'out_for_delivery', 'delivered', 'cancelled'].includes(newStatus)) {
     return false
   }
 
-  const htmlContent = renderToStaticMarkup(
-    <OrderStatusUpdate 
-      data={{
+  const htmlContent = await render(
+    React.createElement(OrderStatusUpdate, {
+      data: {
         orderId,
         customerName,
         status: newStatus,
         storeUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.com'
-      }} 
-    />
+      }
+    })
   )
 
   let subjectMessage = `Update on your Arogyavruksham order #${shortOrderId}`
@@ -121,28 +118,16 @@ export async function sendShippingUpdateEmail(
 export async function sendVerificationOtpEmail(toEmail: string, otpCode: string): Promise<{ success: boolean; message: string }> {
   const transporter = getTransporter()
 
-  const htmlContent = renderToStaticMarkup(
-    <BaseLayout title={`Your Login Code: ${otpCode}`}>
-      <h2 style={{ color: '#1E4631', fontSize: '22px', marginTop: '0', marginBottom: '24px' }}>
-        Verification Code
-      </h2>
-      <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.6', marginBottom: '16px' }}>
-        Hello,
-      </p>
-      <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.6', marginBottom: '32px' }}>
-        You requested a login code to access your Arogyavruksham account. Please enter the following 6-digit verification code:
-      </p>
-      
-      <div style={{ backgroundColor: '#F0F7F2', border: '2px dashed #689F38', borderRadius: '12px', padding: '24px', textAlign: 'center', margin: '28px 0' }}>
-        <span style={{ fontFamily: 'monospace', fontSize: '36px', fontWeight: 'bold', letterSpacing: '8px', color: '#1E4631' }}>
-          {otpCode}
-        </span>
-      </div>
-      
-      <p style={{ fontSize: '13px', color: '#777', marginTop: '24px' }}>
-        This security code will expire in 10 minutes. If you did not request this verification, simply ignore this email.
-      </p>
-    </BaseLayout>
+  const htmlContent = await render(
+    React.createElement(BaseLayout, { title: `Your Login Code: ${otpCode}` }, 
+      React.createElement('h2', { style: { color: '#1E4631', fontSize: '22px', marginTop: '0', marginBottom: '24px' } }, 'Verification Code'),
+      React.createElement('p', { style: { fontSize: '15px', color: '#555', lineHeight: '1.6', marginBottom: '16px' } }, 'Hello,'),
+      React.createElement('p', { style: { fontSize: '15px', color: '#555', lineHeight: '1.6', marginBottom: '32px' } }, 'You requested a login code to access your Arogyavruksham account. Please enter the following 6-digit verification code:'),
+      React.createElement('div', { style: { backgroundColor: '#F0F7F2', border: '2px dashed #689F38', borderRadius: '12px', padding: '24px', textAlign: 'center', margin: '28px 0' } }, 
+        React.createElement('span', { style: { fontFamily: 'monospace', fontSize: '36px', fontWeight: 'bold', letterSpacing: '8px', color: '#1E4631' } }, otpCode)
+      ),
+      React.createElement('p', { style: { fontSize: '13px', color: '#777', marginTop: '24px' } }, 'This security code will expire in 10 minutes. If you did not request this verification, simply ignore this email.')
+    )
   )
 
   try {
@@ -172,20 +157,19 @@ export async function sendProductLaunchEmail(
   const transporter = getTransporter()
   const storeUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.com'
   
-  const htmlContent = renderToStaticMarkup(
-    <ProductLaunch 
-      product={{
+  const htmlContent = await render(
+    React.createElement(ProductLaunch, {
+      product: {
         title,
         imageUrl,
         price,
         description,
         url: `${storeUrl}/shop/${productId}`
-      }} 
-    />
+      }
+    })
   )
 
   try {
-    // Send emails in parallel chunks to avoid spamming the SMTP server or timing out
     const chunkSize = 10;
     for (let i = 0; i < toEmails.length; i += chunkSize) {
       const chunk = toEmails.slice(i, i + chunkSize);
