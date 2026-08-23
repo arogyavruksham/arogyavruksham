@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-export const BaseLayout = ({ children, title, previewText }: { children: ReactNode, title?: string, previewText?: string }) => {
+export const BaseLayout = ({ children, title, previewText }: { children?: ReactNode, title?: string, previewText?: string }) => {
   return (
     <html lang="en">
       <head>
