@@ -131,7 +131,13 @@ export async function POST(request: Request) {
           customerName,
           order.id,
           order.total_amount,
-          pdfBuffer
+          pdfBuffer,
+          items.map((i: any) => ({
+            name: i.title,
+            quantity: i.quantity,
+            price: `₹${i.price.toLocaleString('en-IN')}`,
+            imageUrl: i.imageUrl || ''
+          }))
         )
       }
     } catch (emailError: any) {

@@ -16,27 +16,28 @@ export const BaseLayout = ({ children, title, previewText }: { children?: ReactN
       <body style={{
         margin: '0',
         padding: '0',
-        backgroundColor: '#F9F9F9',
+        backgroundColor: '#FFFFFF',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
         WebkitFontSmoothing: 'antialiased',
-        color: '#222222'
+        color: '#333333'
       }}>
-        <table width="100%" cellPadding="0" cellSpacing="0" style={{ backgroundColor: '#F9F9F9', padding: '40px 20px' }}>
+        <table width="100%" cellPadding="0" cellSpacing="0" style={{ backgroundColor: '#FFFFFF', padding: '20px 0' }}>
           <tbody>
             <tr>
               <td align="center">
-                <table width="100%" cellPadding="0" cellSpacing="0" style={{ maxWidth: '600px', backgroundColor: '#FFFFFF', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+                <table width="100%" cellPadding="0" cellSpacing="0" style={{ maxWidth: '640px', margin: '0 auto' }}>
                   
-                  {/* Header */}
+                  {/* Header (Amazon style: Logo on left) */}
                   <thead>
                     <tr>
-                      <td style={{ backgroundColor: '#1E4631', padding: '32px 40px', textAlign: 'center' }}>
-                        <h1 style={{ color: '#FFFFFF', margin: '0', fontSize: '24px', fontWeight: 'bold', letterSpacing: '1px' }}>
-                          Arogyavruksham
-                        </h1>
-                        <p style={{ color: '#A4E4BA', margin: '8px 0 0 0', fontSize: '13px', fontStyle: 'italic' }}>
-                          Your Authentic Botanical Sanctuary
-                        </p>
+                      <td style={{ padding: '20px 20px', borderBottom: '1px solid #EAEAEA', textAlign: 'left' }}>
+                        {/* We use standard img tag with site absolute URL */}
+                        <img 
+                          src="https://arogyavruksham.com/logo.png" 
+                          alt="Arogyavruksham Logo" 
+                          width="120" 
+                          style={{ display: 'block' }} 
+                        />
                       </td>
                     </tr>
                   </thead>
@@ -44,7 +45,7 @@ export const BaseLayout = ({ children, title, previewText }: { children?: ReactN
                   {/* Body */}
                   <tbody>
                     <tr>
-                      <td style={{ padding: '40px' }}>
+                      <td style={{ padding: '30px 20px' }}>
                         {children}
                       </td>
                     </tr>
@@ -53,11 +54,11 @@ export const BaseLayout = ({ children, title, previewText }: { children?: ReactN
                   {/* Footer */}
                   <tfoot>
                     <tr>
-                      <td style={{ backgroundColor: '#FAFAFA', padding: '24px 40px', textAlign: 'center', borderTop: '1px solid #EEEEEE' }}>
-                        <p style={{ color: '#888888', margin: '0 0 8px 0', fontSize: '12px', lineHeight: '1.5' }}>
-                          If you have any questions, simply reply to this email or reach out to our support team.
+                      <td style={{ backgroundColor: '#F3F3F3', padding: '30px 20px', textAlign: 'left', borderTop: '1px solid #DDDDDD' }}>
+                        <p style={{ color: '#555555', margin: '0 0 12px 0', fontSize: '13px', lineHeight: '1.6' }}>
+                          This email was sent from a notification-only address that cannot accept incoming email. Please do not reply to this message.
                         </p>
-                        <p style={{ color: '#888888', margin: '0', fontSize: '11px' }}>
+                        <p style={{ color: '#555555', margin: '0', fontSize: '13px' }}>
                           &copy; {new Date().getFullYear()} Arogyavruksham. All rights reserved.
                         </p>
                       </td>

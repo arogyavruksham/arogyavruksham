@@ -33,7 +33,7 @@ export async function sendOrderConfirmationEmail(
   orderId: string,
   totalAmount: number,
   pdfBuffer: Buffer,
-  items: { name: string; quantity: number; price: string }[] = []
+  items: { name: string; quantity: number; price: string, imageUrl?: string }[] = []
 ) {
   const transporter = getTransporter()
   const shortOrderId = orderId.split('-')[0].toUpperCase()
