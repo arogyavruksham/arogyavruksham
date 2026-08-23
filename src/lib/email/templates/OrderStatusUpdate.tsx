@@ -6,116 +6,244 @@ export interface OrderStatusData {
   customerName: string;
   status: string; // 'packed', 'shipped', 'out_for_delivery', 'delivered', 'cancelled'
   storeUrl?: string; // Base URL of the store
+  totalAmount?: number;
+  items?: { name: string; quantity: number; price: string, imageUrl?: string }[];
+  deliveryAddress?: string;
 }
 
 export const OrderStatusUpdate: React.FC<{ data: OrderStatusData }> = ({ data }) => {
   const shortOrderId = data.orderId.split('-')[0].toUpperCase();
-  
+  const storeUrl = data.storeUrl || 'https://arogyavruksham.com';
+  const orderUrl = `${storeUrl}/profile?tab=orders`;
+
   let subject = '';
   let heading = '';
-  let message = '';
-  let cta = null;
-  let isCancelled = false;
-  let isDelivered = false;
+  let schemaStatus = 'http://schema.org/OrderProcessing';
+  let activeStep = 0; // 0=Ordered, 1=Shipped, 2=Out, 3=Delivered
+  let deliveryText = 'Arriving Soon';
 
   switch (data.status) {
     case 'packed':
-      subject = `Your order #${shortOrderId} is packed!`;
-      heading = 'Order Packed';
-      message = 'Great news! Your plant items have been safely packed and are awaiting dispatch.';
+      subject = `Packed: Your Arogyavruksham order #${shortOrderId}`;
+      heading = 'Your order is packed!';
+      activeStep = 0;
       break;
     case 'shipped':
-      subject = `Your order #${shortOrderId} has shipped!`;
-      heading = 'Order Shipped';
-      message = 'Your order is on its way! It has been handed over to our verified delivery partners.';
+      subject = `Shipped: Your Arogyavruksham order #${shortOrderId}`;
+      heading = 'Your package was shipped!';
+      schemaStatus = 'http://schema.org/OrderInTransit';
+      activeStep = 1;
       break;
     case 'out_for_delivery':
-      subject = `Your order #${shortOrderId} is out for delivery!`;
-      heading = 'Out for Delivery';
-      message = 'Get ready! Your green sanctuary items are out for delivery and will arrive today.';
+      subject = `Out for delivery: Your Arogyavruksham order #${shortOrderId}`;
+      heading = 'Your package is out for delivery!';
+      schemaStatus = 'http://schema.org/OrderInTransit';
+      activeStep = 2;
+      deliveryText = 'Arriving Today';
       break;
     case 'delivered':
-      isDelivered = true;
-      subject = `Your order #${shortOrderId} has been delivered!`;
-      heading = 'Order Delivered';
-      message = 'Your order has been safely delivered. We hope these beautiful additions bring fresh energy to your home!';
-      cta = {
-        text: 'Order Again & Explore',
-        url: `${data.storeUrl || 'https://arogyavruksham.com'}/shop`
-      };
+      subject = `Delivered: Your Arogyavruksham order #${shortOrderId}`;
+      heading = 'Your package was delivered!';
+      schemaStatus = 'http://schema.org/OrderDelivered';
+      activeStep = 3;
+      deliveryText = 'Delivered';
       break;
     case 'cancelled':
-      isCancelled = true;
-      subject = `Update on your order #${shortOrderId}`;
-      heading = 'Order Cancelled';
-      message = 'Your order has been cancelled. We are sorry it did not work out this time.';
-      cta = {
-        text: 'Tell us why you cancelled',
-        url: `mailto:support@arogyavruksham.com?subject=Feedback%20on%20cancelled%20order%20${shortOrderId}`
-      };
+      subject = `Cancelled: Your Arogyavruksham order #${shortOrderId}`;
+      heading = 'Your order was cancelled.';
+      schemaStatus = 'http://schema.org/OrderCancelled';
+      activeStep = -1;
       break;
     default:
-      subject = `Update on order #${shortOrderId}`;
-      heading = 'Status Update';
-      message = 'There is an update on your recent order.';
+      subject = `Update: Your Arogyavruksham order #${shortOrderId}`;
+      heading = 'Status Update on your order!';
       break;
   }
+
+  // Schema Markup for Gmail "View Order" / "Track Package"
+  const schemaMarkup = {
+    "@context": "http://schema.org",
+    "@type": "Order",
+    "merchant": {
+      "@type": "Organization",
+      "name": "Arogyavruksham"
+    },
+    "orderNumber": shortOrderId,
+    "orderStatus": schemaStatus,
+    "priceCurrency": "INR",
+    "price": data.totalAmount || 0,
+    "acceptedOffer": (data.items || []).map(item => ({
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Product",
+        "name": item.name,
+        "image": item.imageUrl || `${storeUrl}/logo.png`
+      },
+      "price": parseInt(item.price.replace(/\D/g, '')) || 0,
+      "priceCurrency": "INR",
+      "eligibleQuantity": {
+        "@type": "QuantitativeValue",
+        "value": item.quantity
+      }
+    })),
+    "url": orderUrl,
+    "potentialAction": {
+      "@type": "ViewAction",
+      "url": orderUrl,
+      "name": data.status === 'delivered' ? "Buy Again" : "Track package"
+    }
+  };
+
+  const steps = ['Ordered', 'Shipped', 'Out for delivery', 'Delivered'];
 
   return (
     <BaseLayout 
       title={subject}
-      previewText={message}
+      previewText={heading}
     >
-      <h2 style={{ color: isCancelled ? '#D32F2F' : '#1E4631', fontSize: '22px', marginTop: '0', marginBottom: '24px' }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }} />
+
+      {/* Dark Top Nav (Amazon Style) */}
+      <table width="100%" cellPadding="0" cellSpacing="0" style={{ backgroundColor: '#232F3E', marginBottom: '20px' }}>
+        <tbody>
+          <tr>
+            <td align="center" style={{ padding: '12px 0' }}>
+              <a href={`${storeUrl}/profile?tab=orders`} style={{ color: '#FFFFFF', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold', margin: '0 10px' }}>Your Orders</a>
+              <span style={{ color: '#555' }}>|</span>
+              <a href={`${storeUrl}/profile`} style={{ color: '#FFFFFF', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold', margin: '0 10px' }}>Your Account</a>
+              <span style={{ color: '#555' }}>|</span>
+              <a href={`${storeUrl}/shop`} style={{ color: '#FFFFFF', textDecoration: 'none', fontSize: '13px', fontWeight: 'bold', margin: '0 10px' }}>Buy Again</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 style={{ color: '#E47911', fontSize: '22px', marginTop: '0', marginBottom: '24px', textAlign: 'center', fontWeight: 'normal' }}>
         {heading}
       </h2>
-      <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.6', marginBottom: '16px' }}>
-        Hi {data.customerName},
-      </p>
-      <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.6', marginBottom: '32px' }}>
-        {message}
-      </p>
 
-      {/* Status Card */}
-      <div style={{ backgroundColor: '#FAFAFA', borderRadius: '8px', padding: '24px', borderLeft: `4px solid ${isCancelled ? '#D32F2F' : '#1E4631'}`, marginBottom: '32px' }}>
-        <p style={{ margin: '0', fontSize: '14px', color: '#666' }}>
-          <strong>Order ID:</strong> #{shortOrderId}
-        </p>
-        <p style={{ margin: '8px 0 0 0', fontSize: '14px', color: '#666', textTransform: 'capitalize' }}>
-          <strong>Current Status:</strong> <span style={{ color: isCancelled ? '#D32F2F' : '#1E4631', fontWeight: 'bold' }}>{data.status.replace(/_/g, ' ')}</span>
-        </p>
-      </div>
-
-      {cta && (
-        <div style={{ textAlign: 'center', marginTop: '40px', marginBottom: '20px' }}>
-          <a href={cta.url} style={{
-            display: 'inline-block',
-            backgroundColor: isCancelled ? '#FAFAFA' : '#1E4631',
-            color: isCancelled ? '#555' : '#FFF',
-            border: isCancelled ? '1px solid #CCC' : 'none',
-            padding: '14px 32px',
-            borderRadius: '6px',
-            textDecoration: 'none',
-            fontWeight: '600',
-            fontSize: '14px',
-            letterSpacing: '0.5px',
-            textTransform: 'uppercase'
-          }}>
-            {cta.text}
-          </a>
+      {/* Progress Bar (Amazon Style) */}
+      {data.status !== 'cancelled' && (
+        <div style={{ padding: '0 20px', marginBottom: '30px' }}>
+          <table width="100%" cellPadding="0" cellSpacing="0" style={{ marginBottom: '8px' }}>
+            <tbody>
+              <tr>
+                {steps.map((step, index) => (
+                  <td key={index} width="25%" align="center" valign="middle">
+                    <div style={{
+                      width: '12px',
+                      height: '12px',
+                      backgroundColor: index <= activeStep ? '#007185' : '#DDDDDD',
+                      borderRadius: '50%',
+                      margin: '0 auto',
+                      position: 'relative',
+                      zIndex: 2
+                    }}>
+                      {index <= activeStep && (
+                        <span style={{ display: 'block', width: '6px', height: '6px', backgroundColor: '#FFF', borderRadius: '50%', margin: '3px auto 0' }}></span>
+                      )}
+                    </div>
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+          <table width="100%" cellPadding="0" cellSpacing="0" style={{ marginTop: '-14px', marginBottom: '16px' }}>
+            <tbody>
+              <tr>
+                <td width="12.5%"></td>
+                <td width="25%" style={{ height: '2px', backgroundColor: activeStep >= 1 ? '#007185' : '#DDDDDD' }}></td>
+                <td width="25%" style={{ height: '2px', backgroundColor: activeStep >= 2 ? '#007185' : '#DDDDDD' }}></td>
+                <td width="25%" style={{ height: '2px', backgroundColor: activeStep >= 3 ? '#007185' : '#DDDDDD' }}></td>
+                <td width="12.5%"></td>
+              </tr>
+            </tbody>
+          </table>
+          <table width="100%" cellPadding="0" cellSpacing="0">
+            <tbody>
+              <tr>
+                {steps.map((step, index) => (
+                  <td key={index} width="25%" align="center" style={{ fontSize: '12px', color: index <= activeStep ? '#0F1111' : '#555', fontWeight: index === activeStep ? 'bold' : 'normal' }}>
+                    {step}
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
         </div>
       )}
 
-      {isDelivered && (
-        <p style={{ fontSize: '14px', color: '#777', lineHeight: '1.6', marginTop: '32px', textAlign: 'center', fontStyle: 'italic' }}>
-          Loving your new plants? We'd be thrilled if you shared a picture with us!
+      {/* Delivery Info */}
+      <div style={{ borderTop: '1px solid #DDDDDD', paddingTop: '20px', paddingBottom: '20px', marginBottom: '20px' }}>
+        <h3 style={{ fontSize: '18px', margin: '0 0 8px 0', color: '#0F1111' }}>{deliveryText}</h3>
+        <p style={{ margin: '0', fontSize: '14px', color: '#0F1111', fontWeight: 'bold' }}>
+          {data.customerName}
         </p>
+        <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#555', lineHeight: '1.4' }}>
+          Order #{shortOrderId}<br/>
+          {data.deliveryAddress || ''}
+        </p>
+
+        {/* Action Button */}
+        <div style={{ marginTop: '20px' }}>
+          <a 
+            href={orderUrl}
+            style={{ 
+              display: 'inline-block', 
+              backgroundColor: '#FFD814', 
+              color: '#0F1111', 
+              padding: '10px 20px', 
+              textDecoration: 'none', 
+              borderRadius: '8px', 
+              fontSize: '14px', 
+              fontWeight: 'bold',
+              border: '1px solid #FCD200',
+              boxShadow: '0 2px 5px rgba(213,217,217,0.5)'
+            }}
+          >
+            {data.status === 'delivered' ? 'Buy Again' : 'Track package'}
+          </a>
+        </div>
+      </div>
+
+      {/* Items List */}
+      {data.items && data.items.length > 0 && (
+        <div style={{ borderTop: '1px solid #DDDDDD', paddingTop: '20px', marginBottom: '20px' }}>
+          <table width="100%" cellPadding="0" cellSpacing="0">
+            <tbody>
+              {data.items.map((item, i) => (
+                <tr key={i}>
+                  <td width="80" valign="top" style={{ paddingBottom: '16px' }}>
+                    {item.imageUrl ? (
+                      <img src={item.imageUrl} alt={item.name} width="70" height="70" style={{ objectFit: 'contain', border: '1px solid #EEE', borderRadius: '4px' }} />
+                    ) : (
+                      <div style={{ width: '70px', height: '70px', backgroundColor: '#F0F0F0', border: '1px solid #EEE', borderRadius: '4px' }}></div>
+                    )}
+                  </td>
+                  <td valign="top" style={{ paddingLeft: '16px', paddingBottom: '16px' }}>
+                    <p style={{ margin: '0 0 4px 0', fontSize: '14px', color: '#007185', fontWeight: 'bold', lineHeight: '1.4' }}>
+                      {item.name}
+                    </p>
+                    <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#555' }}>
+                      Quantity: {item.quantity}
+                    </p>
+                    <p style={{ margin: '0', fontSize: '14px', color: '#B12704', fontWeight: 'bold' }}>
+                      {item.price}
+                    </p>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
-      {isCancelled && (
-        <p style={{ fontSize: '14px', color: '#777', lineHeight: '1.6', marginTop: '32px', textAlign: 'center' }}>
-          Your feedback is incredibly valuable to us. We hope to welcome you back soon.
-        </p>
+      {/* Total */}
+      {data.totalAmount !== undefined && (
+        <div style={{ borderTop: '1px solid #DDDDDD', paddingTop: '16px', paddingBottom: '16px', textAlign: 'right' }}>
+          <span style={{ fontSize: '14px', color: '#555', marginRight: '16px' }}>Total</span>
+          <span style={{ fontSize: '16px', color: '#0F1111', fontWeight: 'bold' }}>₹{data.totalAmount.toLocaleString('en-IN')}</span>
+        </div>
       )}
 
     </BaseLayout>

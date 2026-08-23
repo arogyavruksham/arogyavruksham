@@ -80,10 +80,19 @@ export async function PATCH(request: Request) {
       const { data: orderData } = await (supabaseAdmin as any)
         .from('orders')
         .select(`
+          total_amount,
           shipping_address,
           users (
             email,
             full_name
+          ),
+          order_items (
+            quantity,
+            price_at_time,
+            products (
+              title,
+              image_url
+            )
           )
         `)
         .eq('id', orderId)
@@ -92,13 +101,23 @@ export async function PATCH(request: Request) {
       if (orderData) {
         const customerEmail = orderData.users?.email || orderData.shipping_address?.email
         const customerName = orderData.shipping_address?.name || orderData.users?.full_name || 'Customer'
+        
+        const items = orderData.order_items?.map((item: any) => ({
+          name: item.products?.title || 'Product',
+          quantity: item.quantity,
+          price: `₹${item.price_at_time.toLocaleString('en-IN')}`,
+          imageUrl: item.products?.image_url || ''
+        })) || []
 
         if (customerEmail) {
           await sendShippingUpdateEmail(
             customerEmail,
             customerName,
             orderId,
-            newStatus
+            newStatus,
+            orderData.total_amount,
+            items,
+            orderData.shipping_address?.fullAddress || ''
           )
         }
       }

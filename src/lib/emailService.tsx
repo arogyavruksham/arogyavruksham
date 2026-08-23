@@ -75,7 +75,10 @@ export async function sendShippingUpdateEmail(
   toEmail: string,
   customerName: string,
   orderId: string,
-  newStatus: string
+  newStatus: string,
+  totalAmount: number = 0,
+  items: { name: string; quantity: number; price: string, imageUrl?: string }[] = [],
+  deliveryAddress: string = ''
 ) {
   const transporter = getTransporter()
   const shortOrderId = orderId.split('-')[0].toUpperCase()
@@ -90,6 +93,9 @@ export async function sendShippingUpdateEmail(
         orderId,
         customerName,
         status: newStatus,
+        totalAmount,
+        items,
+        deliveryAddress,
         storeUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.com'
       }} 
     />
