@@ -9,6 +9,7 @@ import { getLocalSubscribers } from '@/lib/newsletter'
 import { getStoreSettings } from '@/lib/store-settings'
 import { useAuthStore } from '@/store/authStore'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+import { supabase } from '@/lib/supabase'
 
 const SECTION_ICONS: Record<string, any> = {
   Sparkles, BarChart2, Bot, Package, Archive, ShoppingCart, LayoutGrid, Tag, Megaphone, Mail, Users, Settings,
@@ -175,6 +176,18 @@ export default function AdminDashboard() {
     }
 
     fetchDashboardData()
+
+    // Subscribe to real-time order updates
+    const channel = supabase.channel('realtime_admin_dashboard_orders')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
+        fetchDashboardData() // Refresh dashboard when new order arrives
+      })
+      .subscribe()
+
+    // Cleanup function
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   useEffect(() => {

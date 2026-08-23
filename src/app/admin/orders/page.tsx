@@ -95,6 +95,7 @@ export default function AdminOrdersPage() {
     async function fetchOrders() {
       try {
         const res = await fetch('/api/admin/orders', {
+          cache: 'no-store',
           headers: {
             'Authorization': `Bearer ${adminPassword}`
           }
