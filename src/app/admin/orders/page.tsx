@@ -519,7 +519,7 @@ export default function AdminOrdersPage() {
       {/* Order Details Sidebar Overlay - Soft Structuralism */}
       {selectedOrder && (
         <div className="fixed inset-0 z-[100] flex justify-end">
-          <div className="absolute inset-0 bg-[#059669]/20 backdrop-blur-sm transition-opacity" onClick={() => setSelectedOrder(null)} />
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={() => setSelectedOrder(null)} />
           <div className="w-full max-w-lg bg-white h-full shadow-[0_0_60px_rgba(0,0,0,0.1)] flex flex-col relative z-10 animate-in slide-in-from-right duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] border-l border-[#E5E7EB]">
             <div className="flex items-center justify-between p-5 border-b border-[#E5E7EB]">
               <div>

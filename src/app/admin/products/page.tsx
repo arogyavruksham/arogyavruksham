@@ -347,7 +347,7 @@ export default function AdminProductsPage() {
       {/* Add / Edit Product Modal - Soft Structuralism */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex justify-end">
-          <div className="absolute inset-0 bg-[#059669]/20 backdrop-blur-sm transition-opacity" onClick={() => { setIsModalOpen(false); resetForm(); }} />
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={() => { setIsModalOpen(false); resetForm(); }} />
           <div className="w-full max-w-xl bg-white h-full shadow-[0_0_60px_rgba(0,0,0,0.1)] flex flex-col relative z-10 animate-in slide-in-from-right duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] border-l border-[#E5E7EB] overflow-y-auto">
             
             <div className="flex items-center justify-between p-5 border-b border-[#E5E7EB] sticky top-0 bg-white/90 backdrop-blur-xl z-20">
@@ -474,7 +474,7 @@ export default function AdminProductsPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-[#059669]/20 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
               onClick={() => setDeleteConfirmId(null)}
             />
             <motion.div 

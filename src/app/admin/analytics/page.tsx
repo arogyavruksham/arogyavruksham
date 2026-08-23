@@ -558,7 +558,7 @@ export default function AnalyticsPage() {
 
       {/* Date Deep-Dive Modal */}
       {selectedDayData && (
-        <div className="fixed inset-0 bg-[#059669]/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col border border-[#E5E7EB]">
             
             <div className="p-6 px-8 border-b border-[#E5E7EB] flex justify-between items-center bg-[#F9FAFB]/80 sticky top-0 z-10">
@@ -736,7 +736,7 @@ export default function AnalyticsPage() {
 
       {/* Order Details Sidebar Overlay */}
       {selectedOrder && (
-        <div className="fixed inset-0 z-[100] bg-[#059669]/40 backdrop-blur-xs flex justify-end animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-xs flex justify-end animate-in fade-in duration-200">
           <div className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right overflow-hidden border-l border-[#E5E7EB]">
             <div className="flex items-center justify-between p-6 border-b border-[#E5E7EB] bg-[#F9FAFB]">
               <div>
