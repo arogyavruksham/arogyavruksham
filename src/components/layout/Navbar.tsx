@@ -266,10 +266,12 @@ export function Navbar() {
               </button>
 
               {/* Arogya AI Trigger */}
-              <button onClick={toggleAI} className="relative group shrink-0 hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-br from-[#11311F] to-[#235839] text-white rounded-full shadow-sm hover:shadow-md transition-all active:scale-95">
-                <Sparkles className="w-3.5 h-3.5 text-[#A4E4BA] group-hover:rotate-12 transition-transform" />
-                <span className="text-[11px] font-bold tracking-wide">Arogya AI</span>
-              </button>
+              {(pathname === '/' || pathname?.startsWith('/shop')) && (
+                <button onClick={toggleAI} className="relative group shrink-0 hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-br from-[#11311F] to-[#235839] text-white rounded-full shadow-sm hover:shadow-md transition-all active:scale-95">
+                  <Sparkles className="w-3.5 h-3.5 text-[#A4E4BA] group-hover:rotate-12 transition-transform" />
+                  <span className="text-[11px] font-bold tracking-wide">Arogya AI</span>
+                </button>
+              )}
 
               {/* Search */}
               <div className="relative search-container pl-1 shrink-0">

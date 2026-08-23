@@ -8,6 +8,7 @@ import { useUIStore } from '@/store/uiStore'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { motion, AnimatePresence } from 'framer-motion'
+import { usePathname } from 'next/navigation'
 
 /* ── Motion tokens (Emil / Apple design skills) ── */
 const EASE_OUT = [0.23, 1, 0.32, 1] as const        // strong ease-out for UI
@@ -15,6 +16,7 @@ const EASE_DRAWER = [0.32, 0.72, 0, 1] as const      // iOS-like drawer curve
 const DRAWER_DURATION = 0.38                           // 200–500ms for drawers
 
 export function ArogyaAI() {
+  const pathname = usePathname()
   const { isAIOpen, setAIOpen } = useUIStore()
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -87,7 +89,7 @@ export function ArogyaAI() {
     <>
       {/* ── Mobile Floating Button ── */}
       <AnimatePresence>
-        {!isAIOpen && (
+        {!isAIOpen && (pathname === '/' || pathname?.startsWith('/shop')) && (
           <motion.button
             initial={{ opacity: 0, scale: 0.8, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
