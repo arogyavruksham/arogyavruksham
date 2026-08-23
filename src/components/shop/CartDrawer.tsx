@@ -138,15 +138,13 @@ export function CartDrawer() {
                   <span className="font-sans text-sm font-bold text-black">Rs. {subtotal.toLocaleString('en-IN')}.00</span>
                 </div>
 
-                <button
-                  onClick={() => {
-                    setCartOpen(false)
-                    window.location.href = '/checkout'
-                  }}
-                  className="w-full py-4 bg-[#1c1b1b] text-white text-center font-sans font-bold text-sm tracking-widest uppercase hover:bg-black transition-colors"
+                <Link
+                  href="/checkout"
+                  onClick={() => setCartOpen(false)}
+                  className="w-full py-4 bg-[#1c1b1b] text-white flex justify-center items-center font-sans font-bold text-sm tracking-widest uppercase hover:bg-black transition-colors"
                 >
                   CHECKOUT
-                </button>
+                </Link>
 
                 <Link
                   href="/cart"
@@ -275,15 +273,13 @@ export function CartDrawer() {
                       </div>
                     </div>
 
-                    <button
-                      onClick={() => {
-                        setCartOpen(false)
-                        router.push('/checkout')
-                      }}
-                      className="w-full py-4 bg-[#11311F] hover:bg-black text-white text-center font-sans font-bold text-[15px] rounded-xl shadow-xl shadow-[#11311F]/20 transition-transform duration-200 active:scale-95 block"
+                    <Link
+                      href="/checkout"
+                      onClick={() => setCartOpen(false)}
+                      className="w-full py-4 bg-[#11311F] hover:bg-black text-white flex justify-center items-center font-sans font-bold text-[15px] rounded-xl shadow-xl shadow-[#11311F]/20 transition-transform duration-200 active:scale-95"
                     >
                       PROCEED TO CHECKOUT &rarr;
-                    </button>
+                    </Link>
                   </div>
                 </>
               )}
