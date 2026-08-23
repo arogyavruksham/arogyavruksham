@@ -4,12 +4,13 @@ import { useCartStore } from '@/store/cartStore'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Minus, Plus, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useHardwareBack } from '@/hooks/useHardwareBack'
 
 export function CartDrawer() {
   const router = useRouter()
+  const pathname = usePathname()
   const { items, isOpen, setCartOpen, removeItem, updateQuantity } = useCartStore()
   const [mounted, setMounted] = useState(false)
   
@@ -19,6 +20,13 @@ export function CartDrawer() {
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  // Automatically close cart when navigating to a new page
+  useEffect(() => {
+    if (isOpen) {
+      setCartOpen(false)
+    }
+  }, [pathname])
 
   const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0)
 
@@ -140,7 +148,6 @@ export function CartDrawer() {
 
                 <Link
                   href="/checkout"
-                  onClick={() => setCartOpen(false)}
                   className="w-full py-4 bg-[#1c1b1b] text-white flex justify-center items-center font-sans font-bold text-sm tracking-widest uppercase hover:bg-black transition-colors"
                 >
                   CHECKOUT
@@ -148,7 +155,6 @@ export function CartDrawer() {
 
                 <Link
                   href="/cart"
-                  onClick={() => setCartOpen(false)}
                   className="w-full text-center font-sans font-bold text-[13px] tracking-wide text-black uppercase underline underline-offset-4 decoration-2 hover:text-gray-600 transition-colors mt-2"
                 >
                   VIEW MY CART
@@ -275,7 +281,6 @@ export function CartDrawer() {
 
                     <Link
                       href="/checkout"
-                      onClick={() => setCartOpen(false)}
                       className="w-full py-4 bg-[#11311F] hover:bg-black text-white flex justify-center items-center font-sans font-bold text-[15px] rounded-xl shadow-xl shadow-[#11311F]/20 transition-transform duration-200 active:scale-95"
                     >
                       PROCEED TO CHECKOUT &rarr;
