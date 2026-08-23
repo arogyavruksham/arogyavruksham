@@ -60,8 +60,7 @@ export const OrderStatusUpdate: React.FC<{ data: OrderStatusData }> = ({ data })
       break;
   }
 
-  // Schema Markup for Gmail "View Order" / "Track Package"
-  const schemaMarkup = {
+  let schemaMarkup: any = {
     "@context": "http://schema.org",
     "@type": "Order",
     "merchant": {
@@ -77,7 +76,8 @@ export const OrderStatusUpdate: React.FC<{ data: OrderStatusData }> = ({ data })
       "itemOffered": {
         "@type": "Product",
         "name": item.name,
-        "image": item.imageUrl || `${storeUrl}/logo.png`
+        "image": item.imageUrl || `${storeUrl}/logo.png`,
+        "url": `${storeUrl}/shop`
       },
       "price": parseInt(item.price.replace(/\D/g, '')) || 0,
       "priceCurrency": "INR",
@@ -86,13 +86,54 @@ export const OrderStatusUpdate: React.FC<{ data: OrderStatusData }> = ({ data })
         "value": item.quantity
       }
     })),
-    "url": orderUrl,
-    "potentialAction": {
+    "url": orderUrl
+  };
+
+  if (['shipped', 'out_for_delivery', 'delivered'].includes(data.status)) {
+    const arrivalDate = new Date();
+    if (data.status === 'shipped') arrivalDate.setDate(arrivalDate.getDate() + 3);
+    else if (data.status === 'out_for_delivery') arrivalDate.setDate(arrivalDate.getDate());
+    
+    const mainItem = data.items && data.items.length > 0 ? data.items[0] : null;
+
+    schemaMarkup = {
+      "@context": "http://schema.org",
+      "@type": "ParcelDelivery",
+      "expectedArrivalUntil": arrivalDate.toISOString(),
+      "carrier": {
+        "@type": "Organization",
+        "name": "Arogyavruksham Delivery"
+      },
+      "partOfOrder": schemaMarkup,
+      "potentialAction": [
+        {
+          "@type": "ViewAction",
+          "url": orderUrl,
+          "name": "View order"
+        },
+        mainItem ? {
+          "@type": "ViewAction",
+          "url": `${storeUrl}/shop`,
+          "name": "View item"
+        } : null
+      ].filter(Boolean)
+    };
+    
+    if (mainItem) {
+      schemaMarkup.itemShipped = {
+        "@type": "Product",
+        "name": mainItem.name,
+        "image": mainItem.imageUrl || `${storeUrl}/logo.png`,
+        "url": `${storeUrl}/shop`
+      };
+    }
+  } else {
+    schemaMarkup.potentialAction = {
       "@type": "ViewAction",
       "url": orderUrl,
-      "name": data.status === 'delivered' ? "Buy Again" : "Track package"
-    }
-  };
+      "name": "View order"
+    };
+  }
 
   const steps = ['Ordered', 'Shipped', 'Out for delivery', 'Delivered'];
 
