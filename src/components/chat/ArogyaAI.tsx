@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { X, Send, ArrowUp, Leaf } from 'lucide-react'
+import { X, Send, ArrowUp, Leaf, Sparkles } from 'lucide-react'
 import { useChat } from '@ai-sdk/react'
 import { useAuthStore } from '@/store/authStore'
 import { useUIStore } from '@/store/uiStore'
