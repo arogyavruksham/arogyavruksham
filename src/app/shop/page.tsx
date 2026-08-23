@@ -21,13 +21,12 @@ export default async function ShopPage(props: { searchParams: Promise<{ category
   }
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 xl:pt-40">
-      <div className="mb-10">
-        <h1 className="font-serif text-[32px] md:text-[42px] font-bold text-[#1E4631] tracking-tight mb-3">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 xl:pt-32">
+      <div className="mb-16 md:mb-24 max-w-3xl">
+        <h1 className="font-serif text-[40px] md:text-[56px] font-medium text-black leading-tight tracking-tight mb-6">
           {q ? `Search Results for "${q}"` : category && category !== 'All' ? `${category}` : 'Botanical Collection'}
         </h1>
-        <div className="w-16 h-1.5 bg-[#235839] rounded-full mb-4"></div>
-        <p className="font-sans text-gray-600 max-w-2xl text-[14px]">
+        <p className="font-sans text-gray-500 text-[15px] md:text-[16px] leading-relaxed max-w-xl">
           Explore our curated sanctuary of thriving houseplants, desert succulents, and artisan botanicals. Type any plant name below to filter in real time.
         </p>
       </div>

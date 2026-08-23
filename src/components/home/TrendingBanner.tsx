@@ -10,9 +10,9 @@ const SLIDES = [
     id: 1,
     badge: "50%",
     badgeLabel: "OFF",
-    badgeColor: "bg-[#ffb156]",
-    subtitle: "Trending Plant 2026",
-    title: "Elegant and tolerant plant",
+    badgeColor: "bg-white text-black border border-gray-200",
+    subtitle: "Trending Collection",
+    title: "Elegant & Tolerant",
     description: "We are only beginning to understand the impact indoor air quality has on our mental health and work performance, but so far, the introduction of indoor plants to improve indoor air and reduce pollution points to positive outcomes.\n\nIt's true when we say plants make people happy.",
     image: "/images/promo/trending_banner.png",
     fallback: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=800&auto=format&fit=crop"
@@ -21,20 +21,20 @@ const SLIDES = [
     id: 2,
     badge: "35%",
     badgeLabel: "SALE",
-    badgeColor: "bg-[#689f38]",
-    subtitle: "Indoor Sanctuary 2026",
-    title: "Vibrant tropical air purifier",
+    badgeColor: "bg-white text-black border border-gray-200",
+    subtitle: "Indoor Sanctuary",
+    title: "Vibrant & Tropical",
     description: "Infuse your home and workspace with deep green calmness and active tropical air purification. Thriving effortlessly with minimal irrigation, these magnificent foliage specimens promote mindfulness and productivity.\n\nTransform your everyday room into an authentic living sanctuary.",
     image: "/images/promo/house_plant.png",
     fallback: "https://images.unsplash.com/photo-1545241047-6083a3684587?q=80&w=800&auto=format&fit=crop"
   },
   {
     id: 3,
-    badge: "40%",
-    badgeLabel: "OFF",
-    badgeColor: "bg-[#235839]",
+    badge: "New",
+    badgeLabel: "DROP",
+    badgeColor: "bg-white text-black border border-gray-200",
     subtitle: "Desert Minimalism",
-    title: "Architectural desert flora",
+    title: "Architectural Flora",
     description: "Featuring bold architectural geometry and virtually zero maintenance irrigation demands, our sculptural desert botanicals represent modern interior serenity at its absolute peak.\n\nCustom crafted for modern offices, living rooms, and sunlit windowsills.",
     image: "/images/promo/cactus.png",
     fallback: "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?q=80&w=800&auto=format&fit=crop"
@@ -70,7 +70,7 @@ export function TrendingBanner() {
           
           {/* Background Split */}
           <div className="absolute inset-0 flex">
-            <div className="w-[55%] h-full bg-[#f8f9fb]"></div>
+            <div className="w-[55%] h-full bg-[#FAFAFA]"></div>
             <div className="w-[45%] h-full bg-white"></div>
           </div>
 
@@ -84,9 +84,9 @@ export function TrendingBanner() {
               className="relative z-10 w-full md:w-[50%] h-[400px] md:h-[600px] flex items-end justify-center md:justify-end pr-0 md:pr-12 pt-12 md:pt-0 shrink-0"
             >
               {/* Discount Badge */}
-              <div className={`absolute top-20 left-20 md:left-32 ${slide.badgeColor} text-white rounded-xl p-4 flex flex-col items-center justify-center w-24 h-24 shadow-sm z-20 transition-colors duration-500`}>
+              <div className={`absolute top-20 left-20 md:left-32 ${slide.badgeColor} rounded-full flex flex-col items-center justify-center w-24 h-24 shadow-sm z-20 transition-colors duration-500`}>
                 <span className="font-serif text-2xl font-light leading-none">{slide.badge}</span>
-                <span className="font-serif text-xl font-light tracking-widest leading-none mt-1">{slide.badgeLabel}</span>
+                <span className="text-[10px] uppercase font-bold tracking-[0.2em] leading-none mt-1 text-gray-500">{slide.badgeLabel}</span>
               </div>
 
               <img 
@@ -107,15 +107,15 @@ export function TrendingBanner() {
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="relative z-10 w-full md:w-[50%] pl-8 md:pl-16 pr-8 pt-12 md:pt-0 flex-1 pb-16 md:pb-0"
             >
-              <p className="font-serif italic text-[#78b144] text-[15px] mb-2">{slide.subtitle}</p>
-              <h2 className="font-sans font-bold text-[36px] md:text-[42px] text-[#111] leading-[1.1] mb-6">
+              <p className="text-gray-400 font-semibold text-[10px] uppercase tracking-[0.25em] mb-4">{slide.subtitle}</p>
+              <h2 className="font-serif font-medium text-[42px] md:text-[56px] text-black leading-[1.05] mb-8">
                 {slide.title}
               </h2>
-              <p className="text-[#666] text-[14px] leading-[1.8] max-w-xl mb-8 whitespace-pre-line">
+              <p className="text-gray-500 text-[15px] leading-relaxed max-w-xl mb-10 whitespace-pre-line">
                 {slide.description}
               </p>
-              <Link href="/shop" className="text-[#78b144] text-[13px] font-bold tracking-widest uppercase hover:text-[#5b8a30] transition-colors">
-                SHOP NOW
+              <Link href="/shop" className="inline-block border border-black text-black text-[11px] font-semibold tracking-[0.2em] uppercase px-8 py-3 hover:bg-black hover:text-white transition-colors duration-300">
+                Shop Now
               </Link>
             </motion.div>
           </AnimatePresence>
@@ -128,24 +128,24 @@ export function TrendingBanner() {
                   key={idx} 
                   onClick={() => setCurrentSlide(idx)}
                   aria-label={`Go to slide ${idx + 1}`}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${currentSlide === idx ? 'bg-[#78b144] w-6' : 'bg-gray-300 hover:bg-gray-400'}`}
+                  className={`h-[2px] transition-all duration-300 ${currentSlide === idx ? 'bg-black w-8' : 'bg-gray-300 hover:bg-gray-400 w-4'}`}
                 />
               ))}
             </div>
-            <div className="flex shadow-sm">
+            <div className="flex gap-2">
               <button 
                 onClick={prevSlide}
                 aria-label="Previous slide"
-                className="w-14 h-14 bg-black text-white flex items-center justify-center hover:bg-[#689f38] active:scale-95 transition-all"
+                className="w-12 h-12 bg-white text-black border border-gray-200 flex items-center justify-center hover:border-black active:scale-95 transition-all"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-5 h-5 stroke-[1.5]" />
               </button>
               <button 
                 onClick={nextSlide}
                 aria-label="Next slide"
-                className="w-14 h-14 bg-black text-white border-l border-white/20 flex items-center justify-center hover:bg-[#689f38] active:scale-95 transition-all"
+                className="w-12 h-12 bg-white text-black border border-gray-200 flex items-center justify-center hover:border-black active:scale-95 transition-all"
               >
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-5 h-5 stroke-[1.5]" />
               </button>
             </div>
           </div>

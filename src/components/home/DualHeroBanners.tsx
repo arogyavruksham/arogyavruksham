@@ -79,9 +79,11 @@ export function DualHeroBanners() {
   return (
     <>
       {/* ─── MOBILE VIEW ONLY ─── */}
-      <div className="block md:hidden bg-[#FCFBF8] p-4 pt-4 pb-3">
-        <MobileHomeHeader />
-        <div className="relative w-full h-[480px] rounded-[28px] overflow-hidden shadow-md flex flex-col justify-end p-6 text-white border border-gray-100">
+      <div className="block md:hidden bg-white">
+        <div className="px-4 pt-4 pb-0">
+          <MobileHomeHeader />
+        </div>
+        <div className="relative w-full h-[85vh] overflow-hidden flex flex-col justify-end p-8 text-white">
           {/* Background Succulent Image */}
           <Image 
             src="https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&q=80&w=800" 
@@ -90,22 +92,23 @@ export function DualHeroBanners() {
             priority
             className="absolute inset-0 object-cover z-0" 
           />
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 z-10" />
+          {/* Subtle Overlay */}
+          <div className="absolute inset-0 bg-black/30 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
           
           {/* Content */}
           <div className="relative z-20 flex flex-col items-start w-full">
-            <h1 className="text-[32px] font-serif font-bold text-white leading-[1.1] mb-2.5 tracking-tight">
-              Desert Beauties,<br />Zero Effort
+            <h1 className="text-[40px] font-serif font-medium text-white leading-[1.05] mb-4 tracking-tight">
+              Desert<br />Beauties
             </h1>
-            <p className="text-[13px] font-medium text-white/90 leading-relaxed mb-6 max-w-[280px]">
+            <p className="text-[14px] font-sans text-white/80 leading-relaxed mb-8 max-w-[280px]">
               Discover our curated collection of low-maintenance succulents perfect for any modern space.
             </p>
             <Link 
               href="/shop?category=Succulents"
-              className="w-full bg-[#235839] hover:bg-[#1C462D] text-[#A4E4BA] font-extrabold text-[12px] tracking-wider uppercase py-4 rounded-[20px] text-center shadow-lg transition-transform active:scale-98"
+              className="inline-block bg-white text-black font-semibold text-[11px] tracking-[0.2em] uppercase px-8 py-4 text-center transition-transform active:scale-95"
             >
-              EXPLORE SUCCULENTS
+              Explore Collection
             </Link>
           </div>
         </div>
@@ -136,9 +139,9 @@ export function DualHeroBanners() {
                   </motion.p>
                   {/* Headline */}
                   <motion.h1 custom={1} variants={textVariants} initial="hidden" animate="visible" exit="exit"
-                    className="text-4xl md:text-5xl lg:text-[54px] xl:text-[58px] font-serif font-bold text-white leading-[1.1]">
+                    className="text-5xl md:text-6xl lg:text-[72px] xl:text-[84px] font-serif font-medium text-white leading-[1.05] tracking-tight">
                     {slide.title}<br />
-                    <span className="text-accent italic">{slide.titleAccent}</span>
+                    <span className="italic font-light">{slide.titleAccent}</span>
                   </motion.h1>
                   {/* Description */}
                   <motion.p custom={2} variants={textVariants} initial="hidden" animate="visible" exit="exit"
@@ -146,9 +149,9 @@ export function DualHeroBanners() {
                     {slide.description}
                   </motion.p>
                   {/* CTA */}
-                  <motion.div custom={3} variants={textVariants} initial="hidden" animate="visible" exit="exit" className="pt-1">
+                  <motion.div custom={3} variants={textVariants} initial="hidden" animate="visible" exit="exit" className="pt-4">
                     <Link href={slide.buttonLink}
-                      className="inline-block bg-primary text-white font-bold text-xs md:text-sm px-7 py-3 rounded-sm hover:bg-primary-light transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/30">
+                      className="inline-block bg-white text-black font-semibold text-[11px] tracking-[0.2em] uppercase px-10 py-4 hover:bg-white/90 transition-all duration-300">
                       {slide.buttonText}
                     </Link>
                   </motion.div>

@@ -66,107 +66,108 @@ export function ShopClient({
 
   return (
     <div className="space-y-8">
-      {/* ─── Search & Filter Top Bar ─── */}
-      <div className="bg-[#FCFBF8] border border-gray-200/80 rounded-[28px] p-4 sm:p-6 shadow-2xs space-y-4">
+      {/* ─── Minimalist Search & Filter Top Bar ─── */}
+      <div className="border-b border-gray-200 pb-6 mb-8 space-y-6">
         <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
           
           {/* Instant Search Bar */}
-          <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#235839]/60 stroke-[2.2]" />
+          <div className="relative flex-1 group">
+            <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-gray-800 transition-colors" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by plant name (e.g. Snake Plant, Peace Lily, Pots)..."
-              className="w-full pl-12 pr-10 py-3 rounded-2xl bg-white border border-gray-200 focus:border-[#235839] focus:ring-2 focus:ring-[#235839]/20 text-[14px] font-medium text-gray-800 transition-all outline-none shadow-inner"
+              placeholder="Search botanical items..."
+              className="w-full pl-8 pr-10 py-3 bg-transparent border-none focus:ring-0 text-[16px] md:text-[18px] font-medium text-gray-800 placeholder-gray-400 outline-none"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition-colors"
+                className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-800 transition-colors"
                 aria-label="Clear search"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
             )}
           </div>
 
           {/* Sort Selector */}
-          <div className="flex items-center gap-2 shrink-0 self-end md:self-auto">
-            <SlidersHorizontal className="w-4 h-4 text-[#235839]" />
-            <span className="text-[12px] font-bold text-gray-700 uppercase tracking-wider">Sort:</span>
+          <div className="flex items-center gap-2 shrink-0 border-l border-gray-200 pl-4 md:pl-6">
+            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em]">Sort</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="bg-white border border-gray-200 rounded-xl px-3 py-2 text-[13px] font-semibold text-gray-800 focus:outline-none focus:border-[#235839] cursor-pointer"
+              className="bg-transparent border-none text-[13px] font-semibold text-gray-800 focus:ring-0 cursor-pointer outline-none hover:text-black transition-colors p-0"
             >
-              <option value="new">Featured & Newest</option>
+              <option value="new">Newest</option>
               <option value="price-asc">Price: Low to High</option>
               <option value="price-desc">Price: High to Low</option>
             </select>
           </div>
         </div>
 
-        {/* Category Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide pt-1 border-t border-gray-200/50">
-          <Filter className="w-3.5 h-3.5 text-gray-400 shrink-0 mr-1 hidden sm:block" />
+        {/* Category Tabs */}
+        <div className="flex items-center gap-6 overflow-x-auto pb-1 scrollbar-hide">
           {CATEGORIES.map((cat) => {
             const isActive = selectedCategory.toLowerCase() === cat.toLowerCase()
             return (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(isActive && cat !== 'All' ? 'All' : cat)}
-                className={`px-4 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap transition-all duration-200 ${
-                  isActive
-                    ? 'bg-[#235839] text-white shadow-sm'
-                    : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                className={`relative py-2 text-[12px] font-semibold uppercase tracking-wider whitespace-nowrap transition-colors ${
+                  isActive ? 'text-black' : 'text-gray-400 hover:text-gray-700'
                 }`}
               >
                 {cat}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeCategoryIndicator"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-black"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
               </button>
             )
           })}
         </div>
       </div>
 
-      {/* ─── Results Status & Grid ─── */}
-      <div className="flex items-center justify-between px-2 text-[13px] font-semibold text-gray-500">
+      {/* ─── Results Status ─── */}
+      <div className="flex items-center justify-between pb-4 text-[12px] uppercase tracking-widest font-semibold text-gray-400">
         <span>
-          Showing <strong className="text-[#1E4631] font-extrabold">{filteredProducts.length}</strong> botanical items
+          <strong className="text-black">{filteredProducts.length}</strong> items
           {searchQuery ? ` matching "${searchQuery}"` : ''}
-          {selectedCategory !== 'All' ? ` in ${selectedCategory}` : ''}
+          {selectedCategory !== 'All' ? ` / ${selectedCategory}` : ''}
         </span>
         {(searchQuery || selectedCategory !== 'All') && (
           <button
             onClick={() => { setSearchQuery(''); setSelectedCategory('All') }}
-            className="text-[#235839] hover:underline text-[12px] font-extrabold flex items-center gap-1"
+            className="text-black hover:text-gray-600 transition-colors"
           >
-            Reset Filters
+            Clear Filters
           </button>
         )}
       </div>
 
       {filteredProducts.length === 0 ? (
-        <div className="text-center py-20 bg-[#FCFBF8] rounded-[28px] border border-gray-200/60 font-sans p-8">
-          <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4 text-gray-400">
-            <Search className="w-8 h-8" />
-          </div>
-          <h3 className="font-serif text-xl font-bold text-gray-800 mb-2">No plants matched your criteria</h3>
-          <p className="text-sm text-gray-500 max-w-md mx-auto mb-6">
-            We couldn't find any items matching "{searchQuery}". Try using broader terms or clearing your search filters.
+        <div className="text-center py-32">
+          <h3 className="font-serif text-3xl text-gray-300 mb-4">No botanical items found</h3>
+          <p className="text-gray-400 max-w-sm mx-auto mb-8">
+            Try adjusting your search or filter to find what you're looking for.
           </p>
           <button
             onClick={() => { setSearchQuery(''); setSelectedCategory('All') }}
-            className="bg-[#235839] text-white font-bold text-xs px-6 py-3 rounded-xl hover:bg-[#1A432B] transition-colors"
+            className="border border-black text-black px-8 py-3 text-xs uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
           >
-            View All Plants
+            View All Collection
           </button>
         </div>
       ) : (
         <AnimatePresence mode="popLayout">
           <motion.div
             layout
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-8"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12 sm:gap-x-6 sm:gap-y-16"
           >
             {filteredProducts.map((product) => (
               <motion.div
