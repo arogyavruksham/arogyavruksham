@@ -111,7 +111,7 @@ export default function AdminProductsPage() {
           match: { id: editingId }
         })
       } else {
-        await adminDbProxy({
+        const insertRes = await adminDbProxy({
           action: 'insert',
           table: 'products',
           data: {
@@ -125,6 +125,24 @@ export default function AdminProductsPage() {
             image_url: imageUrl || null
           }
         })
+
+        // Trigger Product Launch Email automatically
+        try {
+          const generatedId = insertRes?.data?.[0]?.id || title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+          await fetch('/api/email/product-launch', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              title,
+              imageUrl: imageUrl || '',
+              price: Number(price),
+              description: finalDescription,
+              productId: generatedId
+            })
+          });
+        } catch (emailError) {
+          console.error('Failed to send product launch emails:', emailError);
+        }
       }
 
       // Success

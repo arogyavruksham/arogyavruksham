@@ -1,42 +1,63 @@
-﻿import React from  react;
+import React from 'react';
+import { BaseLayout } from './BaseLayout';
 
-export interface ProductData {
+export interface ProductLaunchData {
   title: string;
   imageUrl: string;
-  price: string;
+  price: number;
   description: string;
-  url: string;
+  url: string; // URL to the product page
 }
 
-export const ProductLaunch: React.FC<{ product: ProductData }> = ({ product }) => (
-  <div style={{
-    fontFamily: Inter sans-serif,
-    backgroundColor: '#f9f9f9',
-    color: '#222',
-    padding: '40px',
-    maxWidth: '600px',
-    margin: '0 auto',
-    borderRadius: '12px',
-    boxShadow: '0 8px 20px rgba(0,0,0,0.08)',
-  }}>
-    <h1 style={{ fontSize: '28px', marginBottom: '20px', color: '#2A7F4F' }}>
-      New Product Available!
-    </h1>
-    <img src={product.imageUrl} alt={product.title} style={{ width: '100%', borderRadius: '8px', marginBottom: '20px' }} />
-    <h2 style={{ fontSize: '24px', marginBottom: '10px' }}>{product.title}</h2>
-    <p style={{ fontSize: '18px', marginBottom: '10px', fontWeight: 'bold' }}>Price: {product.price}</p>
-    <p style={{ lineHeight: '1.5', marginBottom: '20px' }}>{product.description}</p>
-    <a href={product.url}
-       style={{
-         display: 'inline-block',
-         backgroundColor: '#2A7F4F',
-         color: '#fff',
-         padding: '12px 24px',
-         borderRadius: '6px',
-         textDecoration: 'none',
-         fontWeight: '500',
-       }}>
-      View Product
-    </a>
-  </div>
-);
+export const ProductLaunch: React.FC<{ product: ProductLaunchData }> = ({ product }) => {
+  return (
+    <BaseLayout 
+      title={`New Arrival: ${product.title}`}
+      previewText={`Discover our newest addition: ${product.title}. Available now.`}
+    >
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <p style={{ margin: '0 0 12px 0', fontSize: '11px', color: '#1E4631', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 'bold' }}>
+          New Arrival
+        </p>
+        <h2 style={{ color: '#222', fontSize: '28px', marginTop: '0', marginBottom: '16px', fontFamily: 'serif', fontWeight: 'normal' }}>
+          Meet the {product.title}
+        </h2>
+      </div>
+
+      {product.imageUrl && (
+        <div style={{ marginBottom: '32px', borderRadius: '12px', overflow: 'hidden' }}>
+          <img 
+            src={product.imageUrl} 
+            alt={product.title} 
+            style={{ width: '100%', display: 'block', border: 'none' }} 
+          />
+        </div>
+      )}
+
+      <div style={{ textAlign: 'center', padding: '0 20px' }}>
+        <p style={{ fontSize: '16px', color: '#555', lineHeight: '1.7', marginBottom: '24px' }}>
+          {product.description}
+        </p>
+        
+        <p style={{ fontSize: '20px', color: '#1E4631', fontWeight: 'bold', marginBottom: '32px' }}>
+          ₹{product.price.toLocaleString('en-IN')}
+        </p>
+
+        <a href={product.url} style={{
+          display: 'inline-block',
+          backgroundColor: '#1E4631',
+          color: '#FFF',
+          padding: '16px 40px',
+          borderRadius: '4px',
+          textDecoration: 'none',
+          fontWeight: '600',
+          fontSize: '14px',
+          letterSpacing: '1px',
+          textTransform: 'uppercase'
+        }}>
+          Shop Now
+        </a>
+      </div>
+    </BaseLayout>
+  );
+};
