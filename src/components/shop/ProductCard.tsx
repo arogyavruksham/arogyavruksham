@@ -82,7 +82,7 @@ export function ProductCard({ id, title, price, original_price, category, imageU
         whileHover={{ y: -5 }}
         className="group bg-white overflow-hidden hidden md:flex flex-col h-full"
       >
-        <Link href={`/shop/${id}`} className="block relative aspect-square overflow-hidden bg-white mb-4 flex items-center justify-center">
+        <div className="relative aspect-square overflow-hidden bg-white mb-4 flex items-center justify-center">
           {/* NEW Badge */}
           {!isOutOfStock && (
             <div className="absolute top-2 left-2 bg-[#0066FF] text-white px-3 py-0.5 text-[10px] sm:text-[11px] font-bold rounded-full z-10 tracking-wider shadow-sm">
@@ -98,13 +98,48 @@ export function ProductCard({ id, title, price, original_price, category, imageU
             </div>
           )}
           
-          <img 
-            src={imageUrl || fallbackImage} 
-            alt={title}
-            onError={(e) => { e.currentTarget.src = fallbackImage; }}
-            className={`w-full h-full object-contain transition-transform duration-500 mix-blend-multiply ${!isOutOfStock && 'group-hover:scale-105'} ${isOutOfStock && 'opacity-60 grayscale-[50%]'}`}
-          />
-        </Link>
+          <Link href={`/shop/${id}`} className="block w-full h-full">
+            <img 
+              src={imageUrl || fallbackImage} 
+              alt={title}
+              onError={(e) => { e.currentTarget.src = fallbackImage; }}
+              className={`w-full h-full object-contain transition-transform duration-500 mix-blend-multiply ${!isOutOfStock && 'group-hover:scale-105'} ${isOutOfStock && 'opacity-60 grayscale-[50%]'}`}
+            />
+          </Link>
+          
+          {/* Hover Action Buttons */}
+          {!isOutOfStock && (
+            <div className="absolute bottom-5 left-0 right-0 flex justify-center items-center gap-1 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-20 pointer-events-none group-hover:pointer-events-auto">
+              <button 
+                onClick={(e) => e.preventDefault()}
+                className="w-10 h-10 bg-[#648B3F] text-white flex items-center justify-center hover:bg-[#527431] transition-colors shadow-md"
+                title="Add to Cart"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </button>
+              <button 
+                onClick={(e) => e.preventDefault()}
+                className="w-10 h-10 bg-[#EEEEEE] text-gray-600 flex items-center justify-center hover:text-[#1E4631] hover:bg-[#E5E5E5] transition-colors shadow-md"
+                title="Add to Wishlist"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </button>
+              <button 
+                onClick={(e) => e.preventDefault()}
+                className="w-10 h-10 bg-[#EEEEEE] text-gray-600 flex items-center justify-center hover:text-[#1E4631] hover:bg-[#E5E5E5] transition-colors shadow-md"
+                title="Quick View"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
+            </div>
+          )}
+        </div>
         
         <div className="px-1 flex flex-col flex-1">
           <Link href={`/shop/${id}`} className="flex flex-col h-full">
