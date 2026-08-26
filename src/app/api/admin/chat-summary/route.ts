@@ -146,11 +146,11 @@ IMPORTANT RULES:
 
     // Try multiple free models with fallback chain
     const FREE_MODELS = [
-      'google/gemini-2.0-flash-lite-preview-02-05:free',
-      'meta-llama/llama-3.1-8b-instruct:free',
-      'mistralai/mistral-7b-instruct:free',
-      'qwen/qwen-2-7b-instruct:free',
-      'huggingfaceh4/zephyr-7b-beta:free',
+      'google/gemma-4-31b-it:free',
+      'nvidia/nemotron-3-super-120b-a12b:free',
+      'z-ai/glm-5.2:free',
+      'minimax/minimax-m3:free',
+      'poolside/laguna-s-2.1:free',
     ]
 
     let text = ''
