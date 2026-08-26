@@ -10,8 +10,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Reference ID and verification code are required.' }, { status: 400 });
     }
 
-    // Call GetOTP Verify endpoint using GET
-    const response = await fetch(`https://api.otp.dev/v1/verifications?code=${code}&phone=${phone}`, {
+    // Call GetOTP Verify endpoint using GET. Omit phone from query to avoid strict matching failures.
+    const response = await fetch(`https://api.otp.dev/v1/verifications?code=${code}`, {
       method: 'GET',
       headers: {
         'X-OTP-Key': process.env.GETOTP_API_KEY || '',
