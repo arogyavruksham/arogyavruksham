@@ -82,7 +82,7 @@ export async function POST(request: Request) {
       }
 
       // Create brand new phone-only user (using a synthetic email to bypass Supabase phone restrictions)
-      const syntheticEmail = email || `${phone.replace('+', '')}@arogya.auth.local`;
+      const syntheticEmail = email || `${phone.replace('+', '')}@arogya.auth.com`;
       
       const userData: any = {
         phone,
