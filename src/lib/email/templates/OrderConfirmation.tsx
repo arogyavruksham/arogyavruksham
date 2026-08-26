@@ -33,7 +33,7 @@ export interface OrderData {
 
 export const OrderConfirmation: React.FC<{ order: OrderData }> = ({ order }) => {
   const shortOrderId = order.id.split('-')[0].toUpperCase();
-  const storeUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.com';
+  const storeUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.vercel.app';
   const orderUrl = `${storeUrl}/profile?tab=orders`;
 
   // Calculate estimated delivery (order date + 5 days)

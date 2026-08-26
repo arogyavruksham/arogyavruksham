@@ -15,7 +15,7 @@ export interface OrderStatusData {
 
 export const OrderStatusUpdate: React.FC<{ data: OrderStatusData }> = ({ data }) => {
   const shortOrderId = data.orderId.split('-')[0].toUpperCase();
-  const storeUrl = data.storeUrl || 'https://arogyavruksham.com';
+  const storeUrl = data.storeUrl || 'https://arogyavruksham.vercel.app';
   const orderUrl = `${storeUrl}/profile?tab=orders`;
 
   let heading = '';

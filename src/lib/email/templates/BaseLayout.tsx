@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 export const BaseLayout = ({ children, title, previewText }: { children?: ReactNode, title?: string, previewText?: string }) => {
-  const storeUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.com';
+  const storeUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.vercel.app';
 
   return (
     <html lang="en">

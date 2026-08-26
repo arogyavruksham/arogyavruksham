@@ -227,7 +227,7 @@ export async function sendShippingUpdateEmail(
         totalAmount,
         items,
         deliveryAddress,
-        storeUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.com',
+        storeUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.vercel.app',
         recommendedProducts,
       }} 
     />
@@ -359,7 +359,7 @@ export async function sendProductLaunchEmail(
   if (validEmails.length === 0) return false;
 
   const transporter = getTransporter()
-  const storeUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.com'
+  const storeUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.vercel.app'
   
   const htmlContent = await render(
     <ProductLaunch 
