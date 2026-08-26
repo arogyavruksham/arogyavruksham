@@ -88,6 +88,25 @@ export function AddressModal({ isOpen, onClose }: AddressModalProps) {
     })
 
     if (!error) {
+      // Update email if provided
+      if (newAddress.email && (!user.email || !user.email.includes('@arogyavruksham'))) {
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+             await fetch('/api/user/update-email', {
+               method: 'POST',
+               headers: { 
+                 'Content-Type': 'application/json',
+                 'Authorization': `Bearer ${session.access_token}`
+               },
+               body: JSON.stringify({ email: newAddress.email })
+             });
+          }
+        } catch (e) {
+          console.error('Failed to update user email', e)
+        }
+      }
+
       window.dispatchEvent(new Event('addressUpdated'))
       setNewAddress({ name: '', email: '', phone: '', pincode: '', state: '', city: '', fullAddress: '' })
       onClose()
@@ -184,12 +203,17 @@ export function AddressModal({ isOpen, onClose }: AddressModalProps) {
                 </div>
                 <div className="flex gap-4">
                   <div className="flex-1">
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Email Address</label>
+                    <input type="email" value={newAddress.email} onChange={e => setNewAddress({...newAddress, email: e.target.value})} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-black focus:outline-none focus:border-[#1A73E8]" />
+                  </div>
+                  <div className="flex-1">
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Phone</label>
                     <input type="tel" maxLength={10} inputMode="numeric" value={newAddress.phone} onChange={e => {
                       const val = e.target.value.replace(/\D/g, '')
                       if (val.length <= 10) setNewAddress({...newAddress, phone: val})
                     }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-black focus:outline-none focus:border-[#1A73E8]" />
                   </div>
+                <div className="flex gap-4">
                   <div className="flex-1">
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Pin Code</label>
                     <input type="text" maxLength={5} inputMode="numeric" value={newAddress.pincode} onChange={e => {
@@ -197,12 +221,12 @@ export function AddressModal({ isOpen, onClose }: AddressModalProps) {
                       if (val.length <= 5) setNewAddress({...newAddress, pincode: val})
                     }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-black focus:outline-none focus:border-[#1A73E8]" />
                   </div>
-                </div>
-                <div className="flex gap-4">
                   <div className="flex-1">
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">State</label>
                     <input type="text" value={newAddress.state} onChange={e => setNewAddress({...newAddress, state: e.target.value})} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-black focus:outline-none focus:border-[#1A73E8]" />
                   </div>
+                </div>
+                <div className="flex gap-4">
                   <div className="flex-1">
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">City</label>
                     <input type="text" value={newAddress.city} onChange={e => setNewAddress({...newAddress, city: e.target.value})} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-black focus:outline-none focus:border-[#1A73E8]" />

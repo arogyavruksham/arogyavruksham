@@ -358,9 +358,15 @@ export default function ProfilePage() {
        <h2 className="text-2xl md:text-3xl font-bold text-[#11311F] tracking-tight mb-8">Settings</h2>
        
        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 md:p-8 space-y-6">
-         <div>
-            <label className="block text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">Email Address</label>
-            <input type="email" value={user?.email || ''} disabled className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-500 font-medium cursor-not-allowed outline-none" />
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+           <div>
+              <label className="block text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">Email Address</label>
+              <input type="email" value={user?.email || 'Not provided'} disabled className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-500 font-medium cursor-not-allowed outline-none" />
+           </div>
+           <div>
+              <label className="block text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">Phone Number</label>
+              <input type="tel" value={user?.phone || 'Not provided'} disabled className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-500 font-medium cursor-not-allowed outline-none" />
+           </div>
          </div>
          
          <div className="pt-6 border-t border-gray-100">
