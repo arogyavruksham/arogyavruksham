@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import { supabase } from '@/lib/supabase'
 import { generateInvoicePDF } from '@/lib/invoiceGenerator'
-import { sendOrderConfirmationEmail } from '@/lib/emailService'
+import { sendOrderConfirmationEmail, resolveCustomerEmail, fetchRecommendedProducts } from '@/lib/emailService'
 
 export async function POST(request: Request) {
   try {
@@ -110,22 +110,43 @@ export async function POST(request: Request) {
 
     // 4. Generate Invoice and Send Email
     try {
-      // Get the customer email
+      // Get the customer email from users table
       const { data: userData } = await (supabaseAdmin as any)
         .from('users')
         .select('email, full_name')
         .eq('id', finalUserId)
         .single()
       
-      const customerEmail = userData?.email || addressData?.email
+      // Smart email resolution: address form email > user email, skip @arogya.auth.local
+      const customerEmail = resolveCustomerEmail(userData?.email, addressData?.email)
       const customerName = addressData?.name || userData?.full_name || 'Customer'
 
       if (customerEmail) {
-        // We pass the order and the orderItems to generate the PDF
+        // Also update the user's email in Supabase if they had a synthetic one
+        if (userData?.email?.endsWith('@arogya.auth.local') && addressData?.email && !addressData.email.endsWith('@arogya.auth.local')) {
+          await (supabaseAdmin as any)
+            .from('users')
+            .update({ email: addressData.email })
+            .eq('id', finalUserId)
+        }
+
+        // Generate the PDF invoice
         const pdfBuffer = await generateInvoicePDF(order, orderItems)
         
-        // Send the email asynchronously without awaiting it strictly to avoid blocking the checkout response
-        // though awaiting is safer for serverless to ensure it finishes before exiting
+        // Fetch recommended products (exclude items in this order)
+        const orderedProductIds = items.map((i: any) => i.id)
+        const recommendedProducts = await fetchRecommendedProducts(orderedProductIds, 4)
+
+        // Build delivery address string
+        const deliveryAddressStr = addressData 
+          ? [addressData.fullAddress, addressData.city, addressData.state, addressData.pincode].filter(Boolean).join(', ')
+          : ''
+
+        // Calculate shipping
+        const subtotal = items.reduce((t: number, i: any) => t + i.price * i.quantity, 0)
+        const shippingCost = subtotal > 20000 ? 0 : 500
+
+        // Send the email
         await sendOrderConfirmationEmail(
           customerEmail,
           customerName,
@@ -136,8 +157,17 @@ export async function POST(request: Request) {
             name: i.title,
             quantity: i.quantity,
             price: `₹${i.price.toLocaleString('en-IN')}`,
-            imageUrl: i.imageUrl || ''
-          }))
+            imageUrl: i.imageUrl || '',
+            productId: i.id || '',
+          })),
+          {
+            shippingCost,
+            discountAmount: discountAmount || 0,
+            couponCode: appliedCoupon?.code || '',
+            deliveryAddress: deliveryAddressStr,
+            paymentMethod: paymentMethod === 'online' ? 'Online Payment' : 'Cash on Delivery',
+            recommendedProducts,
+          }
         )
       }
     } catch (emailError: any) {

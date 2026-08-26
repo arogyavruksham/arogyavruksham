@@ -84,6 +84,13 @@ export const ADMIN_NAV: AdminNavItem[] = [
     description: 'Subscriber list, exports, and signup capture',
   },
   {
+    name: 'Mails Manager',
+    path: '/admin/emails',
+    icon: 'Send',
+    group: 'Marketing',
+    description: 'All sent emails, delivery status, and customer communication logs',
+  },
+  {
     name: 'Customers',
     path: '/admin/customers',
     icon: 'Users',

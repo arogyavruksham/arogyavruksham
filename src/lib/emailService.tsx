@@ -5,6 +5,8 @@ import { OrderConfirmation } from './email/templates/OrderConfirmation'
 import { OrderStatusUpdate } from './email/templates/OrderStatusUpdate'
 import { ProductLaunch } from './email/templates/ProductLaunch'
 import { BaseLayout } from './email/templates/BaseLayout'
+import type { RecommendedProduct } from './email/templates/OrderConfirmation'
+import { supabaseAdmin } from './supabase-admin'
 
 const EMAIL_USER = (process.env.EMAIL_USER && process.env.EMAIL_USER !== 'placeholder@example.com') 
   ? process.env.EMAIL_USER 
@@ -27,16 +29,108 @@ const getTransporter = () => {
   })
 }
 
+// ─── Helpers ────────────────────────────────────────────────
+
+/**
+ * Resolves a real customer email. Skips synthetic @arogya.auth.local addresses.
+ * Priority: addressEmail > userEmail
+ */
+export function resolveCustomerEmail(userEmail?: string | null, addressEmail?: string | null): string | null {
+  // Check address email first (from order form)
+  if (addressEmail && !addressEmail.endsWith('@arogya.auth.local') && addressEmail.includes('@')) {
+    return addressEmail
+  }
+  // Then check user email
+  if (userEmail && !userEmail.endsWith('@arogya.auth.local') && userEmail.includes('@')) {
+    return userEmail
+  }
+  return null
+}
+
+/**
+ * Logs a sent email record to the `sent_emails` table in Supabase.
+ */
+async function logSentEmail(params: {
+  orderId?: string | null
+  recipientEmail: string
+  recipientName?: string
+  emailType: string
+  subject: string
+  status: 'sent' | 'failed'
+  errorMessage?: string
+  metadata?: Record<string, any>
+  htmlPreview?: string
+}) {
+  try {
+    await (supabaseAdmin as any).from('sent_emails').insert({
+      order_id: params.orderId || null,
+      recipient_email: params.recipientEmail,
+      recipient_name: params.recipientName || null,
+      email_type: params.emailType,
+      subject: params.subject,
+      status: params.status,
+      error_message: params.errorMessage || null,
+      metadata: params.metadata || {},
+      html_preview: params.htmlPreview ? params.htmlPreview.substring(0, 500) : null,
+    })
+  } catch (err) {
+    console.error('Failed to log sent email:', err)
+  }
+}
+
+/**
+ * Fetches random recommended products from the store, excluding given product IDs.
+ */
+export async function fetchRecommendedProducts(excludeIds: string[] = [], limit: number = 4): Promise<RecommendedProduct[]> {
+  try {
+    // Fetch a larger set and pick random ones
+    const { data, error } = await (supabaseAdmin as any)
+      .from('products')
+      .select('id, title, price, image_url')
+      .eq('is_active', true)
+      .limit(20)
+
+    if (error || !data || data.length === 0) return []
+
+    // Filter out excluded products
+    const filtered = data.filter((p: any) => !excludeIds.includes(p.id) && p.image_url)
+    
+    // Shuffle and take `limit`
+    const shuffled = filtered.sort(() => Math.random() - 0.5)
+    return shuffled.slice(0, limit).map((p: any) => ({
+      id: p.id,
+      title: p.title,
+      price: p.price,
+      image_url: p.image_url,
+    }))
+  } catch (err) {
+    console.error('Failed to fetch recommended products:', err)
+    return []
+  }
+}
+
+
+// ─── Email Send Functions ───────────────────────────────────
+
 export async function sendOrderConfirmationEmail(
   toEmail: string,
   customerName: string,
   orderId: string,
   totalAmount: number,
   pdfBuffer: Buffer,
-  items: { name: string; quantity: number; price: string, imageUrl?: string }[] = []
+  items: { name: string; quantity: number; price: string; imageUrl?: string; productId?: string }[] = [],
+  options?: {
+    shippingCost?: number
+    discountAmount?: number
+    couponCode?: string
+    deliveryAddress?: string
+    paymentMethod?: string
+    recommendedProducts?: RecommendedProduct[]
+  }
 ) {
   const transporter = getTransporter()
   const shortOrderId = orderId.split('-')[0].toUpperCase()
+  const subject = `Order Confirmed — #${shortOrderId} | Arogyavruksham`
 
   const htmlContent = await render(
     <OrderConfirmation 
@@ -45,7 +139,13 @@ export async function sendOrderConfirmationEmail(
         customerName,
         customerEmail: toEmail,
         items,
-        totalAmount
+        totalAmount,
+        shippingCost: options?.shippingCost,
+        discountAmount: options?.discountAmount,
+        couponCode: options?.couponCode,
+        deliveryAddress: options?.deliveryAddress,
+        paymentMethod: options?.paymentMethod,
+        recommendedProducts: options?.recommendedProducts || [],
       }} 
     />
   )
@@ -54,7 +154,7 @@ export async function sendOrderConfirmationEmail(
     await transporter.sendMail({
       from: EMAIL_FROM,
       to: toEmail,
-      subject: `Order Confirmation - #${shortOrderId} | Arogyavruksham`,
+      subject,
       html: htmlContent,
       attachments: [
         {
@@ -64,9 +164,39 @@ export async function sendOrderConfirmationEmail(
         },
       ],
     })
+    
+    await logSentEmail({
+      orderId,
+      recipientEmail: toEmail,
+      recipientName: customerName,
+      emailType: 'order_confirmation',
+      subject,
+      status: 'sent',
+      metadata: {
+        totalAmount,
+        itemCount: items.length,
+        items: items.map(i => ({ name: i.name, quantity: i.quantity, price: i.price })),
+        paymentMethod: options?.paymentMethod || 'Online',
+        hasInvoice: true,
+      },
+      htmlPreview: htmlContent,
+    })
+
     return true
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error sending order confirmation email via Nodemailer:', error)
+    
+    await logSentEmail({
+      orderId,
+      recipientEmail: toEmail,
+      recipientName: customerName,
+      emailType: 'order_confirmation',
+      subject,
+      status: 'failed',
+      errorMessage: error?.message || 'Unknown error',
+      metadata: { totalAmount, itemCount: items.length },
+    })
+
     return false
   }
 }
@@ -77,8 +207,9 @@ export async function sendShippingUpdateEmail(
   orderId: string,
   newStatus: string,
   totalAmount: number = 0,
-  items: { name: string; quantity: number; price: string, imageUrl?: string }[] = [],
-  deliveryAddress: string = ''
+  items: { name: string; quantity: number; price: string; imageUrl?: string; productId?: string }[] = [],
+  deliveryAddress: string = '',
+  recommendedProducts: RecommendedProduct[] = []
 ) {
   const transporter = getTransporter()
   const shortOrderId = orderId.split('-')[0].toUpperCase()
@@ -96,16 +227,18 @@ export async function sendShippingUpdateEmail(
         totalAmount,
         items,
         deliveryAddress,
-        storeUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.com'
+        storeUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.com',
+        recommendedProducts,
       }} 
     />
   )
 
   let subjectMessage = `Update on your Arogyavruksham order #${shortOrderId}`
-  if (newStatus === 'packed') subjectMessage = `Your Arogyavruksham order #${shortOrderId} is packed!`
-  if (newStatus === 'shipped') subjectMessage = `Your Arogyavruksham order #${shortOrderId} has shipped!`
-  if (newStatus === 'out_for_delivery') subjectMessage = `Your Arogyavruksham order #${shortOrderId} is out for delivery!`
-  if (newStatus === 'delivered') subjectMessage = `Your Arogyavruksham order #${shortOrderId} has been delivered!`
+  if (newStatus === 'packed') subjectMessage = `Your order #${shortOrderId} is packed! | Arogyavruksham`
+  if (newStatus === 'shipped') subjectMessage = `Shipped: Order #${shortOrderId} is on the way! | Arogyavruksham`
+  if (newStatus === 'out_for_delivery') subjectMessage = `Out for delivery: Order #${shortOrderId} | Arogyavruksham`
+  if (newStatus === 'delivered') subjectMessage = `Delivered: Order #${shortOrderId} | Arogyavruksham`
+  if (newStatus === 'cancelled') subjectMessage = `Cancelled: Order #${shortOrderId} | Arogyavruksham`
 
   try {
     await transporter.sendMail({
@@ -114,9 +247,38 @@ export async function sendShippingUpdateEmail(
       subject: subjectMessage,
       html: htmlContent,
     })
+
+    await logSentEmail({
+      orderId,
+      recipientEmail: toEmail,
+      recipientName: customerName,
+      emailType: `status_${newStatus}`,
+      subject: subjectMessage,
+      status: 'sent',
+      metadata: {
+        newStatus,
+        totalAmount,
+        itemCount: items.length,
+        items: items.map(i => ({ name: i.name, quantity: i.quantity, price: i.price })),
+      },
+      htmlPreview: htmlContent,
+    })
+
     return true
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error sending shipping update email via Nodemailer:', error)
+
+    await logSentEmail({
+      orderId,
+      recipientEmail: toEmail,
+      recipientName: customerName,
+      emailType: `status_${newStatus}`,
+      subject: subjectMessage,
+      status: 'failed',
+      errorMessage: error?.message || 'Unknown error',
+      metadata: { newStatus, totalAmount },
+    })
+
     return false
   }
 }
@@ -148,16 +310,36 @@ export async function sendVerificationOtpEmail(toEmail: string, otpCode: string)
     </BaseLayout>
   )
 
+  const subject = `Your Arogyavruksham Login Code: ${otpCode}`
+
   try {
     await transporter.sendMail({
       from: EMAIL_FROM,
       to: toEmail,
-      subject: `Your Arogyavruksham Login Code: ${otpCode}`,
+      subject,
       html: htmlContent,
     })
+
+    await logSentEmail({
+      recipientEmail: toEmail,
+      emailType: 'otp',
+      subject,
+      status: 'sent',
+      metadata: { otpCodeLength: otpCode.length },
+    })
+
     return { success: true, message: 'OTP sent successfully via Nodemailer' }
   } catch (error: any) {
     console.error('Error sending verification OTP email via Nodemailer:', error)
+
+    await logSentEmail({
+      recipientEmail: toEmail,
+      emailType: 'otp',
+      subject,
+      status: 'failed',
+      errorMessage: error?.message || 'Unknown error',
+    })
+
     return { success: false, message: error.message || 'Failed to send OTP email via Nodemailer' }
   }
 }
@@ -172,6 +354,10 @@ export async function sendProductLaunchEmail(
 ) {
   if (toEmails.length === 0) return false;
   
+  // Filter out synthetic emails
+  const validEmails = toEmails.filter(email => !email.endsWith('@arogya.auth.local') && email.includes('@'))
+  if (validEmails.length === 0) return false;
+
   const transporter = getTransporter()
   const storeUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://arogyavruksham.com'
   
@@ -187,18 +373,38 @@ export async function sendProductLaunchEmail(
     />
   )
 
+  const subject = `New Arrival at Arogyavruksham: ${title}`
+
   try {
     const chunkSize = 10;
-    for (let i = 0; i < toEmails.length; i += chunkSize) {
-      const chunk = toEmails.slice(i, i + chunkSize);
-      await Promise.all(chunk.map(email => 
-        transporter.sendMail({
-          from: EMAIL_FROM,
-          to: email,
-          subject: `New Arrival at Arogyavruksham: ${title}`,
-          html: htmlContent,
-        })
-      ));
+    for (let i = 0; i < validEmails.length; i += chunkSize) {
+      const chunk = validEmails.slice(i, i + chunkSize);
+      await Promise.all(chunk.map(async (email) => {
+        try {
+          await transporter.sendMail({
+            from: EMAIL_FROM,
+            to: email,
+            subject,
+            html: htmlContent,
+          })
+          await logSentEmail({
+            recipientEmail: email,
+            emailType: 'product_launch',
+            subject,
+            status: 'sent',
+            metadata: { productId, productTitle: title, price },
+          })
+        } catch (sendErr: any) {
+          await logSentEmail({
+            recipientEmail: email,
+            emailType: 'product_launch',
+            subject,
+            status: 'failed',
+            errorMessage: sendErr?.message || 'Unknown error',
+            metadata: { productId, productTitle: title },
+          })
+        }
+      }));
     }
     return true
   } catch (error) {

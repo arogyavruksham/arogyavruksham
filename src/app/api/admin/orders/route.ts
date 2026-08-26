@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import { supabase } from '@/lib/supabase'
-import { sendShippingUpdateEmail } from '@/lib/emailService'
+import { sendShippingUpdateEmail, resolveCustomerEmail, fetchRecommendedProducts } from '@/lib/emailService'
 
 async function verifyAdminPassword(request: Request): Promise<boolean> {
   const authHeader = request.headers.get('authorization')
@@ -89,6 +89,7 @@ export async function PATCH(request: Request) {
           order_items (
             quantity,
             price_at_time,
+            product_id,
             products (
               title,
               image_url
@@ -99,17 +100,32 @@ export async function PATCH(request: Request) {
         .single()
 
       if (orderData) {
-        const customerEmail = orderData.users?.email || orderData.shipping_address?.email
+        // Smart email resolution: address email > user email, skip @arogya.auth.local
+        const customerEmail = resolveCustomerEmail(
+          orderData.users?.email,
+          orderData.shipping_address?.email
+        )
         const customerName = orderData.shipping_address?.name || orderData.users?.full_name || 'Customer'
         
         const items = orderData.order_items?.map((item: any) => ({
           name: item.products?.title || 'Product',
           quantity: item.quantity,
           price: `₹${item.price_at_time.toLocaleString('en-IN')}`,
-          imageUrl: item.products?.image_url || ''
+          imageUrl: item.products?.image_url || '',
+          productId: item.product_id || '',
         })) || []
 
+        // Build delivery address string
+        const addr = orderData.shipping_address
+        const deliveryAddressStr = addr 
+          ? [addr.fullAddress, addr.city, addr.state, addr.pincode].filter(Boolean).join(', ')
+          : ''
+
         if (customerEmail) {
+          // Fetch recommended products
+          const orderedProductIds = orderData.order_items?.map((item: any) => item.product_id).filter(Boolean) || []
+          const recommendedProducts = await fetchRecommendedProducts(orderedProductIds, 4)
+
           await sendShippingUpdateEmail(
             customerEmail,
             customerName,
@@ -117,7 +133,8 @@ export async function PATCH(request: Request) {
             newStatus,
             orderData.total_amount,
             items,
-            orderData.shipping_address?.fullAddress || ''
+            deliveryAddressStr,
+            recommendedProducts
           )
         }
       }
