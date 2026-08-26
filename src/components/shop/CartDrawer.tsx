@@ -92,7 +92,7 @@ export function CartDrawer() {
                     <div className="flex-1 flex flex-col justify-center">
                       <div className="flex flex-col mb-4">
                         <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 font-sans">
-                          AROGYAVRUKSHAM SILKS
+                          Arogyavruksham
                         </span>
                         <h3 className="font-sans text-xs font-bold text-black uppercase leading-snug line-clamp-2">
                           {item.title}

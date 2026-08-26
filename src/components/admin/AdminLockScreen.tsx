@@ -87,7 +87,7 @@ export function AdminLockScreen() {
 
         <div className="mt-8 pt-6 border-t border-gray-100">
           <p className="text-xs text-gray-400">
-            Protected by Arogyavruksham Silks Security. All access attempts are logged.
+            Protected by Arogyavruksham Security. All access attempts are logged.
           </p>
         </div>
       </div>

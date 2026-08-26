@@ -35,7 +35,7 @@ export interface Database {
           title: string
           description: string | null
           price: number
-          category: 'Silk' | 'Banarasi' | 'Cotton' | 'Georgette'
+          category: 'Plants' | 'Banarasi' | 'Cotton' | 'Georgette'
           image_url: string | null
           stock_count: number
           created_at: string
@@ -45,7 +45,7 @@ export interface Database {
           title: string
           description?: string | null
           price: number
-          category: 'Silk' | 'Banarasi' | 'Cotton' | 'Georgette'
+          category: 'Plants' | 'Banarasi' | 'Cotton' | 'Georgette'
           image_url?: string | null
           stock_count?: number
           created_at?: string
@@ -55,7 +55,7 @@ export interface Database {
           title?: string
           description?: string | null
           price?: number
-          category?: 'Silk' | 'Banarasi' | 'Cotton' | 'Georgette'
+          category?: 'Plants' | 'Herbs' | 'Seeds' | 'Pots'
           image_url?: string | null
           stock_count?: number
           created_at?: string

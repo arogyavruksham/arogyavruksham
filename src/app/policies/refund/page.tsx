@@ -16,7 +16,7 @@ export default function RefundPage() {
         <p>Once your return is received and inspected, we will notify you of the approval or rejection of your refund. If you are approved, then your refund will be processed, and a credit will automatically be applied to your original method of payment (e.g., via Razorpay) within 5-7 business days.</p>
         
         <h2>4. Exchanges</h2>
-        <p>We only replace items if they are defective or damaged upon arrival. If you need to exchange it for the same item, send us an email at support@arogyavrukshamsilks.com.</p>
+        <p>We only replace items if they are defective or damaged upon arrival. If you need to exchange it for the same item, send us an email at support@arogyavruksham.com.</p>
         
         <h2>5. Shipping Costs for Returns</h2>
         <p>You will be responsible for paying for your own shipping costs for returning your item. Shipping costs are non-refundable. If you receive a refund, the cost of return shipping will be deducted from your refund.</p>

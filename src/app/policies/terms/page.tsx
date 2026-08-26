@@ -5,7 +5,7 @@ export default function TermsPage() {
         <h1>Terms and Conditions</h1>
         <p>Last updated: {new Date().toLocaleDateString()}</p>
         
-        <p>Welcome to Arogyavruksham Silks. By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement.</p>
+        <p>Welcome to Arogyavruksham. By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement.</p>
         
         <h2>1. General</h2>
         <p>These terms and conditions govern your use of this website; by using this website, you accept these terms and conditions in full. If you disagree with these terms and conditions or any part of these terms and conditions, you must not use this website.</p>
@@ -23,7 +23,7 @@ export default function TermsPage() {
         <p>Please refer to our Refund Policy for detailed information on returns and exchanges.</p>
         
         <h2>6. Intellectual Property</h2>
-        <p>Unless otherwise stated, Arogyavruksham Silks and/or its licensors own the intellectual property rights in the website and material on the website. All these intellectual property rights are reserved.</p>
+        <p>Unless otherwise stated, Arogyavruksham and/or its licensors own the intellectual property rights in the website and material on the website. All these intellectual property rights are reserved.</p>
         
         <h2>7. Governing Law</h2>
         <p>These terms and conditions will be governed by and construed in accordance with the laws of India, and any disputes relating to these terms and conditions will be subject to the exclusive jurisdiction of the courts of Hyderabad, Telangana.</p>

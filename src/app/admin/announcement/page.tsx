@@ -262,7 +262,7 @@ export default function AdminAnnouncementPage() {
                 type="text" 
                 value={formData.link_url}
                 onChange={e => handleChange('link_url', e.target.value)}
-                placeholder="e.g. /shop or /shop?category=Silk"
+                placeholder="e.g. /shop or /shop?category=Plants"
                 className="w-full px-4 py-2.5 rounded-xl border border-[#D1D5DB] focus:outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] font-mono text-sm transition-all bg-white"
               />
             </div>

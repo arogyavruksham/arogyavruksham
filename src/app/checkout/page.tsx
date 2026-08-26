@@ -268,7 +268,7 @@ export default function CheckoutPage() {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <button onClick={() => router.back()}><ChevronLeft className="w-6 h-6 text-gray-800" /></button>
-            <img src="/logo.png" alt="Arogyavruksham Silks" className="max-h-24 max-w-[280px] scale-125 origin-left object-contain py-1" />
+            <img src="/logo.png" alt="Arogyavruksham" className="max-h-24 max-w-[280px] scale-125 origin-left object-contain py-1" />
           </div>
           <div className="flex items-center gap-1.5 text-gray-500 text-xs font-medium">
             <Lock className="w-3.5 h-3.5" /> Secure Checkout

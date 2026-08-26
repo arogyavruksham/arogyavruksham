@@ -31,7 +31,7 @@ export function AllProductsGrid() {
     <section className="bg-[#fcfafc] py-16 border-t border-gray-100">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
         <h2 className="font-serif text-3xl md:text-5xl font-medium text-gray-900 tracking-normal mb-4">OUR COLLECTION</h2>
-        <p className="text-gray-500 font-sans text-sm md:text-base max-w-2xl mx-auto">Explore our finest selection of handwoven silk, soft cottons, and elegant georgettes.</p>
+        <p className="text-gray-500 font-sans text-sm md:text-base max-w-2xl mx-auto">Explore our finest selection of medicinal plants, rare herbs, and organic wellness products.</p>
       </div>
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

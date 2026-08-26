@@ -5,7 +5,7 @@ export default function PrivacyPage() {
         <h1>Privacy Policy</h1>
         <p>Last updated: {new Date().toLocaleDateString()}</p>
         
-        <p>Arogyavruksham Silks ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how your personal information is collected, used, and disclosed by Arogyavruksham Silks.</p>
+        <p>Arogyavruksham ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how your personal information is collected, used, and disclosed by Arogyavruksham.</p>
         
         <h2>1. Information We Collect</h2>
         <p>We collect information from you when you visit our website, register on our site, place an order, subscribe to our newsletter, respond to a survey, or fill out a form.</p>

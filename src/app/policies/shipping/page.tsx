@@ -21,7 +21,7 @@ export default function ShippingPage() {
         <p>You will receive a Shipment Confirmation email once your order has shipped containing your tracking number(s). The tracking number will be active within 24 hours.</p>
         
         <h2>4. Customs, Duties and Taxes</h2>
-        <p>Arogyavruksham Silks is not responsible for any customs and taxes applied to your order. All fees imposed during or after shipping are the responsibility of the customer (tariffs, taxes, etc.).</p>
+        <p>Arogyavruksham is not responsible for any customs and taxes applied to your order. All fees imposed during or after shipping are the responsibility of the customer (tariffs, taxes, etc.).</p>
         
         <h2>5. Damages</h2>
         <p>If you received your order damaged, please contact us immediately so we can file a claim with the shipment carrier. Please save all packaging materials and damaged goods before filing a claim.</p>

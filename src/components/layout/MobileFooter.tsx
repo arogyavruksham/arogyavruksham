@@ -86,7 +86,7 @@ export function MobileFooter() {
             <h4 className="text-[10px] font-bold text-[#1A1A1A] mb-3 font-serif">Shop</h4>
             <ul className="space-y-2.5">
               {[
-                { name: 'Pure Silk', link: '/shop?category=Silk' },
+                { name: 'Pure Plants', link: '/shop?category=Plants' },
                 { name: 'Banarasi Collection', link: '/shop?category=Banarasi' },
                 { name: 'Bridal Wear', link: '/shop?category=Bridal' },
                 { name: 'Georgette Plants', link: '/shop?category=Georgette' },
@@ -127,7 +127,7 @@ export function MobileFooter() {
             </div>
             <h4 className="text-[10px] font-bold text-[#1A1A1A] mb-3 font-serif">Support</h4>
             <ul className="space-y-2.5">
-              {['Help Center', 'Contact Us', 'Arogyavruksham Silks Guarantee', 'FAQ', 'Size Guide', 'Track Your Order'].map(item => (
+              {['Help Center', 'Contact Us', 'Arogyavruksham Guarantee', 'FAQ', 'Size Guide', 'Track Your Order'].map(item => (
                 <li key={item}>
                   <Link href={item === 'Contact Us' ? '/contact' : '#'} className="flex items-center justify-between text-[8px] text-gray-500 hover:text-[#1A73E8]">
                     {item} <ChevronRight className="w-2.5 h-2.5 text-gray-300" />
@@ -163,7 +163,7 @@ export function MobileFooter() {
               </div>
               <div className="flex items-center gap-2 text-[#1A73E8]">
                 <Mail className="w-3.5 h-3.5" />
-                <span className="text-[9px] text-gray-600">support@arogyavrukshamsilks.com</span>
+                <span className="text-[9px] text-gray-600">support@arogyavruksham.com</span>
               </div>
               <div className="flex items-center gap-2 text-[#1A73E8]">
                 <Clock className="w-3.5 h-3.5" />
@@ -209,9 +209,9 @@ export function MobileFooter() {
               <circle cx="17" cy="11" r="2"/>
             </svg>
           </div>
-          <h2 className="text-[14px] font-bold text-[#1A1A1A] font-serif mb-1">Arogyavruksham Silks</h2>
+          <h2 className="text-[14px] font-bold text-[#1A1A1A] font-serif mb-1">Arogyavruksham</h2>
           <p className="text-[9px] text-gray-500 mb-3">Timeless Weaves. Trusted by Generations.</p>
-          <p className="text-[8px] text-gray-400 mb-3">&copy; {new Date().getFullYear()} Arogyavruksham Silks. All Rights Reserved.</p>
+          <p className="text-[8px] text-gray-400 mb-3">&copy; {new Date().getFullYear()} Arogyavruksham. All Rights Reserved.</p>
           
           <div className="flex justify-center items-center gap-2 text-[8px] text-gray-400">
             <Link href="/policies/privacy" className="hover:text-gray-600">Privacy Policy</Link>

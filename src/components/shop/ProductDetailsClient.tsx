@@ -220,7 +220,7 @@ export function ProductDetailsClient({ product, children }: { product: any, chil
                 {product.title}
               </h1>
               <p className="text-xs text-gray-500 italic">
-                by Arogyavruksham Silks
+                by Arogyavruksham
               </p>
             </div>
             <div className="flex items-center gap-2 mt-1">
@@ -323,7 +323,7 @@ export function ProductDetailsClient({ product, children }: { product: any, chil
             <div className="w-full h-px bg-gray-200 mb-6"></div>
             
             <p className="font-sans text-gray-600 leading-relaxed mb-8 text-lg">
-              {product.description || 'Inspired by peacock feathers, this rich green and blue dual-tone silk plant is a masterpiece of weaving.'}
+              {product.description || 'Inspired by peacock feathers, this rich green and blue dual-tone plant is a masterpiece of weaving.'}
             </p>
             
             {/* Quantity Selector */}

@@ -8,7 +8,7 @@ export type StoreSettings = {
 
 export const DEFAULT_STORE_SETTINGS: StoreSettings = {
   storeName: 'Arogyavruksham',
-  supportEmail: 'support@arogyavrukshamsilks.com',
+  supportEmail: 'support@arogyavruksham.com',
   supportPhone: '+91 98765 43210',
   monthlyTarget: 145000,
   lowStockThreshold: 10,

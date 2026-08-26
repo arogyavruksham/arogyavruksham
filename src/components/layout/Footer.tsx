@@ -60,7 +60,7 @@ export function Footer() {
               
               <div className="text-[13px] text-gray-600 space-y-1">
                 <p>+918000027143</p>
-                <p>Arogyavruksham.silks@gmail.com</p>
+                <p>arogyavruksham@gmail.com</p>
               </div>
 
               <div className="flex gap-3 pt-2">
@@ -85,7 +85,7 @@ export function Footer() {
               <ul className="space-y-4 text-[13px] text-gray-600">
                 <li><Link href="/" className="hover:text-black transition-colors">HOME</Link></li>
                 <li><Link href="/shop" className="hover:text-black transition-colors">NEW ARRIVAL</Link></li>
-                <li><Link href="/shop?category=Silk" className="hover:text-black transition-colors">PATOLA PLANT</Link></li>
+                <li><Link href="/shop?category=Plants" className="hover:text-black transition-colors">PATOLA PLANT</Link></li>
                 <li><Link href="/shop?category=Dupatta" className="hover:text-black transition-colors">PATOLA DUPATTA</Link></li>
                 <li><Link href="#" className="hover:text-black transition-colors">For Wholesale</Link></li>
               </ul>
@@ -123,7 +123,7 @@ export function Footer() {
           {/* Footer Bottom */}
           <div className="pt-8 border-t border-gray-200 flex flex-col md:flex-row items-center justify-between relative">
             <p className="text-[13px] text-gray-600">
-              &copy; {new Date().getFullYear()} Arogyavruksham Silks. All rights reserved.
+              &copy; {new Date().getFullYear()} Arogyavruksham. All rights reserved.
             </p>
             
             <button 

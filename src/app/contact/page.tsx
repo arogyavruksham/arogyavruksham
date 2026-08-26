@@ -8,16 +8,16 @@ export default function ContactPage() {
           <p>We would love to hear from you! Please reach out to us using the information below:</p>
           
           <div className="mt-8 space-y-4">
-            <h2 className="text-xl font-bold text-gray-900">Arogyavruksham Silks</h2>
+            <h2 className="text-xl font-bold text-gray-900">Arogyavruksham</h2>
             
             <div>
               <h3 className="font-bold text-gray-900">Operating Address</h3>
-              <p>Arogyavruksham Silks, Hyderabad, Telangana, India - 500001</p>
+              <p>Arogyavruksham, Hyderabad, Telangana, India - 500001</p>
             </div>
             
             <div>
               <h3 className="font-bold text-gray-900">Email Address</h3>
-              <p>support@arogyavrukshamsilks.com</p>
+              <p>support@arogyavruksham.com</p>
             </div>
             
             <div>

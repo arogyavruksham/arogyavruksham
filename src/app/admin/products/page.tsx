@@ -31,7 +31,7 @@ export default function AdminProductsPage() {
   const [price, setPrice] = useState('')
   const [actualPrice, setActualPrice] = useState('')
   const [originalPrice, setOriginalPrice] = useState('')
-  const [category, setCategory] = useState('Silk')
+  const [category, setCategory] = useState('Plants')
   const [stockCount, setStockCount] = useState('10')
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
@@ -89,7 +89,7 @@ export default function AdminProductsPage() {
       }
 
       // 2. Upsert Product
-      const finalCategory = DB_ALLOWED_CATEGORIES.includes(category) ? category : 'Silk'
+      const finalCategory = DB_ALLOWED_CATEGORIES.includes(category) ? category : 'Plants'
       const finalDescription = DB_ALLOWED_CATEGORIES.includes(category) ? description : `[CAT:${category}]\n${description || ''}`
 
       if (editingId) {
@@ -163,7 +163,7 @@ export default function AdminProductsPage() {
     setPrice('')
     setActualPrice('')
     setOriginalPrice('')
-    setCategory('Silk')
+    setCategory('Plants')
     setStockCount('10')
     setImageFile(null)
     setImagePreview(null)
