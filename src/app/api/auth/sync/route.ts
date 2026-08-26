@@ -51,7 +51,7 @@ export async function POST(request: Request) {
       const loginEmail = authUser?.user?.email || existingUser.email
 
       await supabaseAdmin.auth.admin.updateUserById(existingUser.id, { password, phone: dbPhoneVariations.find(p => p.startsWith('+')) || phone })
-      return NextResponse.json({ success: true, email: loginEmail, password })
+      return NextResponse.json({ success: true, email: loginEmail, phone: dbPhoneVariations.find(p => p.startsWith('+')) || phone, password })
     } else {
       // Phone not found
       if (!name) {
