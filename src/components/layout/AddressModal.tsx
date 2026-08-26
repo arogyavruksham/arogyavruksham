@@ -213,6 +213,7 @@ export function AddressModal({ isOpen, onClose }: AddressModalProps) {
                       if (val.length <= 10) setNewAddress({...newAddress, phone: val})
                     }} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-black focus:outline-none focus:border-[#1A73E8]" />
                   </div>
+                </div>
                 <div className="flex gap-4">
                   <div className="flex-1">
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Pin Code</label>
