@@ -102,13 +102,15 @@ export default function LoginPage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to complete phone authentication')
       
-      const { error: signInError } = await supabase.auth.signInWithPassword({
+      const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password
       })
       if (signInError) throw signInError
       
-      login({ name: name || data.email.split('@')[0] || 'Member', email: data.email, phone: formattedPhone, role: 'user' })
+      const { data: userData } = await supabase.from('users').select('role, full_name').eq('id', authData.user.id).maybeSingle()
+      
+      login({ name: userData?.full_name || name || data.email.split('@')[0] || 'Member', email: data.email, phone: formattedPhone, role: userData?.role || 'user' })
       setSuccessMsg('Verification successful! Taking you to sanctuary...')
       setTimeout(() => router.push('/'), 1200)
     } catch (err: unknown) {
@@ -200,9 +202,9 @@ export default function LoginPage() {
           await handleSendEmailOtp()
           return
         }
-        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+        const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({ email, password: password as string })
         if (signInError) throw signInError
-        const { data: userData } = await supabase.from('users').select('role, full_name, phone').eq('email', email).maybeSingle()
+        const { data: userData } = await supabase.from('users').select('role, full_name, phone').eq('id', authData.user.id).maybeSingle()
         login({ 
           name: userData?.full_name || email.split('@')[0] || 'Member', 
           email: email, 

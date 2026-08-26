@@ -46,10 +46,12 @@ export async function POST(request: Request) {
       .maybeSingle()
 
     if (existingUser) {
-      // User exists. Update their password to ensure frontend can log in.
-      // This is safe because only this verified API route sets this deterministic password.
+      // Fetch the actual email from auth.users to avoid mismatches
+      const { data: authUser } = await supabaseAdmin.auth.admin.getUserById(existingUser.id)
+      const loginEmail = authUser?.user?.email || existingUser.email
+
       await supabaseAdmin.auth.admin.updateUserById(existingUser.id, { password, phone: dbPhoneVariations.find(p => p.startsWith('+')) || phone })
-      return NextResponse.json({ success: true, email: existingUser.email, password })
+      return NextResponse.json({ success: true, email: loginEmail, password })
     } else {
       // Phone not found
       if (!name) {
