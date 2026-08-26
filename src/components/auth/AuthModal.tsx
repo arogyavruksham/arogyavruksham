@@ -68,6 +68,7 @@ export function AuthModal() {
   // GetOTP Phone Sender
   const handleSendPhoneOtp = async (customPhone?: string) => {
     setError('')
+    setSuccessMsg('')
     setLoading(true)
     try {
       const targetPhone = customPhone || phone
@@ -99,6 +100,7 @@ export function AuthModal() {
   // Phone Signup Completion Helper
   const handleCompletePhoneSignup = async (finalName: string) => {
     setError('')
+    setSuccessMsg('')
     setLoading(true)
     try {
       const syncPhone = phone.startsWith('+') ? phone : `+91${phone}`
@@ -132,6 +134,7 @@ export function AuthModal() {
   const handleVerifyPhoneOtp = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setSuccessMsg('')
     setLoading(true)
     try {
       if (!referenceId) throw new Error('Please request a new OTP.')
@@ -170,6 +173,7 @@ export function AuthModal() {
       return
     }
     setError('')
+    setSuccessMsg('')
     setLoading(true)
     try {
       const res = await fetch('/api/auth/send-otp', {
@@ -195,6 +199,7 @@ export function AuthModal() {
   const handleVerifyEmailOtp = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setSuccessMsg('')
     setLoading(true)
     try {
       const res = await fetch('/api/auth/verify-otp', {
