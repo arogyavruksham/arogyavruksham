@@ -30,17 +30,25 @@ export async function POST(request: Request) {
 
     const password = getSecretPassword(phone)
 
+    const dbPhoneVariations = [phone]
+    if (!phone.startsWith('+')) {
+      dbPhoneVariations.push(`+${phone}`)
+    } else {
+      dbPhoneVariations.push(phone.substring(1))
+    }
+
     // Check if phone user exists in public.users
     const { data: existingUser } = await supabaseAdmin
       .from('users')
       .select('id, email')
-      .eq('phone', phone)
-      .single()
+      .in('phone', dbPhoneVariations)
+      .limit(1)
+      .maybeSingle()
 
     if (existingUser) {
       // User exists. Update their password to ensure frontend can log in.
       // This is safe because only this verified API route sets this deterministic password.
-      await supabaseAdmin.auth.admin.updateUserById(existingUser.id, { password })
+      await supabaseAdmin.auth.admin.updateUserById(existingUser.id, { password, phone: dbPhoneVariations.find(p => p.startsWith('+')) || phone })
       return NextResponse.json({ success: true, email: existingUser.email, password })
     } else {
       // Phone not found
