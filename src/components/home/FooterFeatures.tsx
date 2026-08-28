@@ -1,102 +1,93 @@
 'use client'
 
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
-import { Truck, Headphones, ShieldCheck } from 'lucide-react'
-import { useHomepageImages } from '@/lib/homepageImages'
-import { NewsletterSubscribeForm } from '@/components/admin/NewsletterSubscribeForm'
+import Link from 'next/link'
 
 export function FooterFeatures() {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-60px' })
-  const images = useHomepageImages()
-
-  const featureVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1, y: 0,
-      transition: { delay: i * 0.1, duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] as const }
-    })
-  }
-
   return (
-    <>
-      {/* ─── MOBILE VIEW (Feature Cards — PRESERVED) ─── */}
-      <section className="block md:hidden bg-white py-12 px-6">
-        <div className="flex flex-col gap-4">
-
-          <div className="bg-[#FAFAF7] rounded-[24px] p-6 border border-[#F4F6F4] flex items-center gap-5 shadow-sm">
-            <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center text-[#1E4631] shrink-0 shadow-sm">
-              <Truck className="w-6 h-6 stroke-[1.5]" />
-            </div>
-            <div>
-              <h4 className="font-serif font-medium text-[18px] text-[#1a1a1a] leading-tight mb-1">Free Shipping</h4>
-              <p className="text-gray-500 text-[13px]">On orders over ₹1999</p>
-            </div>
-          </div>
-
-          <div className="bg-[#FAFAF7] rounded-[24px] p-6 border border-[#F4F6F4] flex items-center gap-5 shadow-sm">
-            <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center text-[#1E4631] shrink-0 shadow-sm">
-              <Headphones className="w-6 h-6 stroke-[1.5]" />
-            </div>
-            <div>
-              <h4 className="font-serif font-medium text-[18px] text-[#1a1a1a] leading-tight mb-1">24/7 Support</h4>
-              <p className="text-gray-500 text-[13px]">Expert plant care advice</p>
-            </div>
-          </div>
-
-          <div className="bg-[#FAFAF7] rounded-[24px] p-6 border border-[#F4F6F4] flex items-center gap-5 shadow-sm">
-            <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center text-[#1E4631] shrink-0 shadow-sm">
-              <ShieldCheck className="w-6 h-6 stroke-[1.5]" />
-            </div>
-            <div>
-              <h4 className="font-serif font-medium text-[18px] text-[#1a1a1a] leading-tight mb-1">Guarantee</h4>
-              <p className="text-gray-500 text-[13px]">30-day healthy plant promise</p>
-            </div>
-          </div>
-
+    <footer className="w-full bg-white pt-10">
+      <div className="max-w-[1440px] mx-auto px-6 lg:px-12 xl:px-16">
+        
+        {/* Newsletter Banner */}
+        <div className="w-full bg-[#f8f9f8] py-12 px-10 md:px-20 flex flex-col md:flex-row items-center justify-between gap-8 mb-20">
+          <h2 className="font-sans text-[32px] font-bold text-[#166534] whitespace-nowrap">
+            Sign Up To Our Newsletter
+          </h2>
+          
+          <form className="flex w-full max-w-[500px] h-[50px] bg-white border border-gray-200">
+            <input 
+              type="email" 
+              placeholder="Enter Your Email Address"
+              className="flex-1 h-full px-5 outline-none text-[14px] text-gray-700 bg-transparent"
+              required
+            />
+            <button 
+              type="submit"
+              className="h-full px-8 bg-[#166534] text-white font-medium text-[14px] hover:bg-[#155a2d] transition-colors whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </form>
         </div>
-      </section>
 
-      {/* ─── DESKTOP VIEW — Newsletter Subscribe Banner ─── */}
-      <section className="hidden md:block py-20 bg-[#F5F5F0]" ref={ref}>
-        <div className="container mx-auto px-6 lg:px-12 max-w-[1440px]">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7 }}
-            className="relative flex items-center justify-center"
-          >
-            {/* Decorative left image */}
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[140px] h-[140px] rounded-[20px] overflow-hidden hidden lg:block">
-              <img
-                src={images.newsletter_leaf}
-                alt="Plant decoration"
-                className="w-full h-full object-cover"
+        {/* Footer Links */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 lg:gap-16 mb-20">
+          {/* Col 1 */}
+          <div className="flex flex-col gap-6">
+            <Link href="/" className="flex items-center gap-3">
+              <img 
+                src="/logo.png" 
+                alt="Arogyavruksham Icon" 
+                className="w-10 h-10 object-contain"
               />
-            </div>
-
-            {/* Center content */}
-            <div className="text-center max-w-xl mx-auto relative z-10">
-              <h2 className="font-serif text-[36px] lg:text-[44px] font-medium text-[#1a1a1a] leading-[1.15] mb-8">
-                Subscribe Newsletter &amp; Get Plant News
-              </h2>
-              <div className="max-w-md mx-auto">
-                <NewsletterSubscribeForm source="homepage_banner" />
+              <div className="flex flex-col justify-center leading-tight">
+                <span className="font-bold text-[19px] text-gray-900 tracking-tight">Arogya</span>
+                <span className="font-bold text-[19px] text-gray-900 tracking-tight -mt-1.5">vruksham</span>
               </div>
-            </div>
+            </Link>
+            <p className="text-[13px] text-gray-500 leading-relaxed font-sans">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed purus dolor, mattis et blandit vitae, luctus id enim. Fusce id ultrices tortor. Sed gravida ligula eu fermentum venenatis. Nunc tincidunt ligula sed volutpat placerat. Cras ultrices elementum efficitur. Curabitur ullamcorper neque condimentum, eleifend lectus.
+            </p>
+          </div>
 
-            {/* Decorative right image */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[140px] h-[140px] rounded-[20px] overflow-hidden hidden lg:block">
-              <img
-                src={images.newsletter_person}
-                alt="Person with plant"
-                className="w-full h-full object-cover"
-              />
+          {/* Col 2 */}
+          <div className="flex flex-col gap-5 pt-2">
+            <h3 className="font-bold text-[16px] text-gray-900">Product</h3>
+            <div className="flex flex-col gap-4 text-[14px] text-gray-500">
+              <Link href="#" className="hover:text-[#166534]">New Arrivals</Link>
+              <Link href="#" className="hover:text-[#166534]">Best Selling</Link>
+              <Link href="#" className="hover:text-[#166534]">Home Decor</Link>
+              <Link href="#" className="hover:text-[#166534]">Kitchen Set</Link>
             </div>
-          </motion.div>
+          </div>
+
+          {/* Col 3 */}
+          <div className="flex flex-col gap-5 pt-2">
+            <h3 className="font-bold text-[16px] text-gray-900">Services</h3>
+            <div className="flex flex-col gap-4 text-[14px] text-gray-500">
+              <Link href="#" className="hover:text-[#166534]">Catalog</Link>
+              <Link href="#" className="hover:text-[#166534]">Blog</Link>
+              <Link href="#" className="hover:text-[#166534]">FaQ</Link>
+              <Link href="#" className="hover:text-[#166534]">Pricing</Link>
+            </div>
+          </div>
+
+          {/* Col 4 */}
+          <div className="flex flex-col gap-5 pt-2">
+            <h3 className="font-bold text-[16px] text-gray-900">Follow Us</h3>
+            <div className="flex flex-col gap-4 text-[14px] text-gray-500">
+              <Link href="#" className="hover:text-[#166534]">Facebook</Link>
+              <Link href="#" className="hover:text-[#166534]">Instagram</Link>
+              <Link href="#" className="hover:text-[#166534]">Twitter</Link>
+            </div>
+          </div>
         </div>
-      </section>
-    </>
+
+        {/* Copyright */}
+        <div className="w-full text-center py-6 text-[12px] text-gray-400 font-medium">
+          Copyright © 2023 All Right Reserved
+        </div>
+        
+      </div>
+    </footer>
   )
 }

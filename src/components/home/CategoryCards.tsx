@@ -1,75 +1,75 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
 import { useHomepageImages } from '@/lib/homepageImages'
 
-const categories = [
-  {
-    imageKey: 'category_1',
-    title: 'Indoor House Plants',
-    link: '/shop?category=Indoor%20Plants',
-  },
-  {
-    imageKey: 'category_2',
-    title: 'Low Maintenance Gardening',
-    link: '/shop?category=Succulents',
-  },
-  {
-    imageKey: 'category_3',
-    title: 'Air Purifying House Plants',
-    link: '/shop?category=Air%20Purifying',
-  },
-]
-
-const cardVariant = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.15, duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] as const },
-  }),
-}
-
 export function CategoryCards() {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
   const images = useHomepageImages()
 
   return (
-    <section className="hidden md:block py-20 bg-white" ref={ref}>
-      <div className="container mx-auto px-6 lg:px-12 max-w-[1440px]">
-        <div className="grid grid-cols-3 gap-6 lg:gap-8">
-          {categories.map((cat, i) => (
-            <motion.div
-              key={cat.imageKey}
-              custom={i}
-              variants={cardVariant}
-              initial="hidden"
-              animate={inView ? 'visible' : 'hidden'}
+    <section className="py-20 bg-white">
+      <div className="max-w-[1440px] mx-auto px-6 lg:px-12 xl:px-16">
+        
+        {/* Container for the Bento-style Grid */}
+        <div className="flex flex-col md:flex-row gap-6 md:gap-8 h-auto md:h-[600px]">
+          
+          {/* Left Column - 2 Stacked Images */}
+          <div className="flex flex-col w-full md:w-1/2 gap-6 md:gap-8 h-[600px] md:h-full">
+            
+            {/* Top Left */}
+            <Link 
+              href="/shop?category=Indoor%20Plants"
+              className="relative w-full h-[calc(50%-12px)] md:h-[calc(50%-16px)] overflow-hidden bg-gray-100 group block"
             >
-              <Link
-                href={cat.link}
-                className="group relative block h-[340px] rounded-[24px] overflow-hidden"
-              >
-                <img
-                  src={images[cat.imageKey]}
-                  alt={cat.title}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <h3 className="font-serif text-[24px] font-medium text-white leading-tight">
-                    {cat.title}
-                  </h3>
-                  <div className="mt-3 flex items-center gap-2 text-white/80 text-sm font-semibold group-hover:text-white group-hover:translate-x-1 transition-all duration-300">
-                    Shop Now <span>→</span>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
+              <img 
+                src={images.category_1 || "https://placehold.co/800x400/eeeeee/cccccc?text=Indoor+House+Plants"}
+                alt="Indoor House Plants"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute top-1/2 left-8 md:left-12 -translate-y-1/2 bg-white/85 backdrop-blur-sm py-4 px-6 max-w-[200px]">
+                <h3 className="font-sans text-[18px] font-bold text-gray-900 leading-snug">
+                  Indoor<br/>House Plants
+                </h3>
+              </div>
+            </Link>
+
+            {/* Bottom Left */}
+            <Link 
+              href="/shop?category=Succulents"
+              className="relative w-full h-[calc(50%-12px)] md:h-[calc(50%-16px)] overflow-hidden bg-gray-100 group block"
+            >
+              <img 
+                src={images.category_2 || "https://placehold.co/800x400/eeeeee/cccccc?text=Low+Maintenance"}
+                alt="Low Maintenance Gardening"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute top-1/2 left-8 md:left-12 -translate-y-1/2 bg-white/85 backdrop-blur-sm py-4 px-6 max-w-[220px]">
+                <h3 className="font-sans text-[18px] font-bold text-gray-900 leading-snug">
+                  Low Maintenance<br/>Gardening
+                </h3>
+              </div>
+            </Link>
+          </div>
+
+          {/* Right Column - 1 Tall Image */}
+          <div className="w-full md:w-1/2 h-[400px] md:h-full">
+            <Link 
+              href="/shop?category=Air%20Purifying"
+              className="relative w-full h-full overflow-hidden bg-gray-100 group block"
+            >
+              <img 
+                src={images.category_3 || "https://placehold.co/800x800/eeeeee/cccccc?text=Air+Purifying"}
+                alt="Air Purifying House Plants"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute bottom-16 md:bottom-24 left-1/2 -translate-x-1/2 bg-white/85 backdrop-blur-sm py-4 px-6 text-center min-w-[240px]">
+                <h3 className="font-sans text-[18px] font-bold text-gray-900 leading-snug">
+                  Air Purifying House<br/>Plants
+                </h3>
+              </div>
+            </Link>
+          </div>
+
         </div>
       </div>
     </section>
