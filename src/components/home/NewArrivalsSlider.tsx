@@ -41,7 +41,7 @@ function FeaturedProductCard({ product, index }: { product: any; index: number }
         </div>
 
         {/* Image Box */}
-        <Link href={`/shop/${product.id}`} className="relative bg-[#FAFAF7] rounded-2xl aspect-[4/5] flex items-center justify-center p-6 mb-5 overflow-hidden transition-all duration-300">
+        <Link href={`/shop/${product.id}`} className="relative bg-[#FAFAF7] rounded-2xl aspect-square flex items-center justify-center p-6 mb-5 overflow-hidden transition-all duration-300">
           <motion.img 
             src={product.image_url} 
             alt={product.title}

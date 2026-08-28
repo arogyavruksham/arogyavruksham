@@ -21,7 +21,7 @@ function FeaturedCard({ product, index }: { product: any; index: number }) {
       {/* Image Container */}
       <Link
         href={`/shop/${product?.id || '#'}`}
-        className="relative bg-[#f2f2f2] aspect-[4/5] flex items-center justify-center mb-4 overflow-hidden"
+        className="relative bg-[#f2f2f2] aspect-square flex items-center justify-center mb-4 overflow-hidden"
       >
         <img
           src={product?.image_url || `https://placehold.co/400x500/eeeeee/cccccc?text=${encodeURIComponent(title)}`}

@@ -174,7 +174,7 @@ export function ProductDetailsClient({ product, children }: { product: any, chil
 
       {/* MOBILE LAYOUT (md:hidden) */}
       <div className="md:hidden flex flex-col w-full">
-        <div className="relative w-full aspect-[4/5] overflow-hidden bg-white">
+        <div className="relative w-full aspect-square overflow-hidden bg-white">
           {/* MOBILE TOP NAV INSIDE IMAGE */}
           <div className="absolute top-4 left-0 right-0 z-20 flex items-center justify-between p-4 px-6 pointer-events-none">
             <button 
@@ -287,7 +287,7 @@ export function ProductDetailsClient({ product, children }: { product: any, chil
       <div className="hidden md:block container mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-12">
         <div className="grid grid-cols-2 gap-12 lg:gap-24">
           {/* Image Gallery */}
-          <div className="aspect-[3/4] rounded-lg overflow-hidden bg-gray-100 w-full relative group">
+          <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 w-full relative group">
             <img 
               src={product.image_url || fallbackImage} 
               alt={product.title}

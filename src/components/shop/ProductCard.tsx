@@ -24,7 +24,7 @@ export function ProductCard({ id, title, price, original_price, category, imageU
         whileHover={{ y: -5 }}
         className="group bg-white overflow-hidden flex flex-col md:hidden"
       >
-        <div className="relative aspect-[4/5] overflow-hidden bg-gray-50 mb-3 rounded-2xl flex items-center justify-center p-1">
+        <div className="relative aspect-square overflow-hidden bg-gray-50 mb-3 rounded-2xl flex items-center justify-center p-1">
           {/* Heart Icon */}
           <button className="absolute top-3 right-3 p-1.5 bg-white rounded-full shadow-sm text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors z-10">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
