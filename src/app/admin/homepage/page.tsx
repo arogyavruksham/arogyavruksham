@@ -17,9 +17,14 @@ interface HomepageImage {
 
 const IMAGE_SECTIONS = [
   {
-    section: 'Hero Mosaic',
-    description: 'The 5 images in the hero section grid (desktop only)',
-    keys: ['hero_grid_1', 'hero_grid_2', 'hero_grid_3', 'hero_grid_4', 'hero_grid_5'],
+    section: 'Hero Section Banners',
+    description: 'The 3 images in the top hero section (1 vertical on left, 2 stacked on right)',
+    keys: ['hero_grid_1', 'hero_grid_2', 'hero_grid_3'],
+    labels: {
+      hero_grid_1: 'Vertical Image (Left)',
+      hero_grid_2: 'Top Image (Right Stack)',
+      hero_grid_3: 'Bottom Image (Right Stack)'
+    }
   },
   {
     section: 'Category Cards',
@@ -379,7 +384,7 @@ export default function HomepageImagesPage() {
                       {/* Controls */}
                       <div className="p-4">
                         <p className="text-xs font-mono text-gray-400 mb-2">
-                          {key}
+                          {(section as any).labels?.[key] || key}
                         </p>
                         <input
                           type="text"

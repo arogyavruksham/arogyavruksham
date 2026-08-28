@@ -45,7 +45,7 @@ export function DualHeroBanners() {
           {/* Left tall image */}
           <div className="w-1/2 h-full">
             <img 
-              src="https://placehold.co/400x800/eeeeee/cccccc?text=Plant+Vertical"
+              src={heroImages.hero_grid_1 || "https://placehold.co/400x800/eeeeee/cccccc?text=Plant+Vertical"}
               alt="Vertical Plant"
               className="w-full h-full object-cover"
             />
@@ -54,14 +54,14 @@ export function DualHeroBanners() {
           <div className="w-1/2 h-full flex flex-col gap-5">
             <div className="h-[calc(50%-10px)] w-full">
               <img 
-                src="https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Top"
+                src={heroImages.hero_grid_2 || "https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Top"}
                 alt="Plant Top"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="h-[calc(50%-10px)] w-full">
               <img 
-                src="https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Bottom"
+                src={heroImages.hero_grid_3 || "https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Bottom"}
                 alt="Plant Bottom"
                 className="w-full h-full object-cover"
               />
