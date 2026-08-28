@@ -71,12 +71,9 @@ export function Navbar() {
             <img 
               src="/logo.png" 
               alt="Arogyavruksham Icon" 
-              className="w-10 h-10 object-contain"
+              className="w-12 h-12 object-contain"
             />
-            <div className="flex flex-col justify-center leading-tight">
-              <span className="font-bold text-[19px] text-gray-900 tracking-tight">Arogya</span>
-              <span className="font-bold text-[19px] text-gray-900 tracking-tight -mt-1.5">vruksham</span>
-            </div>
+            <span className="font-bold text-[22px] text-gray-900 tracking-tight">Arogyavruksham</span>
           </Link>
 
           {/* Center: Links (Desktop) */}
