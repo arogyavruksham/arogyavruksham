@@ -1,160 +1,110 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, AnimatePresence, useInView } from 'framer-motion'
-import { useRef, useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, Leaf } from 'lucide-react'
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
+import { Check, Leaf } from 'lucide-react'
 
-const SLIDES = [
-  {
-    id: 1,
-    badge: "50%",
-    badgeLabel: "OFF",
-    badgeColor: "bg-[#D27D56] text-white",
-    subtitle: "Trending Collection",
-    title: "Elegant & Tolerant",
-    description: "We are only beginning to understand the impact indoor air quality has on our mental health and work performance, but so far, the introduction of indoor plants to improve indoor air and reduce pollution points to positive outcomes.\n\nIt's true when we say plants make people happy.",
-    image: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 2,
-    badge: "35%",
-    badgeLabel: "SALE",
-    badgeColor: "bg-[#1E4631] text-white",
-    subtitle: "Indoor Sanctuary",
-    title: "Vibrant & Tropical",
-    description: "Infuse your home and workspace with deep green calmness and active tropical air purification. Thriving effortlessly with minimal irrigation, these magnificent foliage specimens promote mindfulness and productivity.\n\nTransform your everyday room into an authentic living sanctuary.",
-    image: "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 3,
-    badge: "New",
-    badgeLabel: "DROP",
-    badgeColor: "bg-white text-[#1E4631] shadow-xl",
-    subtitle: "Desert Minimalism",
-    title: "Architectural Flora",
-    description: "Featuring bold architectural geometry and virtually zero maintenance irrigation demands, our sculptural desert botanicals represent modern interior serenity at its absolute peak.\n\nCustom crafted for modern offices, living rooms, and sunlit windowsills.",
-    image: "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?auto=format&fit=crop&q=80&w=800",
-  }
+const benefits = [
+  'Improve air quality by removing toxins and increasing oxygen levels naturally.',
+  'Reduce stress and anxiety — studies show indoor plants lower cortisol by up to 25%.',
+  'Boost productivity and creativity in your workspace with living greenery.',
 ]
 
 export function TrendingBanner() {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-100px' })
-  const [currentSlide, setCurrentSlide] = useState(0)
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % SLIDES.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [])
-
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length)
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % SLIDES.length)
-
-  const slide = SLIDES[currentSlide]
+  const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section className="py-20 md:py-32 bg-white overflow-hidden relative" ref={ref}>
-      {/* Decorative leaf background pattern */}
-      <div className="absolute top-0 right-0 opacity-[0.03] pointer-events-none w-1/2 h-full flex items-center justify-center">
-        <Leaf size={600} className="text-[#1E4631]" />
-      </div>
-
-      <div className="container mx-auto px-6 lg:px-12 max-w-[1440px]">
-        <div className="relative bg-[#FAFAF7] rounded-[40px] flex flex-col md:flex-row items-center h-auto min-h-[600px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] overflow-hidden border border-[#F4F6F4]">
-          
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`image-${slide.id}`}
-              initial={{ opacity: 0, scale: 0.95 }} 
-              animate={inView ? { opacity: 1, scale: 1 } : {}} 
-              exit={{ opacity: 0, scale: 1.05 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative z-10 w-full md:w-[50%] h-[400px] md:h-full flex items-center justify-center bg-[#F4F6F4]/50 p-12 shrink-0"
-            >
-              {/* Discount Badge */}
-              <div className={`absolute top-12 left-12 ${slide.badgeColor} rounded-full flex flex-col items-center justify-center w-24 h-24 shadow-lg z-20 transition-all duration-500 transform hover:scale-110 cursor-default`}>
-                <span className="font-serif text-3xl font-medium leading-none mb-1">{slide.badge}</span>
-                <span className="text-[10px] uppercase font-bold tracking-[0.2em] leading-none opacity-80">{slide.badgeLabel}</span>
-              </div>
-
-              <img 
-                src={slide.image} 
-                alt={slide.title}
-                className="w-full h-full object-cover rounded-3xl shadow-2xl"
-              />
-            </motion.div>
-          </AnimatePresence>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`text-${slide.id}`}
-              initial={{ opacity: 0, y: 30 }} 
-              animate={inView ? { opacity: 1, y: 0 } : {}} 
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
-              className="relative z-10 w-full md:w-[50%] p-10 md:p-16 lg:p-24 flex-1 flex flex-col justify-center"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <span className="w-10 h-[2px] bg-[#D27D56]"></span>
-                <p className="text-[#D27D56] font-bold text-[11px] uppercase tracking-[0.25em]">{slide.subtitle}</p>
-              </div>
-              
-              <h2 className="font-serif font-medium text-[42px] lg:text-[56px] text-[#1a1a1a] leading-[1.1] mb-8">
-                {slide.title}
-              </h2>
-              <p className="text-gray-600 text-[16px] leading-relaxed max-w-xl mb-12 whitespace-pre-line font-sans">
-                {slide.description}
-              </p>
-              <Link href="/shop" className="inline-flex items-center justify-center bg-[#1E4631] text-white text-[12px] font-bold tracking-[0.15em] uppercase px-10 py-4 rounded-full hover:bg-[#153424] transition-all duration-300 shadow-lg hover:shadow-xl w-fit group">
-                Shop Collection
-                <ArrowRight className="w-4 h-4 ml-3 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Navigation Arrows & Indicators */}
-          <div className="absolute bottom-8 right-8 z-30 flex flex-col md:flex-row md:items-center gap-6">
-            <div className="flex gap-2">
-              {SLIDES.map((s, idx) => (
-                <button 
-                  key={idx} 
-                  onClick={() => setCurrentSlide(idx)}
-                  aria-label={`Go to slide ${idx + 1}`}
-                  className={`h-2 transition-all duration-300 rounded-full ${currentSlide === idx ? 'bg-[#1E4631] w-8' : 'bg-gray-300 hover:bg-gray-400 w-2'}`}
-                />
-              ))}
-            </div>
-            <div className="flex gap-3">
-              <button 
-                onClick={prevSlide}
-                aria-label="Previous slide"
-                className="w-12 h-12 bg-white text-[#1E4631] rounded-full shadow-md flex items-center justify-center hover:bg-[#F4F6F4] active:scale-95 transition-all"
-              >
-                <ChevronLeft className="w-5 h-5 stroke-[2]" />
-              </button>
-              <button 
-                onClick={nextSlide}
-                aria-label="Next slide"
-                className="w-12 h-12 bg-white text-[#1E4631] rounded-full shadow-md flex items-center justify-center hover:bg-[#F4F6F4] active:scale-95 transition-all"
-              >
-                <ChevronRight className="w-5 h-5 stroke-[2]" />
-              </button>
-            </div>
-          </div>
-
+    <>
+      {/* ─── MOBILE VIEW (kept simple) ─── */}
+      <section className="block md:hidden bg-[#1E4631] py-12 px-6">
+        <div className="text-center mb-8">
+          <h2 className="font-serif text-[28px] font-medium text-white leading-tight mb-4">
+            The Benefits Of Indoor Plants
+          </h2>
+          <p className="text-white/70 text-sm leading-relaxed">
+            Discover why millions of people are bringing nature indoors.
+          </p>
         </div>
-      </div>
-    </section>
-  )
-}
+        <div className="space-y-4">
+          {benefits.map((b, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0 mt-0.5">
+                <Check className="w-3.5 h-3.5 text-white" />
+              </div>
+              <p className="text-white/80 text-[13px] leading-relaxed">{b}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-8 text-center">
+          <Link
+            href="/shop"
+            className="inline-flex items-center justify-center bg-white text-[#1E4631] font-semibold text-[11px] tracking-[0.15em] uppercase px-8 py-3.5 rounded-full"
+          >
+            Shop Now
+          </Link>
+        </div>
+      </section>
 
-function ArrowRight(props: any) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-    </svg>
+      {/* ─── DESKTOP VIEW — Benefits Banner ─── */}
+      <section className="hidden md:block py-0 bg-white overflow-hidden" ref={ref}>
+        <div className="container mx-auto px-6 lg:px-12 max-w-[1440px]">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease: 'easeOut' as const }}
+            className="relative bg-[#1E4631] rounded-[40px] flex items-center min-h-[400px] overflow-hidden"
+          >
+            {/* Decorative leaf */}
+            <div className="absolute top-0 right-0 opacity-[0.04] pointer-events-none">
+              <Leaf size={500} className="text-white" />
+            </div>
+
+            {/* Left: Heading */}
+            <div className="w-[45%] p-16 lg:p-20 relative z-10">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="w-10 h-[2px] bg-[#D27D56]"></span>
+                <span className="text-[#D27D56] text-[11px] font-bold tracking-[0.25em] uppercase">
+                  Why Plants?
+                </span>
+              </div>
+              <h2 className="font-serif text-[40px] lg:text-[52px] font-medium text-white leading-[1.1] mb-6">
+                The Benefits<br />Of Indoor Plants
+              </h2>
+              <Link
+                href="/shop"
+                className="inline-flex items-center justify-center bg-white text-[#1E4631] font-semibold text-[12px] tracking-[0.15em] uppercase px-8 py-4 rounded-full hover:bg-[#F4F6F4] transition-colors shadow-lg"
+              >
+                Start Shopping →
+              </Link>
+            </div>
+
+            {/* Right: Benefits List */}
+            <div className="w-[55%] p-16 lg:p-20 relative z-10">
+              <div className="space-y-8">
+                {benefits.map((benefit, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={inView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ delay: 0.3 + i * 0.15, duration: 0.6 }}
+                    className="flex items-start gap-5"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
+                      <Check className="w-5 h-5 text-[#D27D56]" />
+                    </div>
+                    <p className="text-white/80 text-[15px] leading-relaxed pt-2">
+                      {benefit}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+          </motion.div>
+        </div>
+      </section>
+    </>
   )
 }

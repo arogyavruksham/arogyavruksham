@@ -162,7 +162,7 @@ export function NewArrivalsAndDeals() {
                    activeTab === 'Office Plant' ? allProducts.filter(p => p.category?.toLowerCase().includes('office') || p.category?.toLowerCase().includes('succulent')) :
                    allProducts
                    
-  const displayProducts = filtered.slice(0, 6)
+  const displayProducts = filtered.slice(0, 8)
 
   const prevDeal = () => {
     const idx = (dealIndex - 1 + allProducts.length) % allProducts.length
@@ -197,92 +197,66 @@ export function NewArrivalsAndDeals() {
         )}
       </section>
 
-      {/* ─── DESKTOP VIEW ─── */}
-      <section ref={ref} className="hidden md:block py-24 bg-white overflow-hidden">
+      {/* ─── DESKTOP VIEW — Top Rating ─── */}
+      <section ref={ref} className="hidden md:block py-24 bg-[#FAFAF7] overflow-hidden">
         <div className="container mx-auto px-6 lg:px-12 max-w-[1440px]">
-          <div className="flex flex-col lg:flex-row gap-16">
+          {/* Header with Tabs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+            className="mb-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+          >
+            <h2 className="font-serif text-[40px] text-[#1a1a1a] font-medium leading-none">
+              Top Rating
+            </h2>
 
-            {/* Left: New Arrivals */}
-            <div className="flex-1">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}
-                className="mb-12 border-b border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between pb-4 gap-6">
-                <h2 className="font-serif text-[40px] text-[#1a1a1a] font-medium leading-none">New Arrivals</h2>
-                
-                {/* Tabs */}
-                <div className="flex gap-10 overflow-x-auto scrollbar-hide">
-                  {TABS.map((tab) => (
-                    <button key={tab} onClick={() => setActiveTab(tab)}
-                      className={`pb-4 text-[15px] font-semibold tracking-wide whitespace-nowrap shrink-0 border-b-[2px] transition-all duration-300 relative top-[17px] ${activeTab === tab ? 'border-[#1E4631] text-[#1E4631]' : 'border-transparent text-gray-400 hover:text-gray-700'}`}>
-                      {tab}
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-
-              {loading ? (
-                <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-[#1E4631]" /></div>
-              ) : displayProducts.length === 0 ? (
-                <div className="text-center py-20 text-gray-400 font-medium">No plants in this category yet.</div>
-              ) : (
-                <AnimatePresence mode="wait">
-                  <motion.div key={activeTab} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
-                    className="grid grid-cols-2 lg:grid-cols-3 gap-8">
-                    {displayProducts.map((product, i) => (
-                      <ProductMiniCard key={product.id} product={product} index={i} />
-                    ))}
-                  </motion.div>
-                </AnimatePresence>
-              )}
+            <div className="flex gap-8">
+              {TABS.map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`text-[14px] font-semibold tracking-wide whitespace-nowrap transition-all duration-300 pb-2 border-b-2 ${
+                    activeTab === tab
+                      ? 'border-[#1E4631] text-[#1E4631]'
+                      : 'border-transparent text-gray-400 hover:text-gray-700'
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
             </div>
+          </motion.div>
 
-            {/* Right: Deal of the Day */}
-            <div className="w-full lg:w-[480px] shrink-0">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, delay: 0.1 }}
-                className="flex items-center justify-between mb-12 border-b border-gray-200 pb-4">
-                <h2 className="font-serif text-[40px] text-[#1a1a1a] font-medium leading-none">Plant of the Day</h2>
-                <div className="flex gap-2">
-                  <button onClick={prevDeal} className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-[#F4F6F4] hover:text-[#1E4631] transition-colors"><ChevronLeft className="w-5 h-5" /></button>
-                  <button onClick={nextDeal} className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:bg-[#F4F6F4] hover:text-[#1E4631] transition-colors"><ChevronRight className="w-5 h-5" /></button>
-                </div>
-              </motion.div>
-
-              <AnimatePresence mode="wait">
-                {dealProduct && (
-                  <motion.div key={dealProduct.id} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.5 }}
-                    className="bg-[#FAFAF7] w-full rounded-[40px] flex flex-col justify-between p-10 group relative overflow-hidden shadow-[0_8px_40px_-12px_rgba(0,0,0,0.05)] border border-gray-100 min-h-[600px]">
-                    
-                    <div className="absolute top-8 left-8 z-10">
-                      <span className="bg-[#D27D56] text-white text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-wider shadow-md">Special Offer</span>
-                    </div>
-
-                    <div className="flex-1 w-full flex items-center justify-center py-10 relative">
-                      {/* Decorative background blob */}
-                      <div className="absolute w-[250px] h-[250px] bg-white rounded-full blur-3xl opacity-60"></div>
-                      <img 
-                        src={dealProduct.image_url} 
-                        alt={dealProduct.title} 
-                        onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=800&auto=format&fit=crop'; }}
-                        className="w-[90%] h-auto max-h-[400px] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700 origin-bottom relative z-10" 
-                      />
-                    </div>
-                    
-                    <div className="text-center w-full relative z-10">
-                      <p className="text-[#D27D56] text-[12px] font-bold uppercase tracking-widest mb-3">Limited Stock</p>
-                      <h3 className="font-serif text-[28px] font-medium text-[#1a1a1a] mb-4">{dealProduct.title}</h3>
-                      <div className="flex items-center justify-center gap-3 mb-8">
-                        {dealProduct.original_price && <span className="text-[16px] text-gray-400 line-through">₹{dealProduct.original_price.toLocaleString('en-IN')}</span>}
-                        <span className="text-[22px] font-black text-[#1E4631]">₹{dealProduct.price.toLocaleString('en-IN')}</span>
-                      </div>
-                      <Link href={`/shop/${dealProduct.id}`} className="bg-[#1E4631] text-white text-[13px] font-bold tracking-[0.1em] px-12 py-4 rounded-full hover:bg-[#153424] transition-all shadow-[0_8px_20px_rgba(30,70,49,0.3)] inline-flex items-center justify-center uppercase w-full max-w-[300px]">
-                        Shop Now <ArrowRight className="w-4 h-4 ml-3" />
-                      </Link>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+          {/* Product Grid */}
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <Loader2 className="w-8 h-8 animate-spin text-[#1E4631]" />
             </div>
-
-          </div>
+          ) : displayProducts.length === 0 ? (
+            <div className="text-center py-20 text-gray-400 font-medium">
+              No plants in this category yet.
+            </div>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="grid grid-cols-2 lg:grid-cols-4 gap-6"
+              >
+                {displayProducts.map((product, i) => (
+                  <ProductMiniCard
+                    key={product.id}
+                    product={product}
+                    index={i}
+                  />
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          )}
         </div>
       </section>
     </>

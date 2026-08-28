@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Leaf } from 'lucide-react'
 import { MobileHomeHeader } from './MobileHomeHeader'
+import { useHomepageImages } from '@/lib/homepageImages'
 
 const slides = [
   {
@@ -61,6 +62,7 @@ const imageVariants = {
 export function DualHeroBanners() {
   const [current, setCurrent] = useState(0)
   const [direction, setDirection] = useState(1)
+  const heroImages = useHomepageImages()
 
   const go = (index: number) => {
     setDirection(index > current ? 1 : -1)
@@ -141,80 +143,127 @@ export function DualHeroBanners() {
         </div>
       </div>
 
-      {/* ─── DESKTOP VIEW ─── */}
-      <section className="hidden md:block relative w-full h-[90vh] min-h-[700px] overflow-hidden bg-[#FAFAF7]">
-        {/* Background Image */}
-        <AnimatePresence mode="sync">
-          <motion.div key={slide.id} variants={imageVariants} initial="enter" animate="center" exit="exit" className="absolute inset-0 z-0">
-            <Image src={slide.image} alt={slide.title} fill priority className="object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#1E4631]/80 via-[#1E4631]/30 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-          </motion.div>
-        </AnimatePresence>
+      {/* ─── DESKTOP VIEW — Split Hero ─── */}
+      <section className="hidden md:block relative w-full min-h-[85vh] overflow-hidden bg-white">
+        <div className="container mx-auto px-6 lg:px-12 xl:px-16 max-w-[1440px] h-full">
+          <div className="flex items-center min-h-[85vh] gap-12 lg:gap-16">
 
-        {/* Content */}
-        <div className="relative z-10 h-full flex items-center">
-          <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24">
-            <div className="max-w-xl relative">
-              {/* Glassmorphism backing for better text readability and premium feel */}
-              <div className="absolute -inset-8 bg-white/5 backdrop-blur-[2px] rounded-[40px] opacity-0 animate-fade-in pointer-events-none" />
-              
-              <AnimatePresence mode="wait">
-                <motion.div key={slide.id} className="relative z-10 space-y-6">
-                  {/* Tag */}
-                  <motion.div custom={0} variants={textVariants} initial="hidden" animate="visible" exit="exit" className="flex items-center gap-4">
-                    <span className="w-12 h-[2px] bg-white/60"></span>
-                    <p className={`text-xs md:text-sm font-bold tracking-[0.25em] uppercase text-white/90`}>
-                      {slide.tag}
-                    </p>
-                  </motion.div>
-                  
-                  {/* Headline */}
-                  <motion.h1 custom={1} variants={textVariants} initial="hidden" animate="visible" exit="exit"
-                    className="text-5xl md:text-6xl lg:text-[72px] xl:text-[84px] font-serif font-medium text-white leading-[1.05] tracking-tight">
-                    {slide.title}<br />
-                    <span className="italic font-light text-white/90">{slide.titleAccent}</span>
-                  </motion.h1>
-                  
-                  {/* Description */}
-                  <motion.p custom={2} variants={textVariants} initial="hidden" animate="visible" exit="exit"
-                    className="text-white/80 text-sm md:text-base leading-relaxed max-w-sm md:max-w-md font-sans">
-                    {slide.description}
-                  </motion.p>
-                  
-                  {/* CTA */}
-                  <motion.div custom={3} variants={textVariants} initial="hidden" animate="visible" exit="exit" className="pt-6">
-                    <Link href={slide.buttonLink}
-                      className="group relative inline-flex items-center justify-center bg-white text-[#1E4631] overflow-hidden rounded-full font-semibold text-[11px] tracking-[0.2em] uppercase px-10 py-5 transition-all duration-300 hover:shadow-[0_8px_40px_rgba(255,255,255,0.2)]">
-                      <span className="relative z-10">{slide.buttonText}</span>
-                      <div className="absolute inset-0 h-full w-full bg-[#FAFAF7] scale-0 rounded-full transition-all duration-300 ease-out group-hover:scale-100 origin-center z-0"></div>
-                    </Link>
-                  </motion.div>
-                </motion.div>
-              </AnimatePresence>
+            {/* Left: Text Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              className="w-full lg:w-[48%] shrink-0 py-16"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <Leaf className="w-5 h-5 text-[#1E4631]" />
+                <span className="text-[#1E4631] text-xs font-bold tracking-[0.25em] uppercase">
+                  Arogyavruksham
+                </span>
+              </div>
+
+              <h1 className="font-serif text-[42px] lg:text-[52px] xl:text-[60px] font-medium text-[#1a1a1a] leading-[1.1] tracking-tight mb-6">
+                Customize your place with the{' '}
+                <span className="italic text-[#1E4631]">best possible</span>{' '}
+                plant solutions!
+              </h1>
+
+              <p className="text-gray-500 text-base lg:text-lg leading-relaxed max-w-md font-sans mb-10">
+                Bring nature indoors with our curated collection of premium indoor plants, delivered fresh to your doorstep.
+              </p>
+
+              <div className="flex items-center gap-4 mb-12">
+                <Link
+                  href="/shop"
+                  className="inline-flex items-center justify-center bg-[#1E4631] text-white font-semibold text-[12px] tracking-[0.15em] uppercase px-8 py-4 rounded-full hover:bg-[#153424] transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  Explore Now
+                </Link>
+                <Link
+                  href="/shop?sale=true"
+                  className="inline-flex items-center justify-center border-2 border-[#1E4631] text-[#1E4631] font-semibold text-[12px] tracking-[0.15em] uppercase px-8 py-4 rounded-full hover:bg-[#1E4631] hover:text-white transition-all duration-300"
+                >
+                  View Best Deals
+                </Link>
+              </div>
+
+              {/* Trust row */}
+              <div className="flex items-center gap-8 text-xs text-gray-400 font-bold uppercase tracking-widest">
+                <span className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#1E4631]"></span>
+                  Free Shipping
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#D27D56]"></span>
+                  Fresh Guarantee
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Right: Image Mosaic Grid */}
+            <div className="hidden lg:grid grid-cols-3 grid-rows-2 gap-3 flex-1 h-[580px]">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.7 }}
+                className="col-span-2 row-span-1 rounded-[20px] overflow-hidden"
+              >
+                <img
+                  src={heroImages.hero_grid_1}
+                  alt="Living room plants"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35, duration: 0.7 }}
+                className="rounded-[20px] overflow-hidden"
+              >
+                <img
+                  src={heroImages.hero_grid_2}
+                  alt="Planting hands"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45, duration: 0.7 }}
+                className="rounded-[20px] overflow-hidden"
+              >
+                <img
+                  src={heroImages.hero_grid_3}
+                  alt="Tropical plants"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.55, duration: 0.7 }}
+                className="rounded-[20px] overflow-hidden"
+              >
+                <img
+                  src={heroImages.hero_grid_4}
+                  alt="Indoor greenery"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.65, duration: 0.7 }}
+                className="rounded-[20px] overflow-hidden"
+              >
+                <img
+                  src={heroImages.hero_grid_5}
+                  alt="Botanical collection"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                />
+              </motion.div>
             </div>
-          </div>
-        </div>
 
-        {/* Custom Slide Navigation Controls */}
-        <div className="absolute bottom-12 right-12 lg:right-24 z-20 flex flex-col items-end gap-6">
-          <div className="flex gap-2 items-center">
-            {slides.map((_, i) => (
-              <button 
-                key={i} 
-                onClick={() => go(i)} 
-                className={`transition-all duration-500 rounded-full hover:bg-white/80 ${i === current ? 'bg-white w-10 h-1.5' : 'bg-white/40 w-2 h-2'}`} 
-                aria-label={`Go to slide ${i + 1}`}
-              />
-            ))}
-          </div>
-          <div className="flex gap-3">
-            <button onClick={prev} className="w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white transition-all hover:scale-105 active:scale-95 group">
-              <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
-            </button>
-            <button onClick={next} className="w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white transition-all hover:scale-105 active:scale-95 group">
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-            </button>
           </div>
         </div>
       </section>

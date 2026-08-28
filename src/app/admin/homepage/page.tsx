@@ -1,0 +1,316 @@
+'use client'
+
+import { useEffect, useState, useCallback } from 'react'
+import { useAuthStore } from '@/store/authStore'
+import { useRouter } from 'next/navigation'
+import { ArrowLeft, Save, RotateCcw, Image as ImageIcon, AlertTriangle, CheckCircle2, Copy } from 'lucide-react'
+import Link from 'next/link'
+import { DEFAULT_IMAGES } from '@/lib/homepageImages'
+
+interface HomepageImage {
+  id: string
+  image_url: string
+  alt_text: string
+  updated_at?: string
+}
+
+const IMAGE_SECTIONS = [
+  {
+    section: 'Hero Mosaic',
+    description: 'The 5 images in the hero section grid (desktop only)',
+    keys: ['hero_grid_1', 'hero_grid_2', 'hero_grid_3', 'hero_grid_4', 'hero_grid_5'],
+  },
+  {
+    section: 'Category Cards',
+    description: '3 category overlay card backgrounds',
+    keys: ['category_1', 'category_2', 'category_3'],
+  },
+  {
+    section: 'Plant Gallery',
+    description: '6 images in the masonry gallery section',
+    keys: ['gallery_1', 'gallery_2', 'gallery_3', 'gallery_4', 'gallery_5', 'gallery_6'],
+  },
+  {
+    section: 'Blog / Trending Articles',
+    description: 'Images for the 3 trending article cards',
+    keys: ['blog_1', 'blog_2', 'blog_3'],
+  },
+  {
+    section: 'Newsletter Decorations',
+    description: 'Small decorative images in the newsletter banner',
+    keys: ['newsletter_leaf', 'newsletter_person'],
+  },
+  {
+    section: 'Footer Instagram Grid',
+    description: '8 small images in the footer Instagram section',
+    keys: ['footer_ig_1', 'footer_ig_2', 'footer_ig_3', 'footer_ig_4', 'footer_ig_5', 'footer_ig_6', 'footer_ig_7', 'footer_ig_8'],
+  },
+]
+
+const SETUP_SQL = `-- Run this in your Supabase SQL Editor to create the homepage_images table:
+
+CREATE TABLE IF NOT EXISTS homepage_images (
+  id TEXT PRIMARY KEY,
+  image_url TEXT NOT NULL,
+  alt_text TEXT DEFAULT '',
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Allow public read access (images are shown on the public homepage)
+ALTER TABLE homepage_images ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow public read on homepage_images"
+  ON homepage_images FOR SELECT
+  USING (true);
+
+CREATE POLICY "Allow service role full access on homepage_images"
+  ON homepage_images FOR ALL
+  USING (true)
+  WITH CHECK (true);`
+
+export default function HomepageImagesPage() {
+  const { isAdminUnlocked } = useAuthStore()
+  const router = useRouter()
+  const [images, setImages] = useState<Record<string, HomepageImage>>({})
+  const [editValues, setEditValues] = useState<Record<string, string>>({})
+  const [loading, setLoading] = useState(true)
+  const [needsSetup, setNeedsSetup] = useState(false)
+  const [saving, setSaving] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
+  const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    if (!isAdminUnlocked) {
+      router.replace('/admin')
+      return
+    }
+    fetchImages()
+  }, [isAdminUnlocked])
+
+  const fetchImages = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/homepage-images')
+      const json = await res.json()
+      if (json.needsSetup) {
+        setNeedsSetup(true)
+      }
+      const map: Record<string, HomepageImage> = {}
+      const editMap: Record<string, string> = {}
+      if (json.data) {
+        json.data.forEach((img: HomepageImage) => {
+          map[img.id] = img
+          editMap[img.id] = img.image_url
+        })
+      }
+      // Fill remaining with defaults
+      Object.keys(DEFAULT_IMAGES).forEach((key) => {
+        if (!editMap[key]) {
+          editMap[key] = DEFAULT_IMAGES[key]
+        }
+      })
+      setImages(map)
+      setEditValues(editMap)
+    } catch {
+      setNeedsSetup(true)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  const handleSave = async (id: string) => {
+    setSaving(id)
+    setSuccess(null)
+    try {
+      await fetch('/api/admin/homepage-images', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, image_url: editValues[id], alt_text: '' }),
+      })
+      setSuccess(id)
+      setTimeout(() => setSuccess(null), 2000)
+      fetchImages()
+    } catch (err) {
+      alert('Failed to save image')
+    } finally {
+      setSaving(null)
+    }
+  }
+
+  const handleReset = async (id: string) => {
+    try {
+      await fetch(`/api/admin/homepage-images?id=${id}`, { method: 'DELETE' })
+      setEditValues((prev) => ({ ...prev, [id]: DEFAULT_IMAGES[id] }))
+      fetchImages()
+    } catch {
+      alert('Failed to reset')
+    }
+  }
+
+  const copySql = () => {
+    navigator.clipboard.writeText(SETUP_SQL)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  if (!isAdminUnlocked) return null
+
+  return (
+    <div className="min-h-screen bg-[#F8F9FA] pt-20 pb-20">
+      <div className="max-w-6xl mx-auto px-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-10">
+          <div className="flex items-center gap-4">
+            <Link
+              href="/admin"
+              className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-[#1E4631] transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
+            <div>
+              <h1 className="text-[28px] font-serif font-bold text-[#1a1a1a]">
+                Homepage Images
+              </h1>
+              <p className="text-sm text-gray-500">
+                Manage all editable images on the homepage
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Setup Warning */}
+        {needsSetup && (
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-8">
+            <div className="flex items-start gap-3 mb-4">
+              <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-bold text-amber-800 mb-1">
+                  Table Setup Required
+                </h3>
+                <p className="text-sm text-amber-700">
+                  The <code className="bg-amber-100 px-1.5 py-0.5 rounded text-xs font-mono">homepage_images</code> table
+                  doesn&apos;t exist yet. Run the SQL below in your{' '}
+                  <a
+                    href="https://supabase.com/dashboard"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline font-semibold"
+                  >
+                    Supabase SQL Editor
+                  </a>
+                  :
+                </p>
+              </div>
+            </div>
+            <div className="relative">
+              <pre className="bg-gray-900 text-green-400 p-4 rounded-xl text-xs overflow-x-auto font-mono leading-relaxed">
+                {SETUP_SQL}
+              </pre>
+              <button
+                onClick={copySql}
+                className="absolute top-3 right-3 bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors"
+              >
+                <Copy className="w-3.5 h-3.5" />
+                {copied ? 'Copied!' : 'Copy SQL'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Image Sections */}
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <div className="w-8 h-8 border-2 border-[#1E4631] border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : (
+          <div className="space-y-12">
+            {IMAGE_SECTIONS.map((section) => (
+              <div key={section.section}>
+                <div className="mb-6">
+                  <h2 className="text-[20px] font-serif font-bold text-[#1a1a1a]">
+                    {section.section}
+                  </h2>
+                  <p className="text-sm text-gray-500">{section.description}</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {section.keys.map((key) => (
+                    <div
+                      key={key}
+                      className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm"
+                    >
+                      {/* Preview */}
+                      <div className="aspect-video bg-[#FAFAF7] flex items-center justify-center overflow-hidden relative">
+                        {editValues[key] ? (
+                          <img
+                            src={editValues[key]}
+                            alt={key}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none'
+                            }}
+                          />
+                        ) : (
+                          <ImageIcon className="w-8 h-8 text-gray-300" />
+                        )}
+                        {/* Override badge */}
+                        {images[key] && (
+                          <span className="absolute top-2 right-2 bg-[#1E4631] text-white text-[9px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">
+                            Custom
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Controls */}
+                      <div className="p-4">
+                        <p className="text-xs font-mono text-gray-400 mb-2">
+                          {key}
+                        </p>
+                        <input
+                          type="text"
+                          value={editValues[key] || ''}
+                          onChange={(e) =>
+                            setEditValues((prev) => ({
+                              ...prev,
+                              [key]: e.target.value,
+                            }))
+                          }
+                          placeholder="Image URL..."
+                          className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2.5 mb-3 focus:outline-none focus:border-[#1E4631] focus:ring-1 focus:ring-[#1E4631]/20 transition-colors font-mono"
+                        />
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleSave(key)}
+                            disabled={saving === key}
+                            className="flex-1 bg-[#1E4631] text-white text-xs font-semibold py-2 rounded-lg hover:bg-[#153424] transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50"
+                          >
+                            {saving === key ? (
+                              <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                            ) : success === key ? (
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                            ) : (
+                              <Save className="w-3.5 h-3.5" />
+                            )}
+                            {success === key ? 'Saved!' : 'Save'}
+                          </button>
+                          {images[key] && (
+                            <button
+                              onClick={() => handleReset(key)}
+                              className="bg-gray-100 text-gray-600 text-xs font-semibold py-2 px-3 rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-1.5"
+                              title="Reset to default"
+                            >
+                              <RotateCcw className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
