@@ -18,10 +18,11 @@ interface HomepageImage {
 const IMAGE_SECTIONS = [
   {
     section: 'Hero Section Banners',
-    description: 'The 3 images in the top hero section (1 vertical on left, 2 stacked on right)',
-    keys: ['hero_grid_1', 'hero_grid_2', 'hero_grid_3'],
+    description: 'The 4 images in the top hero section (2x2 grid on desktop)',
+    keys: ['hero_grid_1', 'hero_grid_4', 'hero_grid_2', 'hero_grid_3'],
     labels: {
-      hero_grid_1: 'Vertical Image (Left)',
+      hero_grid_1: 'Top Image (Left Stack)',
+      hero_grid_4: 'Bottom Image (Left Stack)',
       hero_grid_2: 'Top Image (Right Stack)',
       hero_grid_3: 'Bottom Image (Right Stack)'
     }

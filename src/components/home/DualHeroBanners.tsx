@@ -42,13 +42,22 @@ export function DualHeroBanners() {
 
         {/* Right: Image Mosaic */}
         <div className="w-full lg:w-1/2 flex h-[500px] lg:h-[600px] gap-5">
-          {/* Left tall image */}
-          <div className="w-1/2 h-full">
-            <img 
-              src={heroImages.hero_grid_1 || "https://placehold.co/400x800/eeeeee/cccccc?text=Plant+Vertical"}
-              alt="Vertical Plant"
-              className="w-full h-full object-cover"
-            />
+          {/* Left stacked images */}
+          <div className="w-1/2 h-full flex flex-col gap-5">
+            <div className="h-[calc(50%-10px)] w-full">
+              <img 
+                src={heroImages.hero_grid_1 || "https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Top+Left"}
+                alt="Plant Top Left"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="h-[calc(50%-10px)] w-full">
+              <img 
+                src={heroImages.hero_grid_4 || "https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Bottom+Left"}
+                alt="Plant Bottom Left"
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
           {/* Right stacked images */}
           <div className="w-1/2 h-full flex flex-col gap-5">
