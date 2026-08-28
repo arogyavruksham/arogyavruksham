@@ -33,7 +33,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="w-full bg-white py-5 sticky top-0 z-50 border-b border-transparent transition-all shadow-sm">
+      <header className="w-full bg-white py-5 relative z-50">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 xl:px-16 flex items-center justify-between">
           
           {/* Left: Logo */}
