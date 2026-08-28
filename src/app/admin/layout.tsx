@@ -271,7 +271,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                               className="flex items-center justify-between px-4 py-2 hover:bg-[#F3F4F6] transition-colors"
                             >
                               <div>
-                                <p className="text-sm font-bold text-[#111827]">#{order.id.split('-')[0]}</p>
+                                <p className="text-sm font-bold text-[#111827]">#{order?.id?.split('-')[0]}</p>
                                 <p className="text-xs text-[#6B7280] font-medium">{order.users?.full_name || 'Guest'}</p>
                               </div>
                               <div className="text-right">

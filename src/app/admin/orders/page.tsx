@@ -338,7 +338,7 @@ export default function AdminOrdersPage() {
                   
                   <div className="flex flex-col gap-1 mb-4">
                     <p className="text-[10px] font-black text-[#9CA3AF] tracking-wider uppercase">
-                      #{order.id.split('-')[0].toUpperCase()} · {dateStr}
+                      #{order?.id?.split('-')[0]?.toUpperCase()} · {dateStr}
                     </p>
                     <h4 className="text-lg font-black tracking-tight text-[#111827] leading-tight pr-24">
                       {customerName}
@@ -527,7 +527,7 @@ export default function AdminOrdersPage() {
                     <tr key={order.id} className={`hover:bg-[#F9FAFB] transition-colors group cursor-pointer ${order.is_delayed ? 'bg-red-50/30' : ''}`} onClick={() => setSelectedOrder(order)}>
                       <td className="p-4 align-top">
                         <span className="font-bold font-mono text-[#111827] flex flex-col gap-1">
-                          #{order.id.split('-')[0].toUpperCase()}
+                          #{order?.id?.split('-')[0]?.toUpperCase()}
                           <span className="text-xs font-bold text-[#6B7280] font-sans">
                             ₹{Number(order.total_amount).toLocaleString('en-IN')}
                           </span>
@@ -652,7 +652,7 @@ export default function AdminOrdersPage() {
                     <span className="bg-purple-100 text-purple-700 text-[9px] font-black uppercase px-2 py-0.5 rounded-md">New</span>
                   )}
                 </div>
-                <h2 className="text-2xl font-black tracking-tighter text-[#111827]">#{selectedOrder.id.split('-')[0].toUpperCase()}</h2>
+                <h2 className="text-2xl font-black tracking-tighter text-[#111827]">#{selectedOrder?.id?.split('-')[0]?.toUpperCase()}</h2>
               </div>
               <button onClick={() => setSelectedOrder(null)} className="w-10 h-10 bg-[#F9FAFB] border border-[#E5E7EB] text-[#9CA3AF] hover:text-[#111827] rounded-full flex items-center justify-center transition-colors cursor-pointer">
                 <X className="w-5 h-5" strokeWidth={1.5} />

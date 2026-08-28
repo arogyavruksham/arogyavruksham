@@ -584,7 +584,7 @@ export default function AdminDashboard() {
                 return (
                   <tr key={order.id} className="group hover:bg-[#F3F4F6] transition-colors rounded-2xl">
                     <td className="p-4 pl-6 align-middle rounded-l-2xl">
-                      <p className="font-bold text-[#111827]">#{order.id.split('-')[0].toUpperCase()}</p>
+                      <p className="font-bold text-[#111827]">#{order?.id?.split('-')[0]?.toUpperCase()}</p>
                       <p className="text-xs text-[#9CA3AF] mt-1 font-medium">{new Date(order.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                     </td>
                     <td className="p-4 align-middle">
