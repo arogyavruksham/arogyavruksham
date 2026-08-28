@@ -45,8 +45,8 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Don't render on admin routes
-  if (pathname?.startsWith('/admin')) return null
+  // Don't render on admin or profile routes
+  if (pathname?.startsWith('/admin') || pathname?.startsWith('/profile')) return null
 
   const navLinks = [
     { label: 'Home', href: '/' },
@@ -95,9 +95,9 @@ export function Navbar() {
             <img 
               src="/logo.png" 
               alt="Arogyavruksham Logo" 
-              className="w-10 h-10 object-contain"
+              className="w-14 h-14 object-contain"
             />
-            <span className="font-bold text-[22px] text-gray-900 tracking-tight">Arogyavruksham</span>
+            <span className="font-bold text-[24px] text-gray-900 tracking-tight">Arogyavruksham</span>
           </Link>
 
           {/* Center: Links (Desktop) */}
