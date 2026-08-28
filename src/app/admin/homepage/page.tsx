@@ -50,8 +50,8 @@ const IMAGE_SECTIONS = [
   },
   {
     section: 'Plant Gallery',
-    description: '6 images in the masonry gallery section',
-    keys: ['gallery_1', 'gallery_2', 'gallery_3', 'gallery_4', 'gallery_5', 'gallery_6'],
+    description: '4 images in the gallery section',
+    keys: ['gallery_1', 'gallery_2', 'gallery_3', 'gallery_4'],
     sizes: {
       default: 'Square / Portrait'
     },
@@ -71,27 +71,16 @@ const IMAGE_SECTIONS = [
     }
   },
   {
-    section: 'Newsletter Decorations',
-    description: 'Small decorative images in the newsletter banner',
-    keys: ['newsletter_leaf', 'newsletter_person'],
+    section: 'Trending Banner',
+    description: 'The Benefits of Indoor Plants section image',
+    keys: ['benefits'],
     sizes: {
-      default: 'Transparent PNG'
+      default: 'Vertical / Portrait (Transparent PNG recommended)'
     },
     aspects: {
-      default: 'aspect-[4/3] object-contain'
+      default: 'h-[300px] object-contain'
     }
-  },
-  {
-    section: 'Footer Instagram Grid',
-    description: '8 small images in the footer Instagram section',
-    keys: ['footer_ig_1', 'footer_ig_2', 'footer_ig_3', 'footer_ig_4', 'footer_ig_5', 'footer_ig_6', 'footer_ig_7', 'footer_ig_8'],
-    sizes: {
-      default: '1:1 Square'
-    },
-    aspects: {
-      default: 'aspect-square'
-    }
-  },
+  }
 ]
 
 const SETUP_SQL = `-- Run this in your Supabase SQL Editor to create the homepage_images table:
