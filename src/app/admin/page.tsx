@@ -178,7 +178,7 @@ export default function AdminDashboard() {
     fetchDashboardData()
 
     // Subscribe to real-time order updates
-    const channel = supabase.channel('realtime_admin_dashboard_orders')
+    const channel = supabase.channel(`realtime_admin_dashboard_orders_${Math.random()}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
         fetchDashboardData() // Refresh dashboard when new order arrives
       })
