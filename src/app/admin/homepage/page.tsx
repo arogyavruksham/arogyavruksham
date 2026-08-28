@@ -28,6 +28,9 @@ const IMAGE_SECTIONS = [
     },
     sizes: {
       default: '1:1 Square'
+    },
+    aspects: {
+      default: 'aspect-square'
     }
   },
   {
@@ -38,6 +41,11 @@ const IMAGE_SECTIONS = [
       category_1: '2:1 Landscape',
       category_2: '2:1 Landscape',
       category_3: '1:1 Square',
+    },
+    aspects: {
+      category_1: 'aspect-[2/1]',
+      category_2: 'aspect-[2/1]',
+      category_3: 'aspect-square',
     }
   },
   {
@@ -46,6 +54,9 @@ const IMAGE_SECTIONS = [
     keys: ['gallery_1', 'gallery_2', 'gallery_3', 'gallery_4', 'gallery_5', 'gallery_6'],
     sizes: {
       default: 'Square / Portrait'
+    },
+    aspects: {
+      default: 'aspect-[4/5]'
     }
   },
   {
@@ -54,6 +65,9 @@ const IMAGE_SECTIONS = [
     keys: ['blog_1', 'blog_2', 'blog_3'],
     sizes: {
       default: '4:3 Landscape'
+    },
+    aspects: {
+      default: 'aspect-[4/3]'
     }
   },
   {
@@ -62,6 +76,9 @@ const IMAGE_SECTIONS = [
     keys: ['newsletter_leaf', 'newsletter_person'],
     sizes: {
       default: 'Transparent PNG'
+    },
+    aspects: {
+      default: 'aspect-[4/3] object-contain'
     }
   },
   {
@@ -70,6 +87,9 @@ const IMAGE_SECTIONS = [
     keys: ['footer_ig_1', 'footer_ig_2', 'footer_ig_3', 'footer_ig_4', 'footer_ig_5', 'footer_ig_6', 'footer_ig_7', 'footer_ig_8'],
     sizes: {
       default: '1:1 Square'
+    },
+    aspects: {
+      default: 'aspect-square'
     }
   },
 ]
@@ -370,12 +390,9 @@ export default function HomepageImagesPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {section.keys.map((key) => (
-                    <div
-                      key={key}
-                      className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm"
-                    >
-                      {/* Preview */}
-                      <div className="aspect-video bg-[#FAFAF7] flex items-center justify-center overflow-hidden relative">
+                    <div key={key} className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                      {/* Image Preview */}
+                      <div className={`w-full ${(section as any).aspects?.[key] || (section as any).aspects?.default || 'aspect-video'} bg-gray-50 flex items-center justify-center relative group`}>
                         {editValues[key] ? (
                           <img
                             src={editValues[key]}
