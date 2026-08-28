@@ -1,8 +1,49 @@
 'use client'
 
 import Link from 'next/link'
+import { useState } from 'react'
+import { Loader2 } from 'lucide-react'
 
 export function FooterFeatures() {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [message, setMessage] = useState('')
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+
+    setStatus('loading')
+    setMessage('')
+
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to subscribe')
+      }
+
+      setStatus('success')
+      setMessage(data.message || 'Subscribed successfully!')
+      setEmail('')
+      
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setMessage('')
+        setStatus('idle')
+      }, 3000)
+    } catch (err: any) {
+      setStatus('error')
+      setMessage(err.message)
+    }
+  }
+
   return (
     <footer className="w-full bg-white pt-10">
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12 xl:px-16">
@@ -13,20 +54,32 @@ export function FooterFeatures() {
             Sign Up To Our Newsletter
           </h2>
           
-          <form className="flex w-full max-w-[500px] h-[50px] bg-white border border-gray-200">
-            <input 
-              type="email" 
-              placeholder="Enter Your Email Address"
-              className="flex-1 h-full px-5 outline-none text-[14px] text-gray-700 bg-transparent"
-              required
-            />
-            <button 
-              type="submit"
-              className="h-full px-8 bg-[#166534] text-white font-medium text-[14px] hover:bg-[#155a2d] transition-colors whitespace-nowrap"
-            >
-              Subscribe
-            </button>
-          </form>
+          <div className="w-full max-w-[500px] flex flex-col gap-2">
+            <form onSubmit={handleSubscribe} className="flex w-full h-[50px] bg-white border border-gray-200">
+              <input 
+                type="email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter Your Email Address"
+                className="flex-1 h-full px-5 outline-none text-[14px] text-gray-700 bg-transparent"
+                required
+                disabled={status === 'loading'}
+              />
+              <button 
+                type="submit"
+                disabled={status === 'loading'}
+                className="h-full px-8 flex items-center justify-center gap-2 bg-[#166534] text-white font-medium text-[14px] hover:bg-[#155a2d] transition-colors whitespace-nowrap disabled:opacity-70"
+              >
+                {status === 'loading' && <Loader2 className="w-4 h-4 animate-spin" />}
+                Subscribe
+              </button>
+            </form>
+            {message && (
+              <p className={`text-[13px] font-semibold ${status === 'error' ? 'text-red-500' : 'text-green-700'}`}>
+                {message}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Footer Links */}
