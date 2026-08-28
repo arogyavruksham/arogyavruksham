@@ -70,8 +70,8 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-4">
             <img 
               src="/logo.png" 
-              alt="Arogyavruksham Icon" 
-              className="w-20 h-20 object-contain"
+              alt="Arogyavruksham Logo" 
+              className="h-16 w-auto max-w-[200px] object-contain"
             />
             <span className="font-bold text-[28px] text-gray-900 tracking-tight">Arogyavruksham</span>
           </Link>
