@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/shop/CartDrawer";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
@@ -76,7 +75,6 @@ export default function RootLayout({
         <AuthProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
-          <Footer />
           <CartDrawer />
           <AuthModal />
           <WhatsAppButton />
