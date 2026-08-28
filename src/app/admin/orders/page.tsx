@@ -1,21 +1,47 @@
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
-import { Search, Filter, Download, Loader2, X, User, MapPin, Package, CreditCard, ChevronDown, ChevronRight, Eye, Truck, CheckCircle } from 'lucide-react'
+import { 
+  Search, Filter, Download, Loader2, X, User, MapPin, Package, 
+  CreditCard, ChevronDown, ChevronRight, Eye, Truck, CheckCircle, 
+  AlertCircle, Bell, Clock, Calendar, ArrowUpDown
+} from 'lucide-react'
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
 import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/store/authStore'
 
 export const getStatusDisplayName = (status?: string) => {
   switch (status) {
-    case 'pending': return 'Pending (COD)'
-    case 'paid': return 'Paid / Processing'
+    case 'pending': return 'Pending'
+    case 'paid': return 'Paid'
     case 'packed': return 'Packed'
     case 'shipped': return 'Shipped'
     case 'out_for_delivery': return 'Out For Delivery'
     case 'delivered': return 'Delivered'
     case 'cancelled': return 'Cancelled'
     default: return status ? status.replace(/_/g, ' ') : 'Unknown'
+  }
+}
+
+export const getDerivedStatusColor = (derivedStatus: string) => {
+  switch (derivedStatus) {
+    case 'delivered': return 'bg-emerald-50 text-emerald-700 border-emerald-200'
+    case 'shipping': return 'bg-blue-50 text-blue-700 border-blue-200'
+    case 'processing': return 'bg-amber-50 text-amber-700 border-amber-200'
+    case 'delayed': return 'bg-red-50 text-red-700 border-red-200'
+    case 'cancelled': return 'bg-gray-50 text-gray-500 border-gray-200'
+    default: return 'bg-gray-50 text-gray-500 border-gray-200'
+  }
+}
+
+export const getDerivedStatusIcon = (derivedStatus: string) => {
+  switch (derivedStatus) {
+    case 'delivered': return <CheckCircle className="w-3.5 h-3.5" />
+    case 'shipping': return <Truck className="w-3.5 h-3.5" />
+    case 'processing': return <Loader2 className="w-3.5 h-3.5" />
+    case 'delayed': return <AlertCircle className="w-3.5 h-3.5" />
+    case 'cancelled': return <X className="w-3.5 h-3.5" />
+    default: return null
   }
 }
 
@@ -33,17 +59,20 @@ export default function AdminOrdersPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
   const [paymentFilter, setPaymentFilter] = useState('All Payment Methods')
+  const [sortOrder, setSortOrder] = useState('Newest order')
 
   const exportToCSV = () => {
     const csvContent = [
-      ['Order ID', 'Customer Name', 'Customer Email', 'Date', 'Total Amount', 'Payment Method', 'Status'],
+      ['Order ID', 'Customer Name', 'Customer Email', 'Date', 'Expected Delivery', 'Total Amount', 'Payment Method', 'Derived Status', 'Raw Status'],
       ...filteredOrders.map(order => [
         order.id,
         order.users?.full_name || 'Unknown',
         order.users?.email || 'N/A',
         new Date(order.created_at).toLocaleDateString(),
+        order.expected_delivery_date,
         order.total_amount,
         order.payment_method || 'Online',
+        order.derived_status,
         order.status
       ])
     ].map(e => e.join(",")).join("\n")
@@ -59,6 +88,27 @@ export default function AdminOrdersPage() {
     document.body.removeChild(link)
   }
 
+  const markOrderAsViewed = async (orderId: string) => {
+    try {
+      const res = await fetch('/api/admin/orders', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminPassword}`
+        },
+        body: JSON.stringify({ orderId, markAsViewed: true })
+      })
+      if (res.ok) {
+        setOrders(prev => prev.map(o => o.id === orderId ? { ...o, admin_viewed: true, is_not_seen: false } : o))
+        if (selectedOrder && selectedOrder.id === orderId) {
+          setSelectedOrder((prev: any) => ({ ...prev, admin_viewed: true, is_not_seen: false }))
+        }
+      }
+    } catch (err) {
+      console.error('Error marking as viewed', err)
+    }
+  }
+
   const handleUpdateStatus = async (orderId: string, newStatus: string) => {
     setUpdatingStatus(true)
     try {
@@ -71,9 +121,10 @@ export default function AdminOrdersPage() {
         body: JSON.stringify({ orderId, newStatus })
       })
       if (res.ok) {
-        setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o))
+        // Optimistically update, in reality realtime subscription will fetch latest
+        setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o))
         if (selectedOrder && selectedOrder.id === orderId) {
-          setSelectedOrder({ ...selectedOrder, status: newStatus })
+          setSelectedOrder((prev: any) => ({ ...prev, status: newStatus }))
         }
       } else {
         const errText = await res.text()
@@ -123,19 +174,27 @@ export default function AdminOrdersPage() {
     }
   }, [adminPassword])
 
+  // Track if selectedOrder should be marked viewed
+  useEffect(() => {
+    if (selectedOrder && selectedOrder.is_not_seen) {
+      markOrderAsViewed(selectedOrder.id)
+    }
+  }, [selectedOrder])
+
+
   const stats = useMemo(() => {
     return {
       total: orders.length,
-      codOrders: orders.filter(o => o.payment_method === 'Cash on Delivery').length,
-      processing: orders.filter(o => o.status === 'pending' || o.status === 'paid' || o.status === 'packed' || o.status === 'out_for_delivery').length,
-      shipped: orders.filter(o => o.status === 'shipped').length,
-      delivered: orders.filter(o => o.status === 'delivered').length,
-      cancelled: orders.filter(o => o.status === 'cancelled').length,
+      notSeen: orders.filter(o => o.is_not_seen).length,
+      processing: orders.filter(o => o.derived_status === 'processing').length,
+      shipping: orders.filter(o => o.derived_status === 'shipping').length,
+      delivered: orders.filter(o => o.derived_status === 'delivered').length,
+      delayed: orders.filter(o => o.derived_status === 'delayed').length,
     }
   }, [orders])
 
   const filteredOrders = useMemo(() => {
-    return orders.filter(order => {
+    let result = orders.filter(order => {
       const searchLower = searchQuery.toLowerCase()
       const matchesSearch = 
         order.id.toLowerCase().includes(searchLower) ||
@@ -145,18 +204,38 @@ export default function AdminOrdersPage() {
       
       if (!matchesSearch) return false
 
-      if (activeTab === 'COD Orders' && order.payment_method !== 'Cash on Delivery') return false
-      if ((activeTab === 'Pending' || activeTab === 'Processing') && order.status !== 'pending' && order.status !== 'paid' && order.status !== 'packed' && order.status !== 'out_for_delivery') return false
-      if (activeTab === 'Shipped' && order.status !== 'shipped') return false
-      if (activeTab === 'Delivered' && order.status !== 'delivered') return false
-      if (activeTab === 'Cancelled' && order.status !== 'cancelled') return false
+      if (activeTab === 'Not Seen' && !order.is_not_seen) return false
+      if (activeTab === 'Processing' && order.derived_status !== 'processing') return false
+      if (activeTab === 'Shipping' && order.derived_status !== 'shipping') return false
+      if (activeTab === 'Delivered' && order.derived_status !== 'delivered') return false
+      if (activeTab === 'Delayed' && order.derived_status !== 'delayed') return false
 
       if (paymentFilter === 'Prepaid' && order.payment_method === 'Cash on Delivery') return false
       if (paymentFilter === 'COD' && order.payment_method !== 'Cash on Delivery') return false
 
       return true
     })
-  }, [orders, searchQuery, activeTab, paymentFilter])
+
+    // Sort result
+    result.sort((a, b) => {
+      if (sortOrder === 'Newest order') {
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      } else if (sortOrder === 'Oldest order') {
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      } else if (sortOrder === 'Expected delivery date') {
+        const dateA = new Date(a.expected_delivery_date).getTime() || Infinity
+        const dateB = new Date(b.expected_delivery_date).getTime() || Infinity
+        return dateA - dateB
+      } else if (sortOrder === 'Recently updated') {
+        const dateA = new Date(a.last_updated).getTime() || 0
+        const dateB = new Date(b.last_updated).getTime() || 0
+        return dateB - dateA
+      }
+      return 0
+    })
+
+    return result
+  }, [orders, searchQuery, activeTab, paymentFilter, sortOrder])
 
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage)
   const paginatedOrders = filteredOrders.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
@@ -164,9 +243,9 @@ export default function AdminOrdersPage() {
   return (
     <div className="space-y-6 pb-28 md:pb-8 text-[#111827] font-sans max-w-full">
       <div className="hidden md:block">
-        <h1 className="text-2xl md:text-2xl font-black tracking-tighter text-[#111827] mb-2">Transactions</h1>
+        <h1 className="text-2xl md:text-2xl font-black tracking-tighter text-[#111827] mb-2">Order Management</h1>
         <p className="text-sm md:text-base text-[#6B7280] max-w-[65ch]">
-          Search, filter, update fulfillment status, and export every order.
+          Track fulfillment status, identify delays, and manage customer deliveries.
         </p>
       </div>
       
@@ -189,22 +268,41 @@ export default function AdminOrdersPage() {
         </div>
 
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-          {['All Orders', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'COD Orders'].map((tab) => {
-            const isTabActive = activeTab === tab || (activeTab === 'Pending' && tab === 'Processing') || (activeTab === 'All Orders' && tab === 'All Orders');
+          {['All Orders', 'Not Seen', 'Processing', 'Shipping', 'Delivered', 'Delayed'].map((tab) => {
+            const isTabActive = activeTab === tab;
+            let tabColorClass = 'bg-white text-[#4B5563] border-[#E5E7EB] hover:bg-[#059669]/5';
+            
+            if (isTabActive) {
+              if (tab === 'Delayed') tabColorClass = 'bg-red-600 text-white shadow-sm border-0 shadow-[0_4px_14px_rgba(220,38,38,0.2)]'
+              else if (tab === 'Not Seen') tabColorClass = 'bg-purple-600 text-white shadow-sm border-0 shadow-[0_4px_14px_rgba(147,51,234,0.2)]'
+              else tabColorClass = 'bg-[#059669] text-white shadow-sm border-0 shadow-[0_4px_14px_rgba(0,0,0,0.1)]'
+            }
+
             return (
               <button
                 key={tab}
-                onClick={() => { setActiveTab(tab === 'Processing' ? 'Pending' : tab); setCurrentPage(1); }}
-                className={`px-4 py-2 rounded-xl text-xs font-black uppercase whitespace-nowrap transition-all shrink-0 cursor-pointer border ${
-                  isTabActive
-                    ? 'bg-[#059669] text-white shadow-sm border-0 border-[#059669] shadow-[0_4px_14px_rgba(0,0,0,0.1)]'
-                    : 'bg-white text-[#4B5563] border-[#E5E7EB] hover:bg-[#059669]/5'
-                }`}
+                onClick={() => { setActiveTab(tab); setCurrentPage(1); }}
+                className={`px-4 py-2 rounded-xl text-xs font-black uppercase whitespace-nowrap transition-all shrink-0 cursor-pointer border flex items-center gap-2 ${tabColorClass}`}
               >
+                {tab === 'Delayed' && <AlertCircle className="w-3.5 h-3.5" />}
+                {tab === 'Not Seen' && <Bell className="w-3.5 h-3.5" />}
                 {tab}
               </button>
             );
           })}
+        </div>
+
+        <div className="flex justify-between items-center px-1">
+          <select 
+            value={sortOrder}
+            onChange={(e) => { setSortOrder(e.target.value); setCurrentPage(1); }}
+            className="bg-transparent text-sm font-bold text-[#111827] outline-none cursor-pointer"
+          >
+            <option>Newest order</option>
+            <option>Oldest order</option>
+            <option>Expected delivery date</option>
+            <option>Recently updated</option>
+          </select>
         </div>
 
         <div className="space-y-4 pt-2">
@@ -222,55 +320,57 @@ export default function AdminOrdersPage() {
               const customerName = order.shipping_address?.name || order.users?.full_name || 'Customer';
               const itemsText = order.order_items?.map((it: any) => `${it.quantity || 1}x ${it.products?.title || 'Item'}`).join(', ') || '1x Item';
               const thumbnail = order.order_items?.[0]?.products?.image_url;
-              const status = order.status;
-              const statusLabel = getStatusDisplayName(status).toUpperCase();
-              const dateStr = order.created_at ? new Date(order.created_at).toLocaleDateString('en-GB', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase() : 'DATE N/A';
+              const derivedStatus = order.derived_status || 'processing';
+              const statusColor = getDerivedStatusColor(derivedStatus);
+              const dateStr = order.created_at ? new Date(order.created_at).toLocaleDateString('en-GB', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A';
 
               return (
                 <div
                   key={order.id}
                   onClick={() => setSelectedOrder(order)}
-                  className="bg-white rounded-3xl p-3 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#E5E7EB] cursor-pointer active:scale-[0.98] transition-transform"
+                  className={`bg-white rounded-3xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border ${order.is_delayed ? 'border-red-200' : 'border-[#E5E7EB]'} cursor-pointer active:scale-[0.98] transition-transform relative`}
                 >
-                  <div className="flex items-start justify-between gap-2 mb-4">
-                    <div>
-                      <p className="text-[10px] font-black text-[#9CA3AF] tracking-wider uppercase mb-1">
-                        #{order.id.split('-')[0].toUpperCase()}
-                      </p>
-                      <h4 className="text-lg font-black tracking-tight text-[#111827] leading-tight">
-                        {customerName}
-                      </h4>
+                  {order.is_not_seen && (
+                    <div className="absolute top-4 right-4 flex items-center gap-1 text-xs font-black text-purple-600 uppercase tracking-widest bg-purple-50 px-2 py-1 rounded-lg">
+                      <span className="w-2 h-2 rounded-full bg-purple-600 animate-pulse"></span> Not Seen
                     </div>
-                    <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold text-[9px] uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-xs">
-                      {statusLabel}
+                  )}
+                  
+                  <div className="flex flex-col gap-1 mb-4">
+                    <p className="text-[10px] font-black text-[#9CA3AF] tracking-wider uppercase">
+                      #{order.id.split('-')[0].toUpperCase()} · {dateStr}
+                    </p>
+                    <h4 className="text-lg font-black tracking-tight text-[#111827] leading-tight pr-24">
+                      {customerName}
+                    </h4>
+                  </div>
+
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className={`border font-bold text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-xs ${statusColor}`}>
+                      {getDerivedStatusIcon(derivedStatus)}
+                      {derivedStatus}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-4 my-4 p-3 bg-[#F9FAFB] rounded-2xl border border-[#E5E7EB]">
-                    <div className="w-12 h-12 rounded-xl bg-white border border-[#E5E7EB] shrink-0 overflow-hidden flex items-center justify-center p-1 shadow-xs">
-                      {thumbnail ? (
-                        <img src={thumbnail} alt="Order item" className="w-full h-full object-contain mix-blend-multiply" />
-                      ) : (
-                        <Package className="w-6 h-6 text-gray-300" strokeWidth={1.5} />
-                      )}
-                    </div>
-                    <p className="text-xs font-bold text-[#4B5563] line-clamp-2 leading-relaxed flex-1">
-                      {itemsText}
-                    </p>
-                  </div>
-
-                  <div className="flex items-end justify-between mt-4 pt-4 border-t border-[#E5E7EB]">
-                    <div>
-                      <p className="text-[10px] font-bold text-[#9CA3AF] tracking-widest uppercase mb-1">
-                        {dateStr}
-                      </p>
-                      <p className="text-2xl font-black tracking-tighter text-[#111827] leading-none">
-                        ₹{Number(order.total_amount || 0).toLocaleString('en-IN')}
+                  <div className="flex flex-col gap-2 p-3 bg-[#F9FAFB] rounded-2xl border border-[#E5E7EB]">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-white border border-[#E5E7EB] shrink-0 overflow-hidden flex items-center justify-center p-1 shadow-xs">
+                        {thumbnail ? (
+                          <img src={thumbnail} alt="Order item" className="w-full h-full object-contain mix-blend-multiply" />
+                        ) : (
+                          <Package className="w-5 h-5 text-gray-300" strokeWidth={1.5} />
+                        )}
+                      </div>
+                      <p className="text-xs font-bold text-[#4B5563] line-clamp-2 leading-relaxed flex-1">
+                        {itemsText}
                       </p>
                     </div>
-                    <div className="w-10 h-10 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full flex items-center justify-center text-[#111827] shadow-xs">
-                      <ChevronRight className="w-5 h-5 stroke-[2]" />
-                    </div>
+                    {derivedStatus !== 'delivered' && derivedStatus !== 'cancelled' && (
+                      <div className="mt-1 flex items-center gap-2 text-xs font-bold text-[#6B7280]">
+                        <Clock className="w-3.5 h-3.5" />
+                        Expected: <span className={order.is_delayed ? 'text-red-600' : 'text-[#111827]'}>{order.expected_delivery_display}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
@@ -308,32 +408,47 @@ export default function AdminOrdersPage() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {[
             { label: 'Total Orders', tab: 'All Orders', value: stats.total, sub: 'All Time', icon: <Package className="w-5 h-5"/> },
-            { label: 'COD Orders', tab: 'COD Orders', value: stats.codOrders, sub: 'Cash on Delivery', icon: <Filter className="w-5 h-5"/> },
-            { label: 'Processing', tab: 'Pending', value: stats.processing, sub: 'In Progress', icon: <Loader2 className="w-5 h-5"/> },
-            { label: 'Shipped', tab: 'Shipped', value: stats.shipped, sub: 'Dispatched', icon: <Truck className="w-5 h-5"/> },
+            { label: 'Not Seen', tab: 'Not Seen', value: stats.notSeen, sub: 'Needs Attention', icon: <Bell className="w-5 h-5"/>, highlightColor: 'bg-purple-600' },
+            { label: 'Processing', tab: 'Processing', value: stats.processing, sub: 'Being Packed', icon: <Loader2 className="w-5 h-5"/> },
+            { label: 'Shipping', tab: 'Shipping', value: stats.shipping, sub: 'In Transit', icon: <Truck className="w-5 h-5"/> },
             { label: 'Delivered', tab: 'Delivered', value: stats.delivered, sub: 'Completed', icon: <CheckCircle className="w-5 h-5"/> },
-            { label: 'Cancelled', tab: 'Cancelled', value: stats.cancelled, sub: 'Refunded/Void', icon: <X className="w-5 h-5"/> },
-          ].map((stat, i) => (
-            <div 
-              key={i} 
-              onClick={() => { setActiveTab(stat.tab); setCurrentPage(1); }}
-              className={`rounded-xl border p-6 flex flex-col gap-4 cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-                activeTab === stat.tab 
-                  ? 'bg-[#059669] text-white shadow-sm border-0 border-[#059669] shadow-[0_8px_30px_rgba(0,0,0,0.15)] scale-105 z-10' 
-                  : 'bg-white text-[#111827] border-[#E5E7EB] shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#D1D5DB]'
-              }`}
-            >
-              <div className="flex justify-between items-start">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${activeTab === stat.tab ? 'bg-white/10 text-white' : 'bg-[#F3F4F6] text-[#111827] border border-[#E5E7EB]'}`}>
-                  {stat.icon}
+            { label: 'Delayed', tab: 'Delayed', value: stats.delayed, sub: 'Past Deadline', icon: <AlertCircle className="w-5 h-5"/>, highlightColor: 'bg-red-600' },
+          ].map((stat, i) => {
+            const isActive = activeTab === stat.tab;
+            let cardClasses = 'bg-white text-[#111827] border-[#E5E7EB] shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:border-[#D1D5DB]';
+            let iconBg = 'bg-[#F3F4F6] text-[#111827] border border-[#E5E7EB]';
+            let titleColor = 'text-[#9CA3AF]';
+
+            if (isActive) {
+              if (stat.highlightColor) {
+                cardClasses = `${stat.highlightColor} text-white shadow-sm border-0 shadow-[0_8px_30px_rgba(0,0,0,0.15)] scale-105 z-10`;
+              } else {
+                cardClasses = 'bg-[#059669] text-white shadow-sm border-0 shadow-[0_8px_30px_rgba(0,0,0,0.15)] scale-105 z-10';
+              }
+              iconBg = 'bg-white/10 text-white';
+              titleColor = 'text-white/80';
+            } else if (stat.tab === 'Delayed' && stat.value > 0) {
+               cardClasses += ' border-red-200';
+            }
+
+            return (
+              <div 
+                key={i} 
+                onClick={() => { setActiveTab(stat.tab); setCurrentPage(1); }}
+                className={`rounded-xl border p-5 flex flex-col gap-4 cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${cardClasses}`}
+              >
+                <div className="flex justify-between items-start">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${iconBg}`}>
+                    {stat.icon}
+                  </div>
+                </div>
+                <div>
+                  <p className={`text-[10px] font-bold uppercase tracking-widest ${titleColor} mb-1`}>{stat.label}</p>
+                  <h3 className="text-2xl font-black tracking-tighter">{stat.value.toLocaleString()}</h3>
                 </div>
               </div>
-              <div>
-                <p className={`text-[10px] font-bold uppercase tracking-widest ${activeTab === stat.tab ? 'text-[#9CA3AF]' : 'text-[#9CA3AF]'} mb-1`}>{stat.label}</p>
-                <h3 className="text-2xl font-black tracking-tighter">{stat.value.toLocaleString()}</h3>
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
         {/* Top Controls & Filter Bar */}
@@ -343,80 +458,82 @@ export default function AdminOrdersPage() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF]" strokeWidth={1.5} />
               <input 
                 type="text" 
-                placeholder="Search orders or customer..." 
+                placeholder="Search orders, customers, products..." 
                 value={searchQuery}
                 onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
                 className="w-full pl-9 pr-3 py-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-2xl focus:border-[#059669]/20 focus:ring-1 focus:ring-[#059669]/20 outline-none text-sm font-bold text-[#111827] placeholder-gray-400 transition-all"
               />
             </div>
-            <select 
-              value={paymentFilter}
-              onChange={(e) => { setPaymentFilter(e.target.value); setCurrentPage(1); }}
-              className="px-3 py-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-2xl text-sm font-bold text-[#111827] outline-none hover:bg-[#059669]/5 transition-colors cursor-pointer"
-            >
-              <option value="All Payment Methods">All Methods</option>
-              <option value="Prepaid">Prepaid</option>
-              <option value="COD">COD</option>
-            </select>
+            
+            <div className="flex items-center gap-2 border border-[#E5E7EB] rounded-2xl bg-[#F9FAFB] px-3 py-2">
+              <ArrowUpDown className="w-4 h-4 text-[#9CA3AF]" />
+              <select 
+                value={sortOrder}
+                onChange={(e) => { setSortOrder(e.target.value); setCurrentPage(1); }}
+                className="bg-transparent text-sm font-bold text-[#111827] outline-none cursor-pointer"
+              >
+                <option>Newest order</option>
+                <option>Oldest order</option>
+                <option>Expected delivery date</option>
+                <option>Recently updated</option>
+              </select>
+            </div>
           </div>
           
           <div className="flex items-center gap-3 shrink-0">
             <button onClick={exportToCSV} className="flex items-center gap-2 px-4 py-2 bg-[#F9FAFB] border border-[#E5E7EB] rounded-2xl text-sm font-bold text-[#111827] hover:bg-[#059669]/5 transition-colors cursor-pointer">
               <Download className="w-4 h-4" strokeWidth={1.5} /> Export
             </button>
-            <button onClick={() => setCurrentPage(1)} className="flex items-center gap-2 px-4 py-2 bg-[#059669] text-white shadow-sm border-0 rounded-2xl text-sm font-bold hover:scale-[0.98] hover:shadow-[0_4px_14px_rgba(0,0,0,0.25)] transition-all cursor-pointer">
-              Refresh Feed
-            </button>
           </div>
         </div>
 
         {/* Orders Table - Double-Bezel */}
-        <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-[0_8px_40px_rgba(0,0,0,0.03)] overflow-hidden" style={{ zoom: 0.8 }}>
+        <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-[0_8px_40px_rgba(0,0,0,0.03)] overflow-hidden">
           <div className="overflow-x-auto w-full">
-            <table className="w-full text-left border-collapse whitespace-nowrap min-w-[800px]">
+            <table className="w-full text-left border-collapse whitespace-nowrap min-w-[1000px]">
               <thead>
                 <tr className="bg-[#F9FAFB] border-b border-[#E5E7EB] text-[10px] uppercase tracking-widest text-[#9CA3AF] font-bold">
-                  <th className="p-3 pl-4 w-12"><input type="checkbox" className="rounded border-[#D1D5DB] text-[#111827] cursor-pointer" /></th>
-                  <th className="p-3">Order ID</th>
-                  <th className="p-3">Customer</th>
-                  <th className="p-3">Date</th>
-                  <th className="p-3">Summary</th>
-                  <th className="p-3">Destination</th>
-                  <th className="p-3">Amount</th>
-                  <th className="p-3">State</th>
-                  <th className="p-3 pr-4 text-right">Actions</th>
+                  <th className="p-4">Order ID</th>
+                  <th className="p-4">Customer</th>
+                  <th className="p-4">Items</th>
+                  <th className="p-4">Timeline</th>
+                  <th className="p-4">Status</th>
+                  <th className="p-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="text-sm divide-y divide-black/5 font-medium">
+              <tbody className="text-sm divide-y divide-[#E5E7EB] font-medium">
                 {loading ? (
                   <tr>
-                    <td colSpan={9} className="p-8 text-center text-[#6B7280]">
+                    <td colSpan={6} className="p-12 text-center text-[#6B7280]">
                       <Loader2 className="w-8 h-8 animate-spin mx-auto mb-3 text-[#9CA3AF]" strokeWidth={1.5} />
-                      <span className="font-bold">Syncing ledgers...</span>
+                      <span className="font-bold">Syncing records...</span>
                     </td>
                   </tr>
                 ) : paginatedOrders.length === 0 ? (
                   <tr>
-                    <td colSpan={9} className="p-8 text-center text-[#9CA3AF] italic font-bold">
+                    <td colSpan={6} className="p-12 text-center text-[#9CA3AF] italic font-bold">
                       No matching records found.
                     </td>
                   </tr>
                 ) : paginatedOrders.map((order) => {
-                  const customerName = order.users?.full_name || 'Unknown'
+                  const customerName = order.shipping_address?.name || order.users?.full_name || 'Unknown'
                   const customerEmail = order.users?.email || 'N/A'
                   const avatarLetter = customerName.charAt(0).toUpperCase()
+                  const derivedStatus = order.derived_status || 'processing'
+                  const statusColor = getDerivedStatusColor(derivedStatus)
+                  const dateStr = new Date(order.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
                   
                   return (
-                    <tr key={order.id} className="hover:bg-[#F3F4F6] transition-colors group">
-                      <td className="p-3 pl-4 align-top">
-                        <input type="checkbox" className="rounded border-[#D1D5DB] text-[#111827] cursor-pointer" />
-                      </td>
-                      <td className="p-3 align-top">
-                        <span className="font-bold font-mono text-[#111827] cursor-pointer hover:underline" onClick={() => setSelectedOrder(order)}>
+                    <tr key={order.id} className={`hover:bg-[#F9FAFB] transition-colors group cursor-pointer ${order.is_delayed ? 'bg-red-50/30' : ''}`} onClick={() => setSelectedOrder(order)}>
+                      <td className="p-4 align-top">
+                        <span className="font-bold font-mono text-[#111827] flex flex-col gap-1">
                           #{order.id.split('-')[0].toUpperCase()}
+                          <span className="text-xs font-bold text-[#6B7280] font-sans">
+                            ₹{Number(order.total_amount).toLocaleString('en-IN')}
+                          </span>
                         </span>
                       </td>
-                      <td className="p-3 align-top">
+                      <td className="p-4 align-top">
                         <div className="flex items-start gap-3">
                           <div className="w-10 h-10 rounded-xl bg-white border border-[#E5E7EB] flex items-center justify-center font-black text-xs text-[#111827] shrink-0 shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
                             {avatarLetter}
@@ -427,51 +544,54 @@ export default function AdminOrdersPage() {
                           </div>
                         </div>
                       </td>
-                      <td className="p-3 align-top text-[#4B5563] font-bold text-xs">
-                        {new Date(order.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
-                      </td>
-                      <td className="p-3 align-top text-[#4B5563]">
-                        <div className="flex flex-col gap-3 max-w-[220px]">
+                      <td className="p-4 align-top text-[#4B5563]">
+                        <div className="flex flex-col gap-2 max-w-[220px]">
                           {order.order_items?.map((item: any, idx: number) => (
-                            <div key={idx} className="flex items-center gap-3">
+                            <div key={idx} className="flex items-center gap-2">
                               {item.products?.image_url && (
-                                <div className="w-10 h-10 rounded-xl bg-white border border-[#E5E7EB] p-1 shrink-0 overflow-hidden flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
-                                  <img src={item.products.image_url} alt={item.products.title} className="w-full h-full object-contain mix-blend-multiply" />
-                                </div>
+                                <img src={item.products.image_url} alt="" className="w-6 h-6 object-contain mix-blend-multiply rounded shrink-0 bg-white border border-gray-100" />
                               )}
-                              <div className="text-xs min-w-0">
-                                <p className="font-bold text-[#111827] truncate" title={item.products?.title}>{item.products?.title}</p>
-                                <p className="text-[#9CA3AF] font-bold mt-0.5">Qty: {item.quantity}</p>
-                              </div>
+                              <p className="text-xs font-bold text-[#111827] truncate" title={item.products?.title}>{item.quantity}x {item.products?.title}</p>
                             </div>
                           ))}
                         </div>
                       </td>
-                      <td className="p-3 align-top">
-                        {order.shipping_address ? (
-                          <div className="text-xs text-[#4B5563] min-w-[180px] max-w-[240px] whitespace-normal">
-                            <span className="font-bold text-[#111827] block mb-1">{order.shipping_address.name}</span>
-                            <p className="leading-relaxed text-[#6B7280]">{order.shipping_address.city}, {order.shipping_address.state}</p>
+                      <td className="p-4 align-top text-xs">
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center gap-2 text-[#6B7280] font-bold">
+                            <Calendar className="w-3.5 h-3.5" />
+                            Ordered: <span className="text-[#111827]">{dateStr}</span>
                           </div>
-                        ) : (
-                          <span className="text-xs text-[#9CA3AF] italic font-bold">Digital</span>
-                        )}
-                      </td>
-                      <td className="p-3 align-top font-black tracking-tight text-[#111827] text-base">₹{Number(order.total_amount).toLocaleString('en-IN')}</td>
-                      <td className="p-3 align-top">
-                        <div className="flex flex-col items-start gap-2">
-                          <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest ${
-                            order.status === 'delivered' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 
-                            order.status === 'cancelled' ? 'bg-[#F3F4F6] text-[#9CA3AF] line-through' : 
-                            'bg-[#059669] text-white shadow-sm border-0 shadow-xs'
-                          }`}>
-                            <span className="capitalize">{getStatusDisplayName(order.status)}</span>
-                          </span>
+                          {derivedStatus !== 'cancelled' && derivedStatus !== 'delivered' && (
+                            <div className={`flex items-center gap-2 font-bold ${order.is_delayed ? 'text-red-600' : 'text-[#6B7280]'}`}>
+                              <Clock className="w-3.5 h-3.5" />
+                              Expected: <span className={order.is_delayed ? 'text-red-700' : 'text-[#111827]'}>{order.expected_delivery_display}</span>
+                            </div>
+                          )}
                         </div>
                       </td>
-                      <td className="p-3 pr-4 text-right align-top">
-                        <button onClick={() => setSelectedOrder(order)} className="p-2.5 text-[#9CA3AF] hover:text-[#059669] bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl transition-all cursor-pointer shadow-xs">
-                          <Eye className="w-4 h-4" strokeWidth={1.5} />
+                      <td className="p-4 align-top">
+                        <div className="flex flex-col items-start gap-2">
+                          <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border ${statusColor}`}>
+                            {getDerivedStatusIcon(derivedStatus)}
+                            {derivedStatus}
+                          </span>
+                          {order.is_not_seen && (
+                            <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-purple-600">
+                              <span className="w-1.5 h-1.5 rounded-full bg-purple-600 animate-pulse"></span>
+                              Not Seen
+                            </span>
+                          )}
+                          {!order.is_not_seen && (
+                            <span className="text-[9px] font-bold uppercase tracking-widest text-gray-400">
+                              Viewed
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="p-4 text-right align-top">
+                        <button onClick={(e) => { e.stopPropagation(); setSelectedOrder(order); }} className="p-2.5 text-[#9CA3AF] hover:text-[#059669] bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl transition-all cursor-pointer shadow-xs inline-flex">
+                          <ChevronRight className="w-4 h-4" strokeWidth={2} />
                         </button>
                       </td>
                     </tr>
@@ -482,38 +602,40 @@ export default function AdminOrdersPage() {
           </div>
           
           {/* Pagination */}
-          <div className="p-3 px-8 border-t border-[#E5E7EB] flex items-center justify-between text-xs font-bold text-[#6B7280] bg-[#F9FAFB]">
-            <span>Showing {((currentPage - 1) * itemsPerPage) + (paginatedOrders.length > 0 ? 1 : 0)} to {((currentPage - 1) * itemsPerPage) + paginatedOrders.length} of {filteredOrders.length} records</span>
-            <div className="flex gap-2 items-center">
-              <button 
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="px-4 py-2 border border-[#E5E7EB] bg-white rounded-xl hover:bg-[#F3F4F6] hover:text-[#111827] disabled:opacity-40 transition-colors cursor-pointer shadow-xs"
-              >
-                Previous
-              </button>
-              <div className="flex items-center gap-1 mx-3">
-                {Array.from({ length: totalPages }).map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentPage(i + 1)}
-                    className={`w-8 h-8 flex items-center justify-center rounded-xl text-xs font-black transition-colors cursor-pointer ${
-                      currentPage === i + 1 ? 'bg-[#059669] text-white shadow-sm border-0 shadow-xs' : 'text-[#6B7280] hover:bg-[#059669]/5'
-                    }`}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
+          {totalPages > 1 && (
+            <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-between text-xs font-bold text-[#6B7280] bg-[#F9FAFB]">
+              <span>Showing {((currentPage - 1) * itemsPerPage) + (paginatedOrders.length > 0 ? 1 : 0)} to {((currentPage - 1) * itemsPerPage) + paginatedOrders.length} of {filteredOrders.length} records</span>
+              <div className="flex gap-2 items-center">
+                <button 
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 border border-[#E5E7EB] bg-white rounded-xl hover:bg-[#F3F4F6] hover:text-[#111827] disabled:opacity-40 transition-colors cursor-pointer shadow-xs"
+                >
+                  Previous
+                </button>
+                <div className="flex items-center gap-1 mx-3">
+                  {Array.from({ length: totalPages }).map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentPage(i + 1)}
+                      className={`w-8 h-8 flex items-center justify-center rounded-xl text-xs font-black transition-colors cursor-pointer ${
+                        currentPage === i + 1 ? 'bg-[#059669] text-white shadow-sm border-0 shadow-xs' : 'text-[#6B7280] hover:bg-[#059669]/5'
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+                <button 
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages || totalPages === 0}
+                  className="px-4 py-2 border border-[#E5E7EB] bg-white rounded-xl hover:bg-[#F3F4F6] hover:text-[#111827] disabled:opacity-40 transition-colors cursor-pointer shadow-xs"
+                >
+                  Next
+                </button>
               </div>
-              <button 
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages || totalPages === 0}
-                className="px-4 py-2 border border-[#E5E7EB] bg-white rounded-xl hover:bg-[#F3F4F6] hover:text-[#111827] disabled:opacity-40 transition-colors cursor-pointer shadow-xs"
-              >
-                Next
-              </button>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -521,22 +643,88 @@ export default function AdminOrdersPage() {
       {selectedOrder && (
         <div className="fixed inset-0 z-[100] flex justify-end">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={() => setSelectedOrder(null)} />
-          <div className="w-full max-w-lg bg-white h-full shadow-[0_0_60px_rgba(0,0,0,0.1)] flex flex-col relative z-10 animate-in slide-in-from-right duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] border-l border-[#E5E7EB]">
+          <div className="w-full max-w-xl bg-white h-full shadow-[0_0_60px_rgba(0,0,0,0.1)] flex flex-col relative z-10 animate-in slide-in-from-right duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] border-l border-[#E5E7EB]">
             <div className="flex items-center justify-between p-5 border-b border-[#E5E7EB]">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-[#9CA3AF] block mb-1">Inspection</span>
-                <h2 className="text-2xl font-black tracking-tighter text-[#111827]">Order Details</h2>
+                <div className="flex gap-2 items-center mb-1">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-[#9CA3AF]">Order Ref</span>
+                  {selectedOrder.is_not_seen && (
+                    <span className="bg-purple-100 text-purple-700 text-[9px] font-black uppercase px-2 py-0.5 rounded-md">New</span>
+                  )}
+                </div>
+                <h2 className="text-2xl font-black tracking-tighter text-[#111827]">#{selectedOrder.id.split('-')[0].toUpperCase()}</h2>
               </div>
               <button onClick={() => setSelectedOrder(null)} className="w-10 h-10 bg-[#F9FAFB] border border-[#E5E7EB] text-[#9CA3AF] hover:text-[#111827] rounded-full flex items-center justify-center transition-colors cursor-pointer">
                 <X className="w-5 h-5" strokeWidth={1.5} />
               </button>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-5 space-y-10">
+            <div className="flex-1 overflow-y-auto p-5 md:p-8 space-y-10">
               
-              <div className="flex justify-between items-end pb-6 border-b border-[#E5E7EB]">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-[#9CA3AF]">Order Ref</span>
-                <span className="font-black font-mono tracking-tight text-[#111827] text-2xl">#{selectedOrder.id.split('-')[0].toUpperCase()}</span>
+              {/* Order Timeline Component */}
+              <div className="space-y-4">
+                <h3 className="text-[10px] font-bold text-[#9CA3AF] flex items-center gap-2 uppercase tracking-widest">
+                  <Clock className="w-4 h-4 text-[#059669]" strokeWidth={1.5} /> Timeline
+                </h3>
+                
+                <div className="bg-[#F9FAFB] p-6 rounded-2xl border border-[#E5E7EB] relative">
+                  <div className="absolute left-8 top-10 bottom-10 w-0.5 bg-[#E5E7EB] z-0"></div>
+                  
+                  {/* Step 1: Placed */}
+                  <div className="flex gap-4 relative z-10 mb-6">
+                    <div className="w-5 h-5 rounded-full bg-[#059669] shrink-0 border-4 border-white shadow-sm mt-1"></div>
+                    <div className="flex-1">
+                      <p className="font-bold text-[#111827]">Order Placed</p>
+                      <p className="text-xs font-bold text-[#6B7280]">{new Date(selectedOrder.created_at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+                    </div>
+                  </div>
+
+                  {/* Step 2: Processing */}
+                  <div className="flex gap-4 relative z-10 mb-6">
+                    <div className={`w-5 h-5 rounded-full shrink-0 border-4 border-white shadow-sm mt-1 ${
+                      selectedOrder.status === 'pending' ? 'bg-[#E5E7EB]' : 'bg-[#059669]'
+                    }`}></div>
+                    <div className="flex-1">
+                      <p className={`font-bold ${selectedOrder.status === 'pending' ? 'text-[#9CA3AF]' : 'text-[#111827]'}`}>Processing & Packed</p>
+                      {selectedOrder.status !== 'pending' && <p className="text-xs font-bold text-[#6B7280]">In Progress</p>}
+                    </div>
+                  </div>
+
+                  {/* Step 3: Shipped */}
+                  <div className="flex gap-4 relative z-10 mb-6">
+                    <div className={`w-5 h-5 rounded-full shrink-0 border-4 border-white shadow-sm mt-1 ${
+                      ['shipped', 'out_for_delivery', 'delivered'].includes(selectedOrder.status) ? 'bg-[#059669]' : 'bg-[#E5E7EB]'
+                    }`}></div>
+                    <div className="flex-1">
+                      <p className={`font-bold ${['shipped', 'out_for_delivery', 'delivered'].includes(selectedOrder.status) ? 'text-[#111827]' : 'text-[#9CA3AF]'}`}>Shipped</p>
+                      {selectedOrder.shipped_at && <p className="text-xs font-bold text-[#6B7280]">{new Date(selectedOrder.shipped_at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>}
+                      {selectedOrder.tracking_number && (
+                        <div className="mt-2 bg-white border border-[#E5E7EB] px-3 py-2 rounded-xl text-xs flex justify-between items-center shadow-xs">
+                          <span className="font-bold text-[#6B7280]">Tracking:</span>
+                          <span className="font-black text-[#111827] font-mono tracking-widest">{selectedOrder.tracking_number}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Step 4: Delivered / Delayed */}
+                  <div className="flex gap-4 relative z-10">
+                    <div className={`w-5 h-5 rounded-full shrink-0 border-4 border-white shadow-sm mt-1 ${
+                      selectedOrder.status === 'delivered' ? 'bg-[#059669]' : (selectedOrder.is_delayed ? 'bg-red-500' : 'bg-[#E5E7EB]')
+                    }`}></div>
+                    <div className="flex-1">
+                      <p className={`font-bold ${selectedOrder.status === 'delivered' ? 'text-[#111827]' : (selectedOrder.is_delayed ? 'text-red-600' : 'text-[#9CA3AF]')}`}>
+                        {selectedOrder.status === 'delivered' ? 'Delivered' : (selectedOrder.is_delayed ? 'Delayed' : 'Expected Delivery')}
+                      </p>
+                      {selectedOrder.status === 'delivered' && selectedOrder.delivered_at ? (
+                        <p className="text-xs font-bold text-[#6B7280]">{new Date(selectedOrder.delivered_at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+                      ) : (
+                        <p className={`text-xs font-bold ${selectedOrder.is_delayed ? 'text-red-500' : 'text-[#6B7280]'}`}>{selectedOrder.expected_delivery_display}</p>
+                      )}
+                    </div>
+                  </div>
+
+                </div>
               </div>
 
               {/* Customer Info */}
@@ -592,12 +780,6 @@ export default function AdminOrdersPage() {
                   <div className="flex justify-between items-center">
                     <span>Method</span>
                     <span className="text-[#111827]">{selectedOrder.payment_method || 'Online'}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>Status</span>
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] uppercase tracking-widest border ${selectedOrder.payment_method === 'Cash on Delivery' && selectedOrder.status !== 'delivered' ? 'bg-white text-[#111827] border-[#E5E7EB]' : 'bg-[#059669] text-white shadow-sm border-0 border-[#059669]'}`}>
-                      {selectedOrder.payment_method === 'Cash on Delivery' && selectedOrder.status !== 'delivered' ? 'Unpaid' : 'Verified'}
-                    </span>
                   </div>
                   <div className="flex justify-between items-center text-[#111827] border-t border-[#E5E7EB] pt-4">
                     <span>Total Amount</span>
