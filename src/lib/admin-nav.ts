@@ -63,6 +63,13 @@ export const ADMIN_NAV: AdminNavItem[] = [
     description: 'Shop filters, category images, and store navigation',
   },
   {
+    name: 'Homepage Images',
+    path: '/admin/homepage',
+    icon: 'Image',
+    group: 'Marketing',
+    description: 'Manage homepage banners, gallery, and decorative images',
+  },
+  {
     name: 'Offers & Coupons',
     path: '/admin/offers',
     icon: 'Tag',

@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useAuthStore } from '@/store/authStore'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Save, RotateCcw, Image as ImageIcon, AlertTriangle, CheckCircle2, Copy, Upload } from 'lucide-react'
+import { ArrowLeft, Save, RotateCcw, Image as ImageIcon, AlertTriangle, CheckCircle2, Copy, Upload, Sparkles } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import { DEFAULT_IMAGES } from '@/lib/homepageImages'
@@ -80,6 +80,8 @@ export default function HomepageImagesPage() {
   const [uploadingId, setUploadingId] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const [aiSuggestions, setAiSuggestions] = useState<any[]>([])
+  const [loadingAi, setLoadingAi] = useState(false)
 
   useEffect(() => {
     if (!isAdminUnlocked) {
@@ -198,6 +200,29 @@ export default function HomepageImagesPage() {
     setTimeout(() => setCopied(false), 2000)
   }
 
+  const handleGetAiSuggestions = async () => {
+    setLoadingAi(true)
+    try {
+      const password = useAuthStore.getState().adminPassword
+      const res = await fetch('/api/admin/banner-suggestions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${password}`
+        }
+      })
+      const data = await res.json()
+      if (data.suggestions) {
+        setAiSuggestions(data.suggestions)
+      } else {
+        alert('Failed to get suggestions: ' + (data.error || 'Invalid format'))
+      }
+    } catch (err) {
+      alert('Error fetching AI suggestions.')
+    } finally {
+      setLoadingAi(false)
+    }
+  }
+
   if (!isAdminUnlocked) return null
 
   return (
@@ -221,6 +246,45 @@ export default function HomepageImagesPage() {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* AI Suggestions Section */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm mb-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-serif font-bold text-[#1E4631] flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-amber-500" /> AI Banner Ideas
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">Get fresh ideas for today's banners, tailored to the season and upcoming festivals.</p>
+            </div>
+            <button
+              onClick={handleGetAiSuggestions}
+              disabled={loadingAi}
+              className="bg-amber-100 text-amber-800 hover:bg-amber-200 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-colors disabled:opacity-50 shrink-0"
+            >
+              {loadingAi ? (
+                 <div className="w-4 h-4 border-2 border-amber-800 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Sparkles className="w-4 h-4" />
+              )}
+              {loadingAi ? 'Generating...' : 'Get Ideas for Today'}
+            </button>
+          </div>
+          
+          {aiSuggestions.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+              {aiSuggestions.map((suggestion, idx) => (
+                <div key={idx} className="bg-amber-50 rounded-xl p-4 border border-amber-100">
+                  <h3 className="font-bold text-amber-900 text-sm mb-2">{suggestion.title}</h3>
+                  <div className="space-y-2 text-xs text-amber-800">
+                    <p><span className="font-semibold">Copy:</span> "{suggestion.copy}"</p>
+                    <p><span className="font-semibold">Visual:</span> {suggestion.imageIdea}</p>
+                    <p className="mt-2 text-amber-600/80 italic text-[11px] border-t border-amber-200/50 pt-2">Why: {suggestion.reason}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Setup Warning */}
