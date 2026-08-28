@@ -3,7 +3,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useAuthStore } from '@/store/authStore'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Save, RotateCcw, Image as ImageIcon, AlertTriangle, CheckCircle2, Copy } from 'lucide-react'
+import { ArrowLeft, Save, RotateCcw, Image as ImageIcon, AlertTriangle, CheckCircle2, Copy, Upload } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import { DEFAULT_IMAGES } from '@/lib/homepageImages'
 
@@ -76,6 +77,7 @@ export default function HomepageImagesPage() {
   const [loading, setLoading] = useState(true)
   const [needsSetup, setNeedsSetup] = useState(false)
   const [saving, setSaving] = useState<string | null>(null)
+  const [uploadingId, setUploadingId] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
 
@@ -143,6 +145,50 @@ export default function HomepageImagesPage() {
       fetchImages()
     } catch {
       alert('Failed to reset')
+    }
+  }
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
+    if (!e.target.files || !e.target.files[0]) return
+    const file = e.target.files[0]
+    setUploadingId(id)
+
+    try {
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${id}_${Date.now()}.${fileExt}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('product-images')
+        .upload(fileName, file)
+
+      if (uploadError) throw new Error(`Upload failed: ${uploadError.message}`)
+
+      const { data: publicUrlData } = supabase.storage
+        .from('product-images')
+        .getPublicUrl(fileName)
+
+      const imageUrl = publicUrlData.publicUrl
+
+      setEditValues(prev => ({ ...prev, [id]: imageUrl }))
+      
+      // Auto-save after upload
+      setSaving(id)
+      setSuccess(null)
+      await fetch('/api/admin/homepage-images', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, image_url: imageUrl, alt_text: '' }),
+      })
+      setSuccess(id)
+      setTimeout(() => setSuccess(null), 2000)
+      fetchImages()
+
+    } catch (err: any) {
+      alert(err.message || 'Failed to upload image')
+    } finally {
+      setUploadingId(null)
+      // Reset input value so same file can be uploaded again if needed
+      e.target.value = ''
     }
   }
 
@@ -258,6 +304,12 @@ export default function HomepageImagesPage() {
                             Custom
                           </span>
                         )}
+                        {/* Uploading overlay */}
+                        {uploadingId === key && (
+                          <div className="absolute inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center z-10">
+                            <div className="w-6 h-6 border-2 border-[#1E4631] border-t-transparent rounded-full animate-spin" />
+                          </div>
+                        )}
                       </div>
 
                       {/* Controls */}
@@ -280,7 +332,7 @@ export default function HomepageImagesPage() {
                         <div className="flex gap-2">
                           <button
                             onClick={() => handleSave(key)}
-                            disabled={saving === key}
+                            disabled={saving === key || uploadingId === key}
                             className="flex-1 bg-[#1E4631] text-white text-xs font-semibold py-2 rounded-lg hover:bg-[#153424] transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50"
                           >
                             {saving === key ? (
@@ -292,6 +344,20 @@ export default function HomepageImagesPage() {
                             )}
                             {success === key ? 'Saved!' : 'Save'}
                           </button>
+                          <label className="bg-gray-100 text-gray-600 text-xs font-semibold py-2 px-3 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50" title="Upload Image">
+                            {uploadingId === key ? (
+                               <div className="w-3.5 h-3.5 border-2 border-gray-600 border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                              <Upload className="w-3.5 h-3.5" />
+                            )}
+                            <input 
+                              type="file" 
+                              accept="image/*" 
+                              className="hidden" 
+                              onChange={(e) => handleFileUpload(e, key)}
+                              disabled={uploadingId === key || saving === key}
+                            />
+                          </label>
                           {images[key] && (
                             <button
                               onClick={() => handleReset(key)}
