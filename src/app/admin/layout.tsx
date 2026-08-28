@@ -95,17 +95,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     loadNotifications();
 
     const channel = supabase.channel(`admin_header_global_${Math.random()}`)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, (payload) => {
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, async (payload) => {
         loadNotifications();
         if (payload.eventType === 'INSERT') {
           const amount = payload.new.total_amount || 0;
           let name = 'Customer';
-          if (payload.new.shipping_address) {
+          
+          if (payload.new.user_id) {
+            const { data } = await supabase.from('users').select('full_name').eq('id', payload.new.user_id).single();
+            if (data?.full_name) name = data.full_name;
+          } else if (payload.new.shipping_address) {
             try {
               const addr = typeof payload.new.shipping_address === 'string' 
                 ? JSON.parse(payload.new.shipping_address) 
                 : payload.new.shipping_address;
-              name = addr.fullName || addr.full_name || 'Customer';
+              if (addr?.fullName || addr?.full_name) {
+                name = addr.fullName || addr.full_name;
+              }
             } catch (e) {}
           }
           showGlobalToast(`🎉 Order received from ${name} for ₹${amount}!`);
