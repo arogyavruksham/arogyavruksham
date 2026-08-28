@@ -371,6 +371,12 @@ export default function AdminOrdersPage() {
                         Expected: <span className={order.is_delayed ? 'text-red-600' : 'text-[#111827]'}>{order.expected_delivery_display}</span>
                       </div>
                     )}
+                    {derivedStatus === 'delivered' && order.delivered_at && (
+                      <div className="mt-1 flex items-center gap-2 text-xs font-bold text-[#059669]">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        Delivered: <span className="text-[#111827]">{new Date(order.delivered_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
@@ -566,6 +572,12 @@ export default function AdminOrdersPage() {
                             <div className={`flex items-center gap-2 font-bold ${order.is_delayed ? 'text-red-600' : 'text-[#6B7280]'}`}>
                               <Clock className="w-3.5 h-3.5" />
                               Expected: <span className={order.is_delayed ? 'text-red-700' : 'text-[#111827]'}>{order.expected_delivery_display}</span>
+                            </div>
+                          )}
+                          {derivedStatus === 'delivered' && order.delivered_at && (
+                            <div className="flex items-center gap-2 text-[#059669] font-bold">
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              Delivered: <span className="text-[#111827]">{new Date(order.delivered_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                             </div>
                           )}
                         </div>
