@@ -80,7 +80,7 @@ export function Navbar() {
       )}
 
       {/* Wrapper to prevent layout shift when header becomes fixed */}
-      <div className={isSticky ? 'h-[80px]' : 'h-0'} />
+      <div className={isSticky ? 'h-[120px]' : 'h-0'} />
       <header 
         className={`w-full py-5 z-50 transition-all duration-300 ease-in-out ${
           isSticky 
@@ -91,13 +91,13 @@ export function Navbar() {
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 xl:px-16 flex items-center justify-between">
           
           {/* Left: Logo */}
-          <Link href="/" className="flex items-center gap-3 shrink-0">
+          <Link href="/" className="flex items-center gap-4 shrink-0">
             <img 
               src="/logo.png" 
               alt="Arogyavruksham Logo" 
-              className="w-12 h-12 object-contain"
+              className="w-20 h-20 object-contain"
             />
-            <span className="font-bold text-[22px] text-gray-900 tracking-tight">Arogyavruksham</span>
+            <span className="font-bold text-[28px] text-gray-900 tracking-tight">Arogyavruksham</span>
           </Link>
 
           {/* Center: Links (Desktop) */}
