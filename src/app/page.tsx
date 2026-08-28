@@ -3,7 +3,8 @@ import { DualHeroBanners } from "@/components/home/DualHeroBanners";
 import { PromoBanners } from "@/components/home/PromoBanners";
 import { CategoryCards } from "@/components/home/CategoryCards";
 import { NewArrivalsAndDeals } from "@/components/home/NewArrivalsAndDeals";
-import { TrendingBanner } from "@/components/home/TrendingBanner";
+import { PromotionBanner } from "@/components/home/PromotionBanner";
+import { ProductSlider } from "@/components/home/ProductSlider";
 import { PlantGallery } from "@/components/home/PlantGallery";
 import { LatestFromBlog } from "@/components/home/LatestFromBlog";
 import { FooterFeatures } from "@/components/home/FooterFeatures";
@@ -27,8 +28,35 @@ export default async function Home() {
       {/* 4. Top Rating — Tab-filtered product grid (desktop) / New Arrivals (mobile) */}
       <NewArrivalsAndDeals />
 
-      {/* 5. Benefits of Indoor Plants — Dark green banner */}
-      <TrendingBanner images={images} />
+      {/* 5. Benefits of Indoor Plants — Promotion Banner */}
+      <PromotionBanner 
+        title="The Benefits Of Indoor Plants"
+        description="Phasellus tempus dignissim crasendum facilisis. Mauris ut elit sed tincidunt convallis."
+        buttonText="Shop Now"
+        buttonLink="/shop?category=Indoor%20Plants"
+        imageSrc={images.benefits || "https://placehold.co/400x500/eeeeee/cccccc?text=Plant+Image"}
+      />
+
+      {/* 5.1 Related Products (Indoor Plants) */}
+      <ProductSlider 
+        title="Related Indoor Plants" 
+        categoryFilter="Indoor Plants" 
+      />
+
+      {/* 5.2 50% Off Promotion Banner */}
+      <PromotionBanner 
+        title="Get 50% Off On Selected Plants"
+        description="Transform your home into a green oasis with our special half-price collection. Limited time offer."
+        buttonText="Explore Deals"
+        buttonLink="/shop"
+        imageSrc={images.promo_50_off || "https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&q=80&w=800"}
+      />
+
+      {/* 5.3 Related Sale Products */}
+      <ProductSlider 
+        title="50% Off Sale Items" 
+        saleOnly={true} 
+      />
 
       {/* 6. Plant Gallery — Masonry bento grid (desktop only) */}
       <PlantGallery images={images} />

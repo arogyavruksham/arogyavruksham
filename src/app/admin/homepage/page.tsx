@@ -71,14 +71,18 @@ const IMAGE_SECTIONS = [
     }
   },
   {
-    section: 'Trending Banner',
-    description: 'The Benefits of Indoor Plants section image',
-    keys: ['benefits'],
+    section: 'Promotional Banners',
+    description: 'Images for the promotional banner sections',
+    keys: ['benefits', 'promo_50_off'],
+    labels: {
+      benefits: 'Benefits of Indoor Plants',
+      promo_50_off: '50% Off Promotion'
+    },
     sizes: {
-      default: 'Vertical / Portrait (Transparent PNG recommended)'
+      default: 'Square (1:1)'
     },
     aspects: {
-      default: 'h-[300px] object-contain'
+      default: 'aspect-square'
     }
   }
 ]
