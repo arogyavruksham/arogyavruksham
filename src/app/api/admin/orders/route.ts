@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import { supabase } from '@/lib/supabase'
 import { sendShippingUpdateEmail, resolveCustomerEmail, fetchRecommendedProducts } from '@/lib/emailService'
+import { revalidatePath } from 'next/cache'
 
 async function verifyAdminPassword(request: Request): Promise<boolean> {
   const authHeader = request.headers.get('authorization')
@@ -217,6 +218,7 @@ export async function PATCH(request: Request) {
       }
     }
 
+    revalidatePath('/', 'layout')
     return NextResponse.json({ success: true })
   } catch (err: any) {
     console.error("PATCH catch block error:", err)

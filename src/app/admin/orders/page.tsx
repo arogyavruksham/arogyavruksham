@@ -9,6 +9,7 @@ import {
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
 import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/store/authStore'
+import { useRouter } from 'next/navigation'
 
 export const getStatusDisplayName = (status?: string) => {
   switch (status) {
@@ -52,6 +53,7 @@ export default function AdminOrdersPage() {
   const [updatingStatus, setUpdatingStatus] = useState(false)
   const [statusDropdownOpen, setStatusDropdownOpen] = useState(false)
   const { adminPassword, setAdminUnlocked } = useAuthStore()
+  const router = useRouter()
 
   // Tab & Filter States
   const [activeTab, setActiveTab] = useState('All Orders')
@@ -103,6 +105,7 @@ export default function AdminOrdersPage() {
         if (selectedOrder && selectedOrder.id === orderId) {
           setSelectedOrder((prev: any) => ({ ...prev, admin_viewed: true, is_not_seen: false }))
         }
+        router.refresh()
       }
     } catch (err) {
       console.error('Error marking as viewed', err)
@@ -126,6 +129,7 @@ export default function AdminOrdersPage() {
         if (selectedOrder && selectedOrder.id === orderId) {
           setSelectedOrder((prev: any) => ({ ...prev, status: newStatus }))
         }
+        router.refresh()
       } else {
         const errText = await res.text()
         console.error('Failed to update status:', errText)

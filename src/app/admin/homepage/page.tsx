@@ -179,6 +179,7 @@ export default function HomepageImagesPage() {
       setSuccess(id)
       setTimeout(() => setSuccess(null), 2000)
       fetchImages()
+      router.refresh()
     } catch (err) {
       alert('Failed to save image')
     } finally {
@@ -191,6 +192,7 @@ export default function HomepageImagesPage() {
       await fetch(`/api/admin/homepage-images?id=${id}`, { method: 'DELETE' })
       setEditValues((prev) => ({ ...prev, [id]: DEFAULT_IMAGES[id] }))
       fetchImages()
+      router.refresh()
     } catch {
       alert('Failed to reset')
     }
@@ -230,6 +232,7 @@ export default function HomepageImagesPage() {
       setSuccess(id)
       setTimeout(() => setSuccess(null), 2000)
       fetchImages()
+      router.refresh()
 
     } catch (err: any) {
       alert(err.message || 'Failed to upload image')
