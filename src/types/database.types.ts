@@ -69,6 +69,14 @@ export interface Database {
           status: 'pending' | 'paid' | 'packed' | 'shipped' | 'out_for_delivery' | 'delivered' | 'cancelled'
           payment_method?: string | null
           created_at: string
+          shipping_address?: Json | null
+          admin_viewed?: boolean | null
+          tracking_number?: string | null
+          shipping_carrier?: string | null
+          shipped_at?: string | null
+          delivered_at?: string | null
+          expected_delivery_date?: string | null
+          updated_at?: string | null
         }
         Insert: {
           id?: string
@@ -77,6 +85,14 @@ export interface Database {
           status?: 'pending' | 'paid' | 'packed' | 'shipped' | 'out_for_delivery' | 'delivered' | 'cancelled'
           payment_method?: string | null
           created_at?: string
+          shipping_address?: Json | null
+          admin_viewed?: boolean | null
+          tracking_number?: string | null
+          shipping_carrier?: string | null
+          shipped_at?: string | null
+          delivered_at?: string | null
+          expected_delivery_date?: string | null
+          updated_at?: string | null
         }
         Update: {
           id?: string
@@ -85,6 +101,14 @@ export interface Database {
           status?: 'pending' | 'paid' | 'packed' | 'shipped' | 'out_for_delivery' | 'delivered' | 'cancelled'
           payment_method?: string | null
           created_at?: string
+          shipping_address?: Json | null
+          admin_viewed?: boolean | null
+          tracking_number?: string | null
+          shipping_carrier?: string | null
+          shipped_at?: string | null
+          delivered_at?: string | null
+          expected_delivery_date?: string | null
+          updated_at?: string | null
         }
       }
       order_items: {
