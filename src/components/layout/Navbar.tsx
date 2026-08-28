@@ -16,9 +16,31 @@ export function Navbar() {
   const itemCount = items.reduce((total, item) => total + item.quantity, 0)
   const [mounted, setMounted] = useState(false)
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false)
+  const [isSticky, setIsSticky] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
 
   useEffect(() => {
     setMounted(true)
+    
+    const handleScroll = () => {
+      if (window.scrollY > 80) {
+        setIsSticky(true)
+        // Use requestAnimationFrame to ensure the 'fixed' and '-translate-y-full' 
+        // are applied before transitioning to 'translate-y-0'
+        requestAnimationFrame(() => {
+          setIsAnimating(true)
+        })
+      } else {
+        setIsSticky(false)
+        setIsAnimating(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    // Initialize on mount
+    handleScroll()
+    
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   // Don't render on admin routes
@@ -33,7 +55,15 @@ export function Navbar() {
 
   return (
     <>
-      <header className="w-full bg-white py-5 relative z-50">
+      {/* Wrapper to prevent layout shift when header becomes fixed */}
+      <div className={isSticky ? 'h-[80px]' : 'h-0'} />
+      <header 
+        className={`w-full py-5 z-50 transition-all duration-300 ease-in-out ${
+          isSticky 
+            ? `fixed top-0 left-0 bg-white/95 backdrop-blur-sm shadow-md ${isAnimating ? 'translate-y-0' : '-translate-y-full'}` 
+            : 'relative bg-white translate-y-0'
+        }`}
+      >
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 xl:px-16 flex items-center justify-between">
           
           {/* Left: Logo */}
