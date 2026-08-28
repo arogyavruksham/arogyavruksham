@@ -25,32 +25,52 @@ const IMAGE_SECTIONS = [
       hero_grid_4: 'Bottom Image (Left Stack)',
       hero_grid_2: 'Top Image (Right Stack)',
       hero_grid_3: 'Bottom Image (Right Stack)'
+    },
+    sizes: {
+      default: '1:1 Square'
     }
   },
   {
     section: 'Category Cards',
     description: '3 category overlay card backgrounds',
     keys: ['category_1', 'category_2', 'category_3'],
+    sizes: {
+      category_1: '2:1 Landscape',
+      category_2: '2:1 Landscape',
+      category_3: '1:1 Square',
+    }
   },
   {
     section: 'Plant Gallery',
     description: '6 images in the masonry gallery section',
     keys: ['gallery_1', 'gallery_2', 'gallery_3', 'gallery_4', 'gallery_5', 'gallery_6'],
+    sizes: {
+      default: 'Square / Portrait'
+    }
   },
   {
     section: 'Blog / Trending Articles',
     description: 'Images for the 3 trending article cards',
     keys: ['blog_1', 'blog_2', 'blog_3'],
+    sizes: {
+      default: '4:3 Landscape'
+    }
   },
   {
     section: 'Newsletter Decorations',
     description: 'Small decorative images in the newsletter banner',
     keys: ['newsletter_leaf', 'newsletter_person'],
+    sizes: {
+      default: 'Transparent PNG'
+    }
   },
   {
     section: 'Footer Instagram Grid',
     description: '8 small images in the footer Instagram section',
     keys: ['footer_ig_1', 'footer_ig_2', 'footer_ig_3', 'footer_ig_4', 'footer_ig_5', 'footer_ig_6', 'footer_ig_7', 'footer_ig_8'],
+    sizes: {
+      default: '1:1 Square'
+    }
   },
 ]
 
@@ -384,9 +404,16 @@ export default function HomepageImagesPage() {
 
                       {/* Controls */}
                       <div className="p-4">
-                        <p className="text-xs font-mono text-gray-400 mb-2">
-                          {(section as any).labels?.[key] || key}
-                        </p>
+                        <div className="flex justify-between items-center mb-2">
+                          <p className="text-xs font-mono text-gray-800 font-semibold truncate">
+                            {(section as any).labels?.[key] || key}
+                          </p>
+                          {((section as any).sizes?.[key] || (section as any).sizes?.default) && (
+                            <span className="text-[10px] text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200 whitespace-nowrap ml-2">
+                              {(section as any).sizes?.[key] || (section as any).sizes?.default}
+                            </span>
+                          )}
+                        </div>
                         <input
                           type="text"
                           value={editValues[key] || ''}
