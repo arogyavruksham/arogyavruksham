@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useRef, useCallback } from 'react'
 import { 
   Search, Filter, Download, Loader2, X, User, MapPin, Package, 
   CreditCard, ChevronDown, ChevronRight, Eye, Truck, CheckCircle, 
@@ -238,7 +238,22 @@ export default function AdminOrdersPage() {
   }, [orders, searchQuery, activeTab, paymentFilter, sortOrder])
 
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage)
-  const paginatedOrders = filteredOrders.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+  const paginatedOrders = filteredOrders.slice(0, currentPage * itemsPerPage)
+
+  const loader = useRef<HTMLDivElement>(null)
+
+  const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
+    const target = entries[0];
+    if (target.isIntersecting) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, { rootMargin: "100px" });
+    if (loader.current) observer.observe(loader.current);
+    return () => observer.disconnect();
+  }, [handleObserver, paginatedOrders.length]);
 
   return (
     <div className="space-y-6 pb-28 md:pb-8 text-[#111827] font-sans max-w-full">
@@ -384,27 +399,6 @@ export default function AdminOrdersPage() {
           )}
         </div>
 
-        {totalPages > 1 && (
-          <div className="flex items-center justify-between pt-4 pb-4 px-1 text-xs font-bold text-[#6B7280]">
-            <span>Pg {currentPage} of {totalPages}</span>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="px-4 py-2 bg-white border border-[#E5E7EB] rounded-xl shadow-xs disabled:opacity-40 text-[#111827]"
-              >
-                Prev
-              </button>
-              <button
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                className="px-4 py-2 bg-white border border-[#E5E7EB] rounded-xl shadow-xs disabled:opacity-40 text-[#111827]"
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* DESKTOP VIEW - Soft Structuralism */}
@@ -613,43 +607,15 @@ export default function AdminOrdersPage() {
             </table>
           </div>
           
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="pt-4 pb-8 flex items-center justify-between text-xs font-bold text-[#6B7280]">
-              <span>Showing {((currentPage - 1) * itemsPerPage) + (paginatedOrders.length > 0 ? 1 : 0)} to {((currentPage - 1) * itemsPerPage) + paginatedOrders.length} of {filteredOrders.length} records</span>
-              <div className="flex gap-2 items-center">
-                <button 
-                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                  className="px-4 py-2 border border-[#E5E7EB] bg-white rounded-xl hover:bg-[#F3F4F6] hover:text-[#111827] disabled:opacity-40 transition-colors cursor-pointer shadow-xs"
-                >
-                  Previous
-                </button>
-                <div className="flex items-center gap-1 mx-3">
-                  {Array.from({ length: totalPages }).map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setCurrentPage(i + 1)}
-                      className={`w-8 h-8 flex items-center justify-center rounded-xl text-xs font-black transition-colors cursor-pointer ${
-                        currentPage === i + 1 ? 'bg-[#059669] text-white shadow-sm border-0 shadow-xs' : 'text-[#6B7280] hover:bg-[#059669]/5'
-                      }`}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
-                </div>
-                <button 
-                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                  disabled={currentPage === totalPages || totalPages === 0}
-                  className="px-4 py-2 border border-[#E5E7EB] bg-white rounded-xl hover:bg-[#F3F4F6] hover:text-[#111827] disabled:opacity-40 transition-colors cursor-pointer shadow-xs"
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
+
+      {/* Infinite Scroll Loader */}
+      {currentPage < totalPages && (
+        <div ref={loader} className="py-8 flex justify-center w-full">
+          <Loader2 className="w-8 h-8 animate-spin text-[#9CA3AF]" strokeWidth={1.5} />
+        </div>
+      )}
 
       {/* Order Details Sidebar Overlay - Soft Structuralism */}
       {selectedOrder && (
