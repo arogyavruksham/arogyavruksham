@@ -52,6 +52,16 @@ export default function AdminProductsPage() {
   useEffect(() => {
     setStockThreshold(getStoreSettings().lowStockThreshold || 10)
     fetchProducts()
+    
+    const channel = supabase.channel('products_changes_admin')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
+        fetchProducts()
+      })
+      .subscribe()
+      
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { adminDbProxy } from '@/lib/admin-proxy'
 import { Plus, Search, Edit2, Trash2, Tag, Loader2 } from 'lucide-react'
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
+import { supabase } from '@/lib/supabase'
 
 type Coupon = {
   id: string
@@ -51,6 +52,16 @@ export default function OffersPage() {
 
   useEffect(() => {
     fetchCoupons()
+    
+    const channel = supabase.channel('coupons_sync')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'coupons' }, () => {
+        fetchCoupons()
+      })
+      .subscribe()
+      
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   async function fetchCoupons() {

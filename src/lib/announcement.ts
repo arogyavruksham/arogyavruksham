@@ -92,7 +92,17 @@ export function useAnnouncement() {
 
     const handleUpdate = () => load()
     window.addEventListener('announcement_updated', handleUpdate)
-    return () => window.removeEventListener('announcement_updated', handleUpdate)
+
+    const channel = supabase.channel('announcements_sync')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'announcements' }, () => {
+        syncFromSupabase()
+      })
+      .subscribe()
+      
+    return () => {
+      window.removeEventListener('announcement_updated', handleUpdate)
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   return announcement

@@ -6,6 +6,7 @@ import { adminDbProxy } from '@/lib/admin-proxy'
 import { normalizeProducts } from '@/lib/product-helper'
 import { getStoreSettings } from '@/lib/store-settings'
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
+import { supabase } from '@/lib/supabase'
 
 export default function InventoryPage() {
   const [products, setProducts] = useState<any[]>([])
@@ -38,6 +39,16 @@ export default function InventoryPage() {
       setLoading(false)
     }
     fetchInventory()
+
+    const channel = supabase.channel('inventory_changes_admin')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
+        fetchInventory()
+      })
+      .subscribe()
+      
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   const lowStock = products.filter(p => p.stock_count > 0 && p.stock_count <= threshold)

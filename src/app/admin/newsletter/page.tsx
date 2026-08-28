@@ -5,6 +5,7 @@ import { Download, Loader2, Mail, Plus, Search, Trash2, Users } from 'lucide-rea
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader'
 import { adminDbProxy } from '@/lib/admin-proxy'
 import { getLocalSubscribers, saveLocalSubscribers, type NewsletterSubscriber } from '@/lib/newsletter'
+import { supabase } from '@/lib/supabase'
 
 function mergeLists(remote: NewsletterSubscriber[], local: NewsletterSubscriber[]) {
   const map = new Map<string, NewsletterSubscriber>()
@@ -50,6 +51,16 @@ export default function NewsletterPage() {
 
   useEffect(() => {
     load()
+    
+    const channel = supabase.channel('newsletter_changes_admin')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'newsletter_subscribers' }, () => {
+        load()
+      })
+      .subscribe()
+      
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   const filtered = useMemo(() => {

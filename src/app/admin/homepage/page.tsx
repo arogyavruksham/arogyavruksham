@@ -128,6 +128,16 @@ export default function HomepageImagesPage() {
       return
     }
     fetchImages()
+
+    const channel = supabase.channel('homepage_images_sync')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'homepage_images' }, () => {
+        fetchImages()
+      })
+      .subscribe()
+      
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [isAdminUnlocked])
 
   const fetchImages = useCallback(async () => {

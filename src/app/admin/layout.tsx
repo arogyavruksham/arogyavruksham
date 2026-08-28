@@ -52,6 +52,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const appsRef = useRef<HTMLDivElement>(null)
   const navItems = filterNavForRole(user?.role)
 
+  const [toast, setToast] = useState<{ message: string; visible: boolean }>({ message: '', visible: false })
+
+  const showGlobalToast = (message: string) => {
+    setToast({ message, visible: true })
+    setTimeout(() => {
+      setToast(prev => ({ ...prev, visible: false }))
+    }, 4000)
+  }
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -85,9 +94,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
     loadNotifications();
 
-    const channel = supabase.channel('admin_header_orders')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
+    const channel = supabase.channel('admin_header_global')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, (payload) => {
         loadNotifications();
+        if (payload.eventType === 'INSERT') {
+          showGlobalToast('🎉 New order received!');
+        }
+      })
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'newsletter_subscribers' }, () => {
+        showGlobalToast('📧 New newsletter subscriber!');
       })
       .subscribe();
 
@@ -562,6 +577,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       )}
 
+      {/* ═══ GLOBAL TOAST ═══ */}
+      {toast.visible && (
+        <div className="fixed top-6 right-6 z-[200] animate-in slide-in-from-top-4 fade-in duration-300">
+          <div className="bg-[#111827] text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-bold border border-gray-800">
+            <Bell className="w-5 h-5 text-[#A4E4BA]" strokeWidth={1.5} />
+            {toast.message}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

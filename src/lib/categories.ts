@@ -110,7 +110,17 @@ export function useCategories() {
 
     const handleUpdate = () => load()
     window.addEventListener('categories_updated', handleUpdate)
-    return () => window.removeEventListener('categories_updated', handleUpdate)
+    
+    const channel = supabase.channel('categories_products_sync')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
+        syncWithProducts()
+      })
+      .subscribe()
+      
+    return () => {
+      window.removeEventListener('categories_updated', handleUpdate)
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   return categories
