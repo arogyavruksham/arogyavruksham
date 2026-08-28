@@ -7,12 +7,14 @@ import { useAuthStore } from '@/store/authStore'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { AddressModal } from './AddressModal'
+import { useAnnouncement } from '@/lib/announcement'
 
 export function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
   const { items, toggleCart } = useCartStore()
   const { isAuthenticated, setAuthModalOpen } = useAuthStore()
+  const announcement = useAnnouncement()
   const itemCount = items.reduce((total, item) => total + item.quantity, 0)
   const [mounted, setMounted] = useState(false)
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false)
@@ -56,11 +58,26 @@ export function Navbar() {
   return (
     <>
       {/* Announcement Bar (Scrolls away) */}
-      <div className="w-full bg-[#166534] text-white py-2.5 px-4 text-center flex items-center justify-center relative z-40">
-        <p className="text-[13px] md:text-[14px] font-medium tracking-wide">
-          ✨ Free shipping on all orders over ₹999! Shop now and grow your green space. 🌿
-        </p>
-      </div>
+      {announcement.is_active && (
+        <div 
+          style={{ backgroundColor: announcement.bg_color, color: announcement.text_color }}
+          className="w-full py-2.5 px-4 text-center flex items-center justify-center relative z-40 transition-colors duration-300"
+        >
+          <p className="text-[12px] md:text-[13px] font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 md:gap-2">
+            <span className="hidden md:inline">{announcement.text}</span>
+            <span className="inline md:hidden truncate max-w-[250px]">{announcement.mobile_text}</span>
+            
+            {announcement.link_text && announcement.link_url && (
+              <>
+                <span className="opacity-50 mx-1">|</span>
+                <Link href={announcement.link_url} className="underline font-black shrink-0 hover:opacity-80 transition-opacity flex items-center gap-0.5">
+                  {announcement.link_text}
+                </Link>
+              </>
+            )}
+          </p>
+        </div>
+      )}
 
       {/* Wrapper to prevent layout shift when header becomes fixed */}
       <div className={isSticky ? 'h-[80px]' : 'h-0'} />
