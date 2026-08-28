@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
     const trimmedEmail = email.trim().toLowerCase()
 
-    const { error } = await supabaseAdmin
+    const { error } = await (supabaseAdmin as any)
       .from('newsletter_subscribers')
       .insert([{ email: trimmedEmail, source: 'site' }])
 
