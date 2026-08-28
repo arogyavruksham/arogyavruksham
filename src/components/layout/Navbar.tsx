@@ -55,6 +55,13 @@ export function Navbar() {
 
   return (
     <>
+      {/* Announcement Bar (Scrolls away) */}
+      <div className="w-full bg-[#166534] text-white py-2.5 px-4 text-center flex items-center justify-center relative z-40">
+        <p className="text-[13px] md:text-[14px] font-medium tracking-wide">
+          ✨ Free shipping on all orders over ₹999! Shop now and grow your green space. 🌿
+        </p>
+      </div>
+
       {/* Wrapper to prevent layout shift when header becomes fixed */}
       <div className={isSticky ? 'h-[80px]' : 'h-0'} />
       <header 
