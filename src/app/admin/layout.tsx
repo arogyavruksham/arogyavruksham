@@ -94,7 +94,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
     loadNotifications();
 
-    const channel = supabase.channel('admin_header_global')
+    const channel = supabase.channel(`admin_header_global_${Math.random()}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, (payload) => {
         loadNotifications();
         if (payload.eventType === 'INSERT') {

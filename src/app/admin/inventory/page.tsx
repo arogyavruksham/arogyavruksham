@@ -40,7 +40,7 @@ export default function InventoryPage() {
     }
     fetchInventory()
 
-    const channel = supabase.channel('inventory_changes_admin')
+    const channel = supabase.channel(`inventory_changes_admin_${Math.random()}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
         fetchInventory()
       })

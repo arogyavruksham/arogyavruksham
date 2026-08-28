@@ -111,7 +111,7 @@ export function useCategories() {
     const handleUpdate = () => load()
     window.addEventListener('categories_updated', handleUpdate)
     
-    const channel = supabase.channel('categories_products_sync')
+    const channel = supabase.channel(`categories_products_sync_${Math.random()}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
         syncWithProducts()
       })

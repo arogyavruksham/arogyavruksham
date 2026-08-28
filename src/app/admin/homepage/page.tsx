@@ -129,7 +129,7 @@ export default function HomepageImagesPage() {
     }
     fetchImages()
 
-    const channel = supabase.channel('homepage_images_sync')
+    const channel = supabase.channel(`homepage_images_sync_${Math.random()}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'homepage_images' }, () => {
         fetchImages()
       })

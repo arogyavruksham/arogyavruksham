@@ -93,7 +93,7 @@ export function useAnnouncement() {
     const handleUpdate = () => load()
     window.addEventListener('announcement_updated', handleUpdate)
 
-    const channel = supabase.channel('announcements_sync')
+    const channel = supabase.channel(`announcements_sync_${Math.random()}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'announcements' }, () => {
         syncFromSupabase()
       })

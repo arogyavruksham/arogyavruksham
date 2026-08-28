@@ -53,7 +53,7 @@ export default function OffersPage() {
   useEffect(() => {
     fetchCoupons()
     
-    const channel = supabase.channel('coupons_sync')
+    const channel = supabase.channel(`coupons_sync_${Math.random()}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'coupons' }, () => {
         fetchCoupons()
       })

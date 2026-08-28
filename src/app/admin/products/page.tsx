@@ -53,7 +53,7 @@ export default function AdminProductsPage() {
     setStockThreshold(getStoreSettings().lowStockThreshold || 10)
     fetchProducts()
     
-    const channel = supabase.channel('products_changes_admin')
+    const channel = supabase.channel(`products_changes_admin_${Math.random()}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
         fetchProducts()
       })
