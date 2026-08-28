@@ -167,7 +167,7 @@ export default function AdminOrdersPage() {
     
     fetchOrders()
 
-    const channel = supabase.channel('realtime_orders')
+    const channel = supabase.channel(`realtime_orders_${Math.random()}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
         fetchOrders()
       })

@@ -98,7 +98,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, (payload) => {
         loadNotifications();
         if (payload.eventType === 'INSERT') {
-          showGlobalToast('🎉 New order received!');
+          const amount = payload.new.total_amount || 0;
+          let name = 'Customer';
+          if (payload.new.shipping_address) {
+            try {
+              const addr = typeof payload.new.shipping_address === 'string' 
+                ? JSON.parse(payload.new.shipping_address) 
+                : payload.new.shipping_address;
+              name = addr.fullName || addr.full_name || 'Customer';
+            } catch (e) {}
+          }
+          showGlobalToast(`🎉 Order received from ${name} for ₹${amount}!`);
         }
       })
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'newsletter_subscribers' }, () => {
@@ -579,7 +589,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* ═══ GLOBAL TOAST ═══ */}
       {toast.visible && (
-        <div className="fixed top-6 right-6 z-[200] animate-in slide-in-from-top-4 fade-in duration-300">
+        <div className="fixed bottom-6 right-6 z-[200] animate-in slide-in-from-bottom-4 fade-in duration-300">
           <div className="bg-[#111827] text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-bold border border-gray-800">
             <Bell className="w-5 h-5 text-[#A4E4BA]" strokeWidth={1.5} />
             {toast.message}
