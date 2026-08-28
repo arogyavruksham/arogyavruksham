@@ -5,6 +5,7 @@ import { CategoryCards } from "@/components/home/CategoryCards";
 import { NewArrivalsAndDeals } from "@/components/home/NewArrivalsAndDeals";
 import { PromotionBanner } from "@/components/home/PromotionBanner";
 import { ProductSlider } from "@/components/home/ProductSlider";
+import TestimonialsSection from "@/components/ui/testimonial-v2";
 import { PlantGallery } from "@/components/home/PlantGallery";
 import { LatestFromBlog } from "@/components/home/LatestFromBlog";
 import { FooterFeatures } from "@/components/home/FooterFeatures";
@@ -57,6 +58,9 @@ export default async function Home() {
         title="50% Off Sale Items" 
         saleOnly={true} 
       />
+
+      {/* 5.4 Testimonials Section */}
+      <TestimonialsSection />
 
       {/* 6. Plant Gallery — Masonry bento grid (desktop only) */}
       <PlantGallery images={images} />
