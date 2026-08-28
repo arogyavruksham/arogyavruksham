@@ -373,7 +373,7 @@ export default function AdminOrdersPage() {
                     )}
                     {derivedStatus === 'delivered' && order.delivered_at && (
                       <div className="mt-1 flex items-center gap-2 text-xs font-bold text-[#059669]">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <CheckCircle className="w-3.5 h-3.5" />
                         Delivered: <span className="text-[#111827]">{new Date(order.delivered_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                       </div>
                     )}
@@ -576,7 +576,7 @@ export default function AdminOrdersPage() {
                           )}
                           {derivedStatus === 'delivered' && order.delivered_at && (
                             <div className="flex items-center gap-2 text-[#059669] font-bold">
-                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              <CheckCircle className="w-3.5 h-3.5" />
                               Delivered: <span className="text-[#111827]">{new Date(order.delivered_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                             </div>
                           )}
