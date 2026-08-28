@@ -123,9 +123,10 @@ export function Navbar() {
   // Cart total (approximate display)
   const cartTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
-  // On homepage, visible on tablet & PC (hidden only on mobile phone, < md). On ALL other pages (shop, profile, portfolio, etc.), visible STRICTLY in PC view (hidden xl:block).
+  // On homepage, we completely hide this navbar since the user requested to remove the previous nav bar on PC view (and mobile has its own header).
+  // On ALL other pages (shop, profile, portfolio, etc.), visible STRICTLY in PC view (hidden xl:block).
   const isHome = pathname === '/'
-  const visibilityClass = isHome ? 'hidden md:block' : 'hidden xl:block'
+  const visibilityClass = isHome ? 'hidden' : 'hidden xl:block'
 
   return (
     <>
