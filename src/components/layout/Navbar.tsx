@@ -95,9 +95,9 @@ export function Navbar() {
             <img 
               src="/logo.png" 
               alt="Arogyavruksham Logo" 
-              className="w-14 h-14 object-contain"
+              className="w-12 h-12 object-contain"
             />
-            <span className="font-bold text-[24px] text-gray-900 tracking-tight">Arogyavruksham</span>
+            <span className="font-bold text-[22px] text-gray-900 tracking-tight">Arogyavruksham</span>
           </Link>
 
           {/* Center: Links (Desktop) */}
