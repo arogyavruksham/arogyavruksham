@@ -493,31 +493,31 @@ export default function AdminOrdersPage() {
           </div>
         </div>
 
-        {/* Orders Table - Double-Bezel */}
-        <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-[0_8px_40px_rgba(0,0,0,0.03)] overflow-hidden">
-          <div className="overflow-x-auto w-full">
+        {/* Orders Table - Full Width layout */}
+        <div className="w-full">
+          <div className="overflow-x-auto w-full pb-4">
             <table className="w-full text-left border-collapse whitespace-nowrap min-w-[1000px]">
               <thead>
-                <tr className="bg-[#F9FAFB] border-b border-[#E5E7EB] text-[10px] uppercase tracking-widest text-[#9CA3AF] font-bold">
-                  <th className="p-4">Order ID</th>
+                <tr className="border-b-2 border-[#E5E7EB] text-[10px] uppercase tracking-widest text-[#9CA3AF] font-bold">
+                  <th className="py-4 pr-4">Order ID</th>
                   <th className="p-4">Customer</th>
                   <th className="p-4">Items</th>
                   <th className="p-4">Timeline</th>
                   <th className="p-4">Status</th>
-                  <th className="p-4 text-right">Actions</th>
+                  <th className="py-4 pl-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="text-sm divide-y divide-[#E5E7EB] font-medium">
+              <tbody className="text-sm font-medium">
                 {loading ? (
                   <tr>
-                    <td colSpan={6} className="p-12 text-center text-[#6B7280]">
+                    <td colSpan={6} className="py-12 text-center text-[#6B7280]">
                       <Loader2 className="w-8 h-8 animate-spin mx-auto mb-3 text-[#9CA3AF]" strokeWidth={1.5} />
                       <span className="font-bold">Syncing records...</span>
                     </td>
                   </tr>
                 ) : paginatedOrders.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="p-12 text-center text-[#9CA3AF] italic font-bold">
+                    <td colSpan={6} className="py-12 text-center text-[#9CA3AF] italic font-bold">
                       No matching records found.
                     </td>
                   </tr>
@@ -530,8 +530,8 @@ export default function AdminOrdersPage() {
                   const dateStr = new Date(order.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
                   
                   return (
-                    <tr key={order.id} className={`hover:bg-[#F9FAFB] transition-colors group cursor-pointer ${order.is_delayed ? 'bg-red-50/30' : ''}`} onClick={() => setSelectedOrder(order)}>
-                      <td className="p-4 align-top">
+                    <tr key={order.id} className={`border-b border-[#E5E7EB] hover:bg-white/50 transition-colors group cursor-pointer ${order.is_delayed ? 'bg-red-50/30 hover:bg-red-50/50' : ''}`} onClick={() => setSelectedOrder(order)}>
+                      <td className="py-4 pr-4 align-top">
                         <span className="font-bold font-mono text-[#111827] flex flex-col gap-1">
                           #{order?.id?.split('-')[0]?.toUpperCase()}
                           <span className="text-xs font-bold text-[#6B7280] font-sans">
@@ -601,8 +601,8 @@ export default function AdminOrdersPage() {
                           )}
                         </div>
                       </td>
-                      <td className="p-4 text-right align-top">
-                        <button onClick={(e) => { e.stopPropagation(); setSelectedOrder(order); }} className="p-2.5 text-[#9CA3AF] hover:text-[#059669] bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl transition-all cursor-pointer shadow-xs inline-flex">
+                      <td className="py-4 pl-4 text-right align-top">
+                        <button onClick={(e) => { e.stopPropagation(); setSelectedOrder(order); }} className="p-2.5 text-[#9CA3AF] hover:text-[#059669] bg-white border border-[#E5E7EB] rounded-xl transition-all cursor-pointer shadow-xs inline-flex group-hover:border-[#D1D5DB]">
                           <ChevronRight className="w-4 h-4" strokeWidth={2} />
                         </button>
                       </td>
@@ -615,7 +615,7 @@ export default function AdminOrdersPage() {
           
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-between text-xs font-bold text-[#6B7280] bg-[#F9FAFB]">
+            <div className="pt-4 pb-8 flex items-center justify-between text-xs font-bold text-[#6B7280]">
               <span>Showing {((currentPage - 1) * itemsPerPage) + (paginatedOrders.length > 0 ? 1 : 0)} to {((currentPage - 1) * itemsPerPage) + paginatedOrders.length} of {filteredOrders.length} records</span>
               <div className="flex gap-2 items-center">
                 <button 
