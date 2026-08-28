@@ -2,10 +2,8 @@
 
 import Link from 'next/link'
 import { Play } from 'lucide-react'
-import { useHomepageImages } from '@/lib/homepageImages'
 
-export function DualHeroBanners() {
-  const heroImages = useHomepageImages()
+export function DualHeroBanners({ images }: { images: Record<string, string> }) {
 
   return (
     <section className="w-full bg-white pt-10 pb-20">
@@ -46,14 +44,14 @@ export function DualHeroBanners() {
           <div className="w-1/2 h-full flex flex-col gap-5">
             <div className="h-[calc(50%-10px)] w-full">
               <img 
-                src={heroImages.hero_grid_1 || "https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Top+Left"}
+                src={images.hero_grid_1 || "https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Top+Left"}
                 alt="Plant Top Left"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="h-[calc(50%-10px)] w-full">
               <img 
-                src={heroImages.hero_grid_4 || "https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Bottom+Left"}
+                src={images.hero_grid_4 || "https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Bottom+Left"}
                 alt="Plant Bottom Left"
                 className="w-full h-full object-cover"
               />
@@ -63,14 +61,14 @@ export function DualHeroBanners() {
           <div className="w-1/2 h-full flex flex-col gap-5">
             <div className="h-[calc(50%-10px)] w-full">
               <img 
-                src={heroImages.hero_grid_2 || "https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Top"}
+                src={images.hero_grid_2 || "https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Top"}
                 alt="Plant Top"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="h-[calc(50%-10px)] w-full">
               <img 
-                src={heroImages.hero_grid_3 || "https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Bottom"}
+                src={images.hero_grid_3 || "https://placehold.co/400x400/eeeeee/cccccc?text=Plant+Bottom"}
                 alt="Plant Bottom"
                 className="w-full h-full object-cover"
               />

@@ -1,10 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useHomepageImages } from '@/lib/homepageImages'
 
-export function PlantGallery() {
-  const images = useHomepageImages()
+export function PlantGallery({ images }: { images: Record<string, string> }) {
 
   return (
     <section className="py-16 bg-white">

@@ -1,9 +1,8 @@
-'use client'
-
 import React from 'react'
 import Link from 'next/link'
 import { BookOpen, Calendar, Clock, ArrowRight, Sparkles } from 'lucide-react'
 import { LatestFromBlog } from '@/components/home/LatestFromBlog'
+import { getHomepageImages } from '@/lib/serverHomepageImages'
 
 const guides = [
   {
@@ -32,7 +31,9 @@ const guides = [
   }
 ]
 
-export default function BlogsPage() {
+export default async function BlogsPage() {
+  const images = await getHomepageImages()
+
   return (
     <div className="min-h-screen bg-white py-12 xl:pt-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,7 +53,7 @@ export default function BlogsPage() {
 
         {/* Featured Blogs Component from Home */}
         <div className="mb-20">
-          <LatestFromBlog />
+          <LatestFromBlog images={images} />
         </div>
 
         {/* Extended Articles Grid */}

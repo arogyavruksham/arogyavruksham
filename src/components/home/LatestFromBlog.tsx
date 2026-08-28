@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { useHomepageImages } from '@/lib/homepageImages'
 
 const posts = [
   {
@@ -34,8 +33,7 @@ const posts = [
   }
 ]
 
-export function LatestFromBlog() {
-  const images = useHomepageImages()
+export function LatestFromBlog({ images }: { images: Record<string, string> }) {
 
   return (
     <section className="py-20 bg-white">

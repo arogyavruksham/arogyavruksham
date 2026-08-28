@@ -1,10 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useHomepageImages } from '@/lib/homepageImages'
 
-export function CategoryCards() {
-  const images = useHomepageImages()
+export function CategoryCards({ images }: { images: Record<string, string> }) {
 
   return (
     <section className="py-20 bg-white">

@@ -1,10 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useHomepageImages } from '@/lib/homepageImages'
 
-export function TrendingBanner() {
-  const images = useHomepageImages()
+export function TrendingBanner({ images }: { images: Record<string, string> }) {
 
   return (
     <section className="w-full bg-[#f4f8f5] py-16 my-10 overflow-hidden">
