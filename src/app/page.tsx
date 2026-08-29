@@ -9,11 +9,28 @@ import TestimonialsSection from "@/components/ui/testimonial-v2";
 import { PlantGallery } from "@/components/home/PlantGallery";
 import { LatestFromBlog } from "@/components/home/LatestFromBlog";
 import { FooterFeatures } from "@/components/home/FooterFeatures";
+import { supabaseAdmin } from "@/lib/supabase-admin";
+import { Testimonial } from "@/components/ui/testimonial-v2";
 
 export const revalidate = 3600; // Cache for 1 hour to massively boost performance
 
 export default async function Home() {
   const images = await getHomepageImages();
+
+  // Fetch real customer reviews from the database
+  const { data: dbReviews } = await supabaseAdmin
+    .from('product_reviews')
+    .select('*, users(full_name), products(title)')
+    .order('created_at', { ascending: false })
+    .limit(20);
+
+  const mappedReviews: Testimonial[] = (dbReviews || []).map((r: any) => ({
+    text: r.review_text,
+    name: r.users?.full_name || 'Anonymous',
+    role: `Bought: ${r.products?.title || 'Plant'}`,
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150&h=150"
+  }));
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
 
@@ -60,7 +77,7 @@ export default async function Home() {
       />
 
       {/* 5.4 Testimonials Section */}
-      <TestimonialsSection />
+      <TestimonialsSection reviews={mappedReviews} />
 
       {/* 6. Plant Gallery — Masonry bento grid (desktop only) */}
       <PlantGallery images={images} />

@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from "framer-motion";
 
 // --- Types ---
-interface Testimonial {
+export interface Testimonial {
   text: string;
   image: string;
   name: string;
@@ -12,7 +12,7 @@ interface Testimonial {
 }
 
 // --- Data ---
-const testimonials: Testimonial[] = [
+const defaultTestimonials: Testimonial[] = [
   {
     text: "The Snake Plant arrived in pristine condition! The packaging was so secure, and it looks even healthier than I expected. Absolutely thrilled.",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150",
@@ -68,10 +68,6 @@ const testimonials: Testimonial[] = [
     role: "Collector",
   },
 ];
-
-const firstColumn = testimonials.slice(0, 3);
-const secondColumn = testimonials.slice(3, 6);
-const thirdColumn = testimonials.slice(6, 9);
 
 // --- Sub-Components ---
 const TestimonialsColumn = (props: {
@@ -147,7 +143,23 @@ const TestimonialsColumn = (props: {
   );
 };
 
-export default function TestimonialsSection() {
+export default function TestimonialsSection({ reviews }: { reviews?: Testimonial[] }) {
+  let displayReviews = [...(reviews || [])];
+  
+  if (displayReviews.length > 0) {
+    // Pad to ensure at least 9 items so all 3 columns have enough content to scroll smoothly
+    while (displayReviews.length < 9) {
+      displayReviews = [...displayReviews, ...displayReviews];
+    }
+  } else {
+    displayReviews = [...defaultTestimonials];
+  }
+
+  const third = Math.ceil(displayReviews.length / 3);
+  const firstColumn = displayReviews.slice(0, third);
+  const secondColumn = displayReviews.slice(third, third * 2);
+  const thirdColumn = displayReviews.slice(third * 2);
+
   return (
     <section 
       aria-labelledby="testimonials-heading"
