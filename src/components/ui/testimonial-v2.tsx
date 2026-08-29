@@ -14,7 +14,7 @@ interface Testimonial {
 // --- Data ---
 const testimonials: Testimonial[] = [
   {
-    text: "The plant arrived in pristine condition! The packaging was so secure, and it looks even healthier than I expected. Absolutely thrilled.",
+    text: "The Snake Plant arrived in pristine condition! The packaging was so secure, and it looks even healthier than I expected. Absolutely thrilled.",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Briana Patton",
     role: "Plant Enthusiast",
@@ -26,43 +26,43 @@ const testimonials: Testimonial[] = [
     role: "Interior Designer",
   },
   {
-    text: "I was worried about ordering plants online, but Arogyavruksham's delivery was flawless. Not a single leaf was damaged!",
+    text: "I was worried about ordering plants online, but my new Peace Lily was delivered flawlessly. Not a single leaf was damaged!",
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Saman Malik",
     role: "Homeowner",
   },
   {
-    text: "Beautiful plants and exceptional quality. The care instructions included were super helpful for a beginner like me.",
+    text: "Beautiful Aloe Vera plant and exceptional quality. The care instructions included were super helpful for a beginner like me.",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Omar Raza",
     role: "New Plant Parent",
   },
   {
-    text: "I've ordered from many places, but this was the best experience. Next-day delivery and the healthiest Monstera I've seen.",
+    text: "I've ordered from many places, but this was the best experience. Next-day delivery and the healthiest Monstera Deliciosa I've seen.",
     image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Zainab Hussain",
     role: "Botanist",
   },
   {
-    text: "My office space feels so much more vibrant now. Thank you for the quick delivery and the stunning indoor plants!",
+    text: "My office space feels so much more vibrant now. Thank you for the quick delivery of the stunning ZZ Plant!",
     image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Aliza Khan",
     role: "Office Manager",
   },
   {
-    text: "Highly appreciate the eco-friendly packaging! The plants were hydrated and looked fresh straight out of the box.",
+    text: "Highly appreciate the eco-friendly packaging! The Spider Plant was fully hydrated and looked fresh straight out of the box.",
     image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Farhan Siddiqui",
     role: "Eco-Conscious Buyer",
   },
   {
-    text: "The 50% off sale was a steal. The quality of the plants wasn't compromised at all. Fast shipping and great communication.",
+    text: "The 50% off sale was a steal. The quality of my new Rubber Plant wasn't compromised at all. Fast shipping and great communication.",
     image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Sana Sheikh",
     role: "Loyal Customer",
   },
   {
-    text: "This is my go-to shop for all things green. They never disappoint with their delivery times and the health of their plants.",
+    text: "This is my go-to shop for all things green. They never disappoint with their delivery times, and my Golden Pothos is thriving.",
     image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150&h=150",
     name: "Hassan Ali",
     role: "Collector",
