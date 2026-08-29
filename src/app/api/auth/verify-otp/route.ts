@@ -48,6 +48,7 @@ export async function POST(req: Request) {
         .from('users')
         .select('role, full_name, phone')
         .eq('email', normalizedEmail)
+        .limit(1)
         .maybeSingle()
 
       const userData = data as any
