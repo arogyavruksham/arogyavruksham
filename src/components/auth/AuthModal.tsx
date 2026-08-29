@@ -120,9 +120,10 @@ export function AuthModal() {
       const { error: signInError } = await supabase.auth.signInWithPassword(credentials)
       if (signInError) throw signInError
       
-      const { data: userData } = await supabase.from('users').select('role').eq('phone', syncPhone).maybeSingle()
+      const { data: userData } = await supabase.from('users').select('role').eq('phone', syncPhone).limit(1).maybeSingle()
       
-      login({ name: finalName, email: data.email || '', phone: syncPhone, role: userData?.role || 'user' })
+      const cleanEmail = (data.email && !data.email.endsWith('@arogya.auth.local')) ? data.email : ''
+      login({ name: finalName, email: cleanEmail, phone: syncPhone, role: userData?.role || 'user' })
       setOtpStep('success')
       setTimeout(() => setAuthModalOpen(false), 1500)
     } catch (err: unknown) {
@@ -256,10 +257,13 @@ export function AuthModal() {
         }
         const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
         if (signInError) throw signInError
-        const { data: userData } = await supabase.from('users').select('role, full_name, phone').eq('email', email).maybeSingle()
+        const { data: userData } = await supabase.from('users').select('role, full_name, phone').eq('email', email).limit(1).maybeSingle()
+        
+        const cleanEmail = (email && !email.endsWith('@arogya.auth.local')) ? email : ''
+        
         login({ 
-          name: userData?.full_name || email.split('@')[0] || 'Member', 
-          email: email, 
+          name: userData?.full_name || cleanEmail.split('@')[0] || 'Member', 
+          email: cleanEmail, 
           phone: userData?.phone || '', 
           role: userData?.role || 'user' 
         })
