@@ -116,13 +116,9 @@ const TestimonialsColumn = (props: {
                       {text}
                     </p>
                     <footer className="flex items-center gap-3 mt-6">
-                      <img
-                        width={40}
-                        height={40}
-                        src={image}
-                        alt={`Avatar of ${name}`}
-                        className="h-10 w-10 rounded-full object-cover ring-2 ring-neutral-100 dark:ring-neutral-800 group-hover:ring-[#1E4631]/30 transition-all duration-300 ease-in-out"
-                      />
+                      <div className="flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center font-bold text-white bg-emerald-700 dark:bg-emerald-800 ring-2 ring-neutral-100 dark:ring-neutral-800 group-hover:ring-[#1E4631]/30 transition-all duration-300 ease-in-out text-lg">
+                        {name ? name.charAt(0).toUpperCase() : 'C'}
+                      </div>
                       <div className="flex flex-col">
                         <cite className="font-semibold not-italic tracking-tight leading-5 text-neutral-900 dark:text-white transition-colors duration-300">
                           {name}
@@ -144,7 +140,17 @@ const TestimonialsColumn = (props: {
 };
 
 export default function TestimonialsSection({ reviews }: { reviews?: Testimonial[] }) {
-  let displayReviews = [...(reviews || [])];
+  // Mix real reviews and fake reviews deterministically
+  const mixedReviews: Testimonial[] = [];
+  const realReviews = reviews || [];
+  const maxLen = Math.max(realReviews.length, defaultTestimonials.length);
+  
+  for (let i = 0; i < maxLen; i++) {
+    if (i < realReviews.length) mixedReviews.push(realReviews[i]);
+    if (i < defaultTestimonials.length) mixedReviews.push(defaultTestimonials[i]);
+  }
+  
+  let displayReviews = [...mixedReviews];
   
   if (displayReviews.length > 0) {
     // Pad to ensure at least 9 items so all 3 columns have enough content to scroll smoothly
