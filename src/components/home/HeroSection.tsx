@@ -5,11 +5,11 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 const IMAGES = [
-  'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1416879598555-220025f82c0b?auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=800',
+  'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&q=80&w=800',
+  'https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&q=80&w=800',
+  'https://images.unsplash.com/photo-1416879598555-220025f82c0b?auto=format&fit=crop&q=80&w=800',
+  'https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&q=80&w=800',
 ]
 
 // Base fan out configuration for 5 images (Desktop)
@@ -85,6 +85,8 @@ export function HeroSection() {
                 src={src} 
                 alt={`Plant ${index + 1}`} 
                 className="w-full h-full object-cover"
+                loading="eager"
+                fetchPriority="high"
               />
             </motion.div>
           )

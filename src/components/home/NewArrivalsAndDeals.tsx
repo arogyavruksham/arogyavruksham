@@ -28,6 +28,7 @@ function FeaturedCard({ product, index }: { product: any; index: number }) {
           src={product?.image_url || `https://placehold.co/400x500/eeeeee/cccccc?text=${encodeURIComponent(title)}`}
           alt={title}
           className="w-full h-full object-cover mix-blend-multiply"
+          loading="lazy"
         />
       </Link>
 

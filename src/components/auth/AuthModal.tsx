@@ -120,7 +120,9 @@ export function AuthModal() {
       const { error: signInError } = await supabase.auth.signInWithPassword(credentials)
       if (signInError) throw signInError
       
-      login({ name: finalName, email: data.email || '', phone: syncPhone, role: 'user' })
+      const { data: userData } = await supabase.from('users').select('role').eq('phone', syncPhone).maybeSingle()
+      
+      login({ name: finalName, email: data.email || '', phone: syncPhone, role: userData?.role || 'user' })
       setOtpStep('success')
       setTimeout(() => setAuthModalOpen(false), 1500)
     } catch (err: unknown) {
@@ -544,7 +546,7 @@ export function AuthModal() {
                           onChange={(e) => setName(e.target.value)}
                           placeholder="Full Name"
                           required={mode === 'signup'}
-                          className="w-full pl-10 pr-4 py-3 sm:py-3.5 rounded-xl border border-gray-300 focus:border-[#235839] focus:ring-1 focus:ring-[#235839] text-sm text-gray-800 placeholder:text-gray-400 bg-white outline-none transition-all"
+                          className="w-full pl-10 pr-4 py-3 sm:py-3.5 rounded-xl border border-gray-300 focus:border-[#235839] focus:ring-1 focus:ring-[#235839] text-base sm:text-sm text-gray-800 placeholder:text-gray-400 bg-white outline-none transition-all"
                         />
                       </div>
                     </div>
@@ -567,7 +569,7 @@ export function AuthModal() {
                             onChange={(e) => { setEmail(e.target.value); setError(''); }}
                             placeholder="Enter your email address"
                             required
-                            className="w-full pl-10 pr-4 py-3 sm:py-3.5 rounded-xl border border-gray-300 focus:border-[#235839] focus:ring-1 focus:ring-[#235839] text-sm text-gray-800 placeholder:text-gray-400 bg-white outline-none transition-all"
+                            className="w-full pl-10 pr-4 py-3 sm:py-3.5 rounded-xl border border-gray-300 focus:border-[#235839] focus:ring-1 focus:ring-[#235839] text-base sm:text-sm text-gray-800 placeholder:text-gray-400 bg-white outline-none transition-all"
                           />
                         </div>
                       </div>
@@ -586,7 +588,7 @@ export function AuthModal() {
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="••••••••"
                             required={mode === 'signup'}
-                            className="w-full pl-10 pr-10 py-3 sm:py-3.5 rounded-xl border border-gray-300 focus:border-[#235839] focus:ring-1 focus:ring-[#235839] text-sm text-gray-800 placeholder:text-gray-400 bg-white outline-none transition-all"
+                            className="w-full pl-10 pr-10 py-3 sm:py-3.5 rounded-xl border border-gray-300 focus:border-[#235839] focus:ring-1 focus:ring-[#235839] text-base sm:text-sm text-gray-800 placeholder:text-gray-400 bg-white outline-none transition-all"
                           />
                           <button
                             type="button"
@@ -614,7 +616,7 @@ export function AuthModal() {
                           onChange={(e) => { setPhone(e.target.value); setError(''); }}
                           placeholder="9346297026"
                           required
-                          className="w-full pl-10 pr-4 py-3 sm:py-3.5 rounded-xl border border-gray-300 focus:border-[#235839] focus:ring-1 focus:ring-[#235839] text-sm text-gray-800 placeholder:text-gray-400 bg-white outline-none transition-all font-medium"
+                          className="w-full pl-10 pr-4 py-3 sm:py-3.5 rounded-xl border border-gray-300 focus:border-[#235839] focus:ring-1 focus:ring-[#235839] text-base sm:text-sm text-gray-800 placeholder:text-gray-400 bg-white outline-none transition-all font-medium"
                         />
                       </div>
                       

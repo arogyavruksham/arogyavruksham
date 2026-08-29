@@ -201,11 +201,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="flex flex-col fixed inset-0 md:relative md:h-[100dvh] bg-[#F3F4F6] font-sans text-[#111827] overflow-hidden md:p-3 transition-colors duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
+    <div className="flex flex-col min-h-[100dvh] md:h-[100dvh] bg-[#F3F4F6] font-sans text-[#111827] md:overflow-hidden md:p-3 transition-colors duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]">
       <style dangerouslySetInnerHTML={{ __html: `html { zoom: 1 !important; }` }} />
       
       {/* Outer Shell -> Inner Core (Double-Bezel Architecture) */}
-      <div className="flex flex-col md:flex-row flex-1 bg-white md:rounded-2xl md:shadow-[0_8px_40px_rgba(0,0,0,0.03)] md:border md:border-[#E5E7EB] overflow-hidden relative">
+      <div className="flex flex-col md:flex-row flex-1 bg-white md:rounded-2xl md:shadow-[0_8px_40px_rgba(0,0,0,0.03)] md:border md:border-[#E5E7EB] md:overflow-hidden relative">
 
         {/* Mobile Bottom Nav - Floating Pill Style */}
         <div className="md:hidden fixed bottom-6 left-4 right-4 z-50">
@@ -541,7 +541,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </header>
 
           {/* Page Content */}
-          <main className="flex-1 overflow-y-auto min-h-0">
+          <main className="flex-1 md:overflow-y-auto min-h-0">
             <div className="w-full max-w-[1600px] mx-auto px-4 py-6 md:px-8 md:py-8 lg:px-10 pb-40 md:pb-10">
               {children}
             </div>
