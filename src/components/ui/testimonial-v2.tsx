@@ -98,21 +98,21 @@ const TestimonialsColumn = (props: {
                   key={`${index}-${i}`}
                   aria-hidden={index === 1 ? "true" : "false"}
                   tabIndex={index === 1 ? -1 : 0}
-                  className="p-10 rounded-3xl border border-neutral-200 dark:border-neutral-800 shadow-lg shadow-black/5 max-w-xs w-full bg-white dark:bg-neutral-900 transition-all duration-300 cursor-default select-none group hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#1E4631]/30 transform-gpu" 
+                  className="p-10 rounded-3xl border border-neutral-200 shadow-lg shadow-black/5 max-w-xs w-full bg-white transition-all duration-300 cursor-default select-none group hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#1E4631]/30 transform-gpu" 
                 >
                   <blockquote className="m-0 p-0">
-                    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed font-normal m-0 transition-colors duration-300">
+                    <p className="text-neutral-600 leading-relaxed font-normal m-0 transition-colors duration-300">
                       {text}
                     </p>
                     <footer className="flex items-center gap-3 mt-6">
-                      <div className="flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center font-bold text-white bg-emerald-700 dark:bg-emerald-800 ring-2 ring-neutral-100 dark:ring-neutral-800 group-hover:ring-[#1E4631]/30 transition-all duration-300 ease-in-out text-lg">
+                      <div className="flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center font-bold text-white bg-emerald-700 ring-2 ring-neutral-100 group-hover:ring-[#1E4631]/30 transition-all duration-300 ease-in-out text-lg">
                         {name ? name.charAt(0).toUpperCase() : 'C'}
                       </div>
                       <div className="flex flex-col">
-                        <cite className="font-semibold not-italic tracking-tight leading-5 text-neutral-900 dark:text-white transition-colors duration-300">
+                        <cite className="font-semibold not-italic tracking-tight leading-5 text-neutral-900 transition-colors duration-300">
                           {name}
                         </cite>
-                        <span className="text-sm leading-5 tracking-tight text-neutral-500 dark:text-neutral-500 mt-0.5 transition-colors duration-300">
+                        <span className="text-sm leading-5 tracking-tight text-neutral-500 mt-0.5 transition-colors duration-300">
                           {role}
                         </span>
                       </div>
