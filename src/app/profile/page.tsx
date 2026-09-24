@@ -118,111 +118,136 @@ export default function ProfilePage() {
   const renderDashboard = () => (
     <div className="space-y-6 animate-in fade-in duration-300">
       {/* Welcome Banner */}
-      <div className="hidden md:block mb-8">
-        <h2 className="text-2xl font-bold text-[#11311F]">Welcome back, {user?.name?.split(' ')[0] || 'Guest'}</h2>
-        <p className="text-gray-500 mt-1">Here is a snapshot of your account today.</p>
+      <div className="hidden md:flex justify-between items-end mb-10 pb-6 border-b border-gray-100">
+        <div>
+          <p className="text-sm font-bold text-[#235839] uppercase tracking-widest mb-2 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#A4E4BA]"></span> Overview
+          </p>
+          <h2 className="text-4xl font-black text-[#11311F] tracking-tight">Welcome back, {user?.name?.split(' ')[0] || 'Guest'}.</h2>
+          <p className="text-gray-500 mt-2 text-lg">Here is a snapshot of your botanical journey today.</p>
+        </div>
+        <button onClick={() => router.push('/shop')} className="px-6 py-3 bg-[#11311F] text-white rounded-full text-sm font-bold shadow-lg shadow-[#11311F]/20 hover:bg-black hover:scale-105 transition-all duration-300">
+          Shop New Arrivals
+        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {/* Profile Card */}
-        <div className="md:col-span-2 bg-[#F6F9F7] rounded-3xl p-6 md:p-8 flex flex-col justify-between border border-[#E9F3ED]">
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
-            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-sm shrink-0">
+        <div className="md:col-span-2 bg-gradient-to-br from-[#F6F9F7] to-white rounded-3xl p-6 md:p-10 flex flex-col justify-between border border-[#E9F3ED] shadow-sm relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[#E9F3ED]/60 to-transparent rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-700"></div>
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 text-center md:text-left z-10">
+            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 md:border-8 border-white shadow-lg shrink-0 relative">
               {profilePhoto ? (
                 <img src={profilePhoto} alt="Profile" className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full bg-[#11311F] text-white flex items-center justify-center text-3xl font-medium">
+                <div className="w-full h-full bg-gradient-to-br from-[#11311F] to-[#235839] text-white flex items-center justify-center text-4xl md:text-5xl font-black">
                   {initials}
                 </div>
               )}
+              <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-full"></div>
             </div>
-            <div>
-              <p className="text-sm text-gray-500 mb-1 hidden md:block">Joined 2024</p>
-              <p className="text-sm text-gray-500 mb-1 md:hidden">Hello, Plant Parent!</p>
-              <h3 className="text-2xl font-bold text-[#11311F] mb-3">{user?.name || 'User'}</h3>
-              <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                <span className="px-3 py-1 bg-white rounded-full text-xs font-bold text-[#11311F] border border-gray-100 flex items-center gap-1 shadow-xs">
-                  <Star className="w-3 h-3 text-[#FFB800] fill-[#FFB800]" /> Premium Member
+            <div className="pt-2">
+              <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2 hidden md:block">Member since 2024</p>
+              <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2 md:hidden">Hello, Plant Parent!</p>
+              <h3 className="text-3xl md:text-4xl font-black text-[#11311F] mb-4 tracking-tight">{user?.name || 'User'}</h3>
+              <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                <span className="px-4 py-2 bg-white rounded-full text-xs font-bold text-[#11311F] border border-gray-100 flex items-center gap-1.5 shadow-sm">
+                  <Star className="w-3.5 h-3.5 text-[#FFB800] fill-[#FFB800]" /> Premium Member
                 </span>
               </div>
             </div>
           </div>
           
-          <div className="flex gap-4 mt-8 pt-6 border-t border-gray-200/50 justify-center md:justify-start">
-            <div className="bg-white rounded-2xl p-4 flex-1 text-center shadow-xs">
-              <Package className="w-5 h-5 text-gray-400 mx-auto mb-2" />
-              <p className="text-3xl font-black text-[#11311F]">{orders.length}</p>
-              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mt-1">Total Orders</p>
+          <div className="flex gap-4 md:gap-6 mt-8 md:mt-10 pt-6 md:pt-8 border-t border-gray-100 justify-center md:justify-start z-10">
+            <div className="bg-white rounded-2xl p-5 md:p-6 flex-1 text-center shadow-sm border border-gray-50 hover:shadow-md transition-shadow">
+              <Package className="w-6 h-6 text-[#A4E4BA] mx-auto mb-3" />
+              <p className="text-3xl md:text-4xl font-black text-[#11311F]">{orders.length}</p>
+              <p className="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest mt-2">Total Orders</p>
             </div>
-            <div className="bg-white rounded-2xl p-4 flex-1 text-center shadow-xs">
-              <ShoppingBag className="w-5 h-5 text-gray-400 mx-auto mb-2" />
-              <p className="text-3xl font-black text-[#11311F]">{transitOrders}</p>
-              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mt-1">In Transit</p>
+            <div className="bg-white rounded-2xl p-5 md:p-6 flex-1 text-center shadow-sm border border-gray-50 hover:shadow-md transition-shadow">
+              <ShoppingBag className="w-6 h-6 text-[#A4E4BA] mx-auto mb-3" />
+              <p className="text-3xl md:text-4xl font-black text-[#11311F]">{transitOrders}</p>
+              <p className="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest mt-2">In Transit</p>
             </div>
           </div>
         </div>
 
         {/* Health / Stats Card */}
-        <div className="bg-[#11311F] rounded-3xl p-6 md:p-8 flex flex-col items-center justify-center text-center text-white relative overflow-hidden shadow-xl shadow-[#11311F]/20">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2"></div>
-          <p className="text-[11px] font-bold text-[#A4E4BA] uppercase tracking-wider mb-6">Profile Completion</p>
-          <div className="relative w-32 h-32 flex items-center justify-center">
-            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="8" />
+        <div className="bg-gradient-to-br from-[#11311F] to-[#0A1F13] rounded-3xl p-6 md:p-10 flex flex-col items-center justify-center text-center text-white relative overflow-hidden shadow-xl shadow-[#11311F]/20 group">
+          <div className="absolute top-0 right-0 w-48 h-48 bg-[#A4E4BA] opacity-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-1000"></div>
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#235839] opacity-20 rounded-full blur-2xl transform -translate-x-1/2 translate-y-1/2"></div>
+          <p className="text-xs md:text-sm font-bold text-[#A4E4BA] uppercase tracking-widest mb-6 md:mb-8 relative z-10">Profile Strength</p>
+          <div className="relative w-36 h-36 md:w-44 md:h-44 flex items-center justify-center z-10">
+            <svg className="w-full h-full transform -rotate-90 drop-shadow-lg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="6" />
               <circle 
                 cx="50" 
                 cy="50" 
                 r="45" 
                 fill="none" 
-                stroke="#A4E4BA" 
-                strokeWidth="8" 
+                stroke="url(#gradient)" 
+                strokeWidth="6" 
                 strokeDasharray="283" 
                 strokeDashoffset={283 - (283 * healthPercent) / 100} 
                 strokeLinecap="round" 
+                className="transition-all duration-1000 ease-out"
               />
+              <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#A4E4BA" />
+                  <stop offset="100%" stopColor="#E9F3ED" />
+                </linearGradient>
+              </defs>
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-3xl font-black">{healthPercent}%</span>
+              <span className="text-4xl md:text-5xl font-black tracking-tighter">{healthPercent}%</span>
             </div>
           </div>
-          <p className="text-sm text-gray-300 mt-6 max-w-[200px]">Your account setup is almost complete.</p>
+          <p className="text-sm text-gray-300 mt-8 md:mt-10 max-w-[200px] leading-relaxed relative z-10 font-medium">Your botanical sanctuary is almost ready.</p>
         </div>
       </div>
 
-      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mt-8 mb-4 px-1">Quick Actions</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mt-10 md:mt-12 mb-6 px-1">Quick Actions</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         
-        <div onClick={() => setActiveTab('orders')} className="bg-[#F8FAF9] rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:bg-[#E9F3ED] transition-colors border border-gray-100 group">
-          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-110 transition-transform">
-            <Package className="w-5 h-5 text-[#11311F]" />
+        <div onClick={() => setActiveTab('orders')} className="bg-white rounded-3xl p-6 md:p-8 flex items-center gap-5 cursor-pointer hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 group shadow-sm">
+          <div className="w-14 h-14 rounded-2xl bg-[#F6F9F7] border border-[#E9F3ED] flex items-center justify-center shadow-inner shrink-0 group-hover:bg-[#11311F] transition-colors duration-300">
+            <Package className="w-6 h-6 text-[#11311F] group-hover:text-white transition-colors duration-300" />
           </div>
           <div className="flex-1">
-            <h4 className="font-bold text-[#11311F] text-sm mb-0.5">My Orders</h4>
-            <p className="text-[11px] text-gray-500">Track and manage past purchases</p>
+            <h4 className="font-bold text-[#11311F] text-base mb-1">My Orders</h4>
+            <p className="text-xs text-gray-500 font-medium">Track your purchases</p>
           </div>
-          <ChevronRight className="w-4 h-4 text-gray-400" />
+          <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-[#E9F3ED] transition-colors">
+            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#11311F] transition-colors" />
+          </div>
         </div>
 
-        <div onClick={() => router.push('/shop')} className="bg-[#E9F3ED] rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:bg-[#D5E8DD] transition-colors border border-transparent group">
-          <div className="w-12 h-12 rounded-full bg-white/60 flex items-center justify-center shadow-sm shrink-0 group-hover:scale-110 transition-transform">
-            <Droplet className="w-5 h-5 text-[#11311F]" />
+        <div onClick={() => router.push('/shop')} className="bg-gradient-to-br from-[#E9F3ED] to-[#D5E8DD] rounded-3xl p-6 md:p-8 flex items-center gap-5 cursor-pointer hover:shadow-xl hover:shadow-[#235839]/10 transition-all duration-300 hover:-translate-y-1 border border-[#A4E4BA]/50 group relative overflow-hidden">
+          <div className="absolute -right-6 -top-6 w-24 h-24 bg-white/20 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500"></div>
+          <div className="w-14 h-14 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/50 flex items-center justify-center shadow-sm shrink-0 group-hover:bg-white transition-colors duration-300 relative z-10">
+            <Droplet className="w-6 h-6 text-[#235839]" />
           </div>
-          <div className="flex-1">
-            <h4 className="font-bold text-[#11311F] text-sm mb-0.5">Shop Plants</h4>
-            <p className="text-[11px] text-[#235839]">Explore premium new arrivals</p>
+          <div className="flex-1 relative z-10">
+            <h4 className="font-bold text-[#11311F] text-base mb-1">Shop Plants</h4>
+            <p className="text-xs text-[#235839] font-medium">Explore premium arrivals</p>
           </div>
-          <ChevronRight className="w-4 h-4 text-[#235839]" />
+          <div className="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center group-hover:bg-white transition-colors relative z-10">
+            <ChevronRight className="w-4 h-4 text-[#235839]" />
+          </div>
         </div>
 
-        <div onClick={() => setActiveTab('settings')} className="bg-[#F8FAF9] rounded-2xl p-5 flex items-center gap-4 cursor-pointer hover:bg-[#E9F3ED] transition-colors border border-gray-100 group">
-          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm shrink-0 group-hover:scale-110 transition-transform">
-            <Settings className="w-5 h-5 text-[#11311F]" />
+        <div onClick={() => setActiveTab('settings')} className="bg-white rounded-3xl p-6 md:p-8 flex items-center gap-5 cursor-pointer hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 group shadow-sm">
+          <div className="w-14 h-14 rounded-2xl bg-[#F6F9F7] border border-[#E9F3ED] flex items-center justify-center shadow-inner shrink-0 group-hover:bg-[#11311F] transition-colors duration-300">
+            <Settings className="w-6 h-6 text-[#11311F] group-hover:text-white transition-colors duration-300" />
           </div>
           <div className="flex-1">
-            <h4 className="font-bold text-[#11311F] text-sm mb-0.5">Settings</h4>
-            <p className="text-[11px] text-gray-500">Account and preferences</p>
+            <h4 className="font-bold text-[#11311F] text-base mb-1">Settings</h4>
+            <p className="text-xs text-gray-500 font-medium">Account preferences</p>
           </div>
-          <ChevronRight className="w-4 h-4 text-gray-400" />
+          <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-[#E9F3ED] transition-colors">
+            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#11311F] transition-colors" />
+          </div>
         </div>
 
       </div>
@@ -383,13 +408,18 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-[#FCFDFD] md:bg-[#F8FAF9] font-sans text-gray-900 pb-24 md:pb-0 relative flex">
       
       {/* Desktop Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-100 hidden md:flex flex-col sticky top-0 h-screen shrink-0 z-20">
-        <div className="p-8">
-          <Link href="/" className="flex items-center gap-3 mb-2 hover:opacity-80 transition-opacity">
-            <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain p-1 border border-gray-100 rounded-full shadow-sm" />
-            <h1 className="text-xl font-black text-[#11311F]">Arogyavruksham</h1>
+      <aside className="w-72 bg-[#FCFDFD] border-r border-gray-100 hidden md:flex flex-col sticky top-0 h-screen shrink-0 z-20 shadow-[4px_0_24px_rgba(17,49,31,0.02)]">
+        <div className="p-8 pb-4">
+          <Link href="/" className="flex flex-col gap-2 mb-4 hover:opacity-80 transition-opacity group">
+            <div className="flex items-center gap-3">
+              <img src="/logo.png" alt="Logo" className="w-10 h-10 object-contain drop-shadow-sm group-hover:scale-105 transition-transform duration-300" />
+              <img src="/text_logo.png" alt="Arogyavruksham" className="h-8 object-contain" />
+            </div>
           </Link>
-          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest pl-1">Premium Member</p>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#E9F3ED]/50 rounded-full border border-[#A4E4BA]/30">
+            <Star className="w-3 h-3 text-[#FFB800] fill-[#FFB800]" />
+            <span className="text-[10px] text-[#11311F] font-bold uppercase tracking-widest">Premium Member</span>
+          </div>
         </div>
         
         <nav className="flex-1 px-4 space-y-1.5 mt-2">
@@ -405,26 +435,27 @@ export default function ProfilePage() {
               <button 
                 key={item.id} 
                 onClick={item.onClick || (() => setActiveTab(item.id as any))}
-                className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all cursor-pointer ${
-                  isActive ? 'bg-[#E9F3ED] text-[#11311F]' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                className={`w-full flex items-center gap-3.5 px-5 py-4 rounded-2xl font-bold text-sm transition-all duration-300 cursor-pointer relative overflow-hidden group ${
+                  isActive ? 'bg-[#11311F] text-white shadow-md shadow-[#11311F]/10' : 'text-gray-500 hover:bg-[#E9F3ED]/50 hover:text-[#11311F]'
                 }`}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-[#235839]' : 'text-gray-400'}`} />
-                {item.label}
+                {isActive && <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-50" />}
+                <Icon className={`w-5 h-5 relative z-10 transition-transform duration-300 group-hover:scale-110 ${isActive ? 'text-[#A4E4BA]' : 'text-gray-400 group-hover:text-[#235839]'}`} />
+                <span className="relative z-10">{item.label}</span>
               </button>
             )
           })}
         </nav>
         
-        <div className="p-6 border-t border-gray-100">
-           <button onClick={handleLogout} className="flex items-center gap-3 text-sm font-bold text-gray-500 hover:text-red-600 transition-colors w-full px-4 py-2">
-             <LogOut className="w-4 h-4" /> Logout
+        <div className="p-6 border-t border-gray-100 bg-gray-50/30">
+           <button onClick={handleLogout} className="flex items-center justify-center gap-2 text-sm font-bold text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors w-full px-4 py-3 rounded-xl border border-transparent hover:border-red-100 group">
+             <LogOut className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Logout
            </button>
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-4xl mx-auto w-full p-5 md:p-12 relative z-10">
+      <main className="flex-1 max-w-5xl mx-auto w-full p-5 md:p-12 relative z-10">
         {/* Mobile Top Bar */}
         <div className="md:hidden flex items-center justify-between mb-8 sticky top-0 bg-[#FCFDFD]/90 backdrop-blur-md py-4 z-20 border-b border-gray-50">
           <button onClick={() => router.push('/')} className="p-2 -ml-2 text-gray-400"><ArrowLeft className="w-5 h-5" /></button>

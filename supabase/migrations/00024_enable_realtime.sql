@@ -7,3 +7,4 @@ ALTER PUBLICATION supabase_realtime ADD TABLE newsletter_subscribers;
 ALTER PUBLICATION supabase_realtime ADD TABLE homepage_images;
 ALTER PUBLICATION supabase_realtime ADD TABLE coupons;
 ALTER PUBLICATION supabase_realtime ADD TABLE announcements;
+11
