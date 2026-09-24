@@ -54,7 +54,7 @@ function FeaturedCard({ product, index }: { product: any; index: number }) {
             </div>
           </div>
           <button
-            onClick={(e) => { e.preventDefault(); if (product) addItem(product) }}
+            onClick={(e) => { e.preventDefault(); if (product) addItem({ id: product.id, title: product.title, price: product.price, quantity: 1, imageUrl: product.image_url, stock_count: product.stock_count }) }}
             className="px-6 py-1.5 border border-[#166534] text-[#166534] text-[13px] font-medium hover:bg-[#166534] hover:text-white transition-colors"
           >
             Buy

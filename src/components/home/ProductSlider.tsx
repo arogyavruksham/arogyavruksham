@@ -66,7 +66,7 @@ function ProductCard({ product, index }: { product: any; index: number }) {
             </div>
             
             <button 
-              onClick={(e) => { e.preventDefault(); addItem(product); }} 
+              onClick={(e) => { e.preventDefault(); addItem({ id: product.id, title: product.title, price: product.price, quantity: 1, imageUrl: product.image_url, stock_count: product.stock_count }); }} 
               className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${hovered ? 'bg-[#1E4631] text-white shadow-lg' : 'bg-[#F4F6F4] text-[#1E4631]'}`}
             >
               <ShoppingBag className="w-4 h-4" />
